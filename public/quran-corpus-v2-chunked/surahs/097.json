@@ -1,0 +1,41 @@
+{
+  "surah": 97,
+  "verseCount": 5,
+  "verses": [
+    {
+      "surah": 97,
+      "ayah": 1,
+      "verseKey": "97:1",
+      "arabic": "إِنَّآ أَنزَلْنَـٰهُ فِى لَيْلَةِ ٱلْقَدْرِ",
+      "translationSq": "Ne e kemi zbritur (Kuranin) në Natën e Kadrit."
+    },
+    {
+      "surah": 97,
+      "ayah": 2,
+      "verseKey": "97:2",
+      "arabic": "وَمَآ أَدْرَىٰكَ مَا لَيْلَةُ ٱلْقَدْرِ",
+      "translationSq": "E kush mund të ta shpjegojë ty se ç’është nata e Kadrit?"
+    },
+    {
+      "surah": 97,
+      "ayah": 3,
+      "verseKey": "97:3",
+      "arabic": "لَيْلَةُ ٱلْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ",
+      "translationSq": "Nata e Kadrit është më e mirë se një mijë muaj."
+    },
+    {
+      "surah": 97,
+      "ayah": 4,
+      "verseKey": "97:4",
+      "arabic": "تَنَزَّلُ ٱلْمَلَـٰٓئِكَةُ وَٱلرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍ",
+      "translationSq": "Engjëjt dhe Shpirti (Xhebraili), me lejen e Zotit të tyre, zbresin në këtë natë, me të gjitha vendimet."
+    },
+    {
+      "surah": 97,
+      "ayah": 5,
+      "verseKey": "97:5",
+      "arabic": "سَلَـٰمٌ هِىَ حَتَّىٰ مَطْلَعِ ٱلْفَجْرِ",
+      "translationSq": "Paqe është ajo deri në lindjen e agimit."
+    }
+  ]
+}

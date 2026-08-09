@@ -1,0 +1,776 @@
+{
+  "surah": 18,
+  "verseCount": 110,
+  "verses": [
+    {
+      "surah": 18,
+      "ayah": 1,
+      "verseKey": "18:1",
+      "arabic": " ٱلْحَمْدُ لِلَّهِ ٱلَّذِىٓ أَنزَلَ عَلَىٰ عَبْدِهِ ٱلْكِتَـٰبَ وَلَمْ يَجْعَل لَّهُۥ عِوَجَا ۜ",
+      "translationSq": "Çdo lavd dhe falënderim i përket Allahut, i Cili i shpalli robit të Vet (Muhamedit) një Libër të dëlirë nga çdo shtrembërim,"
+    },
+    {
+      "surah": 18,
+      "ayah": 2,
+      "verseKey": "18:2",
+      "arabic": "قَيِّمًا لِّيُنذِرَ بَأْسًا شَدِيدًا مِّن لَّدُنْهُ وَيُبَشِّرَ ٱلْمُؤْمِنِينَ ٱلَّذِينَ يَعْمَلُونَ ٱلصَّـٰلِحَـٰتِ أَنَّ لَهُمْ أَجْرًا حَسَنًا",
+      "translationSq": "(një libër) të drejtë, për të paralajmëruar nëpërmjet tij, dënim të ashpër (për jobesimtarët) dhe për t’u dhënë lajmin e mirë besimtarëve, të cilët bëjnë vepra të mira, se për ta do të ketë një shpërblim të bukur (Xheneti),"
+    },
+    {
+      "surah": 18,
+      "ayah": 3,
+      "verseKey": "18:3",
+      "arabic": "مَّـٰكِثِينَ فِيهِ أَبَدًا",
+      "translationSq": "në të cilin do të qëndrojnë përherë,"
+    },
+    {
+      "surah": 18,
+      "ayah": 4,
+      "verseKey": "18:4",
+      "arabic": "وَيُنذِرَ ٱلَّذِينَ قَالُوا۟ ٱتَّخَذَ ٱللَّهُ وَلَدًا",
+      "translationSq": "si dhe për të paralajmëruar ata që thonë: “Allahu ka një bir”."
+    },
+    {
+      "surah": 18,
+      "ayah": 5,
+      "verseKey": "18:5",
+      "arabic": "مَّا لَهُم بِهِۦ مِنْ عِلْمٍ وَلَا لِـَٔابَآئِهِمْ ۚ كَبُرَتْ كَلِمَةً تَخْرُجُ مِنْ أَفْوَٰهِهِمْ ۚ إِن يَقُولُونَ إِلَّا كَذِبًا",
+      "translationSq": "Ata nuk kanë kurrfarë dijenie për këtë, as etërit e tyre. Sa fjalë e rëndë është ajo që del nga goja e tyre! Ata flasin vetëm gënjeshtra."
+    },
+    {
+      "surah": 18,
+      "ayah": 6,
+      "verseKey": "18:6",
+      "arabic": "فَلَعَلَّكَ بَـٰخِعٌ نَّفْسَكَ عَلَىٰٓ ءَاثَـٰرِهِمْ إِن لَّمْ يُؤْمِنُوا۟ بِهَـٰذَا ٱلْحَدِيثِ أَسَفًا",
+      "translationSq": "A mos vallë do të vrasësh veten nga pikëllimi, nëse ata nuk besojnë në këtë Fjalë (Kuran)?"
+    },
+    {
+      "surah": 18,
+      "ayah": 7,
+      "verseKey": "18:7",
+      "arabic": "إِنَّا جَعَلْنَا مَا عَلَى ٱلْأَرْضِ زِينَةً لَّهَا لِنَبْلُوَهُمْ أَيُّهُمْ أَحْسَنُ عَمَلًا",
+      "translationSq": "Çdo gjë që gjendet në Tokë, Ne e kemi bërë stoli për të, për të provuar se kush prej tyre punon më mirë."
+    },
+    {
+      "surah": 18,
+      "ayah": 8,
+      "verseKey": "18:8",
+      "arabic": "وَإِنَّا لَجَـٰعِلُونَ مَا عَلَيْهَا صَعِيدًا جُرُزًا",
+      "translationSq": "Dhe, Ne do ta bëjmë të shkretë gjithçka, që gjendet në të."
+    },
+    {
+      "surah": 18,
+      "ayah": 9,
+      "verseKey": "18:9",
+      "arabic": "أَمْ حَسِبْتَ أَنَّ أَصْحَـٰبَ ٱلْكَهْفِ وَٱلرَّقِيمِ كَانُوا۟ مِنْ ءَايَـٰتِنَا عَجَبًا",
+      "translationSq": "Vallë, a mendon ti se banorët e Shpellës dhe Rakimit ishin një çudi nga mrekullitë Tona?"
+    },
+    {
+      "surah": 18,
+      "ayah": 10,
+      "verseKey": "18:10",
+      "arabic": "إِذْ أَوَى ٱلْفِتْيَةُ إِلَى ٱلْكَهْفِ فَقَالُوا۟ رَبَّنَآ ءَاتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا",
+      "translationSq": "Kur disa djelmosha u strehuan në shpellë dhe thanë: “O Zoti ynë, na jep mëshirë nga ana Jote dhe përgatitna për sjellje të drejtë!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 11,
+      "verseKey": "18:11",
+      "arabic": "فَضَرَبْنَا عَلَىٰٓ ءَاذَانِهِمْ فِى ٱلْكَهْفِ سِنِينَ عَدَدًا",
+      "translationSq": "Ne ua mbyllëm veshët atyre (duke i lënë të flinin) në shpellë për shumë vjet."
+    },
+    {
+      "surah": 18,
+      "ayah": 12,
+      "verseKey": "18:12",
+      "arabic": "ثُمَّ بَعَثْنَـٰهُمْ لِنَعْلَمَ أَىُّ ٱلْحِزْبَيْنِ أَحْصَىٰ لِمَا لَبِثُوٓا۟ أَمَدًا",
+      "translationSq": "Pastaj i ngritëm, për të marrë vesh se cili nga të dyja grupet do ta vlerësonte më mirë sa kohë kishin qenë të strehuar."
+    },
+    {
+      "surah": 18,
+      "ayah": 13,
+      "verseKey": "18:13",
+      "arabic": "نَّحْنُ نَقُصُّ عَلَيْكَ نَبَأَهُم بِٱلْحَقِّ ۚ إِنَّهُمْ فِتْيَةٌ ءَامَنُوا۟ بِرَبِّهِمْ وَزِدْنَـٰهُمْ هُدًى",
+      "translationSq": "Ne po ta tregojmë ty historinë e tyre sipas së vërtetës. Ata ishin djelmosha që besonin në Zotin e tyre dhe Ne i forcuam në rrugën e drejtë."
+    },
+    {
+      "surah": 18,
+      "ayah": 14,
+      "verseKey": "18:14",
+      "arabic": "وَرَبَطْنَا عَلَىٰ قُلُوبِهِمْ إِذْ قَامُوا۟ فَقَالُوا۟ رَبُّنَا رَبُّ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ لَن نَّدْعُوَا۟ مِن دُونِهِۦٓ إِلَـٰهًا ۖ لَّقَدْ قُلْنَآ إِذًا شَطَطًا",
+      "translationSq": "Ne i forcuam zemrat e tyre, kur u ngritën e thanë: “Zoti ynë është Zoti i qiejve dhe i Tokës. Ne nuk do t’i lutemi asnjë zoti tjetër, përveç Tij, sepse atëherë do të thoshim një gënjeshtër të madhe."
+    },
+    {
+      "surah": 18,
+      "ayah": 15,
+      "verseKey": "18:15",
+      "arabic": "هَـٰٓؤُلَآءِ قَوْمُنَا ٱتَّخَذُوا۟ مِن دُونِهِۦٓ ءَالِهَةً ۖ لَّوْلَا يَأْتُونَ عَلَيْهِم بِسُلْطَـٰنٍۭ بَيِّنٍ ۖ فَمَنْ أَظْلَمُ مِمَّنِ ٱفْتَرَىٰ عَلَى ٱللَّهِ كَذِبًا",
+      "translationSq": "Ky populli ynë ka zgjedhur në vend të Tij zota të tjerë, ndonëse ata nuk u sjellin dot asnjë provë të qartë. E kush është keqbërës më i madh, se ai që trillon gënjeshtra për Allahun?"
+    },
+    {
+      "surah": 18,
+      "ayah": 16,
+      "verseKey": "18:16",
+      "arabic": "وَإِذِ ٱعْتَزَلْتُمُوهُمْ وَمَا يَعْبُدُونَ إِلَّا ٱللَّهَ فَأْوُۥٓا۟ إِلَى ٱلْكَهْفِ يَنشُرْ لَكُمْ رَبُّكُم مِّن رَّحْمَتِهِۦ وَيُهَيِّئْ لَكُم مِّنْ أَمْرِكُم مِّرْفَقًا",
+      "translationSq": "Kur ju t’i lini ata dhe gjithçka që adhurojnë në vend të Allahut, gjeni strehë në shpellë: Zoti juaj do t’ju mbulojë me mëshirën e Tij dhe do t’ju përgatisë mënyrën nga e cila do të keni dobi”."
+    },
+    {
+      "surah": 18,
+      "ayah": 17,
+      "verseKey": "18:17",
+      "arabic": "۞ وَتَرَى ٱلشَّمْسَ إِذَا طَلَعَت تَّزَٰوَرُ عَن كَهْفِهِمْ ذَاتَ ٱلْيَمِينِ وَإِذَا غَرَبَت تَّقْرِضُهُمْ ذَاتَ ٱلشِّمَالِ وَهُمْ فِى فَجْوَةٍ مِّنْهُ ۚ ذَٰلِكَ مِنْ ءَايَـٰتِ ٱللَّهِ ۗ مَن يَهْدِ ٱللَّهُ فَهُوَ ٱلْمُهْتَدِ ۖ وَمَن يُضْلِلْ فَلَن تَجِدَ لَهُۥ وَلِيًّا مُّرْشِدًا",
+      "translationSq": "Ti (o Muhamed) do ta kishe parë Diellin kur lindte, se si anohej nga e djathta e shpellës së tyre dhe, kur perëndonte, ata i linte në anën e majtë, ndërkohë që ata gjendeshin në mesin e saj. Kjo është nga shenjat e Allahut. Sa për atë, që Allahu e udhëzon në rrugë të drejtë, pikërisht ai është i udhëzuari. E sa për atë, që Ai e lë në humbje, ti, me siguri, nuk do të mund t’i gjesh mbrojtës që ta udhëzojë."
+    },
+    {
+      "surah": 18,
+      "ayah": 18,
+      "verseKey": "18:18",
+      "arabic": "وَتَحْسَبُهُمْ أَيْقَاظًا وَهُمْ رُقُودٌ ۚ وَنُقَلِّبُهُمْ ذَاتَ ٱلْيَمِينِ وَذَاتَ ٱلشِّمَالِ ۖ وَكَلْبُهُم بَـٰسِطٌ ذِرَاعَيْهِ بِٱلْوَصِيدِ ۚ لَوِ ٱطَّلَعْتَ عَلَيْهِمْ لَوَلَّيْتَ مِنْهُمْ فِرَارًا وَلَمُلِئْتَ مِنْهُمْ رُعْبًا",
+      "translationSq": "Dhe (po të kishe qenë atje), do të mendoje se ata ishin zgjuar, por ata ishin në gjumë. Ne i rrotullonim ata herë në krah të djathtë e herë në të majtë, kurse qeni i tyre rrinte shtrirë me dy këmbët e para në hyrje të shpellës. Sikur t’i kishe parë, ti do të ikje nga ata dhe do të të kaplonte frika."
+    },
+    {
+      "surah": 18,
+      "ayah": 19,
+      "verseKey": "18:19",
+      "arabic": "وَكَذَٰلِكَ بَعَثْنَـٰهُمْ لِيَتَسَآءَلُوا۟ بَيْنَهُمْ ۚ قَالَ قَآئِلٌ مِّنْهُمْ كَمْ لَبِثْتُمْ ۖ قَالُوا۟ لَبِثْنَا يَوْمًا أَوْ بَعْضَ يَوْمٍ ۚ قَالُوا۟ رَبُّكُمْ أَعْلَمُ بِمَا لَبِثْتُمْ فَٱبْعَثُوٓا۟ أَحَدَكُم بِوَرِقِكُمْ هَـٰذِهِۦٓ إِلَى ٱلْمَدِينَةِ فَلْيَنظُرْ أَيُّهَآ أَزْكَىٰ طَعَامًا فَلْيَأْتِكُم بِرِزْقٍ مِّنْهُ وَلْيَتَلَطَّفْ وَلَا يُشْعِرَنَّ بِكُمْ أَحَدًا",
+      "translationSq": "Kështu pra, Ne i zgjuam që të pyesnin njëri-tjetrin. Njëri nga ata tha: “Sa keni ndenjur (në gjumë?)” - U përgjigjën: “Kemi qëndruar një ditë a një pjesë të ditës”. Disa thanë: “Zoti juaj e di më mirë se sa keni ndenjur. Dërgoni njërin prej jush në qytet me këtë monedhë argjendi tuajën e le të shikojë se cili ushqim është më i pastër. Le t’ju sjellë diçka prej tij, le të sillet mirë dhe askush të mos marrë vesh për ju."
+    },
+    {
+      "surah": 18,
+      "ayah": 20,
+      "verseKey": "18:20",
+      "arabic": "إِنَّهُمْ إِن يَظْهَرُوا۟ عَلَيْكُمْ يَرْجُمُوكُمْ أَوْ يُعِيدُوكُمْ فِى مِلَّتِهِمْ وَلَن تُفْلِحُوٓا۟ إِذًا أَبَدًا",
+      "translationSq": "Me të vërtetë, nëse ju zbulojnë, ata do t’ju gjuajnë me gurë ose do t’ju kthejnë (me forcë) në fenë e tyre dhe atëherë nuk do të shpëtoni kurrsesi”!"
+    },
+    {
+      "surah": 18,
+      "ayah": 21,
+      "verseKey": "18:21",
+      "arabic": "وَكَذَٰلِكَ أَعْثَرْنَا عَلَيْهِمْ لِيَعْلَمُوٓا۟ أَنَّ وَعْدَ ٱللَّهِ حَقٌّ وَأَنَّ ٱلسَّاعَةَ لَا رَيْبَ فِيهَآ إِذْ يَتَنَـٰزَعُونَ بَيْنَهُمْ أَمْرَهُمْ ۖ فَقَالُوا۟ ٱبْنُوا۟ عَلَيْهِم بُنْيَـٰنًا ۖ رَّبُّهُمْ أَعْلَمُ بِهِمْ ۚ قَالَ ٱلَّذِينَ غَلَبُوا۟ عَلَىٰٓ أَمْرِهِمْ لَنَتَّخِذَنَّ عَلَيْهِم مَّسْجِدًا",
+      "translationSq": "Dhe kështu, Ne bëmë që ata të zbuloheshin, me qëllim që të dihej se premtimi i Allahut është i vërtetë dhe, që të mos ketë asnjë dyshim për Orën (e Kiametit, se ajo do të vijë). Kur ata (banorët e qytetit) po haheshin me njëri-tjetrin për këtë rast, disa thoshin: “Ndërtojini atyre (në hyrje të shpellës) një ndërtesë! Zoti i tyre i njeh më mirë ata”. Ata që e fituan çështjen e tyre, thanë: “Ne do të ndërtojmë një faltore mbi ta!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 22,
+      "verseKey": "18:22",
+      "arabic": "سَيَقُولُونَ ثَلَـٰثَةٌ رَّابِعُهُمْ كَلْبُهُمْ وَيَقُولُونَ خَمْسَةٌ سَادِسُهُمْ كَلْبُهُمْ رَجْمًۢا بِٱلْغَيْبِ ۖ وَيَقُولُونَ سَبْعَةٌ وَثَامِنُهُمْ كَلْبُهُمْ ۚ قُل رَّبِّىٓ أَعْلَمُ بِعِدَّتِهِم مَّا يَعْلَمُهُمْ إِلَّا قَلِيلٌ ۗ فَلَا تُمَارِ فِيهِمْ إِلَّا مِرَآءً ظَـٰهِرًا وَلَا تَسْتَفْتِ فِيهِم مِّنْهُمْ أَحَدًا",
+      "translationSq": "Do të thonë: “Ata ishin tre veta e qeni i tyre ishte i katërti”. Disa do të thonë: “Ata ishin pesë veta e qeni i tyre ishte i gjashti”, duke hamendësuar për atë që është e fshehtë; kurse të tjerë do të thonë: “Ata ishin shtatë veta e qeni i tyre ishte i teti”. Thuaj (o Muhamed): “Zoti im e di më mirë numrin e tyre. Vetëm pak veta dinë diçka rreth tyre”. Dhe mos polemizo rreth tyre, përveçse në mënyrë të përciptë dhe për ata mos pyet askënd!"
+    },
+    {
+      "surah": 18,
+      "ayah": 23,
+      "verseKey": "18:23",
+      "arabic": "وَلَا تَقُولَنَّ لِشَا۟ىْءٍ إِنِّى فَاعِلٌ ذَٰلِكَ غَدًا",
+      "translationSq": "Asnjëherë mos thuaj, për çfarëdo gjëje qoftë, se: “Me siguri që nesër do ta bëj këtë”"
+    },
+    {
+      "surah": 18,
+      "ayah": 24,
+      "verseKey": "18:24",
+      "arabic": "إِلَّآ أَن يَشَآءَ ٱللَّهُ ۚ وَٱذْكُر رَّبَّكَ إِذَا نَسِيتَ وَقُلْ عَسَىٰٓ أَن يَهْدِيَنِ رَبِّى لِأَقْرَبَ مِنْ هَـٰذَا رَشَدًا",
+      "translationSq": "pa shtuar “Në dashtë Allahu!” Dhe, kur të harrosh (të thuash “në dashtë Allahu”) - kujtoje Zotin tënd e thuaj: “Shpresoj se Zoti im do të më udhëzojë në atë që është më e mirë dhe më e dobishme nga kjo”."
+    },
+    {
+      "surah": 18,
+      "ayah": 25,
+      "verseKey": "18:25",
+      "arabic": "وَلَبِثُوا۟ فِى كَهْفِهِمْ ثَلَـٰثَ مِا۟ئَةٍ سِنِينَ وَٱزْدَادُوا۟ تِسْعًا",
+      "translationSq": "Ata qëndruan në shpellën e tyre treqind vjet (diellorë), duke shtuar nëntë (për vitet hënore)."
+    },
+    {
+      "surah": 18,
+      "ayah": 26,
+      "verseKey": "18:26",
+      "arabic": "قُلِ ٱللَّهُ أَعْلَمُ بِمَا لَبِثُوا۟ ۖ لَهُۥ غَيْبُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ ۖ أَبْصِرْ بِهِۦ وَأَسْمِعْ ۚ مَا لَهُم مِّن دُونِهِۦ مِن وَلِىٍّ وَلَا يُشْرِكُ فِى حُكْمِهِۦٓ أَحَدًا",
+      "translationSq": "Thuaj (o Muhamed): “Allahu e di më mirë sa kanë qëndruar. Atij i përket fshehtësia e qiejve dhe e Tokës. Eh, sa mirë sheh Ai çdo gjë dhe sa mirë që dëgjon! Njerëzit nuk kanë tjetër mbrojtës përveç Atij dhe Ai nuk e ndan me askënd pushtetin e Vet.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 27,
+      "verseKey": "18:27",
+      "arabic": "وَٱتْلُ مَآ أُوحِىَ إِلَيْكَ مِن كِتَابِ رَبِّكَ ۖ لَا مُبَدِّلَ لِكَلِمَـٰتِهِۦ وَلَن تَجِدَ مِن دُونِهِۦ مُلْتَحَدًا",
+      "translationSq": "Dhe lexo atë që të është shpallur ty nga Libri i Zotit tënd! Askush nuk mund t’i ndryshojë fjalët e Tij dhe ti nuk ke për të gjetur kurrfarë strehe, përveçse tek Ai."
+    },
+    {
+      "surah": 18,
+      "ayah": 28,
+      "verseKey": "18:28",
+      "arabic": "وَٱصْبِرْ نَفْسَكَ مَعَ ٱلَّذِينَ يَدْعُونَ رَبَّهُم بِٱلْغَدَوٰةِ وَٱلْعَشِىِّ يُرِيدُونَ وَجْهَهُۥ ۖ وَلَا تَعْدُ عَيْنَاكَ عَنْهُمْ تُرِيدُ زِينَةَ ٱلْحَيَوٰةِ ٱلدُّنْيَا ۖ وَلَا تُطِعْ مَنْ أَغْفَلْنَا قَلْبَهُۥ عَن ذِكْرِنَا وَٱتَّبَعَ هَوَىٰهُ وَكَانَ أَمْرُهُۥ فُرُطًا",
+      "translationSq": "Dhe qëndro me ata që i luten Zotit të vet në mëngjes dhe mbrëmje, duke dëshiruar Fytyrën (kënaqësinë) e Tij dhe mos i shmang sytë nga ata (tek të tjerët), duke dëshiruar stolitë e shkëlqimin e kësaj jete. Mos dëgjo atë zemrën e të cilit ia kemi lënë mospërfillëse ndaj përmendjes Sonë e, që shkon pas dëshirave të veta, duke shkelur çdo kufi në veprimet e veta."
+    },
+    {
+      "surah": 18,
+      "ayah": 29,
+      "verseKey": "18:29",
+      "arabic": "وَقُلِ ٱلْحَقُّ مِن رَّبِّكُمْ ۖ فَمَن شَآءَ فَلْيُؤْمِن وَمَن شَآءَ فَلْيَكْفُرْ ۚ إِنَّآ أَعْتَدْنَا لِلظَّـٰلِمِينَ نَارًا أَحَاطَ بِهِمْ سُرَادِقُهَا ۚ وَإِن يَسْتَغِيثُوا۟ يُغَاثُوا۟ بِمَآءٍ كَٱلْمُهْلِ يَشْوِى ٱلْوُجُوهَ ۚ بِئْسَ ٱلشَّرَابُ وَسَآءَتْ مُرْتَفَقًا",
+      "translationSq": "Dhe thuaj: “E vërteta është nga Zoti juaj. Kush të dojë, le të besojë e kush të dojë, le të mohojë”. Ne kemi përgatitur për mohuesit keqbërës një zjarr, që do t’i rrethojë nga të gjitha anët (si çadra). Nëse do të kërkojnë ndihmë, do t’u jepet një ujë si xehja e shkrirë, që do t’ua përcëllojë fytyrat. Sa pije e tmerrshme është ajo e sa strehim i keq është ai (zjarri)!"
+    },
+    {
+      "surah": 18,
+      "ayah": 30,
+      "verseKey": "18:30",
+      "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ إِنَّا لَا نُضِيعُ أَجْرَ مَنْ أَحْسَنَ عَمَلًا",
+      "translationSq": "Sa për ata që besojnë dhe bëjnë vepra të mira, sigurisht që Ne nuk do t’ua humbim shpërblimin punëmirëve."
+    },
+    {
+      "surah": 18,
+      "ayah": 31,
+      "verseKey": "18:31",
+      "arabic": "أُو۟لَـٰٓئِكَ لَهُمْ جَنَّـٰتُ عَدْنٍ تَجْرِى مِن تَحْتِهِمُ ٱلْأَنْهَـٰرُ يُحَلَّوْنَ فِيهَا مِنْ أَسَاوِرَ مِن ذَهَبٍ وَيَلْبَسُونَ ثِيَابًا خُضْرًا مِّن سُندُسٍ وَإِسْتَبْرَقٍ مُّتَّكِـِٔينَ فِيهَا عَلَى ٱلْأَرَآئِكِ ۚ نِعْمَ ٱلثَّوَابُ وَحَسُنَتْ مُرْتَفَقًا",
+      "translationSq": "Pikërisht atyre u përket Xheneti i Adnit, nëpër të cilin rrjedhin lumenj. Ata do të stolisen atje me byzylykë ari dhe do të vishen me rroba të gjelbra prej mëndafshi të hollë dhe armaçi, duke ndenjur të mbështetur në shtretër të lartë. Sa shpërblim i mrekullueshëm dhe sa vendbanim i bukur!"
+    },
+    {
+      "surah": 18,
+      "ayah": 32,
+      "verseKey": "18:32",
+      "arabic": "۞ وَٱضْرِبْ لَهُم مَّثَلًا رَّجُلَيْنِ جَعَلْنَا لِأَحَدِهِمَا جَنَّتَيْنِ مِنْ أَعْنَـٰبٍ وَحَفَفْنَـٰهُمَا بِنَخْلٍ وَجَعَلْنَا بَيْنَهُمَا زَرْعًا",
+      "translationSq": "Dhe jepu atyre si shembull ndodhinë e dy njerëzve. Njërit prej tyre Ne i kishim dhënë dy kopshte vreshtash, që i kishim rrethuar me hurma e midis tyre kishim bërë fusha drithi."
+    },
+    {
+      "surah": 18,
+      "ayah": 33,
+      "verseKey": "18:33",
+      "arabic": "كِلْتَا ٱلْجَنَّتَيْنِ ءَاتَتْ أُكُلَهَا وَلَمْ تَظْلِم مِّنْهُ شَيْـًٔا ۚ وَفَجَّرْنَا خِلَـٰلَهُمَا نَهَرًا",
+      "translationSq": "Të dy kopshtet jepnin frutat e veta, pa u munguar asgjë dhe bëmë që midis tyre të rridhte një lumë."
+    },
+    {
+      "surah": 18,
+      "ayah": 34,
+      "verseKey": "18:34",
+      "arabic": "وَكَانَ لَهُۥ ثَمَرٌ فَقَالَ لِصَـٰحِبِهِۦ وَهُوَ يُحَاوِرُهُۥٓ أَنَا۠ أَكْثَرُ مِنكَ مَالًا وَأَعَزُّ نَفَرًا",
+      "translationSq": "Ai pati prodhim të bollshëm dhe i tha shokut të vet, duke biseduar me të: “Unë kam më shumë pasuri se ti dhe kam rreth më të fortë!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 35,
+      "verseKey": "18:35",
+      "arabic": "وَدَخَلَ جَنَّتَهُۥ وَهُوَ ظَالِمٌ لِّنَفْسِهِۦ قَالَ مَآ أَظُنُّ أَن تَبِيدَ هَـٰذِهِۦٓ أَبَدًا",
+      "translationSq": "Pastaj hyri në kopshtin e vet dhe, duke qenë i padrejtë me vetveten, tha: “Unë nuk mendoj se kjo do të shkatërrohet ndonjëherë"
+    },
+    {
+      "surah": 18,
+      "ayah": 36,
+      "verseKey": "18:36",
+      "arabic": "وَمَآ أَظُنُّ ٱلسَّاعَةَ قَآئِمَةً وَلَئِن رُّدِدتُّ إِلَىٰ رَبِّى لَأَجِدَنَّ خَيْرًا مِّنْهَا مُنقَلَبًا",
+      "translationSq": "dhe nuk mendoj se do të arrijë ndonjëherë Ora (e Kiametit). Por, edhe nëse do të më kthejnë te Zoti im, sigurisht që do të gjej një vend më të mirë se ky (kopsht)”!"
+    },
+    {
+      "surah": 18,
+      "ayah": 37,
+      "verseKey": "18:37",
+      "arabic": "قَالَ لَهُۥ صَاحِبُهُۥ وَهُوَ يُحَاوِرُهُۥٓ أَكَفَرْتَ بِٱلَّذِى خَلَقَكَ مِن تُرَابٍ ثُمَّ مِن نُّطْفَةٍ ثُمَّ سَوَّىٰكَ رَجُلًا",
+      "translationSq": "Shoku i tij i tha, duke biseduar me të: “A e mohon ti Atë, i Cili të ka krijuar nga dheu, pastaj nga pika e farës dhe të bëri më në fund njeri të plotë?!"
+    },
+    {
+      "surah": 18,
+      "ayah": 38,
+      "verseKey": "18:38",
+      "arabic": "لَّـٰكِنَّا۠ هُوَ ٱللَّهُ رَبِّى وَلَآ أُشْرِكُ بِرَبِّىٓ أَحَدًا",
+      "translationSq": "Sa për mua, unë besoj se Allahu është Zoti im dhe Zotit tim unë nuk i shoqëroj askënd (në adhurim)."
+    },
+    {
+      "surah": 18,
+      "ayah": 39,
+      "verseKey": "18:39",
+      "arabic": "وَلَوْلَآ إِذْ دَخَلْتَ جَنَّتَكَ قُلْتَ مَا شَآءَ ٱللَّهُ لَا قُوَّةَ إِلَّا بِٱللَّهِ ۚ إِن تَرَنِ أَنَا۠ أَقَلَّ مِنكَ مَالًا وَوَلَدًا",
+      "translationSq": "Do të ishte më mirë për ty sikur të kishe thënë, kur hyre në kopshtin tënd: “Kështu ka dashur Allahu! Nuk ka fuqi përveçse nëpërmjet Allahut.” Nëse ti sheh se unë kam më pak pasuri dhe pasardhës,"
+    },
+    {
+      "surah": 18,
+      "ayah": 40,
+      "verseKey": "18:40",
+      "arabic": "فَعَسَىٰ رَبِّىٓ أَن يُؤْتِيَنِ خَيْرًا مِّن جَنَّتِكَ وَيُرْسِلَ عَلَيْهَا حُسْبَانًا مِّنَ ٱلسَّمَآءِ فَتُصْبِحَ صَعِيدًا زَلَقًا",
+      "translationSq": "dije, Zoti im, mund të më japë diçka më të mirë se kopshti yt, ndërsa në kopshtin tënd mund të dërgojë një shkatërrim nga qielli e të gdhijë rrafsh pa asgjë,"
+    },
+    {
+      "surah": 18,
+      "ayah": 41,
+      "verseKey": "18:41",
+      "arabic": "أَوْ يُصْبِحَ مَآؤُهَا غَوْرًا فَلَن تَسْتَطِيعَ لَهُۥ طَلَبًا",
+      "translationSq": "ose, të bëjë që uji i tij (kopshtit), të humbasë në thellësi e të mos mund ta gjesh kurrë më”."
+    },
+    {
+      "surah": 18,
+      "ayah": 42,
+      "verseKey": "18:42",
+      "arabic": "وَأُحِيطَ بِثَمَرِهِۦ فَأَصْبَحَ يُقَلِّبُ كَفَّيْهِ عَلَىٰ مَآ أَنفَقَ فِيهَا وَهِىَ خَاوِيَةٌ عَلَىٰ عُرُوشِهَا وَيَقُولُ يَـٰلَيْتَنِى لَمْ أُشْرِكْ بِرَبِّىٓ أَحَدًا",
+      "translationSq": "Dhe pasuria e tij (e mohuesit) u shkatërrua, kurse ai i rrihte duart për gjithçka që kishte shpenzuar në të (pronën e vet) - e që tashmë ishte shkretuar nga rrënjët -, dhe thërriste: “Ah! Sikur të mos i kisha shoqëruar Zotit tim askënd!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 43,
+      "verseKey": "18:43",
+      "arabic": "وَلَمْ تَكُن لَّهُۥ فِئَةٌ يَنصُرُونَهُۥ مِن دُونِ ٱللَّهِ وَمَا كَانَ مُنتَصِرًا",
+      "translationSq": "Kështu, ai nuk pati kurrfarë rrethi që ta ndihmonte kundër Allahut dhe as që ishte në gjendje të mbronte vetveten."
+    },
+    {
+      "surah": 18,
+      "ayah": 44,
+      "verseKey": "18:44",
+      "arabic": "هُنَالِكَ ٱلْوَلَـٰيَةُ لِلَّهِ ٱلْحَقِّ ۚ هُوَ خَيْرٌ ثَوَابًا وَخَيْرٌ عُقْبًا",
+      "translationSq": "Në një rast të tillë, mbrojtja vjen vetëm nga Allahu, i Vërteti. Ai është më i miri për të shpërblyer dhe jep përfundimin më të mirë."
+    },
+    {
+      "surah": 18,
+      "ayah": 45,
+      "verseKey": "18:45",
+      "arabic": "وَٱضْرِبْ لَهُم مَّثَلَ ٱلْحَيَوٰةِ ٱلدُّنْيَا كَمَآءٍ أَنزَلْنَـٰهُ مِنَ ٱلسَّمَآءِ فَٱخْتَلَطَ بِهِۦ نَبَاتُ ٱلْأَرْضِ فَأَصْبَحَ هَشِيمًا تَذْرُوهُ ٱلرِّيَـٰحُ ۗ وَكَانَ ٱللَّهُ عَلَىٰ كُلِّ شَىْءٍ مُّقْتَدِرًا",
+      "translationSq": "Jepu atyre shembullin e jetës së kësaj bote: ajo është si uji që Ne e lëshojmë nga qielli; bimësia në tokë përzihet me të, por pastaj bëhet si bar i thatë të cilin e shpërndan era. Allahu është i Fuqishëm për çdo gjë!"
+    },
+    {
+      "surah": 18,
+      "ayah": 46,
+      "verseKey": "18:46",
+      "arabic": "ٱلْمَالُ وَٱلْبَنُونَ زِينَةُ ٱلْحَيَوٰةِ ٱلدُّنْيَا ۖ وَٱلْبَـٰقِيَـٰتُ ٱلصَّـٰلِحَـٰتُ خَيْرٌ عِندَ رَبِّكَ ثَوَابًا وَخَيْرٌ أَمَلًا",
+      "translationSq": "Pasuria dhe djemtë janë stoli e jetës së kësaj bote. Por veprat e mira që mbeten përherë, janë më të mira te Zoti yt sa i përket shpërblimit dhe, janë më të mira sa i përket shpresës (për shpëtim)."
+    },
+    {
+      "surah": 18,
+      "ayah": 47,
+      "verseKey": "18:47",
+      "arabic": "وَيَوْمَ نُسَيِّرُ ٱلْجِبَالَ وَتَرَى ٱلْأَرْضَ بَارِزَةً وَحَشَرْنَـٰهُمْ فَلَمْ نُغَادِرْ مِنْهُمْ أَحَدًا",
+      "translationSq": "Ditën, kur Ne do t’i shkulim malet, do ta shohësh tokën të zhveshur dhe do t’i tubojmë të gjithë njerëzit, pa lënë askënd prapa."
+    },
+    {
+      "surah": 18,
+      "ayah": 48,
+      "verseKey": "18:48",
+      "arabic": "وَعُرِضُوا۟ عَلَىٰ رَبِّكَ صَفًّا لَّقَدْ جِئْتُمُونَا كَمَا خَلَقْنَـٰكُمْ أَوَّلَ مَرَّةٍۭ ۚ بَلْ زَعَمْتُمْ أَلَّن نَّجْعَلَ لَكُم مَّوْعِدًا",
+      "translationSq": "Ata do të sillen të radhitur para Zotit tënd (e do t’u thuhet): “Tashmë Na erdhët, ashtu siç ju krijuam herën e parë, ndonëse ju (o jobesimtarë) pretendonit se nuk do t’ju caktonim një takim (ringjalljen)”."
+    },
+    {
+      "surah": 18,
+      "ayah": 49,
+      "verseKey": "18:49",
+      "arabic": "وَوُضِعَ ٱلْكِتَـٰبُ فَتَرَى ٱلْمُجْرِمِينَ مُشْفِقِينَ مِمَّا فِيهِ وَيَقُولُونَ يَـٰوَيْلَتَنَا مَالِ هَـٰذَا ٱلْكِتَـٰبِ لَا يُغَادِرُ صَغِيرَةً وَلَا كَبِيرَةً إِلَّآ أَحْصَىٰهَا ۚ وَوَجَدُوا۟ مَا عَمِلُوا۟ حَاضِرًا ۗ وَلَا يَظْلِمُ رَبُّكَ أَحَدًا",
+      "translationSq": "Dhe Libri (i veprave të tyre) do t’u vihet përpara, e do t’i shohësh gjynahqarët se si do të tmerrohen nga ato që gjenden në të dhe do të thonë: “Të mjerët ne! Çfarë është ky libër që nuk paska lënë asnjë vepër të madhe apo të vogël pa e shënuar”. Aty do të gjejnë të shënuar gjithçka që kanë punuar. Zoti yt nuk i bën padrejtësi askujt."
+    },
+    {
+      "surah": 18,
+      "ayah": 50,
+      "verseKey": "18:50",
+      "arabic": "وَإِذْ قُلْنَا لِلْمَلَـٰٓئِكَةِ ٱسْجُدُوا۟ لِـَٔادَمَ فَسَجَدُوٓا۟ إِلَّآ إِبْلِيسَ كَانَ مِنَ ٱلْجِنِّ فَفَسَقَ عَنْ أَمْرِ رَبِّهِۦٓ ۗ أَفَتَتَّخِذُونَهُۥ وَذُرِّيَّتَهُۥٓ أَوْلِيَآءَ مِن دُونِى وَهُمْ لَكُمْ عَدُوٌّۢ ۚ بِئْسَ لِلظَّـٰلِمِينَ بَدَلًا",
+      "translationSq": "Kur u thamë engjëjve: “Përuluni në sexhde para Ademit”, ata u përulën, përveç Iblisit. Ai ishte një nga xhindet dhe nuk iu bind urdhrit të Zotit të vet. Atëherë, a do ta merrnit atë dhe pasardhësit e tij për mbrojtës në vendin Tim, edhe pse ata janë armiqtë tuaj?! Sa këmbim i shëmtuar që është ky për keqbërësit!"
+    },
+    {
+      "surah": 18,
+      "ayah": 51,
+      "verseKey": "18:51",
+      "arabic": "۞ مَّآ أَشْهَدتُّهُمْ خَلْقَ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ وَلَا خَلْقَ أَنفُسِهِمْ وَمَا كُنتُ مُتَّخِذَ ٱلْمُضِلِّينَ عَضُدًا",
+      "translationSq": "Unë nuk i bëra ata dëshmitarë të krijimit të qiejve dhe të Tokës e as të krijimit të vetë atyre; dhe, sigurisht që Unë nuk mund t’i marr si ndihmës ata që çojnë të tjerët në humbje."
+    },
+    {
+      "surah": 18,
+      "ayah": 52,
+      "verseKey": "18:52",
+      "arabic": "وَيَوْمَ يَقُولُ نَادُوا۟ شُرَكَآءِىَ ٱلَّذِينَ زَعَمْتُمْ فَدَعَوْهُمْ فَلَمْ يَسْتَجِيبُوا۟ لَهُمْ وَجَعَلْنَا بَيْنَهُم مَّوْبِقًا",
+      "translationSq": "Ditën, kur Ai do të thotë: “Thirrini ata që ju mendoni se janë shokët e Mi”, ata do t’i thërrasin, por nuk do të marrin përgjigje prej tyre dhe, Ne, do të vendosim ndërmjet tyre barrierë."
+    },
+    {
+      "surah": 18,
+      "ayah": 53,
+      "verseKey": "18:53",
+      "arabic": "وَرَءَا ٱلْمُجْرِمُونَ ٱلنَّارَ فَظَنُّوٓا۟ أَنَّهُم مُّوَاقِعُوهَا وَلَمْ يَجِدُوا۟ عَنْهَا مَصْرِفًا",
+      "translationSq": "Të ligjtë do të shohin zjarrin dhe do të binden, se me të vërtetë, do të bien në të dhe nuk do të gjejnë largim prej atij."
+    },
+    {
+      "surah": 18,
+      "ayah": 54,
+      "verseKey": "18:54",
+      "arabic": "وَلَقَدْ صَرَّفْنَا فِى هَـٰذَا ٱلْقُرْءَانِ لِلنَّاسِ مِن كُلِّ مَثَلٍ ۚ وَكَانَ ٱلْإِنسَـٰنُ أَكْثَرَ شَىْءٍ جَدَلًا",
+      "translationSq": "Sigurisht, në këtë Kuran, Ne u kemi shpjeguar njerëzve çdo lloj shembulli, por njeriu kundërshton më tepër se çdo krijesë tjetër."
+    },
+    {
+      "surah": 18,
+      "ayah": 55,
+      "verseKey": "18:55",
+      "arabic": "وَمَا مَنَعَ ٱلنَّاسَ أَن يُؤْمِنُوٓا۟ إِذْ جَآءَهُمُ ٱلْهُدَىٰ وَيَسْتَغْفِرُوا۟ رَبَّهُمْ إِلَّآ أَن تَأْتِيَهُمْ سُنَّةُ ٱلْأَوَّلِينَ أَوْ يَأْتِيَهُمُ ٱلْعَذَابُ قُبُلًا",
+      "translationSq": "Çfarë i pengon njerëzit të besojnë, kur u vjen udhëzimi - dhe të kërkojnë falje nga Zoti i tyre?! Apo presin vetëm që të pësojnë fatin e popujve të parë ose që t’u vijë dënimi i hapët?!"
+    },
+    {
+      "surah": 18,
+      "ayah": 56,
+      "verseKey": "18:56",
+      "arabic": "وَمَا نُرْسِلُ ٱلْمُرْسَلِينَ إِلَّا مُبَشِّرِينَ وَمُنذِرِينَ ۚ وَيُجَـٰدِلُ ٱلَّذِينَ كَفَرُوا۟ بِٱلْبَـٰطِلِ لِيُدْحِضُوا۟ بِهِ ٱلْحَقَّ ۖ وَٱتَّخَذُوٓا۟ ءَايَـٰتِى وَمَآ أُنذِرُوا۟ هُزُوًا",
+      "translationSq": "Ne i çojmë të dërguarit vetëm si përcjellës të lajmit të mirë dhe paralajmërues. Por mohuesit (e besimit) polemizojnë me argumente të rreme për ta dobësuar të Vërtetën, ndërsa shenjat dhe paralajmërimet e Mia i marrin për tallje."
+    },
+    {
+      "surah": 18,
+      "ayah": 57,
+      "verseKey": "18:57",
+      "arabic": "وَمَنْ أَظْلَمُ مِمَّن ذُكِّرَ بِـَٔايَـٰتِ رَبِّهِۦ فَأَعْرَضَ عَنْهَا وَنَسِىَ مَا قَدَّمَتْ يَدَاهُ ۚ إِنَّا جَعَلْنَا عَلَىٰ قُلُوبِهِمْ أَكِنَّةً أَن يَفْقَهُوهُ وَفِىٓ ءَاذَانِهِمْ وَقْرًا ۖ وَإِن تَدْعُهُمْ إِلَى ٱلْهُدَىٰ فَلَن يَهْتَدُوٓا۟ إِذًا أَبَدًا",
+      "translationSq": "Kush është më i padrejtë se ai që, kur ia kujtojnë shpalljet e Zotit të vet, largohet nga ato dhe harron se ç’kanë bërë duart e tij më parë?! Ne kemi vënë perde në zemrat e tyre, që të mos e kuptojnë atë (Kuranin), dhe ua kemi rënduar veshët. Edhe sikur ti t’i thërrasësh ata në rrugën e drejtë, ata kurrë nuk do të udhëzohen."
+    },
+    {
+      "surah": 18,
+      "ayah": 58,
+      "verseKey": "18:58",
+      "arabic": "وَرَبُّكَ ٱلْغَفُورُ ذُو ٱلرَّحْمَةِ ۖ لَوْ يُؤَاخِذُهُم بِمَا كَسَبُوا۟ لَعَجَّلَ لَهُمُ ٱلْعَذَابَ ۚ بَل لَّهُم مَّوْعِدٌ لَّن يَجِدُوا۟ مِن دُونِهِۦ مَوْئِلًا",
+      "translationSq": "Por Zoti yt është Falësi plot mëshirë. Sikur t’i dënonte ata për çfarë kanë bërë, Ai do t’ua shpejtonte dënimin. Por ata i pret një çast i caktuar, nga i cili kurrë nuk do të shpëtojnë."
+    },
+    {
+      "surah": 18,
+      "ayah": 59,
+      "verseKey": "18:59",
+      "arabic": "وَتِلْكَ ٱلْقُرَىٰٓ أَهْلَكْنَـٰهُمْ لَمَّا ظَلَمُوا۟ وَجَعَلْنَا لِمَهْلِكِهِم مَّوْعِدًا",
+      "translationSq": "Ato qytete Ne i shkatërruam kur banorët e tyre bënë të këqija dhe, për shkatërrimin e tyre, Ne kishim caktuar një afat."
+    },
+    {
+      "surah": 18,
+      "ayah": 60,
+      "verseKey": "18:60",
+      "arabic": "وَإِذْ قَالَ مُوسَىٰ لِفَتَىٰهُ لَآ أَبْرَحُ حَتَّىٰٓ أَبْلُغَ مَجْمَعَ ٱلْبَحْرَيْنِ أَوْ أَمْضِىَ حُقُبًا",
+      "translationSq": "(Kujto) kur Musai i tha djaloshit që e shoqëronte: “Nuk do të pushoj së ecuri, derisa të arrij në vendin ku takohen dy detet, edhe nëse do të më duhet të udhëtoj për shumë kohë.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 61,
+      "verseKey": "18:61",
+      "arabic": "فَلَمَّا بَلَغَا مَجْمَعَ بَيْنِهِمَا نَسِيَا حُوتَهُمَا فَٱتَّخَذَ سَبِيلَهُۥ فِى ٱلْبَحْرِ سَرَبًا",
+      "translationSq": "Dhe, kur arritën në vendin, ku bashkoheshin dy detet, ata e harruan peshkun e tyre dhe ai rrëshqiti në det, duke e hapur atë si tunel."
+    },
+    {
+      "surah": 18,
+      "ayah": 62,
+      "verseKey": "18:62",
+      "arabic": "فَلَمَّا جَاوَزَا قَالَ لِفَتَىٰهُ ءَاتِنَا غَدَآءَنَا لَقَدْ لَقِينَا مِن سَفَرِنَا هَـٰذَا نَصَبًا",
+      "translationSq": "Kur kaluan më tej, Musai i tha shoqëruesit të vet: “Na jep drekën tonë, sepse jemi lodhur nga ky udhëtimi ynë”."
+    },
+    {
+      "surah": 18,
+      "ayah": 63,
+      "verseKey": "18:63",
+      "arabic": "قَالَ أَرَءَيْتَ إِذْ أَوَيْنَآ إِلَى ٱلصَّخْرَةِ فَإِنِّى نَسِيتُ ٱلْحُوتَ وَمَآ أَنسَىٰنِيهُ إِلَّا ٱلشَّيْطَـٰنُ أَنْ أَذْكُرَهُۥ ۚ وَٱتَّخَذَ سَبِيلَهُۥ فِى ٱلْبَحْرِ عَجَبًا",
+      "translationSq": "Ai u përgjigj: “Shiko! Kur ndaluam tek ai shkëmbi, unë e harrova peshkun. Vetëm djalli më bëri ta harroj e nuk ta thashë se peshku mori rrugën nga deti në mënyrë të habitshme!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 64,
+      "verseKey": "18:64",
+      "arabic": "قَالَ ذَٰلِكَ مَا كُنَّا نَبْغِ ۚ فَٱرْتَدَّا عَلَىٰٓ ءَاثَارِهِمَا قَصَصًا",
+      "translationSq": "(Musai) tha: “Kjo është ajo që po kërkojmë”. Andaj u kthyen nëpër gjurmët e veta,"
+    },
+    {
+      "surah": 18,
+      "ayah": 65,
+      "verseKey": "18:65",
+      "arabic": "فَوَجَدَا عَبْدًا مِّنْ عِبَادِنَآ ءَاتَيْنَـٰهُ رَحْمَةً مِّنْ عِندِنَا وَعَلَّمْنَـٰهُ مِن لَّدُنَّا عِلْمًا",
+      "translationSq": "dhe gjetën një prej robërve Tanë, të cilit i patëm dhuruar mëshirë prej Nesh dhe i kishim mësuar nga ana Jonë dije."
+    },
+    {
+      "surah": 18,
+      "ayah": 66,
+      "verseKey": "18:66",
+      "arabic": "قَالَ لَهُۥ مُوسَىٰ هَلْ أَتَّبِعُكَ عَلَىٰٓ أَن تُعَلِّمَنِ مِمَّا عُلِّمْتَ رُشْدًا",
+      "translationSq": "Musai i tha atij: “A mund të të pasoj ty, që të më mësosh edhe mua diçka prej diturisë së drejtë që të është dhënë ty?”"
+    },
+    {
+      "surah": 18,
+      "ayah": 67,
+      "verseKey": "18:67",
+      "arabic": "قَالَ إِنَّكَ لَن تَسْتَطِيعَ مَعِىَ صَبْرًا",
+      "translationSq": "Ai u përgjigj: “Ti nuk mund të durosh dot me mua!"
+    },
+    {
+      "surah": 18,
+      "ayah": 68,
+      "verseKey": "18:68",
+      "arabic": "وَكَيْفَ تَصْبِرُ عَلَىٰ مَا لَمْ تُحِطْ بِهِۦ خُبْرًا",
+      "translationSq": "E si mund të durosh (pa pyetur) para diçkaje për të cilën nuk di asgjë”?"
+    },
+    {
+      "surah": 18,
+      "ayah": 69,
+      "verseKey": "18:69",
+      "arabic": "قَالَ سَتَجِدُنِىٓ إِن شَآءَ ٱللَّهُ صَابِرًا وَلَآ أَعْصِى لَكَ أَمْرًا",
+      "translationSq": "(Musai) tha: “Do të më gjesh të durueshëm, në dashtë Allahu e nuk do të të kundërshtoj për asgjë.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 70,
+      "verseKey": "18:70",
+      "arabic": "قَالَ فَإِنِ ٱتَّبَعْتَنِى فَلَا تَسْـَٔلْنِى عَن شَىْءٍ حَتَّىٰٓ أُحْدِثَ لَكَ مِنْهُ ذِكْرًا",
+      "translationSq": "(Hidri) i tha: “Nëse vjen pas meje, mos më pyet për asgjë, derisa të ta shpjegoj unë!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 71,
+      "verseKey": "18:71",
+      "arabic": "فَٱنطَلَقَا حَتَّىٰٓ إِذَا رَكِبَا فِى ٱلسَّفِينَةِ خَرَقَهَا ۖ قَالَ أَخَرَقْتَهَا لِتُغْرِقَ أَهْلَهَا لَقَدْ جِئْتَ شَيْـًٔا إِمْرًا",
+      "translationSq": "Dhe kështu, u nisën. Kur hipën në një anije, ai (Hidri) hapi një vrimë poshtë. (Musai) tha: “Mos vallë, e hape vrimën për t’i mbytur udhëtarët e saj? Me të vërtetë, ke bërë punë të shumë të keqe”."
+    },
+    {
+      "surah": 18,
+      "ayah": 72,
+      "verseKey": "18:72",
+      "arabic": "قَالَ أَلَمْ أَقُلْ إِنَّكَ لَن تَسْتَطِيعَ مَعِىَ صَبْرًا",
+      "translationSq": "(Hidri) i tha: “A nuk të thashë se ti nuk mund të durosh me mua?”"
+    },
+    {
+      "surah": 18,
+      "ayah": 73,
+      "verseKey": "18:73",
+      "arabic": "قَالَ لَا تُؤَاخِذْنِى بِمَا نَسِيتُ وَلَا تُرْهِقْنِى مِنْ أَمْرِى عُسْرًا",
+      "translationSq": "Ai u përgjigj: “Mos më qorto për atë që harrova dhe mos më ngarko me vështirësi në punët e mia!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 74,
+      "verseKey": "18:74",
+      "arabic": "فَٱنطَلَقَا حَتَّىٰٓ إِذَا لَقِيَا غُلَـٰمًا فَقَتَلَهُۥ قَالَ أَقَتَلْتَ نَفْسًا زَكِيَّةًۢ بِغَيْرِ نَفْسٍ لَّقَدْ جِئْتَ شَيْـًٔا نُّكْرًا",
+      "translationSq": "Dhe që të dy vazhduan të ecin, derisa takuan një djalosh, të cilin ai (Hidri) e vrau. Tha (Musai): “Përse vrave një njeri të pafajshëm që nuk ka vrarë askënd?! Vërtet që ke bërë një punë të tmerrshme”!"
+    },
+    {
+      "surah": 18,
+      "ayah": 75,
+      "verseKey": "18:75",
+      "arabic": "۞ قَالَ أَلَمْ أَقُل لَّكَ إِنَّكَ لَن تَسْتَطِيعَ مَعِىَ صَبْرًا",
+      "translationSq": "Ai u përgjigj: “A nuk të thashë se ti nuk mund të durosh me mua?”"
+    },
+    {
+      "surah": 18,
+      "ayah": 76,
+      "verseKey": "18:76",
+      "arabic": "قَالَ إِن سَأَلْتُكَ عَن شَىْءٍۭ بَعْدَهَا فَلَا تُصَـٰحِبْنِى ۖ قَدْ بَلَغْتَ مِن لَّدُنِّى عُذْرًا",
+      "translationSq": "(Musai) tha: “Nëse pas kësaj do të të pyes sërish për çfarëdo gjëje, atëherë mos më mbaj më në shoqërinë tënde! Tashmë ke arsye (të mjaftueshme) nga ana ime (për t’u ndarë prej meje)!”"
+    },
+    {
+      "surah": 18,
+      "ayah": 77,
+      "verseKey": "18:77",
+      "arabic": "فَٱنطَلَقَا حَتَّىٰٓ إِذَآ أَتَيَآ أَهْلَ قَرْيَةٍ ٱسْتَطْعَمَآ أَهْلَهَا فَأَبَوْا۟ أَن يُضَيِّفُوهُمَا فَوَجَدَا فِيهَا جِدَارًا يُرِيدُ أَن يَنقَضَّ فَأَقَامَهُۥ ۖ قَالَ لَوْ شِئْتَ لَتَّخَذْتَ عَلَيْهِ أَجْرًا",
+      "translationSq": "Dhe që të dy vazhduan të ecin, derisa arritën në një fshat dhe u kërkuan banorëve të tij, që t’u jepnin për të ngrënë, por ata nuk i pranuan mysafirë. Aty ndeshën një mur që ishte duke u rrëzuar dhe ai (Hidri) e drejtoi. (Musai) tha: “Sikur të kishe dashur ti, mund të kërkoje shpërblim për këtë.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 78,
+      "verseKey": "18:78",
+      "arabic": "قَالَ هَـٰذَا فِرَاقُ بَيْنِى وَبَيْنِكَ ۚ سَأُنَبِّئُكَ بِتَأْوِيلِ مَا لَمْ تَسْتَطِع عَّلَيْهِ صَبْرًا",
+      "translationSq": "Ai tha: “Kjo është ndarja ndërmjet meje dhe teje. Unë do t’i shpjegoj ty ato gjëra për të cilat nuk munde të durosh."
+    },
+    {
+      "surah": 18,
+      "ayah": 79,
+      "verseKey": "18:79",
+      "arabic": "أَمَّا ٱلسَّفِينَةُ فَكَانَتْ لِمَسَـٰكِينَ يَعْمَلُونَ فِى ٱلْبَحْرِ فَأَرَدتُّ أَنْ أَعِيبَهَا وَكَانَ وَرَآءَهُم مَّلِكٌ يَأْخُذُ كُلَّ سَفِينَةٍ غَصْبًا",
+      "translationSq": "Sa i përket anijes, ajo ishte pronë e disa të varfërve, që punonin në det. Unë desha ta dëmtoj, sepse prapa tyre gjendej një mbret i cili merrte me dhunë çdo anije të mirë."
+    },
+    {
+      "surah": 18,
+      "ayah": 80,
+      "verseKey": "18:80",
+      "arabic": "وَأَمَّا ٱلْغُلَـٰمُ فَكَانَ أَبَوَاهُ مُؤْمِنَيْنِ فَخَشِينَآ أَن يُرْهِقَهُمَا طُغْيَـٰنًا وَكُفْرًا",
+      "translationSq": "Sa për djaloshin, prindërit e tij ishin besimtarë. Ne e dinim se (dashuria për të) do t’i çonte ata në të keqe dhe mohim,"
+    },
+    {
+      "surah": 18,
+      "ayah": 81,
+      "verseKey": "18:81",
+      "arabic": "فَأَرَدْنَآ أَن يُبْدِلَهُمَا رَبُّهُمَا خَيْرًا مِّنْهُ زَكَوٰةً وَأَقْرَبَ رُحْمًا",
+      "translationSq": "dhe dëshiruam që Zoti i tyre, në vend të atij t’u jepte një më të mirë, më të pastër dhe më të mëshirshëm."
+    },
+    {
+      "surah": 18,
+      "ayah": 82,
+      "verseKey": "18:82",
+      "arabic": "وَأَمَّا ٱلْجِدَارُ فَكَانَ لِغُلَـٰمَيْنِ يَتِيمَيْنِ فِى ٱلْمَدِينَةِ وَكَانَ تَحْتَهُۥ كَنزٌ لَّهُمَا وَكَانَ أَبُوهُمَا صَـٰلِحًا فَأَرَادَ رَبُّكَ أَن يَبْلُغَآ أَشُدَّهُمَا وَيَسْتَخْرِجَا كَنزَهُمَا رَحْمَةً مِّن رَّبِّكَ ۚ وَمَا فَعَلْتُهُۥ عَنْ أَمْرِى ۚ ذَٰلِكَ تَأْوِيلُ مَا لَمْ تَسْطِع عَّلَيْهِ صَبْرًا",
+      "translationSq": "E, sa i përket murit, ai u takonte dy djelmoshave jetimë në qytet dhe, nën të gjendej një thesar i tyre. Babai i tyre kishte qenë njeri i mirë, prandaj Zoti yt dëshiroi që ata të arrinin moshën e pjekurisë e ta nxirrnin thesarin e tyre, si mëshirë nga Zoti yt. Unë këtë nuk e kam bërë sipas gjykimit tim. Ky është shpjegimi i asaj, për të cilën ti s’munde të duroje!"
+    },
+    {
+      "surah": 18,
+      "ayah": 83,
+      "verseKey": "18:83",
+      "arabic": "وَيَسْـَٔلُونَكَ عَن ذِى ٱلْقَرْنَيْنِ ۖ قُلْ سَأَتْلُوا۟ عَلَيْكُم مِّنْهُ ذِكْرًا",
+      "translationSq": "Ata (hebrenjtë) të pyesin ty (Muhamed) për Dhulkarnejnin, thuaj: “Unë do t’ju tregoj disa lajme për të.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 84,
+      "verseKey": "18:84",
+      "arabic": "إِنَّا مَكَّنَّا لَهُۥ فِى ٱلْأَرْضِ وَءَاتَيْنَـٰهُ مِن كُلِّ شَىْءٍ سَبَبًا",
+      "translationSq": "Ne i dhamë atij mundësi në Tokë dhe i dhamë mjete e rrugë për të arritur çdo gjë,"
+    },
+    {
+      "surah": 18,
+      "ayah": 85,
+      "verseKey": "18:85",
+      "arabic": "فَأَتْبَعَ سَبَبًا",
+      "translationSq": "kështu që ai u nis në një rrugë."
+    },
+    {
+      "surah": 18,
+      "ayah": 86,
+      "verseKey": "18:86",
+      "arabic": "حَتَّىٰٓ إِذَا بَلَغَ مَغْرِبَ ٱلشَّمْسِ وَجَدَهَا تَغْرُبُ فِى عَيْنٍ حَمِئَةٍ وَوَجَدَ عِندَهَا قَوْمًا ۗ قُلْنَا يَـٰذَا ٱلْقَرْنَيْنِ إِمَّآ أَن تُعَذِّبَ وَإِمَّآ أَن تَتَّخِذَ فِيهِمْ حُسْنًا",
+      "translationSq": "Kur arriti në vendin e perëndimit të diellit, pa se ai po ulej në një burim të zi balte dhe në afërsi të tij gjeti një popull. Ne thamë: “O Dhulkarnejn, mund t’i ndëshkosh ata ose mund t’u bësh mirë atyre.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 87,
+      "verseKey": "18:87",
+      "arabic": "قَالَ أَمَّا مَن ظَلَمَ فَسَوْفَ نُعَذِّبُهُۥ ثُمَّ يُرَدُّ إِلَىٰ رَبِّهِۦ فَيُعَذِّبُهُۥ عَذَابًا نُّكْرًا",
+      "translationSq": "Ai tha: “Sa i përket atij që bën të këqija, Ne do ta ndëshkojmë e pastaj do të kthehet te Zoti i vet, i Cili do ta ndëshkojë me një dënim të rëndë."
+    },
+    {
+      "surah": 18,
+      "ayah": 88,
+      "verseKey": "18:88",
+      "arabic": "وَأَمَّا مَنْ ءَامَنَ وَعَمِلَ صَـٰلِحًا فَلَهُۥ جَزَآءً ٱلْحُسْنَىٰ ۖ وَسَنَقُولُ لَهُۥ مِنْ أَمْرِنَا يُسْرًا",
+      "translationSq": "Sa për atë që beson dhe bën vepra të mira, atij i takon shpërblimi më i mirë dhe do t’i premtojmë atij lehtësira.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 89,
+      "verseKey": "18:89",
+      "arabic": "ثُمَّ أَتْبَعَ سَبَبًا",
+      "translationSq": "Pastaj ndoqi një rrugë tjetër."
+    },
+    {
+      "surah": 18,
+      "ayah": 90,
+      "verseKey": "18:90",
+      "arabic": "حَتَّىٰٓ إِذَا بَلَغَ مَطْلِعَ ٱلشَّمْسِ وَجَدَهَا تَطْلُعُ عَلَىٰ قَوْمٍ لَّمْ نَجْعَل لَّهُم مِّن دُونِهَا سِتْرًا",
+      "translationSq": "Kur arriti në vendin e lindjes së diellit, Ai e pa të lindte mbi një popull, të cilit Ne nuk i kishim dhënë gjë, për t’u mbrojtur nga dielli."
+    },
+    {
+      "surah": 18,
+      "ayah": 91,
+      "verseKey": "18:91",
+      "arabic": "كَذَٰلِكَ وَقَدْ أَحَطْنَا بِمَا لَدَيْهِ خُبْرًا",
+      "translationSq": "Kështu ndodhi dhe Ne dinim gjithçka për të."
+    },
+    {
+      "surah": 18,
+      "ayah": 92,
+      "verseKey": "18:92",
+      "arabic": "ثُمَّ أَتْبَعَ سَبَبًا",
+      "translationSq": "Pastaj mori një rrugë tjetër."
+    },
+    {
+      "surah": 18,
+      "ayah": 93,
+      "verseKey": "18:93",
+      "arabic": "حَتَّىٰٓ إِذَا بَلَغَ بَيْنَ ٱلسَّدَّيْنِ وَجَدَ مِن دُونِهِمَا قَوْمًا لَّا يَكَادُونَ يَفْقَهُونَ قَوْلًا",
+      "translationSq": "Derisa, kur arriti në mes dy malesh, gjeti rrëzë tyre një popull, i cili pothuaj nuk kuptonte asnjë të folme."
+    },
+    {
+      "surah": 18,
+      "ayah": 94,
+      "verseKey": "18:94",
+      "arabic": "قَالُوا۟ يَـٰذَا ٱلْقَرْنَيْنِ إِنَّ يَأْجُوجَ وَمَأْجُوجَ مُفْسِدُونَ فِى ٱلْأَرْضِ فَهَلْ نَجْعَلُ لَكَ خَرْجًا عَلَىٰٓ أَن تَجْعَلَ بَيْنَنَا وَبَيْنَهُمْ سَدًّا",
+      "translationSq": "Ata thanë: “O Dhulkarnejn, vërtet, Jexhuxhët dhe Mexhuxhët janë ngatërrestarë në Tokë. A të të japim një pagesë që të ndërtosh një pendë midis nesh dhe atyre?”"
+    },
+    {
+      "surah": 18,
+      "ayah": 95,
+      "verseKey": "18:95",
+      "arabic": "قَالَ مَا مَكَّنِّى فِيهِ رَبِّى خَيْرٌ فَأَعِينُونِى بِقُوَّةٍ أَجْعَلْ بَيْنَكُمْ وَبَيْنَهُمْ رَدْمًا",
+      "translationSq": "Ai tha: “Ajo të cilën ma ka mundësuar Zoti im, është më e mirë (nga pagesa juaj), por më ndihmoni mua me krahë! Do të ndërtoj një pendë midis jush e atyre."
+    },
+    {
+      "surah": 18,
+      "ayah": 96,
+      "verseKey": "18:96",
+      "arabic": "ءَاتُونِى زُبَرَ ٱلْحَدِيدِ ۖ حَتَّىٰٓ إِذَا سَاوَىٰ بَيْنَ ٱلصَّدَفَيْنِ قَالَ ٱنفُخُوا۟ ۖ حَتَّىٰٓ إِذَا جَعَلَهُۥ نَارًا قَالَ ءَاتُونِىٓ أُفْرِغْ عَلَيْهِ قِطْرًا",
+      "translationSq": "Më sillni blloqe hekuri!” Dhe, kur ai i rrafshoi dy anët e thepisura të maleve, tha: “Fryjini zjarrit, derisa hekuri të skuqet si zjarri.” Pastaj tha: “Më sillni bakër të shkrirë që ta hedh në të.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 97,
+      "verseKey": "18:97",
+      "arabic": "فَمَا ٱسْطَـٰعُوٓا۟ أَن يَظْهَرُوهُ وَمَا ٱسْتَطَـٰعُوا۟ لَهُۥ نَقْبًا",
+      "translationSq": "Kështu, ata (Jexhuxhët dhe Mexhuxhët) nuk mundën që ta kapërcenin pendën dhe as nuk mundën që të hapnin vrimë në të."
+    },
+    {
+      "surah": 18,
+      "ayah": 98,
+      "verseKey": "18:98",
+      "arabic": "قَالَ هَـٰذَا رَحْمَةٌ مِّن رَّبِّى ۖ فَإِذَا جَآءَ وَعْدُ رَبِّى جَعَلَهُۥ دَكَّآءَ ۖ وَكَانَ وَعْدُ رَبِّى حَقًّا",
+      "translationSq": "Ai tha: “Kjo është mëshirë nga Zoti im! Kur të vijë premtimi i Zotit tim, Ai do ta rrafshojë atë (pendën). Premtimi i Zotit tim është (gjithnjë) i vërtetë."
+    },
+    {
+      "surah": 18,
+      "ayah": 99,
+      "verseKey": "18:99",
+      "arabic": "۞ وَتَرَكْنَا بَعْضَهُمْ يَوْمَئِذٍ يَمُوجُ فِى بَعْضٍ ۖ وَنُفِخَ فِى ٱلصُّورِ فَجَمَعْنَـٰهُمْ جَمْعًا",
+      "translationSq": "Atë Ditë, Ne do të bëjmë, që të vërshojnë njëri mbi tjetrin si valët (e detit) dhe do t’i fryhet Surit e do t’i tubojmë, që të gjithë së bashku."
+    },
+    {
+      "surah": 18,
+      "ayah": 100,
+      "verseKey": "18:100",
+      "arabic": "وَعَرَضْنَا جَهَنَّمَ يَوْمَئِذٍ لِّلْكَـٰفِرِينَ عَرْضًا",
+      "translationSq": "Atë ditë do t’ua tregojmë haptazi Xhehenemin mohuesve,"
+    },
+    {
+      "surah": 18,
+      "ayah": 101,
+      "verseKey": "18:101",
+      "arabic": "ٱلَّذِينَ كَانَتْ أَعْيُنُهُمْ فِى غِطَآءٍ عَن ذِكْرِى وَكَانُوا۟ لَا يَسْتَطِيعُونَ سَمْعًا",
+      "translationSq": "të cilët i kishin sytë të mbuluar para këshillave të Mia dhe të cilët nuk mund të dëgjonin."
+    },
+    {
+      "surah": 18,
+      "ayah": 102,
+      "verseKey": "18:102",
+      "arabic": "أَفَحَسِبَ ٱلَّذِينَ كَفَرُوٓا۟ أَن يَتَّخِذُوا۟ عِبَادِى مِن دُونِىٓ أَوْلِيَآءَ ۚ إِنَّآ أَعْتَدْنَا جَهَنَّمَ لِلْكَـٰفِرِينَ نُزُلًا",
+      "translationSq": "Vallë, a mendojnë mohuesit, se do të mund t’i zgjedhin robërit e Mi si mbrojtës, në vendin Tim?! Ne e kemi përgatitur Xhehenemin si vendbanim për mohuesit."
+    },
+    {
+      "surah": 18,
+      "ayah": 103,
+      "verseKey": "18:103",
+      "arabic": "قُلْ هَلْ نُنَبِّئُكُم بِٱلْأَخْسَرِينَ أَعْمَـٰلًا",
+      "translationSq": "Thuaj: “A doni t’ju lajmëroj për ata që, më së shumti, humbasin nga punët e veta,"
+    },
+    {
+      "surah": 18,
+      "ayah": 104,
+      "verseKey": "18:104",
+      "arabic": "ٱلَّذِينَ ضَلَّ سَعْيُهُمْ فِى ٱلْحَيَوٰةِ ٱلدُّنْيَا وَهُمْ يَحْسَبُونَ أَنَّهُمْ يُحْسِنُونَ صُنْعًا",
+      "translationSq": "për ata, përpjekja e të cilëve ka qenë e kotë në jetën e kësaj bote, ndërkohë që mendonin se po bënin vepra të mira?”"
+    },
+    {
+      "surah": 18,
+      "ayah": 105,
+      "verseKey": "18:105",
+      "arabic": "أُو۟لَـٰٓئِكَ ٱلَّذِينَ كَفَرُوا۟ بِـَٔايَـٰتِ رَبِّهِمْ وَلِقَآئِهِۦ فَحَبِطَتْ أَعْمَـٰلُهُمْ فَلَا نُقِيمُ لَهُمْ يَوْمَ ٱلْقِيَـٰمَةِ وَزْنًا",
+      "translationSq": "Këta janë ata, që nuk kanë besuar në shpalljet e Zotit të tyre dhe në takimin me Të. Punët e tyre do të fshihen, andaj Ne nuk do të vëmë kurrfarë peshe për ta (për veprat e tyre), në Ditën e Kiametit."
+    },
+    {
+      "surah": 18,
+      "ayah": 106,
+      "verseKey": "18:106",
+      "arabic": "ذَٰلِكَ جَزَآؤُهُمْ جَهَنَّمُ بِمَا كَفَرُوا۟ وَٱتَّخَذُوٓا۟ ءَايَـٰتِى وَرُسُلِى هُزُوًا",
+      "translationSq": "Shpërblimi i tyre do të jetë Xhehenemi për shkak të mohimit të tyre dhe për shkak se talleshin me shenjat e Mia dhe të dërguarit e Mi."
+    },
+    {
+      "surah": 18,
+      "ayah": 107,
+      "verseKey": "18:107",
+      "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ كَانَتْ لَهُمْ جَنَّـٰتُ ٱلْفِرْدَوْسِ نُزُلًا",
+      "translationSq": "Me të vërtetë, ata që besojnë dhe bëjnë vepra të mira, do të kenë për banesa kopshtet e Firdeusit,"
+    },
+    {
+      "surah": 18,
+      "ayah": 108,
+      "verseKey": "18:108",
+      "arabic": "خَـٰلِدِينَ فِيهَا لَا يَبْغُونَ عَنْهَا حِوَلًا",
+      "translationSq": "ku do të qëndrojnë përherë, duke mos dëshiruar asnjë ndryshim."
+    },
+    {
+      "surah": 18,
+      "ayah": 109,
+      "verseKey": "18:109",
+      "arabic": "قُل لَّوْ كَانَ ٱلْبَحْرُ مِدَادًا لِّكَلِمَـٰتِ رَبِّى لَنَفِدَ ٱلْبَحْرُ قَبْلَ أَن تَنفَدَ كَلِمَـٰتُ رَبِّى وَلَوْ جِئْنَا بِمِثْلِهِۦ مَدَدًا",
+      "translationSq": "Thuaj: “Sikur deti të ishte bojë për të shkruar fjalët e Zotit tim, sigurisht që ai do të shterej, para se të soseshin fjalët e Zotit tim, edhe sikur Ne të sillnim si ndihmë edhe një det tjetër si ai.”"
+    },
+    {
+      "surah": 18,
+      "ayah": 110,
+      "verseKey": "18:110",
+      "arabic": "قُلْ إِنَّمَآ أَنَا۠ بَشَرٌ مِّثْلُكُمْ يُوحَىٰٓ إِلَىَّ أَنَّمَآ إِلَـٰهُكُمْ إِلَـٰهٌ وَٰحِدٌ ۖ فَمَن كَانَ يَرْجُوا۟ لِقَآءَ رَبِّهِۦ فَلْيَعْمَلْ عَمَلًا صَـٰلِحًا وَلَا يُشْرِكْ بِعِبَادَةِ رَبِّهِۦٓ أَحَدًۢا",
+      "translationSq": "Thuaj: “Unë jam vetëm një vdekatar si ju, që më është shpallur se Zoti juaj është një Zot i Vetëm. Kështu, kush shpreson takimin me Zotin e vet, le të bëjë vepra të mira dhe të mos i shoqërojë askënd në adhurim Zotit të vet!”"
+    }
+  ]
+}

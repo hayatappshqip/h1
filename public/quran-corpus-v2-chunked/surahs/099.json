@@ -1,0 +1,62 @@
+{
+  "surah": 99,
+  "verseCount": 8,
+  "verses": [
+    {
+      "surah": 99,
+      "ayah": 1,
+      "verseKey": "99:1",
+      "arabic": " إِذَا زُلْزِلَتِ ٱلْأَرْضُ زِلْزَالَهَا",
+      "translationSq": "Kur të dridhet Toka me tronditjen e saj (të fundit),"
+    },
+    {
+      "surah": 99,
+      "ayah": 2,
+      "verseKey": "99:2",
+      "arabic": "وَأَخْرَجَتِ ٱلْأَرْضُ أَثْقَالَهَا",
+      "translationSq": "kur të nxjerrë barrët nga brendia e saj"
+    },
+    {
+      "surah": 99,
+      "ayah": 3,
+      "verseKey": "99:3",
+      "arabic": "وَقَالَ ٱلْإِنسَـٰنُ مَا لَهَا",
+      "translationSq": "e njeriu të thotë: “Ç’po i ndodh asaj?!”"
+    },
+    {
+      "surah": 99,
+      "ayah": 4,
+      "verseKey": "99:4",
+      "arabic": "يَوْمَئِذٍ تُحَدِّثُ أَخْبَارَهَا",
+      "translationSq": "Atë Ditë ajo do të tregojë lajmet e saj,"
+    },
+    {
+      "surah": 99,
+      "ayah": 5,
+      "verseKey": "99:5",
+      "arabic": "بِأَنَّ رَبَّكَ أَوْحَىٰ لَهَا",
+      "translationSq": "sepse Zoti yt e ka frymëzuar atë."
+    },
+    {
+      "surah": 99,
+      "ayah": 6,
+      "verseKey": "99:6",
+      "arabic": "يَوْمَئِذٍ يَصْدُرُ ٱلنَّاسُ أَشْتَاتًا لِّيُرَوْا۟ أَعْمَـٰلَهُمْ",
+      "translationSq": "Atë Ditë njerëzit do të paraqiten grupe-grupe, që t’u tregohen veprat e tyre:"
+    },
+    {
+      "surah": 99,
+      "ayah": 7,
+      "verseKey": "99:7",
+      "arabic": "فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُۥ",
+      "translationSq": "kush ka bërë ndonjë të mirë, qoftë sa një thërrmijë, do ta shohë atë,"
+    },
+    {
+      "surah": 99,
+      "ayah": 8,
+      "verseKey": "99:8",
+      "arabic": "وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ شَرًّا يَرَهُۥ",
+      "translationSq": "e kush ka bërë ndonjë të keqe, qoftë sa një thërrmijë, do ta shohë atë."
+    }
+  ]
+}

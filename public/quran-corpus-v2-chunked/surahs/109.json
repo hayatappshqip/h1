@@ -1,0 +1,48 @@
+{
+  "surah": 109,
+  "verseCount": 6,
+  "verses": [
+    {
+      "surah": 109,
+      "ayah": 1,
+      "verseKey": "109:1",
+      "arabic": " قُلْ يَـٰٓأَيُّهَا ٱلْكَـٰفِرُونَ",
+      "translationSq": "Thuaj: “O ju jobesimtarë!"
+    },
+    {
+      "surah": 109,
+      "ayah": 2,
+      "verseKey": "109:2",
+      "arabic": "لَآ أَعْبُدُ مَا تَعْبُدُونَ",
+      "translationSq": "Unë nuk adhuroj çfarë ju adhuroni"
+    },
+    {
+      "surah": 109,
+      "ayah": 3,
+      "verseKey": "109:3",
+      "arabic": "وَلَآ أَنتُمْ عَـٰبِدُونَ مَآ أَعْبُدُ",
+      "translationSq": "dhe ju nuk jeni adhurues të Atij që unë adhuroj."
+    },
+    {
+      "surah": 109,
+      "ayah": 4,
+      "verseKey": "109:4",
+      "arabic": "وَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ",
+      "translationSq": "Unë nuk do të jem kurrë adhurues i atyre që ju i adhuroni"
+    },
+    {
+      "surah": 109,
+      "ayah": 5,
+      "verseKey": "109:5",
+      "arabic": "وَلَآ أَنتُمْ عَـٰبِدُونَ مَآ أَعْبُدُ",
+      "translationSq": "dhe as ju nuk do të jeni adhurues të Atij që unë adhuroj!"
+    },
+    {
+      "surah": 109,
+      "ayah": 6,
+      "verseKey": "109:6",
+      "arabic": "لَكُمْ دِينُكُمْ وَلِىَ دِينِ",
+      "translationSq": "Ju keni fenë tuaj, ndërsa unë kam fenë time!”"
+    }
+  ]
+}

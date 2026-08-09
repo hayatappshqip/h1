@@ -1,0 +1,809 @@
+{
+  "version": "quran-corpus-v2-chunked-1",
+  "provider": "Quran.com API (Translation ID 88 - Hasan Nahi)",
+  "translationName": "Hasan Nahi",
+  "totalSurahs": 114,
+  "totalVerses": 6236,
+  "sourceSha256": "7cc0a8850dd93cb9d0e7849435a01040dd5a566ba161ff227a8d685dccfefb57",
+  "updatedAt": "2026-08-06T19:43:26.857Z",
+  "surahs": [
+    {
+      "surah": 1,
+      "file": "surahs/001.json",
+      "verseCount": 7,
+      "bytes": 1867,
+      "sha256": "2d69e23fa1f5b833ad5513e5ece2b40cd3f22922ccd25a49347b26fc26f8e4e8"
+    },
+    {
+      "surah": 2,
+      "file": "surahs/002.json",
+      "verseCount": 286,
+      "bytes": 213685,
+      "sha256": "a7e7f706e13d70f037bfc5cf220f2707679393a5f0de72319b679b78381d2136"
+    },
+    {
+      "surah": 3,
+      "file": "surahs/003.json",
+      "verseCount": 200,
+      "bytes": 126927,
+      "sha256": "c49bec50824721f9eaffd4f80efdc040cdc728f84ca2b023f82cd4cb8b7f9621"
+    },
+    {
+      "surah": 4,
+      "file": "surahs/004.json",
+      "verseCount": 176,
+      "bytes": 131411,
+      "sha256": "af5437a23ca9e702ee22ad927b2d3c3d56548276cf4897b63bc8f66c3d7a8086"
+    },
+    {
+      "surah": 5,
+      "file": "surahs/005.json",
+      "verseCount": 120,
+      "bytes": 96318,
+      "sha256": "750baefa7cbed1e1840d1ef6fafe117d6f92b07a7d40625de20111f1e97cd680"
+    },
+    {
+      "surah": 6,
+      "file": "surahs/006.json",
+      "verseCount": 165,
+      "bytes": 108669,
+      "sha256": "d0c525a71fac9752997dcdabdbbb61f07d829aeb1308fc0631280d4238d720e7"
+    },
+    {
+      "surah": 7,
+      "file": "surahs/007.json",
+      "verseCount": 206,
+      "bytes": 122000,
+      "sha256": "b1204a89c7081d9083a9246a83d621423d429a512f3d6322a8c9624f0f78af9b"
+    },
+    {
+      "surah": 8,
+      "file": "surahs/008.json",
+      "verseCount": 75,
+      "bytes": 45827,
+      "sha256": "7263d0ef0ef6bd9ef36d686a6a109a279beaa62ffc2ecedb27ce7f80c97144e5"
+    },
+    {
+      "surah": 9,
+      "file": "surahs/009.json",
+      "verseCount": 129,
+      "bytes": 91201,
+      "sha256": "9e90f235ca1c1b6ff480b7e1284890fc09b40dcc410540d83632ac7897c76bb1"
+    },
+    {
+      "surah": 10,
+      "file": "surahs/010.json",
+      "verseCount": 109,
+      "bytes": 65367,
+      "sha256": "492b1d6e87fd20f885baa8ccf54f1cc77f4f6832bcfc8093c4d6505992610b89"
+    },
+    {
+      "surah": 11,
+      "file": "surahs/011.json",
+      "verseCount": 123,
+      "bytes": 69741,
+      "sha256": "a29fcba55958fa3afe76c53a03ca7832a79e15aff4107bd4e228f1d971e584d3"
+    },
+    {
+      "surah": 12,
+      "file": "surahs/012.json",
+      "verseCount": 111,
+      "bytes": 64228,
+      "sha256": "2aaaaad7827271d9eea05a6b767809bbeefa4b0ac340c70cb178f2df383f5f26"
+    },
+    {
+      "surah": 13,
+      "file": "surahs/013.json",
+      "verseCount": 43,
+      "bytes": 30299,
+      "sha256": "db2add8de526b03eb04957c38d5eec864a09cfd3ba7600a7baba5c74a6f7aed0"
+    },
+    {
+      "surah": 14,
+      "file": "surahs/014.json",
+      "verseCount": 52,
+      "bytes": 30520,
+      "sha256": "9badf991909e6119bdaf448e31efded741a070d4eccf7670de5907f8c520dc2c"
+    },
+    {
+      "surah": 15,
+      "file": "surahs/015.json",
+      "verseCount": 99,
+      "bytes": 31902,
+      "sha256": "e5ed87285eab26c307f73d56afc715705419e3d6d699ad561cb8c4e4bfe64d7c"
+    },
+    {
+      "surah": 16,
+      "file": "surahs/016.json",
+      "verseCount": 128,
+      "bytes": 69669,
+      "sha256": "1f1ae553b409e1c784b5a5cb67c243520d10d8a5c96089614990c9c5772f51d1"
+    },
+    {
+      "surah": 17,
+      "file": "surahs/017.json",
+      "verseCount": 111,
+      "bytes": 59241,
+      "sha256": "1f4fe8506c31d73bf63e4d56bc32a526f99fb0c4ca44b9b27d9e219987b14664"
+    },
+    {
+      "surah": 18,
+      "file": "surahs/018.json",
+      "verseCount": 110,
+      "bytes": 59699,
+      "sha256": "95a9dc98a77e7b5fe896d1bf5d2f5c34993dcbff51e0356b233b07afb707908c"
+    },
+    {
+      "surah": 19,
+      "file": "surahs/019.json",
+      "verseCount": 98,
+      "bytes": 39741,
+      "sha256": "40a508c7aa0ccb3ebe5e9badd3569ac17f4398d6555256afe8bc9bf1ed7acc22"
+    },
+    {
+      "surah": 20,
+      "file": "surahs/020.json",
+      "verseCount": 135,
+      "bytes": 55144,
+      "sha256": "fc3ef3f1bafd1739e9ce63d91232641b1aa152064a4aa5302e8d3fda4c9dd35a"
+    },
+    {
+      "surah": 21,
+      "file": "surahs/021.json",
+      "verseCount": 112,
+      "bytes": 48588,
+      "sha256": "3d0abe4d24768f69c689e584813325884f730af705685162646cbdbc15afdec3"
+    },
+    {
+      "surah": 22,
+      "file": "surahs/022.json",
+      "verseCount": 78,
+      "bytes": 46281,
+      "sha256": "4d884f251e3071d126ef5119ca01c792938ef490825914da87b48b6bb639688b"
+    },
+    {
+      "surah": 23,
+      "file": "surahs/023.json",
+      "verseCount": 118,
+      "bytes": 45000,
+      "sha256": "615bce179c11c1131b50aa3d3a58b838a7637826ff692e2ada82fd15799195d2"
+    },
+    {
+      "surah": 24,
+      "file": "surahs/024.json",
+      "verseCount": 64,
+      "bytes": 46170,
+      "sha256": "a53aa727accadd53366908c290b294a85ab05f90e8032cf23f76f9b779075329"
+    },
+    {
+      "surah": 25,
+      "file": "surahs/025.json",
+      "verseCount": 77,
+      "bytes": 35709,
+      "sha256": "58ffcb73436f17914f05866e875d941f78a86e2f98fe0bd5b303e4e67508a371"
+    },
+    {
+      "surah": 26,
+      "file": "surahs/026.json",
+      "verseCount": 227,
+      "bytes": 66667,
+      "sha256": "cbbeb54353581162f37480b7a56199996b916d258d396feb5433b8419d20873f"
+    },
+    {
+      "surah": 27,
+      "file": "surahs/027.json",
+      "verseCount": 93,
+      "bytes": 44636,
+      "sha256": "0ffebdabf0fb7629aac9d760efccbabcd65dd0eb826877ab742032e0eac8b296"
+    },
+    {
+      "surah": 28,
+      "file": "surahs/028.json",
+      "verseCount": 88,
+      "bytes": 51807,
+      "sha256": "d6443febece1db65984c3e270b9e263e80818d6d02b89f4885f6fbfe493ac97f"
+    },
+    {
+      "surah": 29,
+      "file": "surahs/029.json",
+      "verseCount": 69,
+      "bytes": 37645,
+      "sha256": "388ab7083affb11baeec1e96a065d700d19875da0e1a9f98bb52285daa15d953"
+    },
+    {
+      "surah": 30,
+      "file": "surahs/030.json",
+      "verseCount": 60,
+      "bytes": 31328,
+      "sha256": "00cfbded6a65ad99ed703c1f59f13b4a3fa21dc6f9c8d17cbbfa5245f7d4ac66"
+    },
+    {
+      "surah": 31,
+      "file": "surahs/031.json",
+      "verseCount": 34,
+      "bytes": 19261,
+      "sha256": "44cd88895bb1f13d3c1c15ee37e49ca7fe06d525865dd4203994ded27138aca4"
+    },
+    {
+      "surah": 32,
+      "file": "surahs/032.json",
+      "verseCount": 30,
+      "bytes": 14338,
+      "sha256": "e3c01cd842466df0ebcc15e0be80881b765bb474bda23e36ca99f38fd7c1a507"
+    },
+    {
+      "surah": 33,
+      "file": "surahs/033.json",
+      "verseCount": 73,
+      "bytes": 47151,
+      "sha256": "96e1d38b6dbd91909b664e8018e5496d546aae31a4ec4c7e3e3d95db9591b75c"
+    },
+    {
+      "surah": 34,
+      "file": "surahs/034.json",
+      "verseCount": 54,
+      "bytes": 31879,
+      "sha256": "f83ef7eee37987a89930aada0133a0f56b054305840de3a1ae13d7e7785e5ba2"
+    },
+    {
+      "surah": 35,
+      "file": "surahs/035.json",
+      "verseCount": 45,
+      "bytes": 27885,
+      "sha256": "9c21a4873b91456b1442d10467b0c20ca4e8a473f6453617e2e3774dffc784ab"
+    },
+    {
+      "surah": 36,
+      "file": "surahs/036.json",
+      "verseCount": 83,
+      "bytes": 31418,
+      "sha256": "33cad04198bc6045d193c316da121a7b6dd6f43e613173b2e24b609b06e5e3bb"
+    },
+    {
+      "surah": 37,
+      "file": "surahs/037.json",
+      "verseCount": 182,
+      "bytes": 49562,
+      "sha256": "b4952a6d2197d16d7611d3dee572187075df60912c8a3273a73d2a73c12b84a1"
+    },
+    {
+      "surah": 38,
+      "file": "surahs/038.json",
+      "verseCount": 88,
+      "bytes": 32896,
+      "sha256": "01fefcd58f7c214c6ae6ad0ee0d7a0414a37160fb54690bc63265a5a57615191"
+    },
+    {
+      "surah": 39,
+      "file": "surahs/039.json",
+      "verseCount": 75,
+      "bytes": 43260,
+      "sha256": "edbba319647f62c782e9f22fee4c983baab098a54bd98561884007d84e2bcd93"
+    },
+    {
+      "surah": 40,
+      "file": "surahs/040.json",
+      "verseCount": 85,
+      "bytes": 45706,
+      "sha256": "49c5e184fb8516ddd1b36c894b250cbded9d2695bee774acaafadba8e52ff934"
+    },
+    {
+      "surah": 41,
+      "file": "surahs/041.json",
+      "verseCount": 54,
+      "bytes": 29854,
+      "sha256": "6555d6f13323eacae212eb69d372f094dd5a023b4d53385368783cf330f8c869"
+    },
+    {
+      "surah": 42,
+      "file": "surahs/042.json",
+      "verseCount": 53,
+      "bytes": 30874,
+      "sha256": "9c228329d75acdb838ebf7141363eb763c678806b1abc3a6b591a83cbf5237ad"
+    },
+    {
+      "surah": 43,
+      "file": "surahs/043.json",
+      "verseCount": 89,
+      "bytes": 36419,
+      "sha256": "8ba03fdca98f2badf2074aed2b07e0682d8417aa380da1217e14a185a1f4e0a5"
+    },
+    {
+      "surah": 44,
+      "file": "surahs/044.json",
+      "verseCount": 59,
+      "bytes": 17524,
+      "sha256": "407d7ed27d844470b714d291a9fe92375eb5255703928d50ace69530e33899e9"
+    },
+    {
+      "surah": 45,
+      "file": "surahs/045.json",
+      "verseCount": 37,
+      "bytes": 18836,
+      "sha256": "4d3cd60231568b04f609defb5220a40417c6a8cf642fcce2b57c136225a7d30e"
+    },
+    {
+      "surah": 46,
+      "file": "surahs/046.json",
+      "verseCount": 35,
+      "bytes": 23065,
+      "sha256": "8f54ee121df379c443a679ae2a334ab9a32e4313e2a455d3130693513e569049"
+    },
+    {
+      "surah": 47,
+      "file": "surahs/047.json",
+      "verseCount": 38,
+      "bytes": 21393,
+      "sha256": "35996307baa0976c50cf2dcb2e5af7a3cf3d928e01a08751c7a8c8b6fde1743c"
+    },
+    {
+      "surah": 48,
+      "file": "surahs/048.json",
+      "verseCount": 29,
+      "bytes": 20401,
+      "sha256": "a3d00f5d1762849392bf488fe0ceb2746f8096650e7b00cc36264129c65dff91"
+    },
+    {
+      "surah": 49,
+      "file": "surahs/049.json",
+      "verseCount": 18,
+      "bytes": 12631,
+      "sha256": "8a9fe4108f8af4ca57e9aa1be77abd4bd2fc2a6f4e15e14e82202d044a772899"
+    },
+    {
+      "surah": 50,
+      "file": "surahs/050.json",
+      "verseCount": 45,
+      "bytes": 16207,
+      "sha256": "3b5e7caaa997794ba7ab7ec9607b4a33db931ceadc550bbbad589e4f68f061a3"
+    },
+    {
+      "surah": 51,
+      "file": "surahs/051.json",
+      "verseCount": 60,
+      "bytes": 18119,
+      "sha256": "2534ec125484f092c95ac4a25a8d2d54710be996951ca7e84fccd850b64581bb"
+    },
+    {
+      "surah": 52,
+      "file": "surahs/052.json",
+      "verseCount": 49,
+      "bytes": 15342,
+      "sha256": "889e8979b6ed79356dbeaed61ffb73dda451fb89ea3d7e70a1e9f56c61158b65"
+    },
+    {
+      "surah": 53,
+      "file": "surahs/053.json",
+      "verseCount": 62,
+      "bytes": 17461,
+      "sha256": "b2333ed51810c459e9581470077bdd2709942613a32aa7dfc117c726a15612c3"
+    },
+    {
+      "surah": 54,
+      "file": "surahs/054.json",
+      "verseCount": 55,
+      "bytes": 17894,
+      "sha256": "3a549daa952c7a1e4cc4c84345d5f9edea10b8eb7c7764e5bdb6ff7a001f0fb0"
+    },
+    {
+      "surah": 55,
+      "file": "surahs/055.json",
+      "verseCount": 78,
+      "bytes": 20805,
+      "sha256": "865203c487dd3ac7f015b5d2ecdcb0267b9f874d18d413f2e3c90aa844880ba2"
+    },
+    {
+      "surah": 56,
+      "file": "surahs/056.json",
+      "verseCount": 96,
+      "bytes": 23704,
+      "sha256": "178a96da40ac2bcbc595828312a6adb885a5d68a21033d00104fbfa70feb86ae"
+    },
+    {
+      "surah": 57,
+      "file": "surahs/057.json",
+      "verseCount": 29,
+      "bytes": 20705,
+      "sha256": "937b8faba09f47dddbd912a5e7cb7d5c09eab04f17d1bec5068e163e1b4b6323"
+    },
+    {
+      "surah": 58,
+      "file": "surahs/058.json",
+      "verseCount": 22,
+      "bytes": 16653,
+      "sha256": "9432de27512af71680d3ad6fe1d7e46d23cf7d6136de1682f72bc8a4a57fc75c"
+    },
+    {
+      "surah": 59,
+      "file": "surahs/059.json",
+      "verseCount": 24,
+      "bytes": 16547,
+      "sha256": "2f8a9e2cc413573566241c589c61c9b58243141c797edba6ad93be1a0e4330f5"
+    },
+    {
+      "surah": 60,
+      "file": "surahs/060.json",
+      "verseCount": 13,
+      "bytes": 11968,
+      "sha256": "f99183d1ce775dcbafe2262732098a1d949efb8fdb1f28a03d7e0e6c70f1bf10"
+    },
+    {
+      "surah": 61,
+      "file": "surahs/061.json",
+      "verseCount": 14,
+      "bytes": 8127,
+      "sha256": "0eb173de98882514e37712a3ffc57c837c0c26120311ed0836b68cf71fedca82"
+    },
+    {
+      "surah": 62,
+      "file": "surahs/062.json",
+      "verseCount": 11,
+      "bytes": 6452,
+      "sha256": "d5d0b0238217f7ccbf2601120c6f2b06ac9caa0384c20db44f678e69fc64a9be"
+    },
+    {
+      "surah": 63,
+      "file": "surahs/063.json",
+      "verseCount": 11,
+      "bytes": 6765,
+      "sha256": "369ff793bd3ee05bc7ce0c376bdde4229501d07ba63df6703cabf6e8cc81c80d"
+    },
+    {
+      "surah": 64,
+      "file": "surahs/064.json",
+      "verseCount": 18,
+      "bytes": 9668,
+      "sha256": "79db7dd87635cfbb4ef51fe55b922b5517c64c1bd7d15539ad23fe19136b1e4e"
+    },
+    {
+      "surah": 65,
+      "file": "surahs/065.json",
+      "verseCount": 12,
+      "bytes": 9727,
+      "sha256": "b7b78058d7afa67569f3f9f823bc15cf234008f9360eacc7f554334bb7107970"
+    },
+    {
+      "surah": 66,
+      "file": "surahs/066.json",
+      "verseCount": 12,
+      "bytes": 9010,
+      "sha256": "9a4746ca09853e455bc8866db0a49aabdba133b4c3a285dc8adce589b332ca1a"
+    },
+    {
+      "surah": 67,
+      "file": "surahs/067.json",
+      "verseCount": 30,
+      "bytes": 13146,
+      "sha256": "d133008abff920235d08ef9aafe0e73be0758c5af33d5755cc5ea98bbe13b99b"
+    },
+    {
+      "surah": 68,
+      "file": "surahs/068.json",
+      "verseCount": 52,
+      "bytes": 15511,
+      "sha256": "3cc640b1ec4264016dcb52980614a0ed3fcffd36dca30a8adfcb27ec4d4cf628"
+    },
+    {
+      "surah": 69,
+      "file": "surahs/069.json",
+      "verseCount": 52,
+      "bytes": 14156,
+      "sha256": "ec31c63fd4a7b00a2290795c4c88038516f38d2771fb261239aaba7af2a39542"
+    },
+    {
+      "surah": 70,
+      "file": "surahs/070.json",
+      "verseCount": 44,
+      "bytes": 12062,
+      "sha256": "a5d7ee6d50bdbfd8be27c21ea0978c25ba88e8c1e896459ee3dd7fdd80a6798b"
+    },
+    {
+      "surah": 71,
+      "file": "surahs/071.json",
+      "verseCount": 28,
+      "bytes": 9927,
+      "sha256": "ab418570c35902571daf125ed5e44e6cbf4e11a510e25389210e704c5f0d652a"
+    },
+    {
+      "surah": 72,
+      "file": "surahs/072.json",
+      "verseCount": 28,
+      "bytes": 11378,
+      "sha256": "8ed4fecd0e07d2080300b207fc0e74c9cba33cf6d016920eb8f2e9442cd814d5"
+    },
+    {
+      "surah": 73,
+      "file": "surahs/073.json",
+      "verseCount": 20,
+      "bytes": 8330,
+      "sha256": "558ae07e33b2103e9285d269812922381b48cf37f5100c74c8ef4054dd17197d"
+    },
+    {
+      "surah": 74,
+      "file": "surahs/074.json",
+      "verseCount": 56,
+      "bytes": 14320,
+      "sha256": "655cd282a6af338749b56ee7ab1894cafac18a8000b7724a8d47bdf2bb7efebc"
+    },
+    {
+      "surah": 75,
+      "file": "surahs/075.json",
+      "verseCount": 40,
+      "bytes": 9721,
+      "sha256": "ae2bff3f91890a5b893718f25adf3fda0cb495ceb8e222b76a510b01329c9eda"
+    },
+    {
+      "surah": 76,
+      "file": "surahs/076.json",
+      "verseCount": 31,
+      "bytes": 11193,
+      "sha256": "590d92ddc58656deb10171732571810e9570f7b3469e3862a59263934e7f4478"
+    },
+    {
+      "surah": 77,
+      "file": "surahs/077.json",
+      "verseCount": 50,
+      "bytes": 11969,
+      "sha256": "70b04f961a7ea055594e37c8192989af4ca39d491559bc6f4e186cf14ddc5eb5"
+    },
+    {
+      "surah": 78,
+      "file": "surahs/078.json",
+      "verseCount": 40,
+      "bytes": 10267,
+      "sha256": "08ae593fb7a1a7b97f9988fad6b78c20617f339107e84458d5a797cba3c7e85f"
+    },
+    {
+      "surah": 79,
+      "file": "surahs/079.json",
+      "verseCount": 46,
+      "bytes": 11250,
+      "sha256": "535ad7be5a8560bc39659c5749bca406a9b241b5a87e6c13ae82e5e23b96afb0"
+    },
+    {
+      "surah": 80,
+      "file": "surahs/080.json",
+      "verseCount": 42,
+      "bytes": 9203,
+      "sha256": "58e84c802b56dea335fad839522f8594c92ec7e1a4796693df982c49cd721d61"
+    },
+    {
+      "surah": 81,
+      "file": "surahs/081.json",
+      "verseCount": 29,
+      "bytes": 6500,
+      "sha256": "2b2e7df74a932a2609ef114de008830455eb5d1f82ce26ae338cef36b5a2e969"
+    },
+    {
+      "surah": 82,
+      "file": "surahs/082.json",
+      "verseCount": 19,
+      "bytes": 4712,
+      "sha256": "a9478f7846421ea8fe2308a9e8faaad9cbdbdfa4db285eeabd8920ecb96528a8"
+    },
+    {
+      "surah": 83,
+      "file": "surahs/083.json",
+      "verseCount": 36,
+      "bytes": 9607,
+      "sha256": "33215daaa3e5f29779c1122b0c67766aaa4a4ddfdbec0f80092aa2943bc11379"
+    },
+    {
+      "surah": 84,
+      "file": "surahs/084.json",
+      "verseCount": 25,
+      "bytes": 6228,
+      "sha256": "00f8a41988d576233a50582a57ef9d225fc7b1683359fde42a58d0c7758ab0bb"
+    },
+    {
+      "surah": 85,
+      "file": "surahs/085.json",
+      "verseCount": 22,
+      "bytes": 5823,
+      "sha256": "8e344a2a8f663d8fa451a9ddd38a6b421fdfa0e3afd1bb303bc545e1c6007a56"
+    },
+    {
+      "surah": 86,
+      "file": "surahs/086.json",
+      "verseCount": 17,
+      "bytes": 3888,
+      "sha256": "e5000e98ab7cb7696c027f394ede18421cc0b66a345b071cb9cd3c9b57da8a43"
+    },
+    {
+      "surah": 87,
+      "file": "surahs/087.json",
+      "verseCount": 19,
+      "bytes": 4607,
+      "sha256": "445beb0a4cabd9886f319863afd3acd1f6f029d9a03769a092220e02d108760a"
+    },
+    {
+      "surah": 88,
+      "file": "surahs/088.json",
+      "verseCount": 26,
+      "bytes": 5970,
+      "sha256": "b279347ee59fc5deb706d7953b3bc209c77ef58c28b04668924dfecaf4e29f2a"
+    },
+    {
+      "surah": 89,
+      "file": "surahs/089.json",
+      "verseCount": 30,
+      "bytes": 7860,
+      "sha256": "5fc0421948d2f4d31c7981063d657cb8aa041d8d7c7c01f9b4bc73d748f0087d"
+    },
+    {
+      "surah": 90,
+      "file": "surahs/090.json",
+      "verseCount": 20,
+      "bytes": 4863,
+      "sha256": "b8f1354e9187f5ca2a4b950e317ecf1ca10795962d0dc36847ed845693f831af"
+    },
+    {
+      "surah": 91,
+      "file": "surahs/091.json",
+      "verseCount": 15,
+      "bytes": 3744,
+      "sha256": "e1257b21c5a936fbe7ead280fba472140c8983be7320cdf5cd439549bc6bb415"
+    },
+    {
+      "surah": 92,
+      "file": "surahs/092.json",
+      "verseCount": 21,
+      "bytes": 5041,
+      "sha256": "840e8144df1fa4a31e84b3cf5071b581d9c614afc76902207563262f2ff9ae43"
+    },
+    {
+      "surah": 93,
+      "file": "surahs/093.json",
+      "verseCount": 11,
+      "bytes": 2599,
+      "sha256": "1091b1d52dc915527971d5d5435adbc3e36a363e0e8afa503b12b84c26d6909f"
+    },
+    {
+      "surah": 94,
+      "file": "surahs/094.json",
+      "verseCount": 8,
+      "bytes": 1823,
+      "sha256": "6d87f409db43384d36dcaed3c7872f45ed4791e10a57227d594edcd96a5d7101"
+    },
+    {
+      "surah": 95,
+      "file": "surahs/095.json",
+      "verseCount": 8,
+      "bytes": 2094,
+      "sha256": "523588a7edb30240541b72cf7e9b08dcf2316aebccb609cba35d82fd0d9d8ac5"
+    },
+    {
+      "surah": 96,
+      "file": "surahs/096.json",
+      "verseCount": 19,
+      "bytes": 4474,
+      "sha256": "de9a291538aff5a8a435cca7ef4f575b5182e1b6846ad5423143003e388e6699"
+    },
+    {
+      "surah": 97,
+      "file": "surahs/097.json",
+      "verseCount": 5,
+      "bytes": 1449,
+      "sha256": "8c494a661d2f42e7f01ca2c800ad29eda6ce62f3a553487c6549d86676e96a4a"
+    },
+    {
+      "surah": 98,
+      "file": "surahs/098.json",
+      "verseCount": 8,
+      "bytes": 3835,
+      "sha256": "2d690131789cf79e075e3a89003b1eb982b26a8f55f48a7ef811a0078e3a4839"
+    },
+    {
+      "surah": 99,
+      "file": "surahs/099.json",
+      "verseCount": 8,
+      "bytes": 2120,
+      "sha256": "898dc6441f3b24597d88ba19b87da2b1ea62219e66ecdf03070bfcd6ccc001ce"
+    },
+    {
+      "surah": 100,
+      "file": "surahs/100.json",
+      "verseCount": 11,
+      "bytes": 2599,
+      "sha256": "9cf44d676cb2ed9eb7669830835a16960448b74781e3f5829434d29b45c368fb"
+    },
+    {
+      "surah": 101,
+      "file": "surahs/101.json",
+      "verseCount": 11,
+      "bytes": 2622,
+      "sha256": "7b9232a4cbd0262db818ad78deb96da162d4cec6bff16bc58a392d27f6c08eb0"
+    },
+    {
+      "surah": 102,
+      "file": "surahs/102.json",
+      "verseCount": 8,
+      "bytes": 1903,
+      "sha256": "8fe92d958ee05e5b3375db1919c854a3f69159f159b3e7b011a4121dd5ee091d"
+    },
+    {
+      "surah": 103,
+      "file": "surahs/103.json",
+      "verseCount": 3,
+      "bytes": 909,
+      "sha256": "62c1976bd44adcc539b030ef1a69ac35c4e167ea1af14f8e81ed9856ea7d8957"
+    },
+    {
+      "surah": 104,
+      "file": "surahs/104.json",
+      "verseCount": 9,
+      "bytes": 2163,
+      "sha256": "7fd98bbf51ca5a2ba47b949dfca4e0ec63b81e277e22f5803184a27cf375f7a9"
+    },
+    {
+      "surah": 105,
+      "file": "surahs/105.json",
+      "verseCount": 5,
+      "bytes": 1300,
+      "sha256": "364faede58c6915bddfac93fa63d50e847bf9ae0df56023e71f6739a57d8d5ca"
+    },
+    {
+      "surah": 106,
+      "file": "surahs/106.json",
+      "verseCount": 4,
+      "bytes": 1139,
+      "sha256": "7b99b8bf44a8abace8e7ea0c153f9f11a7d679c1844000732b09d3c7767bae7e"
+    },
+    {
+      "surah": 107,
+      "file": "surahs/107.json",
+      "verseCount": 7,
+      "bytes": 1646,
+      "sha256": "c24a86c181f5527c6d2d799c3bb4be588c8492571244f9fa0855164dfb585ade"
+    },
+    {
+      "surah": 108,
+      "file": "surahs/108.json",
+      "verseCount": 3,
+      "bytes": 777,
+      "sha256": "da0bde7ac7f7cf03e3a163b4925637e8fc98ecd65da1a115083984ade8fbd5e0"
+    },
+    {
+      "surah": 109,
+      "file": "surahs/109.json",
+      "verseCount": 6,
+      "bytes": 1478,
+      "sha256": "56a31e290a155f3442fc813901e25378abd35e37b0b3837119a2331c1de95187"
+    },
+    {
+      "surah": 110,
+      "file": "surahs/110.json",
+      "verseCount": 3,
+      "bytes": 994,
+      "sha256": "ade64e82cae9f0f55597e07ca653276131fe5a3c387b9ba621811baa644b4579"
+    },
+    {
+      "surah": 111,
+      "file": "surahs/111.json",
+      "verseCount": 5,
+      "bytes": 1300,
+      "sha256": "3ffa4b333c4764ed8a8b2c36b3e8c0d535e61a928da44abc00e4aa1958981730"
+    },
+    {
+      "surah": 112,
+      "file": "surahs/112.json",
+      "verseCount": 4,
+      "bytes": 967,
+      "sha256": "5ea2a734dfe109cd7446eda6171aabda2c97fa30dea27e5cbc3c0eea6cdd9e94"
+    },
+    {
+      "surah": 113,
+      "file": "surahs/113.json",
+      "verseCount": 5,
+      "bytes": 1238,
+      "sha256": "e885c34d381165f469e820100ecb8831141bee1089a867905b8849da3e5fc76d"
+    },
+    {
+      "surah": 114,
+      "file": "surahs/114.json",
+      "verseCount": 6,
+      "bytes": 1365,
+      "sha256": "318da0f15642c33a8fec16bd4f613858b0688f67baec3b476469842f919ba624"
+    }
+  ]
+}

@@ -1,0 +1,867 @@
+{
+  "surah": 11,
+  "verseCount": 123,
+  "verses": [
+    {
+      "surah": 11,
+      "ayah": 1,
+      "verseKey": "11:1",
+      "arabic": " الٓر ۚ كِتَـٰبٌ أُحْكِمَتْ ءَايَـٰتُهُۥ ثُمَّ فُصِّلَتْ مِن لَّدُنْ حَكِيمٍ خَبِيرٍ",
+      "translationSq": "Elif Lám Râ. Ky është një Libër, vargjet e të cilit janë radhitur mrekullueshëm dhe janë parashtruar me hollësi nga ana e Një të Urti të Gjithëdijshëm."
+    },
+    {
+      "surah": 11,
+      "ayah": 2,
+      "verseKey": "11:2",
+      "arabic": "أَلَّا تَعْبُدُوٓا۟ إِلَّا ٱللَّهَ ۚ إِنَّنِى لَكُم مِّنْهُ نَذِيرٌ وَبَشِيرٌ",
+      "translationSq": "Adhuroni vetëm Allahun, sepse unë (Muhamedi) jam për ju një paralajmërues dhe sjellës i lajmit të mirë prej Tij,"
+    },
+    {
+      "surah": 11,
+      "ayah": 3,
+      "verseKey": "11:3",
+      "arabic": "وَأَنِ ٱسْتَغْفِرُوا۟ رَبَّكُمْ ثُمَّ تُوبُوٓا۟ إِلَيْهِ يُمَتِّعْكُم مَّتَـٰعًا حَسَنًا إِلَىٰٓ أَجَلٍ مُّسَمًّى وَيُؤْتِ كُلَّ ذِى فَضْلٍ فَضْلَهُۥ ۖ وَإِن تَوَلَّوْا۟ فَإِنِّىٓ أَخَافُ عَلَيْكُمْ عَذَابَ يَوْمٍ كَبِيرٍ",
+      "translationSq": "(që ju porosis) të kërkoni falje nga Zoti juaj e të ktheheni tek Ai me pendesë. Ai do t’ju japë të shijoni kënaqësi të bukura deri në afatin e caktuar dhe do t’i japë çdo të miri shpërblimin e merituar. E, nëse ktheni shpinën, unë i frikësohem dënimit tuaj në Ditën e Madhe."
+    },
+    {
+      "surah": 11,
+      "ayah": 4,
+      "verseKey": "11:4",
+      "arabic": "إِلَى ٱللَّهِ مَرْجِعُكُمْ ۖ وَهُوَ عَلَىٰ كُلِّ شَىْءٍ قَدِيرٌ",
+      "translationSq": "Tek Allahu do të ktheheni; Ai është i Plotfuqishëm për çdo gjë!"
+    },
+    {
+      "surah": 11,
+      "ayah": 5,
+      "verseKey": "11:5",
+      "arabic": "أَلَآ إِنَّهُمْ يَثْنُونَ صُدُورَهُمْ لِيَسْتَخْفُوا۟ مِنْهُ ۚ أَلَا حِينَ يَسْتَغْشُونَ ثِيَابَهُمْ يَعْلَمُ مَا يُسِرُّونَ وَمَا يُعْلِنُونَ ۚ إِنَّهُۥ عَلِيمٌۢ بِذَاتِ ٱلصُّدُورِ",
+      "translationSq": "Ah! Në të vërtetë, ata mbulojnë kraharorin e tyre, që të fshihen nga Ai. Por edhe sikur të mbulohen me petkat e tyre, Ai e di se çfarë fshehin ata dhe çfarë shfaqin. Ai, me të vërtetë, është i Gjithëdijshëm se ç’ka në zemra (të çdokujt)."
+    },
+    {
+      "surah": 11,
+      "ayah": 6,
+      "verseKey": "11:6",
+      "arabic": "۞ وَمَا مِن دَآبَّةٍ فِى ٱلْأَرْضِ إِلَّا عَلَى ٱللَّهِ رِزْقُهَا وَيَعْلَمُ مُسْتَقَرَّهَا وَمُسْتَوْدَعَهَا ۚ كُلٌّ فِى كِتَـٰبٍ مُّبِينٍ",
+      "translationSq": "S’ka asnjë gjallesë në Tokë që të mos i ketë mjetet e jetesës prej Tij. Ai di vendbanimin e saj dhe vendin e vdekjes. Të gjitha këto janë (të shënuara) në Librin e qartë."
+    },
+    {
+      "surah": 11,
+      "ayah": 7,
+      "verseKey": "11:7",
+      "arabic": "وَهُوَ ٱلَّذِى خَلَقَ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضَ فِى سِتَّةِ أَيَّامٍ وَكَانَ عَرْشُهُۥ عَلَى ٱلْمَآءِ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا ۗ وَلَئِن قُلْتَ إِنَّكُم مَّبْعُوثُونَ مِنۢ بَعْدِ ٱلْمَوْتِ لَيَقُولَنَّ ٱلَّذِينَ كَفَرُوٓا۟ إِنْ هَـٰذَآ إِلَّا سِحْرٌ مُّبِينٌ",
+      "translationSq": "Është Ai që ka krijuar qiejt dhe Tokën për gjashtë ditë, teksa Froni i Tij ndodhej mbi ujë, për t’ju vënë në provë kush është më i mirë në vepra. Nëse ti u thua: “Ju do të ringjalleni pas vdekjes”, mohuesit, me siguri do të thonë: “Kjo nuk është asgjë tjetër, përveçse magji e kulluar!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 8,
+      "verseKey": "11:8",
+      "arabic": "وَلَئِنْ أَخَّرْنَا عَنْهُمُ ٱلْعَذَابَ إِلَىٰٓ أُمَّةٍ مَّعْدُودَةٍ لَّيَقُولُنَّ مَا يَحْبِسُهُۥٓ ۗ أَلَا يَوْمَ يَأْتِيهِمْ لَيْسَ مَصْرُوفًا عَنْهُمْ وَحَاقَ بِهِم مَّا كَانُوا۟ بِهِۦ يَسْتَهْزِءُونَ",
+      "translationSq": "Nëse Ne ua shtyjmë dënimin për një kohë të shkurtër, ata me siguri do të thoshin: “Kush po e vonon?” Por ditën që do t’u vijë dënimi, asgjë nuk do t’ua largojë atë dhe, do t’i përfshijë ajo që ata e përqeshnin."
+    },
+    {
+      "surah": 11,
+      "ayah": 9,
+      "verseKey": "11:9",
+      "arabic": "وَلَئِنْ أَذَقْنَا ٱلْإِنسَـٰنَ مِنَّا رَحْمَةً ثُمَّ نَزَعْنَـٰهَا مِنْهُ إِنَّهُۥ لَيَـُٔوسٌ كَفُورٌ",
+      "translationSq": "Kur Ne i japim njeriut të shijojë mëshirën Tonë e pastaj ia heqim atë, ai atëherë bëhet shpresëhumbur dhe mohues."
+    },
+    {
+      "surah": 11,
+      "ayah": 10,
+      "verseKey": "11:10",
+      "arabic": "وَلَئِنْ أَذَقْنَـٰهُ نَعْمَآءَ بَعْدَ ضَرَّآءَ مَسَّتْهُ لَيَقُولَنَّ ذَهَبَ ٱلسَّيِّـَٔاتُ عَنِّىٓ ۚ إِنَّهُۥ لَفَرِحٌ فَخُورٌ",
+      "translationSq": "E, kur pas fatkeqësisë që e ka goditur atë, Ne i japim atij dhunti, ai me siguri do të thotë: “Gjynahet e mia janë larguar nga unë!” atëherë bëhet i gëzuar dhe mendjemadh."
+    },
+    {
+      "surah": 11,
+      "ayah": 11,
+      "verseKey": "11:11",
+      "arabic": "إِلَّا ٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ أُو۟لَـٰٓئِكَ لَهُم مَّغْفِرَةٌ وَأَجْرٌ كَبِيرٌ",
+      "translationSq": "(Nuk janë të tillë) vetëm ata që durojnë dhe bëjnë vepra të mira; për ata do të ketë falje dhe shpërblim të madh."
+    },
+    {
+      "surah": 11,
+      "ayah": 12,
+      "verseKey": "11:12",
+      "arabic": "فَلَعَلَّكَ تَارِكٌۢ بَعْضَ مَا يُوحَىٰٓ إِلَيْكَ وَضَآئِقٌۢ بِهِۦ صَدْرُكَ أَن يَقُولُوا۟ لَوْلَآ أُنزِلَ عَلَيْهِ كَنزٌ أَوْ جَآءَ مَعَهُۥ مَلَكٌ ۚ إِنَّمَآ أَنتَ نَذِيرٌ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍ وَكِيلٌ",
+      "translationSq": "Mund të ndodhë që ti (Muhamed) të lësh mënjanë diçka nga ato që të janë shpallur ty dhe të të ngushtohet kraharori, sepse ata thonë: “Përse nuk i është dërguar ndonjë thesar?” ose, “Përse nuk vjen një engjëll me të?” Ti je vetëm paralajmërues e Allahu kujdeset për çdo gjë."
+    },
+    {
+      "surah": 11,
+      "ayah": 13,
+      "verseKey": "11:13",
+      "arabic": "أَمْ يَقُولُونَ ٱفْتَرَىٰهُ ۖ قُلْ فَأْتُوا۟ بِعَشْرِ سُوَرٍ مِّثْلِهِۦ مُفْتَرَيَـٰتٍ وَٱدْعُوا۟ مَنِ ٱسْتَطَعْتُم مِّن دُونِ ٱللَّهِ إِن كُنتُمْ صَـٰدِقِينَ",
+      "translationSq": "Nëse ata thonë: “Ai e ka trilluar atë!” Thuaju (o Muhamed!): “Sillni dhjetë sure të ngjashme (në bukuri dhe elokuencë) të trilluara dhe thirrni në ndihmë kë të mundni, përveç Allahut, nëse thoni të vërtetën!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 14,
+      "verseKey": "11:14",
+      "arabic": "فَإِلَّمْ يَسْتَجِيبُوا۟ لَكُمْ فَٱعْلَمُوٓا۟ أَنَّمَآ أُنزِلَ بِعِلْمِ ٱللَّهِ وَأَن لَّآ إِلَـٰهَ إِلَّا هُوَ ۖ فَهَلْ أَنتُم مُّسْلِمُونَ",
+      "translationSq": "E, nëse nuk ju përgjigjen, atëherë ta dini se ai (Kurani), ka zbritur me dijen e Allahut dhe se s’ka zot tjetër (të denjë për adhurim) përveç Tij. Andaj, a jeni ju (o mohues) myslimanë?"
+    },
+    {
+      "surah": 11,
+      "ayah": 15,
+      "verseKey": "11:15",
+      "arabic": "مَن كَانَ يُرِيدُ ٱلْحَيَوٰةَ ٱلدُّنْيَا وَزِينَتَهَا نُوَفِّ إِلَيْهِمْ أَعْمَـٰلَهُمْ فِيهَا وَهُمْ فِيهَا لَا يُبْخَسُونَ",
+      "translationSq": "Atyre që duan jetën e kësaj bote dhe bukuritë e saj, Ne do t’ua shpërblejmë krejtësisht punët e tyre dhe në të nuk do t’u lihet gjë mangët."
+    },
+    {
+      "surah": 11,
+      "ayah": 16,
+      "verseKey": "11:16",
+      "arabic": "أُو۟لَـٰٓئِكَ ٱلَّذِينَ لَيْسَ لَهُمْ فِى ٱلْـَٔاخِرَةِ إِلَّا ٱلنَّارُ ۖ وَحَبِطَ مَا صَنَعُوا۟ فِيهَا وَبَـٰطِلٌ مَّا كَانُوا۟ يَعْمَلُونَ",
+      "translationSq": "Këta janë ata për të cilët në botën tjetër nuk do të ketë kurrgjë, përveç zjarrit. Do t’u shembet çdo gjë që kanë bërë në këtë jetë dhe do t’u zhvlerësohet ajo që kanë punuar."
+    },
+    {
+      "surah": 11,
+      "ayah": 17,
+      "verseKey": "11:17",
+      "arabic": "أَفَمَن كَانَ عَلَىٰ بَيِّنَةٍ مِّن رَّبِّهِۦ وَيَتْلُوهُ شَاهِدٌ مِّنْهُ وَمِن قَبْلِهِۦ كِتَـٰبُ مُوسَىٰٓ إِمَامًا وَرَحْمَةً ۚ أُو۟لَـٰٓئِكَ يُؤْمِنُونَ بِهِۦ ۚ وَمَن يَكْفُرْ بِهِۦ مِنَ ٱلْأَحْزَابِ فَٱلنَّارُ مَوْعِدُهُۥ ۚ فَلَا تَكُ فِى مِرْيَةٍ مِّنْهُ ۚ إِنَّهُ ٱلْحَقُّ مِن رَّبِّكَ وَلَـٰكِنَّ أَكْثَرَ ٱلنَّاسِ لَا يُؤْمِنُونَ",
+      "translationSq": "A janë (të barabartë me jobesimtarët), ata, që mbështeten në provë të qartë nga Zoti i tyre, që ndiqet nga një dëshmitar prej Tij (Kurani), para të cilit ishte Libri i Musait (dëshmitar) udhërrëfyes dhe mëshirë? Këta besojnë Kuranin. Dhe për cilindo nga grupet (sektet) që e mohojnë atë, zjarri do të jetë vend i premtuar. Andaj, ti kurrsesi mos dysho në atë; se ai, pa dyshim, është e vërteta prej Zotit tënd, ndonëse shumica e njerëzve nuk besojnë."
+    },
+    {
+      "surah": 11,
+      "ayah": 18,
+      "verseKey": "11:18",
+      "arabic": "وَمَنْ أَظْلَمُ مِمَّنِ ٱفْتَرَىٰ عَلَى ٱللَّهِ كَذِبًا ۚ أُو۟لَـٰٓئِكَ يُعْرَضُونَ عَلَىٰ رَبِّهِمْ وَيَقُولُ ٱلْأَشْهَـٰدُ هَـٰٓؤُلَآءِ ٱلَّذِينَ كَذَبُوا۟ عَلَىٰ رَبِّهِمْ ۚ أَلَا لَعْنَةُ ٱللَّهِ عَلَى ٱلظَّـٰلِمِينَ",
+      "translationSq": "Kush janë më të padrejtë se ata që trillojnë gënjeshtra për Allahun? Ata do të sillen para Zotit të tyre e dëshmitarët do të thonë: “Këta janë ata që kanë gënjyer kundër Zotit të tyre. Mallkimi i Allahut qoftë mbi të padrejtët,"
+    },
+    {
+      "surah": 11,
+      "ayah": 19,
+      "verseKey": "11:19",
+      "arabic": "ٱلَّذِينَ يَصُدُّونَ عَن سَبِيلِ ٱللَّهِ وَيَبْغُونَهَا عِوَجًا وَهُم بِٱلْـَٔاخِرَةِ هُمْ كَـٰفِرُونَ",
+      "translationSq": "të cilët pengojnë (të tjerët) nga rruga e Allahut dhe përpiqen ta shtrembërojnë atë, ndërsa vetë nuk besojnë në botën tjetër.”"
+    },
+    {
+      "surah": 11,
+      "ayah": 20,
+      "verseKey": "11:20",
+      "arabic": "أُو۟لَـٰٓئِكَ لَمْ يَكُونُوا۟ مُعْجِزِينَ فِى ٱلْأَرْضِ وَمَا كَانَ لَهُم مِّن دُونِ ٱللَّهِ مِنْ أَوْلِيَآءَ ۘ يُضَـٰعَفُ لَهُمُ ٱلْعَذَابُ ۚ مَا كَانُوا۟ يَسْتَطِيعُونَ ٱلسَّمْعَ وَمَا كَانُوا۟ يُبْصِرُونَ",
+      "translationSq": "Nuk janë ata që kanë pushtetin në Tokë dhe nuk do të kenë ndonjë mbrojtës tjetër, në vend të Allahut. Atyre do t’u shumëfishohet dënimi, sepse as nuk dëgjonin, as shihnin."
+    },
+    {
+      "surah": 11,
+      "ayah": 21,
+      "verseKey": "11:21",
+      "arabic": "أُو۟لَـٰٓئِكَ ٱلَّذِينَ خَسِرُوٓا۟ أَنفُسَهُمْ وَضَلَّ عَنْهُم مَّا كَانُوا۟ يَفْتَرُونَ",
+      "translationSq": "Këta janë ata që dëmtuan vetveten dhe u humbën idhujt e rremë që i trillonin."
+    },
+    {
+      "surah": 11,
+      "ayah": 22,
+      "verseKey": "11:22",
+      "arabic": "لَا جَرَمَ أَنَّهُمْ فِى ٱلْـَٔاخِرَةِ هُمُ ٱلْأَخْسَرُونَ",
+      "translationSq": "Vërtet, këta do të jenë më të humburit në botën tjetër."
+    },
+    {
+      "surah": 11,
+      "ayah": 23,
+      "verseKey": "11:23",
+      "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ وَأَخْبَتُوٓا۟ إِلَىٰ رَبِّهِمْ أُو۟لَـٰٓئِكَ أَصْحَـٰبُ ٱلْجَنَّةِ ۖ هُمْ فِيهَا خَـٰلِدُونَ",
+      "translationSq": "Pa dyshim, ata që besojnë, bëjnë vepra të mira dhe përulen para Zotit të tyre, do të jenë banorë të Xhenetit, në të cilin do të qëndrojnë përherë."
+    },
+    {
+      "surah": 11,
+      "ayah": 24,
+      "verseKey": "11:24",
+      "arabic": "۞ مَثَلُ ٱلْفَرِيقَيْنِ كَٱلْأَعْمَىٰ وَٱلْأَصَمِّ وَٱلْبَصِيرِ وَٱلسَّمِيعِ ۚ هَلْ يَسْتَوِيَانِ مَثَلًا ۚ أَفَلَا تَذَكَّرُونَ",
+      "translationSq": "Dallimi midis këtyre dy grupeve shëmbëllen me dallimin midis një të verbri të shurdhër dhe një njeriu që sheh e dëgjon. A janë të njëjtë këta (kur të krahasohen)? A nuk po merrni këshillë?!"
+    },
+    {
+      "surah": 11,
+      "ayah": 25,
+      "verseKey": "11:25",
+      "arabic": "وَلَقَدْ أَرْسَلْنَا نُوحًا إِلَىٰ قَوْمِهِۦٓ إِنِّى لَكُمْ نَذِيرٌ مُّبِينٌ",
+      "translationSq": "Shumë kohë më parë, Ne dërguam Nuhun te popullit i tij. (Ai u tha): “Unë jam për ju paralajmërues i hapët;"
+    },
+    {
+      "surah": 11,
+      "ayah": 26,
+      "verseKey": "11:26",
+      "arabic": "أَن لَّا تَعْبُدُوٓا۟ إِلَّا ٱللَّهَ ۖ إِنِّىٓ أَخَافُ عَلَيْكُمْ عَذَابَ يَوْمٍ أَلِيمٍ",
+      "translationSq": "që të adhuroni vetëm Allahun. (Përndryshe), unë kam frikë për ju dënimin e një Dite të dhembshme”."
+    },
+    {
+      "surah": 11,
+      "ayah": 27,
+      "verseKey": "11:27",
+      "arabic": "فَقَالَ ٱلْمَلَأُ ٱلَّذِينَ كَفَرُوا۟ مِن قَوْمِهِۦ مَا نَرَىٰكَ إِلَّا بَشَرًا مِّثْلَنَا وَمَا نَرَىٰكَ ٱتَّبَعَكَ إِلَّا ٱلَّذِينَ هُمْ أَرَاذِلُنَا بَادِىَ ٱلرَّأْىِ وَمَا نَرَىٰ لَكُمْ عَلَيْنَا مِن فَضْلٍۭ بَلْ نَظُنُّكُمْ كَـٰذِبِينَ",
+      "translationSq": "Por, paria e popullit të tij, e cila nuk besoi, tha: “Ne shohim se ti je thjesht njeri si ne dhe, shohim, që ty të shkojnë pas vetëm më të pavlerët nga ne, pa menduar fare. Ne nuk shohim se ti ke diçka më të mirë se ne, madje ju quajmë gënjeshtarë”."
+    },
+    {
+      "surah": 11,
+      "ayah": 28,
+      "verseKey": "11:28",
+      "arabic": "قَالَ يَـٰقَوْمِ أَرَءَيْتُمْ إِن كُنتُ عَلَىٰ بَيِّنَةٍ مِّن رَّبِّى وَءَاتَىٰنِى رَحْمَةً مِّنْ عِندِهِۦ فَعُمِّيَتْ عَلَيْكُمْ أَنُلْزِمُكُمُوهَا وَأَنتُمْ لَهَا كَـٰرِهُونَ",
+      "translationSq": "Ai (Nuhu) tha: “O populli im, mendoni pak! Nëse unë mbështetem në një provë të qartë që më ka ardhur nga Zoti im dhe, nëse nga ana e Tij më ka ardhur një mëshirë, e cila është fshehur nga sytë tuaj, a mund t’ju bëjmë ta pranoni me detyrim (provën), kur ju e urreni?"
+    },
+    {
+      "surah": 11,
+      "ayah": 29,
+      "verseKey": "11:29",
+      "arabic": "وَيَـٰقَوْمِ لَآ أَسْـَٔلُكُمْ عَلَيْهِ مَالًا ۖ إِنْ أَجْرِىَ إِلَّا عَلَى ٱللَّهِ ۚ وَمَآ أَنَا۠ بِطَارِدِ ٱلَّذِينَ ءَامَنُوٓا۟ ۚ إِنَّهُم مُّلَـٰقُوا۟ رَبِّهِمْ وَلَـٰكِنِّىٓ أَرَىٰكُمْ قَوْمًا تَجْهَلُونَ",
+      "translationSq": "O populli im! Unë për këtë nuk kërkoj nga ju kurrfarë pasurie. Mua më shpërblen vetëm Allahu. Unë nuk mund t’i dëboj ata që besojnë. Ata do të takohen me Zotin e tyre. Mirëpo, unë shoh se fatkeqësisht, ju jeni popull, që nuk di."
+    },
+    {
+      "surah": 11,
+      "ayah": 30,
+      "verseKey": "11:30",
+      "arabic": "وَيَـٰقَوْمِ مَن يَنصُرُنِى مِنَ ٱللَّهِ إِن طَرَدتُّهُمْ ۚ أَفَلَا تَذَكَّرُونَ",
+      "translationSq": "O populli im, kush do të më mbrojë nga Allahu, nëse unë i dëboj (besimtarët)? A nuk doni të merrni këshillë?"
+    },
+    {
+      "surah": 11,
+      "ayah": 31,
+      "verseKey": "11:31",
+      "arabic": "وَلَآ أَقُولُ لَكُمْ عِندِى خَزَآئِنُ ٱللَّهِ وَلَآ أَعْلَمُ ٱلْغَيْبَ وَلَآ أَقُولُ إِنِّى مَلَكٌ وَلَآ أَقُولُ لِلَّذِينَ تَزْدَرِىٓ أَعْيُنُكُمْ لَن يُؤْتِيَهُمُ ٱللَّهُ خَيْرًا ۖ ٱللَّهُ أَعْلَمُ بِمَا فِىٓ أَنفُسِهِمْ ۖ إِنِّىٓ إِذًا لَّمِنَ ٱلظَّـٰلِمِينَ",
+      "translationSq": "Unë nuk ju them se kam thesarin e Allahut apo që e di të padukshmen. As nuk them se unë jam engjëll e as do t’u them atyre, të cilët sytë tuaj i nënçmojnë, se Allahu nuk do t’u japë kurrfarë të mire. Allahu e di më mirë se ç’ka në shpirtrat e tyre. Atëherë, sigurisht që do të isha prej të padrejtëve.”"
+    },
+    {
+      "surah": 11,
+      "ayah": 32,
+      "verseKey": "11:32",
+      "arabic": "قَالُوا۟ يَـٰنُوحُ قَدْ جَـٰدَلْتَنَا فَأَكْثَرْتَ جِدَٰلَنَا فَأْتِنَا بِمَا تَعِدُنَآ إِن كُنتَ مِنَ ٱلصَّـٰدِقِينَ",
+      "translationSq": "Ata thanë: “O Nuh, ti na kundërshtove ne, madje e zgjate kundërshtimin. Le të na godasë ajo me çfarë na kërcënon, nëse thua të vërtetën!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 33,
+      "verseKey": "11:33",
+      "arabic": "قَالَ إِنَّمَا يَأْتِيكُم بِهِ ٱللَّهُ إِن شَآءَ وَمَآ أَنتُم بِمُعْجِزِينَ",
+      "translationSq": "Tha (Nuhu): “Vetëm Allahu do t’jua sjellë atë, nëse dëshiron; e ju Atij nuk mund t’i ikni."
+    },
+    {
+      "surah": 11,
+      "ayah": 34,
+      "verseKey": "11:34",
+      "arabic": "وَلَا يَنفَعُكُمْ نُصْحِىٓ إِنْ أَرَدتُّ أَنْ أَنصَحَ لَكُمْ إِن كَانَ ٱللَّهُ يُرِيدُ أَن يُغْوِيَكُمْ ۚ هُوَ رَبُّكُمْ وَإِلَيْهِ تُرْجَعُونَ",
+      "translationSq": "Këshilla ime nuk do t’ju bëjë dobi edhe sikur të doja t’ju këshilloja, nëse vullneti i Allahut është që t’ju shkatërrojë. Ai është Zoti juaj dhe ju tek Ai do të ktheheni”."
+    },
+    {
+      "surah": 11,
+      "ayah": 35,
+      "verseKey": "11:35",
+      "arabic": "أَمْ يَقُولُونَ ٱفْتَرَىٰهُ ۖ قُلْ إِنِ ٱفْتَرَيْتُهُۥ فَعَلَىَّ إِجْرَامِى وَأَنَا۠ بَرِىٓءٌ مِّمَّا تُجْرِمُونَ",
+      "translationSq": "Nëse ata thonë: “Ai e ka trilluar atë”. Thuaj: “E nëse unë e kam trilluar, gjynahu im bie mbi mua e unë jam larg nga gjynahet që bëni ju”."
+    },
+    {
+      "surah": 11,
+      "ayah": 36,
+      "verseKey": "11:36",
+      "arabic": "وَأُوحِىَ إِلَىٰ نُوحٍ أَنَّهُۥ لَن يُؤْمِنَ مِن قَوْمِكَ إِلَّا مَن قَدْ ءَامَنَ فَلَا تَبْتَئِسْ بِمَا كَانُوا۟ يَفْعَلُونَ",
+      "translationSq": "Dhe Nuhut iu shpall: “Nga populli yt askush nuk do të besojë, përveç atyre që tashmë kanë besuar, andaj mos u pikëllo për atë që bëjnë ata!"
+    },
+    {
+      "surah": 11,
+      "ayah": 37,
+      "verseKey": "11:37",
+      "arabic": "وَٱصْنَعِ ٱلْفُلْكَ بِأَعْيُنِنَا وَوَحْيِنَا وَلَا تُخَـٰطِبْنِى فِى ٱلَّذِينَ ظَلَمُوٓا۟ ۚ إِنَّهُم مُّغْرَقُونَ",
+      "translationSq": "Ndërto anijen nën Sytë (mbikëqyrjen) dhe udhëzimin Tonë dhe mos m’u drejto më për ata që janë keqbërës! Ata, me siguri, do të fundosen”."
+    },
+    {
+      "surah": 11,
+      "ayah": 38,
+      "verseKey": "11:38",
+      "arabic": "وَيَصْنَعُ ٱلْفُلْكَ وَكُلَّمَا مَرَّ عَلَيْهِ مَلَأٌ مِّن قَوْمِهِۦ سَخِرُوا۟ مِنْهُ ۚ قَالَ إِن تَسْخَرُوا۟ مِنَّا فَإِنَّا نَسْخَرُ مِنكُمْ كَمَا تَسْخَرُونَ",
+      "translationSq": "Ai nisi të ndërtonte anijen. Sa herë që kalonte pranë tij paria e popullit të tij, e përqeshte. Ai u tha: “Nëse ju talleni me ne, edhe ne do të tallemi me ju, ashtu si po talleni ju"
+    },
+    {
+      "surah": 11,
+      "ayah": 39,
+      "verseKey": "11:39",
+      "arabic": "فَسَوْفَ تَعْلَمُونَ مَن يَأْتِيهِ عَذَابٌ يُخْزِيهِ وَيَحِلُّ عَلَيْهِ عَذَابٌ مُّقِيمٌ",
+      "translationSq": "dhe, së shpejti, me siguri, do ta merrni vesh, kë do ta gjejë dënimi poshtërues dhe mbi kë do të bjerë dënimi i përhershëm”."
+    },
+    {
+      "surah": 11,
+      "ayah": 40,
+      "verseKey": "11:40",
+      "arabic": "حَتَّىٰٓ إِذَا جَآءَ أَمْرُنَا وَفَارَ ٱلتَّنُّورُ قُلْنَا ٱحْمِلْ فِيهَا مِن كُلٍّ زَوْجَيْنِ ٱثْنَيْنِ وَأَهْلَكَ إِلَّا مَن سَبَقَ عَلَيْهِ ٱلْقَوْلُ وَمَنْ ءَامَنَ ۚ وَمَآ ءَامَنَ مَعَهُۥٓ إِلَّا قَلِيلٌ",
+      "translationSq": "Kur arriti urdhri Ynë e uji nisi të gufojë nga sipërfaqja e tokës, Ne i thamë: “Ngarko në anije nga çdo lloj gjallese nga një çift, familjen tënde - përveç atyre kundër të cilëve ka qenë fjala e dënimit - dhe besimtarët!” Por shumë të paktë ishin ata që i kishin besuar atij!"
+    },
+    {
+      "surah": 11,
+      "ayah": 41,
+      "verseKey": "11:41",
+      "arabic": "۞ وَقَالَ ٱرْكَبُوا۟ فِيهَا بِسْمِ ٱللَّهِ مَجْر۪ىٰهَا وَمُرْسَىٰهَآ ۚ إِنَّ رَبِّى لَغَفُورٌ رَّحِيمٌ",
+      "translationSq": "Ai tha: “Hipni në anije! Me emrin e Allahut ajo lundron dhe ndalet! Me të vërtetë, Zoti im është Falës dhe Mëshirëplotë”."
+    },
+    {
+      "surah": 11,
+      "ayah": 42,
+      "verseKey": "11:42",
+      "arabic": "وَهِىَ تَجْرِى بِهِمْ فِى مَوْجٍ كَٱلْجِبَالِ وَنَادَىٰ نُوحٌ ٱبْنَهُۥ وَكَانَ فِى مَعْزِلٍ يَـٰبُنَىَّ ٱرْكَب مَّعَنَا وَلَا تَكُن مَّعَ ٱلْكَـٰفِرِينَ",
+      "translationSq": "Dhe ajo lundronte me ata nëpër valët e mëdha e të larta sa malet, ndërsa Nuhu thërriste birin e vet, i cili ishte ndarë veç: “O biri im, hip me ne e mos u bëj me mohuesit!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 43,
+      "verseKey": "11:43",
+      "arabic": "قَالَ سَـَٔاوِىٓ إِلَىٰ جَبَلٍ يَعْصِمُنِى مِنَ ٱلْمَآءِ ۚ قَالَ لَا عَاصِمَ ٱلْيَوْمَ مِنْ أَمْرِ ٱللَّهِ إِلَّا مَن رَّحِمَ ۚ وَحَالَ بَيْنَهُمَا ٱلْمَوْجُ فَكَانَ مِنَ ٱلْمُغْرَقِينَ",
+      "translationSq": "(I biri) tha: “Unë do të strehohem në një mal i cili do të më ruajë nga uji”. Nuhu iu përgjigj: “Sot askush nuk do të kursehet nga dënimi i Allahut, përveç atij që e mëshiron Ai!” Një valë në mes tyre i ndau dhe ai u fundos."
+    },
+    {
+      "surah": 11,
+      "ayah": 44,
+      "verseKey": "11:44",
+      "arabic": "وَقِيلَ يَـٰٓأَرْضُ ٱبْلَعِى مَآءَكِ وَيَـٰسَمَآءُ أَقْلِعِى وَغِيضَ ٱلْمَآءُ وَقُضِىَ ٱلْأَمْرُ وَٱسْتَوَتْ عَلَى ٱلْجُودِىِّ ۖ وَقِيلَ بُعْدًا لِّلْقَوْمِ ٱلظَّـٰلِمِينَ",
+      "translationSq": "Më pas, një zë thirri: “O Tokë, gëlltit ujin tënd dhe ti, o qiell, ndaloje (shiun)!” Dhe uji u tërhoq e u plotësua urdhri (i Allahut). Ndërsa anija u ndal në malin al Xhudij dhe u tha: “Larguar qofshin keqbërësit (nga mëshira e Allahut)!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 45,
+      "verseKey": "11:45",
+      "arabic": "وَنَادَىٰ نُوحٌ رَّبَّهُۥ فَقَالَ رَبِّ إِنَّ ٱبْنِى مِنْ أَهْلِى وَإِنَّ وَعْدَكَ ٱلْحَقُّ وَأَنتَ أَحْكَمُ ٱلْحَـٰكِمِينَ",
+      "translationSq": "Pastaj Nuhu iu lut Zotit dhe i tha: “O Zoti im, biri im është nga familja ime, premtimi Yt është i vërtetë dhe Ti je Gjykatësi më i drejtë!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 46,
+      "verseKey": "11:46",
+      "arabic": "قَالَ يَـٰنُوحُ إِنَّهُۥ لَيْسَ مِنْ أَهْلِكَ ۖ إِنَّهُۥ عَمَلٌ غَيْرُ صَـٰلِحٍ ۖ فَلَا تَسْـَٔلْنِ مَا لَيْسَ لَكَ بِهِۦ عِلْمٌ ۖ إِنِّىٓ أَعِظُكَ أَن تَكُونَ مِنَ ٱلْجَـٰهِلِينَ",
+      "translationSq": "(Allahu) tha: “O Nuh, ai nuk është nga familja jote, ai ka bërë punë të keqe. Mos më pyet për atë që ti nuk e di. Unë të këshilloj që të mos bëhesh nga të paditurit”."
+    },
+    {
+      "surah": 11,
+      "ayah": 47,
+      "verseKey": "11:47",
+      "arabic": "قَالَ رَبِّ إِنِّىٓ أَعُوذُ بِكَ أَنْ أَسْـَٔلَكَ مَا لَيْسَ لِى بِهِۦ عِلْمٌ ۖ وَإِلَّا تَغْفِرْ لِى وَتَرْحَمْنِىٓ أَكُن مِّنَ ٱلْخَـٰسِرِينَ",
+      "translationSq": "(Nuhu) tha: “O Zoti im, mbështetem tek Ti për Të të mos kërkuar gjëra, për të cilat nuk kam dijeni. Nëse Ti nuk më fal dhe nuk më mëshiron, do të jem nga të humburit”."
+    },
+    {
+      "surah": 11,
+      "ayah": 48,
+      "verseKey": "11:48",
+      "arabic": "قِيلَ يَـٰنُوحُ ٱهْبِطْ بِسَلَـٰمٍ مِّنَّا وَبَرَكَـٰتٍ عَلَيْكَ وَعَلَىٰٓ أُمَمٍ مِّمَّن مَّعَكَ ۚ وَأُمَمٌ سَنُمَتِّعُهُمْ ثُمَّ يَمَسُّهُم مِّنَّا عَذَابٌ أَلِيمٌ",
+      "translationSq": "Atëherë iu tha: “O Nuh, zbrit me përshëndetje prej Nesh dhe me bekime për ty dhe pasardhësit e atyre që gjenden me ty. Disa popujve (pas teje), Ne do t’u japim kënaqësi e pastaj do t’i godasë nga Ne dënimi i dhembshëm!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 49,
+      "verseKey": "11:49",
+      "arabic": "تِلْكَ مِنْ أَنۢبَآءِ ٱلْغَيْبِ نُوحِيهَآ إِلَيْكَ ۖ مَا كُنتَ تَعْلَمُهَآ أَنتَ وَلَا قَوْمُكَ مِن قَبْلِ هَـٰذَا ۖ فَٱصْبِرْ ۖ إِنَّ ٱلْعَـٰقِبَةَ لِلْمُتَّقِينَ",
+      "translationSq": "Këto janë (disa) nga lajmet e fshehta që Ne t’i shpallim ty. Këto nuk i ke ditur as ti, as populli yt para kësaj (shpalljes së Kuranit). Andaj, duro! Se, vërtet, në fund, fitorja është e besimtarëve."
+    },
+    {
+      "surah": 11,
+      "ayah": 50,
+      "verseKey": "11:50",
+      "arabic": "وَإِلَىٰ عَادٍ أَخَاهُمْ هُودًا ۚ قَالَ يَـٰقَوْمِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَـٰهٍ غَيْرُهُۥٓ ۖ إِنْ أَنتُمْ إِلَّا مُفْتَرُونَ",
+      "translationSq": "Fisit Ad (Ne i dërguam) vëllanë e tyre Hudin. Ai tha: “O populli im, adhuroni Allahun! Ju nuk keni Zot tjetër përveç Tij; ju jeni vetëm trillues."
+    },
+    {
+      "surah": 11,
+      "ayah": 51,
+      "verseKey": "11:51",
+      "arabic": "يَـٰقَوْمِ لَآ أَسْـَٔلُكُمْ عَلَيْهِ أَجْرًا ۖ إِنْ أَجْرِىَ إِلَّا عَلَى ٱلَّذِى فَطَرَنِىٓ ۚ أَفَلَا تَعْقِلُونَ",
+      "translationSq": "O populli im! Unë nuk kërkoj nga ju shpërblim për këtë. Mua më shpërblen vetëm Ai që më ka krijuar! A nuk kuptoni?!"
+    },
+    {
+      "surah": 11,
+      "ayah": 52,
+      "verseKey": "11:52",
+      "arabic": "وَيَـٰقَوْمِ ٱسْتَغْفِرُوا۟ رَبَّكُمْ ثُمَّ تُوبُوٓا۟ إِلَيْهِ يُرْسِلِ ٱلسَّمَآءَ عَلَيْكُم مِّدْرَارًا وَيَزِدْكُمْ قُوَّةً إِلَىٰ قُوَّتِكُمْ وَلَا تَتَوَلَّوْا۟ مُجْرِمِينَ",
+      "translationSq": "O populli im! Kërkoni falje nga Zoti juaj dhe kthehuni tek Ai të penduar, se Ai do t’ju sjellë shi të begatshëm dhe do t’ju shtojë fuqi mbi fuqinë tuaj. Mos u shmangni prej Atij duke qenë keqbërës!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 53,
+      "verseKey": "11:53",
+      "arabic": "قَالُوا۟ يَـٰهُودُ مَا جِئْتَنَا بِبَيِّنَةٍ وَمَا نَحْنُ بِتَارِكِىٓ ءَالِهَتِنَا عَن قَوْلِكَ وَمَا نَحْنُ لَكَ بِمُؤْمِنِينَ",
+      "translationSq": "Ata thanë: “O Hud! Ti nuk na ke sjellë kurrfarë prove të dukshme për fjalët e tua, ne nuk do t’i braktisim zotat tanë dhe nuk të besojmë ty!"
+    },
+    {
+      "surah": 11,
+      "ayah": 54,
+      "verseKey": "11:54",
+      "arabic": "إِن نَّقُولُ إِلَّا ٱعْتَرَىٰكَ بَعْضُ ءَالِهَتِنَا بِسُوٓءٍ ۗ قَالَ إِنِّىٓ أُشْهِدُ ٱللَّهَ وَٱشْهَدُوٓا۟ أَنِّى بَرِىٓءٌ مِّمَّا تُشْرِكُونَ",
+      "translationSq": "Ne themi vetëm se ty të ka goditur ndonjë e keqe nga zotat tanë”. Ai tha: “Unë kam dëshmitar Allahun, por dëshmoni edhe ju, se unë jam larg nga idhujt që ju i adhuroni"
+    },
+    {
+      "surah": 11,
+      "ayah": 55,
+      "verseKey": "11:55",
+      "arabic": "مِن دُونِهِۦ ۖ فَكِيدُونِى جَمِيعًا ثُمَّ لَا تُنظِرُونِ",
+      "translationSq": "në vend të Tij. Të gjithë ju bëni komplot kundër meje dhe mos më jepni afat aspak!"
+    },
+    {
+      "surah": 11,
+      "ayah": 56,
+      "verseKey": "11:56",
+      "arabic": "إِنِّى تَوَكَّلْتُ عَلَى ٱللَّهِ رَبِّى وَرَبِّكُم ۚ مَّا مِن دَآبَّةٍ إِلَّا هُوَ ءَاخِذٌۢ بِنَاصِيَتِهَآ ۚ إِنَّ رَبِّى عَلَىٰ صِرَٰطٍ مُّسْتَقِيمٍ",
+      "translationSq": "Unë mbështetem tek Allahu, Zoti im dhe Zoti juaj. S’ka asnjë gjallesë që të mos jetë nën pushtetin e Tij. Me të vërtetë, Zoti im, është në rrugë të drejtë."
+    },
+    {
+      "surah": 11,
+      "ayah": 57,
+      "verseKey": "11:57",
+      "arabic": "فَإِن تَوَلَّوْا۟ فَقَدْ أَبْلَغْتُكُم مَّآ أُرْسِلْتُ بِهِۦٓ إِلَيْكُمْ ۚ وَيَسْتَخْلِفُ رَبِّى قَوْمًا غَيْرَكُمْ وَلَا تَضُرُّونَهُۥ شَيْـًٔا ۚ إِنَّ رَبِّى عَلَىٰ كُلِّ شَىْءٍ حَفِيظٌ",
+      "translationSq": "E, nëse ju shmangeni, unë tashmë jua kam përcjellë atë (mesazhin), për të cilin jam dërguar te ju. Zoti im, në vendin tuaj do të sjellë një popull tjetër, kurse ju nuk mund t’i bëni kurrfarë dëmi Atij. Vërtet, Zoti im është Mbikëqyrës mbi çdo gjë”."
+    },
+    {
+      "surah": 11,
+      "ayah": 58,
+      "verseKey": "11:58",
+      "arabic": "وَلَمَّا جَآءَ أَمْرُنَا نَجَّيْنَا هُودًا وَٱلَّذِينَ ءَامَنُوا۟ مَعَهُۥ بِرَحْمَةٍ مِّنَّا وَنَجَّيْنَـٰهُم مِّنْ عَذَابٍ غَلِيظٍ",
+      "translationSq": "Kur erdhi urdhri Ynë, me mëshirën Tonë, Ne e shpëtuam Hudin bashkë me besimtarët e tij. I shpëtuam ata nga dënimi i rëndë."
+    },
+    {
+      "surah": 11,
+      "ayah": 59,
+      "verseKey": "11:59",
+      "arabic": "وَتِلْكَ عَادٌ ۖ جَحَدُوا۟ بِـَٔايَـٰتِ رَبِّهِمْ وَعَصَوْا۟ رُسُلَهُۥ وَٱتَّبَعُوٓا۟ أَمْرَ كُلِّ جَبَّارٍ عَنِيدٍ",
+      "translationSq": "Ja, ky ishte fisi Ad. Ai i mohonte shenjat e Zotit të tij, nuk i dëgjonte të dërguarit e Tij dhe shkonte pas urdhrit të çdo keqbërësi kokëfortë."
+    },
+    {
+      "surah": 11,
+      "ayah": 60,
+      "verseKey": "11:60",
+      "arabic": "وَأُتْبِعُوا۟ فِى هَـٰذِهِ ٱلدُّنْيَا لَعْنَةً وَيَوْمَ ٱلْقِيَـٰمَةِ ۗ أَلَآ إِنَّ عَادًا كَفَرُوا۟ رَبَّهُمْ ۗ أَلَا بُعْدًا لِّعَادٍ قَوْمِ هُودٍ",
+      "translationSq": "Ata i ndoqi mallkimi në këtë jetë dhe në Ditën e Kiametit. Me të vërtetë, fisi Ad e mohoi Zotin e tij. Qoftë larguar (nga mëshira e Allahut) fisi Ad, populli i Hudit!"
+    },
+    {
+      "surah": 11,
+      "ayah": 61,
+      "verseKey": "11:61",
+      "arabic": "۞ وَإِلَىٰ ثَمُودَ أَخَاهُمْ صَـٰلِحًا ۚ قَالَ يَـٰقَوْمِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَـٰهٍ غَيْرُهُۥ ۖ هُوَ أَنشَأَكُم مِّنَ ٱلْأَرْضِ وَٱسْتَعْمَرَكُمْ فِيهَا فَٱسْتَغْفِرُوهُ ثُمَّ تُوبُوٓا۟ إِلَيْهِ ۚ إِنَّ رَبِّى قَرِيبٌ مُّجِيبٌ",
+      "translationSq": "Fisit Themud (Ne i dërguam) vëllanë e tij, Salihun. “O populli im”, - u tha ai - “adhuroni vetëm Allahun. Ju s’keni zot tjetër përveç Atij! Ai ju krijoi nga toka dhe ju vuri të jetoni në të; andaj, kërkoni falje nga Ai dhe kthehuni me pendim tek Ai! Pa dyshim, Zoti im është afër dhe u përgjigjet (lutjeve).”"
+    },
+    {
+      "surah": 11,
+      "ayah": 62,
+      "verseKey": "11:62",
+      "arabic": "قَالُوا۟ يَـٰصَـٰلِحُ قَدْ كُنتَ فِينَا مَرْجُوًّا قَبْلَ هَـٰذَآ ۖ أَتَنْهَىٰنَآ أَن نَّعْبُدَ مَا يَعْبُدُ ءَابَآؤُنَا وَإِنَّنَا لَفِى شَكٍّ مِّمَّا تَدْعُونَآ إِلَيْهِ مُرِيبٍ",
+      "translationSq": "Ata thanë: “O Salih! Ti ke qenë i nderuar mes nesh dhe shpresa jonë para kësaj (fjale). A mos vallë po na ndalon të adhurojmë ato që i kanë adhuruar prindërit tanë? Vërtet, ne jemi në mëdyshje për thirrjen tënde”."
+    },
+    {
+      "surah": 11,
+      "ayah": 63,
+      "verseKey": "11:63",
+      "arabic": "قَالَ يَـٰقَوْمِ أَرَءَيْتُمْ إِن كُنتُ عَلَىٰ بَيِّنَةٍ مِّن رَّبِّى وَءَاتَىٰنِى مِنْهُ رَحْمَةً فَمَن يَنصُرُنِى مِنَ ٱللَّهِ إِنْ عَصَيْتُهُۥ ۖ فَمَا تَزِيدُونَنِى غَيْرَ تَخْسِيرٍ",
+      "translationSq": "Ai tha: “O populli im, mendoni pak! Nëse Zoti im më ka dhënë provë të qartë nga Vetja dhe mëshirë, kush do të më mbrojë nga dënimi i Allahut, nëse nuk e dëgjoj?! Ju (me këtë) mua do të më shtonit vetëm humbjen."
+    },
+    {
+      "surah": 11,
+      "ayah": 64,
+      "verseKey": "11:64",
+      "arabic": "وَيَـٰقَوْمِ هَـٰذِهِۦ نَاقَةُ ٱللَّهِ لَكُمْ ءَايَةً فَذَرُوهَا تَأْكُلْ فِىٓ أَرْضِ ٱللَّهِ وَلَا تَمَسُّوهَا بِسُوٓءٍ فَيَأْخُذَكُمْ عَذَابٌ قَرِيبٌ",
+      "translationSq": "O populli im! Kjo është deveja e Allahut, shenjë e qartë për ju, prandaj lëreni të kullosë në tokën e Allahut dhe mos i bëni ndonjë të keqe, se ju godet ndëshkimi menjëherë”."
+    },
+    {
+      "surah": 11,
+      "ayah": 65,
+      "verseKey": "11:65",
+      "arabic": "فَعَقَرُوهَا فَقَالَ تَمَتَّعُوا۟ فِى دَارِكُمْ ثَلَـٰثَةَ أَيَّامٍ ۖ ذَٰلِكَ وَعْدٌ غَيْرُ مَكْذُوبٍ",
+      "translationSq": "Por ata e therën dhe ai tha: “Jetoni në shtëpitë tuaja edhe tri ditë! Ky është premtimi i vërtetë”."
+    },
+    {
+      "surah": 11,
+      "ayah": 66,
+      "verseKey": "11:66",
+      "arabic": "فَلَمَّا جَآءَ أَمْرُنَا نَجَّيْنَا صَـٰلِحًا وَٱلَّذِينَ ءَامَنُوا۟ مَعَهُۥ بِرَحْمَةٍ مِّنَّا وَمِنْ خِزْىِ يَوْمِئِذٍ ۗ إِنَّ رَبَّكَ هُوَ ٱلْقَوِىُّ ٱلْعَزِيزُ",
+      "translationSq": "E, kur erdhi urdhri Ynë, Ne - me mëshirën Tonë, e shpëtuam Salihun bashkë me besimtarët e tij nga poshtërimi i asaj dite. Me të vërtetë, Zoti yt është i Forti dhe i Plotfuqishmi."
+    },
+    {
+      "surah": 11,
+      "ayah": 67,
+      "verseKey": "11:67",
+      "arabic": "وَأَخَذَ ٱلَّذِينَ ظَلَمُوا۟ ٱلصَّيْحَةُ فَأَصْبَحُوا۟ فِى دِيَـٰرِهِمْ جَـٰثِمِينَ",
+      "translationSq": "Kurse ata që bënë të këqija, i kaploi një zë i tmerrshëm dhe në shtëpitë e tyre u gdhinë të vdekur e të palëvizshëm,"
+    },
+    {
+      "surah": 11,
+      "ayah": 68,
+      "verseKey": "11:68",
+      "arabic": "كَأَن لَّمْ يَغْنَوْا۟ فِيهَآ ۗ أَلَآ إِنَّ ثَمُودَا۟ كَفَرُوا۟ رَبَّهُمْ ۗ أَلَا بُعْدًا لِّثَمُودَ",
+      "translationSq": "sikur nuk kishin jetuar kurrë në to. Me të vërtetë, fisi Themud mohoi Zotin e tij. Qoftë larguar (nga mëshira e Zotit) fisi Themud!"
+    },
+    {
+      "surah": 11,
+      "ayah": 69,
+      "verseKey": "11:69",
+      "arabic": "وَلَقَدْ جَآءَتْ رُسُلُنَآ إِبْرَٰهِيمَ بِٱلْبُشْرَىٰ قَالُوا۟ سَلَـٰمًا ۖ قَالَ سَلَـٰمٌ ۖ فَمَا لَبِثَ أَن جَآءَ بِعِجْلٍ حَنِيذٍ",
+      "translationSq": "Të dërguarit Tanë, i sollën Ibrahimit lajmin e mirë dhe i thanë: “Paqe mbi ty!” Ai u përgjigj: “Paqja qoftë mbi ju!” Dhe me të shpejtë u solli atyre një viç të pjekur."
+    },
+    {
+      "surah": 11,
+      "ayah": 70,
+      "verseKey": "11:70",
+      "arabic": "فَلَمَّا رَءَآ أَيْدِيَهُمْ لَا تَصِلُ إِلَيْهِ نَكِرَهُمْ وَأَوْجَسَ مِنْهُمْ خِيفَةً ۚ قَالُوا۟ لَا تَخَفْ إِنَّآ أُرْسِلْنَآ إِلَىٰ قَوْمِ لُوطٍ",
+      "translationSq": "Kur pa se ata nuk po i zgjasnin duart tek mishi, nuk i pëlqeu dhe ndjeu frikë prej atyre. (Engjëjt) thanë: “Mos u frikëso, Ne jemi dërguar te populli i Lutit”."
+    },
+    {
+      "surah": 11,
+      "ayah": 71,
+      "verseKey": "11:71",
+      "arabic": "وَٱمْرَأَتُهُۥ قَآئِمَةٌ فَضَحِكَتْ فَبَشَّرْنَـٰهَا بِإِسْحَـٰقَ وَمِن وَرَآءِ إِسْحَـٰقَ يَعْقُوبَ",
+      "translationSq": "Gruaja e tij, që rrinte aty, qeshi kur Ne i dhamë lajmin e mirë për Is’hakun e pas Is’hakut - për Jakubin."
+    },
+    {
+      "surah": 11,
+      "ayah": 72,
+      "verseKey": "11:72",
+      "arabic": "قَالَتْ يَـٰوَيْلَتَىٰٓ ءَأَلِدُ وَأَنَا۠ عَجُوزٌ وَهَـٰذَا بَعْلِى شَيْخًا ۖ إِنَّ هَـٰذَا لَشَىْءٌ عَجِيبٌ",
+      "translationSq": "Ajo tha: “Ah! E mjera unë! A mos vallë, kështu plakë do të lind unë, ndërkohë që edhe burri im është plak! Me të vërtetë, kjo është diçka e jashtëzakonshme!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 73,
+      "verseKey": "11:73",
+      "arabic": "قَالُوٓا۟ أَتَعْجَبِينَ مِنْ أَمْرِ ٱللَّهِ ۖ رَحْمَتُ ٱللَّهِ وَبَرَكَـٰتُهُۥ عَلَيْكُمْ أَهْلَ ٱلْبَيْتِ ۚ إِنَّهُۥ حَمِيدٌ مَّجِيدٌ",
+      "translationSq": "Ata (engjëjt), thanë: “A mos vallë, po çuditesh me urdhrin e Allahut? Mëshira e Allahut dhe bekimi i Tij qofshin mbi ju - familjen e të Dërguarit. Me të vërtetë, Ai është i Falënderuar dhe i Lavdëruar!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 74,
+      "verseKey": "11:74",
+      "arabic": "فَلَمَّا ذَهَبَ عَنْ إِبْرَٰهِيمَ ٱلرَّوْعُ وَجَآءَتْهُ ٱلْبُشْرَىٰ يُجَـٰدِلُنَا فِى قَوْمِ لُوطٍ",
+      "translationSq": "Pasi i kaloi frika Ibrahimit dhe i erdhi lajmi i gëzuar, ai polemizoi me të dërguarit Tanë për popullin e Lutit."
+    },
+    {
+      "surah": 11,
+      "ayah": 75,
+      "verseKey": "11:75",
+      "arabic": "إِنَّ إِبْرَٰهِيمَ لَحَلِيمٌ أَوَّٰهٌ مُّنِيبٌ",
+      "translationSq": "Vërtet, Ibrahimi ishte i butë, i dhembshur e vazhdimisht i kthyer (tek Allahu)."
+    },
+    {
+      "surah": 11,
+      "ayah": 76,
+      "verseKey": "11:76",
+      "arabic": "يَـٰٓإِبْرَٰهِيمُ أَعْرِضْ عَنْ هَـٰذَآ ۖ إِنَّهُۥ قَدْ جَآءَ أَمْرُ رَبِّكَ ۖ وَإِنَّهُمْ ءَاتِيهِمْ عَذَابٌ غَيْرُ مَرْدُودٍ",
+      "translationSq": "“O Ibrahim, shmangu prej kësaj! Me të vërtetë, erdhi urdhri nga Zoti yt dhe ata do t’i gjejë dënimi i pashmangshëm.”"
+    },
+    {
+      "surah": 11,
+      "ayah": 77,
+      "verseKey": "11:77",
+      "arabic": "وَلَمَّا جَآءَتْ رُسُلُنَا لُوطًا سِىٓءَ بِهِمْ وَضَاقَ بِهِمْ ذَرْعًا وَقَالَ هَـٰذَا يَوْمٌ عَصِيبٌ",
+      "translationSq": "Kur i erdhën të dërguarit Tanë Lutit, Ai u hidhërua, ndjeu një shtrëngim në shpirtin e tij dhe tha: “Kjo është ditë e rëndë!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 78,
+      "verseKey": "11:78",
+      "arabic": "وَجَآءَهُۥ قَوْمُهُۥ يُهْرَعُونَ إِلَيْهِ وَمِن قَبْلُ كَانُوا۟ يَعْمَلُونَ ٱلسَّيِّـَٔاتِ ۚ قَالَ يَـٰقَوْمِ هَـٰٓؤُلَآءِ بَنَاتِى هُنَّ أَطْهَرُ لَكُمْ ۖ فَٱتَّقُوا۟ ٱللَّهَ وَلَا تُخْزُونِ فِى ضَيْفِىٓ ۖ أَلَيْسَ مِنكُمْ رَجُلٌ رَّشِيدٌ",
+      "translationSq": "Populli i tij, që më parë pat punuar vepra të këqija, u vërsul drejt atij. (Luti) tha: “O populli im, këto janë bijat e mia. Ato për ju janë më të pastra, e frikësojuni Allahut dhe mos më turpëroni para mysafirëve të mi. A nuk ka midis jush një njeri me mend?”"
+    },
+    {
+      "surah": 11,
+      "ayah": 79,
+      "verseKey": "11:79",
+      "arabic": "قَالُوا۟ لَقَدْ عَلِمْتَ مَا لَنَا فِى بَنَاتِكَ مِنْ حَقٍّ وَإِنَّكَ لَتَعْلَمُ مَا نُرِيدُ",
+      "translationSq": "Ata thanë: “Ti e di se ne nuk kemi të drejtë për bijat e tua. Në të vërtetë, ti e di se ç’duam ne”."
+    },
+    {
+      "surah": 11,
+      "ayah": 80,
+      "verseKey": "11:80",
+      "arabic": "قَالَ لَوْ أَنَّ لِى بِكُمْ قُوَّةً أَوْ ءَاوِىٓ إِلَىٰ رُكْنٍ شَدِيدٍ",
+      "translationSq": "Ai tha: “Sikur unë të kisha fuqi (që t’ju dëboj) ose të mbështetesha në ndonjë krah të fuqishëm!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 81,
+      "verseKey": "11:81",
+      "arabic": "قَالُوا۟ يَـٰلُوطُ إِنَّا رُسُلُ رَبِّكَ لَن يَصِلُوٓا۟ إِلَيْكَ ۖ فَأَسْرِ بِأَهْلِكَ بِقِطْعٍ مِّنَ ٱلَّيْلِ وَلَا يَلْتَفِتْ مِنكُمْ أَحَدٌ إِلَّا ٱمْرَأَتَكَ ۖ إِنَّهُۥ مُصِيبُهَا مَآ أَصَابَهُمْ ۚ إِنَّ مَوْعِدَهُمُ ٱلصُّبْحُ ۚ أَلَيْسَ ٱلصُّبْحُ بِقَرِيبٍ",
+      "translationSq": "Thanë (mysafirët): “O Lut! Ne jemi të dërguarit e Zotit tënd. Ata nuk mund të të bëjnë ty asgjë e pra, nisu ti me familjen tënde në orët e vona të natës dhe askush prej jush të mos këqyrë prapa, përveç gruas sate. Atë do ta godasë ajo që do t’i gjejë edhe ata. Afati i tyre është agimi i ditës. Vallë, a nuk është afër agimi i ditës?!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 82,
+      "verseKey": "11:82",
+      "arabic": "فَلَمَّا جَآءَ أَمْرُنَا جَعَلْنَا عَـٰلِيَهَا سَافِلَهَا وَأَمْطَرْنَا عَلَيْهَا حِجَارَةً مِّن سِجِّيلٍ مَّنضُودٍ",
+      "translationSq": "Kur erdhi urdhri Ynë, Ne e përmbysëm çdo gjë, - ato që ishin lart, i kthyem poshtë dhe mbi ata lëshuam gurë nga balta e pjekur, duke rënë vazhdimisht, si shiu."
+    },
+    {
+      "surah": 11,
+      "ayah": 83,
+      "verseKey": "11:83",
+      "arabic": "مُّسَوَّمَةً عِندَ رَبِّكَ ۖ وَمَا هِىَ مِنَ ٱلظَّـٰلِمِينَ بِبَعِيدٍ",
+      "translationSq": "(Ata ishin gurë) të shënuar (për dënim) te Zoti yt. Dënimi nuk është larg nga keqbërësit."
+    },
+    {
+      "surah": 11,
+      "ayah": 84,
+      "verseKey": "11:84",
+      "arabic": "۞ وَإِلَىٰ مَدْيَنَ أَخَاهُمْ شُعَيْبًا ۚ قَالَ يَـٰقَوْمِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَـٰهٍ غَيْرُهُۥ ۖ وَلَا تَنقُصُوا۟ ٱلْمِكْيَالَ وَٱلْمِيزَانَ ۚ إِنِّىٓ أَرَىٰكُم بِخَيْرٍ وَإِنِّىٓ أَخَافُ عَلَيْكُمْ عَذَابَ يَوْمٍ مُّحِيطٍ",
+      "translationSq": "Popullit të Medjenit Ne i dërguam vëllanë e tyre, Shuajbin. Ai tha: “O populli im, adhuroni Allahun! Ju s’keni tjetër zot përveç Tij. Mos bëni hile as gjatë matjes, as në kandar. Unë po shoh se ju gjendeni në begati dhe kam frikë se do t’ju godasë dënimi i një dite, që ju përfshin të gjithëve."
+    },
+    {
+      "surah": 11,
+      "ayah": 85,
+      "verseKey": "11:85",
+      "arabic": "وَيَـٰقَوْمِ أَوْفُوا۟ ٱلْمِكْيَالَ وَٱلْمِيزَانَ بِٱلْقِسْطِ ۖ وَلَا تَبْخَسُوا۟ ٱلنَّاسَ أَشْيَآءَهُمْ وَلَا تَعْثَوْا۟ فِى ٱلْأَرْضِ مُفْسِدِينَ",
+      "translationSq": "O populli im, matni drejt në litër dhe kandar, mos ua hani njerëzve hakun e tyre dhe mos bëni ngatërresa në Tokë!"
+    },
+    {
+      "surah": 11,
+      "ayah": 86,
+      "verseKey": "11:86",
+      "arabic": "بَقِيَّتُ ٱللَّهِ خَيْرٌ لَّكُمْ إِن كُنتُم مُّؤْمِنِينَ ۚ وَمَآ أَنَا۠ عَلَيْكُم بِحَفِيظٍ",
+      "translationSq": "Ajo që ju është lënë nga Allahu, është më e mirë për ju, nëse jeni besimtarë; e unë nuk jam ruajtësi juaj”."
+    },
+    {
+      "surah": 11,
+      "ayah": 87,
+      "verseKey": "11:87",
+      "arabic": "قَالُوا۟ يَـٰشُعَيْبُ أَصَلَوٰتُكَ تَأْمُرُكَ أَن نَّتْرُكَ مَا يَعْبُدُ ءَابَآؤُنَآ أَوْ أَن نَّفْعَلَ فِىٓ أَمْوَٰلِنَا مَا نَشَـٰٓؤُا۟ ۖ إِنَّكَ لَأَنتَ ٱلْحَلِيمُ ٱلرَّشِيدُ",
+      "translationSq": "Ata thanë: “O Shuajb, a mos vallë namazi yt urdhëron që ne t’i lëmë ato që i kanë adhuruar të parët tanë ose që të mos bëjmë me pasurinë tonë çfarë të duam? Qenke njëmend i butë dhe i drejtë ti!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 88,
+      "verseKey": "11:88",
+      "arabic": "قَالَ يَـٰقَوْمِ أَرَءَيْتُمْ إِن كُنتُ عَلَىٰ بَيِّنَةٍ مِّن رَّبِّى وَرَزَقَنِى مِنْهُ رِزْقًا حَسَنًا ۚ وَمَآ أُرِيدُ أَنْ أُخَالِفَكُمْ إِلَىٰ مَآ أَنْهَىٰكُمْ عَنْهُ ۚ إِنْ أُرِيدُ إِلَّا ٱلْإِصْلَـٰحَ مَا ٱسْتَطَعْتُ ۚ وَمَا تَوْفِيقِىٓ إِلَّا بِٱللَّهِ ۚ عَلَيْهِ تَوَكَّلْتُ وَإِلَيْهِ أُنِيبُ",
+      "translationSq": "Ai tha: “O populli im, mendoni pak! Nëse unë kam provë të qartë nga Zoti im, i Cili më ka furnizuar me begati të mira nga ana e Vet, a të mos ju udhëzoj në rrugën e drejtë?! Unë nuk dëshiroj të bëj atë, që jua ndaloj juve. Unë dëshiroj vetëm të përmirësoj atë që mundem. Ndërsa suksesi im varet vetëm nga Allahu. Tek Ai mbështetem dhe Atij i drejtohem."
+    },
+    {
+      "surah": 11,
+      "ayah": 89,
+      "verseKey": "11:89",
+      "arabic": "وَيَـٰقَوْمِ لَا يَجْرِمَنَّكُمْ شِقَاقِىٓ أَن يُصِيبَكُم مِّثْلُ مَآ أَصَابَ قَوْمَ نُوحٍ أَوْ قَوْمَ هُودٍ أَوْ قَوْمَ صَـٰلِحٍ ۚ وَمَا قَوْمُ لُوطٍ مِّنكُم بِبَعِيدٍ",
+      "translationSq": "O populli im, kundërshtimi ndaj meje le të mos ju çojë kurrsesi që t’ju ndodhë ajo, që i ndodhi popullit të Nuhut ose popullit të Hudit apo popullit të Salihut; mos harroni se edhe populli i Lutit nuk është larg prej jush."
+    },
+    {
+      "surah": 11,
+      "ayah": 90,
+      "verseKey": "11:90",
+      "arabic": "وَٱسْتَغْفِرُوا۟ رَبَّكُمْ ثُمَّ تُوبُوٓا۟ إِلَيْهِ ۚ إِنَّ رَبِّى رَحِيمٌ وَدُودٌ",
+      "translationSq": "Kërkoni falje nga Zoti juaj e kthehuni me pendim tek Ai. Me të vërtetë, Zoti im është Mëshirëplotë dhe gjithë dashuri.”"
+    },
+    {
+      "surah": 11,
+      "ayah": 91,
+      "verseKey": "11:91",
+      "arabic": "قَالُوا۟ يَـٰشُعَيْبُ مَا نَفْقَهُ كَثِيرًا مِّمَّا تَقُولُ وَإِنَّا لَنَرَىٰكَ فِينَا ضَعِيفًا ۖ وَلَوْلَا رَهْطُكَ لَرَجَمْنَـٰكَ ۖ وَمَآ أَنتَ عَلَيْنَا بِعَزِيزٍ",
+      "translationSq": "Ata thanë: “O Shuajb, ne nuk kuptojmë shumë nga ato, që na thua ti dhe të konsiderojmë të dobët midis nesh. Sikur të mos ishte farefisi yt, do të të kishim mbytur me gurë; ti nuk je i respektuar te ne.”"
+    },
+    {
+      "surah": 11,
+      "ayah": 92,
+      "verseKey": "11:92",
+      "arabic": "قَالَ يَـٰقَوْمِ أَرَهْطِىٓ أَعَزُّ عَلَيْكُم مِّنَ ٱللَّهِ وَٱتَّخَذْتُمُوهُ وَرَآءَكُمْ ظِهْرِيًّا ۖ إِنَّ رَبِّى بِمَا تَعْمَلُونَ مُحِيطٌ",
+      "translationSq": "Ai tha: “O populli im, a mos vallë farefisi im për ju është më i respektuar se Allahu, të cilin po e anashkaloni? Me të vërtetë, Zoti im, ka nën kontroll gjithçka që bëni ju."
+    },
+    {
+      "surah": 11,
+      "ayah": 93,
+      "verseKey": "11:93",
+      "arabic": "وَيَـٰقَوْمِ ٱعْمَلُوا۟ عَلَىٰ مَكَانَتِكُمْ إِنِّى عَـٰمِلٌ ۖ سَوْفَ تَعْلَمُونَ مَن يَأْتِيهِ عَذَابٌ يُخْزِيهِ وَمَنْ هُوَ كَـٰذِبٌ ۖ وَٱرْتَقِبُوٓا۟ إِنِّى مَعَكُمْ رَقِيبٌ",
+      "translationSq": "O populli im, bëni sa të mundni, por edhe unë do të bëj. Ju, shpejt do ta mësoni se kë do ta gjejë dënimi që do ta poshtërojë dhe kush është gënjeshtar. Pritni (fundin), se edhe unë do të pres me ju”."
+    },
+    {
+      "surah": 11,
+      "ayah": 94,
+      "verseKey": "11:94",
+      "arabic": "وَلَمَّا جَآءَ أَمْرُنَا نَجَّيْنَا شُعَيْبًا وَٱلَّذِينَ ءَامَنُوا۟ مَعَهُۥ بِرَحْمَةٍ مِّنَّا وَأَخَذَتِ ٱلَّذِينَ ظَلَمُوا۟ ٱلصَّيْحَةُ فَأَصْبَحُوا۟ فِى دِيَـٰرِهِمْ جَـٰثِمِينَ",
+      "translationSq": "Kur erdhi urdhri Ynë, Ne e shpëtuam me mëshirën Tonë Shuajbin dhe ata që i besuan atij, kurse mohuesit i kaploi një zë i tmerrshëm dhe në shtëpitë e tyre u gdhinë të vdekur e të palëvizshëm,"
+    },
+    {
+      "surah": 11,
+      "ayah": 95,
+      "verseKey": "11:95",
+      "arabic": "كَأَن لَّمْ يَغْنَوْا۟ فِيهَآ ۗ أَلَا بُعْدًا لِّمَدْيَنَ كَمَا بَعِدَتْ ثَمُودُ",
+      "translationSq": "thuajse nuk kishin jetuar kurrë aty. Qoftë larguar (nga mëshira e Zotit) populli i Medjenit, ashtu siç qe larguar edhe fisi Themud!"
+    },
+    {
+      "surah": 11,
+      "ayah": 96,
+      "verseKey": "11:96",
+      "arabic": "وَلَقَدْ أَرْسَلْنَا مُوسَىٰ بِـَٔايَـٰتِنَا وَسُلْطَـٰنٍ مُّبِينٍ",
+      "translationSq": "Ne e dërguam Musain me mrekullitë Tona dhe me autoritetin e qartë"
+    },
+    {
+      "surah": 11,
+      "ayah": 97,
+      "verseKey": "11:97",
+      "arabic": "إِلَىٰ فِرْعَوْنَ وَمَلَإِي۟هِۦ فَٱتَّبَعُوٓا۟ أَمْرَ فِرْعَوْنَ ۖ وَمَآ أَمْرُ فِرْعَوْنَ بِرَشِيدٍ",
+      "translationSq": "te Faraoni dhe paria e tij, por paria shkoi pas urdhrit të Faraonit, ndonëse urdhri i Faraonit nuk ishte i drejtë."
+    },
+    {
+      "surah": 11,
+      "ayah": 98,
+      "verseKey": "11:98",
+      "arabic": "يَقْدُمُ قَوْمَهُۥ يَوْمَ ٱلْقِيَـٰمَةِ فَأَوْرَدَهُمُ ٱلنَّارَ ۖ وَبِئْسَ ٱلْوِرْدُ ٱلْمَوْرُودُ",
+      "translationSq": "Ai do ta udhëheqë popullin e tij në Ditën e Kiametit e do ta çojë në zjarr. Eh, sa vend i shëmtuar është ai, ku do të sillen ata!"
+    },
+    {
+      "surah": 11,
+      "ayah": 99,
+      "verseKey": "11:99",
+      "arabic": "وَأُتْبِعُوا۟ فِى هَـٰذِهِۦ لَعْنَةً وَيَوْمَ ٱلْقِيَـٰمَةِ ۚ بِئْسَ ٱلرِّفْدُ ٱلْمَرْفُودُ",
+      "translationSq": "Ata i përcjell mallkimi në këtë jetë dhe në jetën tjetër. Eh sa “dhuratë” e shëmtuar është ajo që do t’u jepet!"
+    },
+    {
+      "surah": 11,
+      "ayah": 100,
+      "verseKey": "11:100",
+      "arabic": "ذَٰلِكَ مِنْ أَنۢبَآءِ ٱلْقُرَىٰ نَقُصُّهُۥ عَلَيْكَ ۖ مِنْهَا قَآئِمٌ وَحَصِيدٌ",
+      "translationSq": "Këto janë disa prej historive të qyteteve që po t’i tregojmë ty (o Muhamed). Disa prej atyre ende qëndrojnë, kurse disa janë rrënuar."
+    },
+    {
+      "surah": 11,
+      "ayah": 101,
+      "verseKey": "11:101",
+      "arabic": "وَمَا ظَلَمْنَـٰهُمْ وَلَـٰكِن ظَلَمُوٓا۟ أَنفُسَهُمْ ۖ فَمَآ أَغْنَتْ عَنْهُمْ ءَالِهَتُهُمُ ٱلَّتِى يَدْعُونَ مِن دُونِ ٱللَّهِ مِن شَىْءٍ لَّمَّا جَآءَ أَمْرُ رَبِّكَ ۖ وَمَا زَادُوهُمْ غَيْرَ تَتْبِيبٍ",
+      "translationSq": "Ne nuk u bëmë atyre padrejtësi, por ata i bënë padrejtësi vetvetes. Hyjnitë, që ata i adhuronin në vend të Allahut, nuk i ndihmuan aspak, kur erdhi urdhri i Zotit tënd dhe nuk iu shtuan atyre kurrgjë tjetër, përveç humbjes."
+    },
+    {
+      "surah": 11,
+      "ayah": 102,
+      "verseKey": "11:102",
+      "arabic": "وَكَذَٰلِكَ أَخْذُ رَبِّكَ إِذَآ أَخَذَ ٱلْقُرَىٰ وَهِىَ ظَـٰلِمَةٌ ۚ إِنَّ أَخْذَهُۥٓ أَلِيمٌ شَدِيدٌ",
+      "translationSq": "I tillë është dënimi i Zotit tënd, kur ndëshkon vendbanimet që bënin gjynahe. Me të vërtetë, dënimi i Tij është i dhembshëm dhe i ashpër."
+    },
+    {
+      "surah": 11,
+      "ayah": 103,
+      "verseKey": "11:103",
+      "arabic": "إِنَّ فِى ذَٰلِكَ لَـَٔايَةً لِّمَنْ خَافَ عَذَابَ ٱلْـَٔاخِرَةِ ۚ ذَٰلِكَ يَوْمٌ مَّجْمُوعٌ لَّهُ ٱلنَّاسُ وَذَٰلِكَ يَوْمٌ مَّشْهُودٌ",
+      "translationSq": "Pa dyshim, në këto (ngjarje) ka këshillë për atë që i druhet dënimit të Ditës së Gjykimit. Ajo është Dita në të cilën do të tubohen të gjithë njerëzit; ajo është Ditë e dëshmuar."
+    },
+    {
+      "surah": 11,
+      "ayah": 104,
+      "verseKey": "11:104",
+      "arabic": "وَمَا نُؤَخِّرُهُۥٓ إِلَّا لِأَجَلٍ مَّعْدُودٍ",
+      "translationSq": "Ne e shtyjmë atë vetëm që të plotësohet afati i caktuar."
+    },
+    {
+      "surah": 11,
+      "ayah": 105,
+      "verseKey": "11:105",
+      "arabic": "يَوْمَ يَأْتِ لَا تَكَلَّمُ نَفْسٌ إِلَّا بِإِذْنِهِۦ ۚ فَمِنْهُمْ شَقِىٌّ وَسَعِيدٌ",
+      "translationSq": "Kur të vijë ajo ditë, njeriu mund të flasë vetëm me lejen e Tij. Disa prej tyre do të jenë të mjerë e disa fatlumë."
+    },
+    {
+      "surah": 11,
+      "ayah": 106,
+      "verseKey": "11:106",
+      "arabic": "فَأَمَّا ٱلَّذِينَ شَقُوا۟ فَفِى ٱلنَّارِ لَهُمْ فِيهَا زَفِيرٌ وَشَهِيقٌ",
+      "translationSq": "Ata që do të jenë të mjerë, do të hyjnë në zjarr, ku do t’i presin veç ofshamat e vajtimet."
+    },
+    {
+      "surah": 11,
+      "ayah": 107,
+      "verseKey": "11:107",
+      "arabic": "خَـٰلِدِينَ فِيهَا مَا دَامَتِ ٱلسَّمَـٰوَٰتُ وَٱلْأَرْضُ إِلَّا مَا شَآءَ رَبُّكَ ۚ إِنَّ رَبَّكَ فَعَّالٌ لِّمَا يُرِيدُ",
+      "translationSq": "Aty do të mbeten përherë, derisa të jenë qiejt dhe Toka, veç si të dojë Zoti yt. Me të vërtetë, Zoti yt kryen atë që do."
+    },
+    {
+      "surah": 11,
+      "ayah": 108,
+      "verseKey": "11:108",
+      "arabic": "۞ وَأَمَّا ٱلَّذِينَ سُعِدُوا۟ فَفِى ٱلْجَنَّةِ خَـٰلِدِينَ فِيهَا مَا دَامَتِ ٱلسَّمَـٰوَٰتُ وَٱلْأَرْضُ إِلَّا مَا شَآءَ رَبُّكَ ۖ عَطَآءً غَيْرَ مَجْذُوذٍ",
+      "translationSq": "Kurse fatlumët, do të hyjnë në Xhenet, ku do të qëndrojnë përherë, derisa të jenë qiejt dhe Toka, veç si të dojë Zoti yt. Kjo është dhuratë e pandërprerë."
+    },
+    {
+      "surah": 11,
+      "ayah": 109,
+      "verseKey": "11:109",
+      "arabic": "فَلَا تَكُ فِى مِرْيَةٍ مِّمَّا يَعْبُدُ هَـٰٓؤُلَآءِ ۚ مَا يَعْبُدُونَ إِلَّا كَمَا يَعْبُدُ ءَابَآؤُهُم مِّن قَبْلُ ۚ وَإِنَّا لَمُوَفُّوهُمْ نَصِيبَهُمْ غَيْرَ مَنقُوصٍ",
+      "translationSq": "Prandaj, mos u bëj dyshues për atë që këta adhurojnë. Ata adhurojnë vetëm atë që kanë adhuruar dikur të parët e tyre. Dhe Ne do t’ua japim atë që kanë merituar, duke mos ua pakësuar aspak."
+    },
+    {
+      "surah": 11,
+      "ayah": 110,
+      "verseKey": "11:110",
+      "arabic": "وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَـٰبَ فَٱخْتُلِفَ فِيهِ ۚ وَلَوْلَا كَلِمَةٌ سَبَقَتْ مِن رَّبِّكَ لَقُضِىَ بَيْنَهُمْ ۚ وَإِنَّهُمْ لَفِى شَكٍّ مِّنْهُ مُرِيبٍ",
+      "translationSq": "Vërtet, Ne i dhamë Musait Librin, por rreth tij pati kundërshti. Sikur të mos ishte parathënë Fjala e Zotit tënd (për shtyrjen e gjykimit), me siguri që (çështja) do të gjykohej midis tyre (menjëherë). Në fakt, (edhe tani) ata janë në një mëdyshje tepër të madhe në lidhje me të."
+    },
+    {
+      "surah": 11,
+      "ayah": 111,
+      "verseKey": "11:111",
+      "arabic": "وَإِنَّ كُلًّا لَّمَّا لَيُوَفِّيَنَّهُمْ رَبُّكَ أَعْمَـٰلَهُمْ ۚ إِنَّهُۥ بِمَا يَعْمَلُونَ خَبِيرٌ",
+      "translationSq": "Në të vërtetë, çdonjërit prej tyre Zoti yt do t’ia plotësojë shpagimin për veprat e veta. Se Ai, me siguri, e di mirë atë që punojnë ata."
+    },
+    {
+      "surah": 11,
+      "ayah": 112,
+      "verseKey": "11:112",
+      "arabic": "فَٱسْتَقِمْ كَمَآ أُمِرْتَ وَمَن تَابَ مَعَكَ وَلَا تَطْغَوْا۟ ۚ إِنَّهُۥ بِمَا تَعْمَلُونَ بَصِيرٌ",
+      "translationSq": "Prandaj qëndro i patundur në udhën e drejtë, ashtu siç je i urdhëruar. Ashtu le të veprojnë edhe besimtarët që janë me ty, e mos i kaloni kufijtë, se Ai, me të vërtetë, i sheh mirë ato që punoni ju."
+    },
+    {
+      "surah": 11,
+      "ayah": 113,
+      "verseKey": "11:113",
+      "arabic": "وَلَا تَرْكَنُوٓا۟ إِلَى ٱلَّذِينَ ظَلَمُوا۟ فَتَمَسَّكُمُ ٱلنَّارُ وَمَا لَكُم مِّن دُونِ ٱللَّهِ مِنْ أَوْلِيَآءَ ثُمَّ لَا تُنصَرُونَ",
+      "translationSq": "Dhe mos anoni nga ata që bëjnë të këqija, përndryshe do t’ju përcëllojë Zjarri. Ju nuk do të keni mbrojtës tjetër përveç Allahut dhe nuk do të ndihmoheni."
+    },
+    {
+      "surah": 11,
+      "ayah": 114,
+      "verseKey": "11:114",
+      "arabic": "وَأَقِمِ ٱلصَّلَوٰةَ طَرَفَىِ ٱلنَّهَارِ وَزُلَفًا مِّنَ ٱلَّيْلِ ۚ إِنَّ ٱلْحَسَنَـٰتِ يُذْهِبْنَ ٱلسَّيِّـَٔاتِ ۚ ذَٰلِكَ ذِكْرَىٰ لِلذَّٰكِرِينَ",
+      "translationSq": "Fale namazin në mëngjes e mbrëmje dhe në një kohë të natës, sepse veprat e mira i shlyejnë veprat e këqija. Kjo këshillë vlen për ata që i pranojnë këshillat."
+    },
+    {
+      "surah": 11,
+      "ayah": 115,
+      "verseKey": "11:115",
+      "arabic": "وَٱصْبِرْ فَإِنَّ ٱللَّهَ لَا يُضِيعُ أَجْرَ ٱلْمُحْسِنِينَ",
+      "translationSq": "Dhe duro! Se Allahu, me të vërtetë, nuk e humb shpërblimin për punëmirët."
+    },
+    {
+      "surah": 11,
+      "ayah": 116,
+      "verseKey": "11:116",
+      "arabic": "فَلَوْلَا كَانَ مِنَ ٱلْقُرُونِ مِن قَبْلِكُمْ أُو۟لُوا۟ بَقِيَّةٍ يَنْهَوْنَ عَنِ ٱلْفَسَادِ فِى ٱلْأَرْضِ إِلَّا قَلِيلًا مِّمَّنْ أَنجَيْنَا مِنْهُمْ ۗ وَٱتَّبَعَ ٱلَّذِينَ ظَلَمُوا۟ مَآ أُتْرِفُوا۟ فِيهِ وَكَانُوا۟ مُجْرِمِينَ",
+      "translationSq": "A ka pasur njerëz të mençur te popujt para jush, të cilët të pengonin ngatërresat në Tokë, përveç disave prej tyre që i shpëtuam Ne?! Ata që bënin të këqija, jepeshin pas kënaqësive dhe ishin gjynahqarë."
+    },
+    {
+      "surah": 11,
+      "ayah": 117,
+      "verseKey": "11:117",
+      "arabic": "وَمَا كَانَ رَبُّكَ لِيُهْلِكَ ٱلْقُرَىٰ بِظُلْمٍ وَأَهْلُهَا مُصْلِحُونَ",
+      "translationSq": "Zoti yt kurrë nuk do t’i shkatërronte qytetet padrejtësisht, nëse banorët e tyre do të ishin të ndershëm."
+    },
+    {
+      "surah": 11,
+      "ayah": 118,
+      "verseKey": "11:118",
+      "arabic": "وَلَوْ شَآءَ رَبُّكَ لَجَعَلَ ٱلنَّاسَ أُمَّةً وَٰحِدَةً ۖ وَلَا يَزَالُونَ مُخْتَلِفِينَ",
+      "translationSq": "Sikur të kishte dashur Zoti yt, të gjithë njerëzit do t’i bashkonte në një bashkësi të vetme, por ata vazhdojnë të jenë të përçarë,"
+    },
+    {
+      "surah": 11,
+      "ayah": 119,
+      "verseKey": "11:119",
+      "arabic": "إِلَّا مَن رَّحِمَ رَبُّكَ ۚ وَلِذَٰلِكَ خَلَقَهُمْ ۗ وَتَمَّتْ كَلِمَةُ رَبِّكَ لَأَمْلَأَنَّ جَهَنَّمَ مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ أَجْمَعِينَ",
+      "translationSq": "përveç atyre, që i ka mëshiruar Zoti yt. Për këtë qëllim Ai i krijoi ata. Do të plotësohet Fjala e Zotit tënd: “Me të vërtetë që do ta mbush Xhehenemin me xhinde dhe njerëz bashkërisht!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 120,
+      "verseKey": "11:120",
+      "arabic": "وَكُلًّا نَّقُصُّ عَلَيْكَ مِنْ أَنۢبَآءِ ٱلرُّسُلِ مَا نُثَبِّتُ بِهِۦ فُؤَادَكَ ۚ وَجَآءَكَ فِى هَـٰذِهِ ٱلْحَقُّ وَمَوْعِظَةٌ وَذِكْرَىٰ لِلْمُؤْمِنِينَ",
+      "translationSq": "Ne po t’i tregojmë ty disa nga historitë e të dërguarve, për të ta forcuar zemrën. Në këtë sure të ka ardhur ty e vërteta. Ajo është këshillë dhe kujtesë për besimtarët."
+    },
+    {
+      "surah": 11,
+      "ayah": 121,
+      "verseKey": "11:121",
+      "arabic": "وَقُل لِّلَّذِينَ لَا يُؤْمِنُونَ ٱعْمَلُوا۟ عَلَىٰ مَكَانَتِكُمْ إِنَّا عَـٰمِلُونَ",
+      "translationSq": "Dhe thuaju atyre që nuk besojnë: “Ju bëni çfarë të mundni, edhe ne do të bëjmë çfarë të mundim,"
+    },
+    {
+      "surah": 11,
+      "ayah": 122,
+      "verseKey": "11:122",
+      "arabic": "وَٱنتَظِرُوٓا۟ إِنَّا مُنتَظِرُونَ",
+      "translationSq": "dhe pritni, nëse do të prisni, se dhe ne do të presim!”"
+    },
+    {
+      "surah": 11,
+      "ayah": 123,
+      "verseKey": "11:123",
+      "arabic": "وَلِلَّهِ غَيْبُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ وَإِلَيْهِ يُرْجَعُ ٱلْأَمْرُ كُلُّهُۥ فَٱعْبُدْهُ وَتَوَكَّلْ عَلَيْهِ ۚ وَمَا رَبُّكَ بِغَـٰفِلٍ عَمَّا تَعْمَلُونَ",
+      "translationSq": "Allahu i di të fshehtat e qiejve dhe të Tokës dhe çdo gjë kthehet tek Ai. Lutju Atij dhe mbështetu tek Ai! Zoti yt nuk është i pavëmendshëm ndaj asaj që bëni ju."
+    }
+  ]
+}

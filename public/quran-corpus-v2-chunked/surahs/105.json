@@ -1,0 +1,41 @@
+{
+  "surah": 105,
+  "verseCount": 5,
+  "verses": [
+    {
+      "surah": 105,
+      "ayah": 1,
+      "verseKey": "105:1",
+      "arabic": " أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَـٰبِ ٱلْفِيلِ",
+      "translationSq": "Vallë, a nuk ke dëgjuar ti se si bëri Zoti yt me njerëzit e elefantit?"
+    },
+    {
+      "surah": 105,
+      "ayah": 2,
+      "verseKey": "105:2",
+      "arabic": "أَلَمْ يَجْعَلْ كَيْدَهُمْ فِى تَضْلِيلٍ",
+      "translationSq": "A nuk ua prishi atyre kurthin,"
+    },
+    {
+      "surah": 105,
+      "ayah": 3,
+      "verseKey": "105:3",
+      "arabic": "وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ",
+      "translationSq": "duke dërguar kundër atyre tufa zogjsh,"
+    },
+    {
+      "surah": 105,
+      "ayah": 4,
+      "verseKey": "105:4",
+      "arabic": "تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ",
+      "translationSq": "të cilët i gjuajtën me gurë prej baltës së pjekur?"
+    },
+    {
+      "surah": 105,
+      "ayah": 5,
+      "verseKey": "105:5",
+      "arabic": "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍۭ",
+      "translationSq": "Dhe kështu, i bëri si byk i ngrënë."
+    }
+  ]
+}

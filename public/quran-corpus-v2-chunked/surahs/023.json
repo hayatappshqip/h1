@@ -1,0 +1,832 @@
+{
+  "surah": 23,
+  "verseCount": 118,
+  "verses": [
+    {
+      "surah": 23,
+      "ayah": 1,
+      "verseKey": "23:1",
+      "arabic": " قَدْ أَفْلَحَ ٱلْمُؤْمِنُونَ",
+      "translationSq": "Me të vërtetë, janë të shpëtuar besimtarët,"
+    },
+    {
+      "surah": 23,
+      "ayah": 2,
+      "verseKey": "23:2",
+      "arabic": "ٱلَّذِينَ هُمْ فِى صَلَاتِهِمْ خَـٰشِعُونَ",
+      "translationSq": "të cilët janë të përulur në namazin e tyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 3,
+      "verseKey": "23:3",
+      "arabic": "وَٱلَّذِينَ هُمْ عَنِ ٱللَّغْوِ مُعْرِضُونَ",
+      "translationSq": "të cilët shmangen nga fjalët e kota,"
+    },
+    {
+      "surah": 23,
+      "ayah": 4,
+      "verseKey": "23:4",
+      "arabic": "وَٱلَّذِينَ هُمْ لِلزَّكَوٰةِ فَـٰعِلُونَ",
+      "translationSq": "të cilët japin zekatin,"
+    },
+    {
+      "surah": 23,
+      "ayah": 5,
+      "verseKey": "23:5",
+      "arabic": "وَٱلَّذِينَ هُمْ لِفُرُوجِهِمْ حَـٰفِظُونَ",
+      "translationSq": "të cilët e ruajnë nderin e tyre (nga marrëdhëniet e jashtëligjshme),"
+    },
+    {
+      "surah": 23,
+      "ayah": 6,
+      "verseKey": "23:6",
+      "arabic": "إِلَّا عَلَىٰٓ أَزْوَٰجِهِمْ أَوْ مَا مَلَكَتْ أَيْمَـٰنُهُمْ فَإِنَّهُمْ غَيْرُ مَلُومِينَ",
+      "translationSq": "përveçse me gratë e tyre ose me skllavet që kanë në zotërim dhe, për këtë, nuk janë fajtorë,"
+    },
+    {
+      "surah": 23,
+      "ayah": 7,
+      "verseKey": "23:7",
+      "arabic": "فَمَنِ ٱبْتَغَىٰ وَرَآءَ ذَٰلِكَ فَأُو۟لَـٰٓئِكَ هُمُ ٱلْعَادُونَ",
+      "translationSq": "ndërsa ata që kërkojnë përtej kësaj, pikërisht ata janë shkelës (të kufijve),"
+    },
+    {
+      "surah": 23,
+      "ayah": 8,
+      "verseKey": "23:8",
+      "arabic": "وَٱلَّذِينَ هُمْ لِأَمَـٰنَـٰتِهِمْ وَعَهْدِهِمْ رَٰعُونَ",
+      "translationSq": "të cilët u përmbahen amaneteve dhe detyrimeve të marra"
+    },
+    {
+      "surah": 23,
+      "ayah": 9,
+      "verseKey": "23:9",
+      "arabic": "وَٱلَّذِينَ هُمْ عَلَىٰ صَلَوَٰتِهِمْ يُحَافِظُونَ",
+      "translationSq": "dhe të cilët i kryejnë rregullisht faljet."
+    },
+    {
+      "surah": 23,
+      "ayah": 10,
+      "verseKey": "23:10",
+      "arabic": "أُو۟لَـٰٓئِكَ هُمُ ٱلْوَٰرِثُونَ",
+      "translationSq": "Pikërisht ata do të jenë trashëgimtarët,"
+    },
+    {
+      "surah": 23,
+      "ayah": 11,
+      "verseKey": "23:11",
+      "arabic": "ٱلَّذِينَ يَرِثُونَ ٱلْفِرْدَوْسَ هُمْ فِيهَا خَـٰلِدُونَ",
+      "translationSq": "që do ta trashëgojnë Firdeusin, ku do të qëndrojnë përjetësisht."
+    },
+    {
+      "surah": 23,
+      "ayah": 12,
+      "verseKey": "23:12",
+      "arabic": "وَلَقَدْ خَلَقْنَا ٱلْإِنسَـٰنَ مِن سُلَـٰلَةٍ مِّن طِينٍ",
+      "translationSq": "Me të vërtetë, Ne e kemi krijuar njeriun prej palcës së baltës,"
+    },
+    {
+      "surah": 23,
+      "ayah": 13,
+      "verseKey": "23:13",
+      "arabic": "ثُمَّ جَعَلْنَـٰهُ نُطْفَةً فِى قَرَارٍ مَّكِينٍ",
+      "translationSq": "e pastaj, e bëmë atë pikë fare dhe e vumë në një vend të sigurt (mitër)."
+    },
+    {
+      "surah": 23,
+      "ayah": 14,
+      "verseKey": "23:14",
+      "arabic": "ثُمَّ خَلَقْنَا ٱلنُّطْفَةَ عَلَقَةً فَخَلَقْنَا ٱلْعَلَقَةَ مُضْغَةً فَخَلَقْنَا ٱلْمُضْغَةَ عِظَـٰمًا فَكَسَوْنَا ٱلْعِظَـٰمَ لَحْمًا ثُمَّ أَنشَأْنَـٰهُ خَلْقًا ءَاخَرَ ۚ فَتَبَارَكَ ٱللَّهُ أَحْسَنُ ٱلْخَـٰلِقِينَ",
+      "translationSq": "E mandej, pikën e farës e bëmë droçkë gjaku, e pastaj e bëmë copëz mishi pa formë; mandej, me atë mish bëmë eshtrat, pastaj i veshëm eshtrat me mish dhe pastaj e bëmë atë (njeriun) krijesë tjetër (duke i futur shpirtin). Qoftë lartësuar Allahu, Krijuesi më i përsosur!"
+    },
+    {
+      "surah": 23,
+      "ayah": 15,
+      "verseKey": "23:15",
+      "arabic": "ثُمَّ إِنَّكُم بَعْدَ ذَٰلِكَ لَمَيِّتُونَ",
+      "translationSq": "Mandej, pas kësaj ju do të vdisni,"
+    },
+    {
+      "surah": 23,
+      "ayah": 16,
+      "verseKey": "23:16",
+      "arabic": "ثُمَّ إِنَّكُمْ يَوْمَ ٱلْقِيَـٰمَةِ تُبْعَثُونَ",
+      "translationSq": "pastaj, ju me siguri që do të ringjalleni në Ditën e Kiametit."
+    },
+    {
+      "surah": 23,
+      "ayah": 17,
+      "verseKey": "23:17",
+      "arabic": "وَلَقَدْ خَلَقْنَا فَوْقَكُمْ سَبْعَ طَرَآئِقَ وَمَا كُنَّا عَنِ ٱلْخَلْقِ غَـٰفِلِينَ",
+      "translationSq": "Ne kemi krijuar mbi ju shtatë qiej dhe nuk jemi të pakujdesshëm ndaj krijesave Tona."
+    },
+    {
+      "surah": 23,
+      "ayah": 18,
+      "verseKey": "23:18",
+      "arabic": "وَأَنزَلْنَا مِنَ ٱلسَّمَآءِ مَآءًۢ بِقَدَرٍ فَأَسْكَنَّـٰهُ فِى ٱلْأَرْضِ ۖ وَإِنَّا عَلَىٰ ذَهَابٍۭ بِهِۦ لَقَـٰدِرُونَ",
+      "translationSq": "Ne zbresim ujë nga qielli me masë të caktuar, pastaj e depozitojmë atë në Tokë. Por, nëse dëshirojmë, Ne jemi në gjendje ta heqim atë tërësisht."
+    },
+    {
+      "surah": 23,
+      "ayah": 19,
+      "verseKey": "23:19",
+      "arabic": "فَأَنشَأْنَا لَكُم بِهِۦ جَنَّـٰتٍ مِّن نَّخِيلٍ وَأَعْنَـٰبٍ لَّكُمْ فِيهَا فَوَٰكِهُ كَثِيرَةٌ وَمِنْهَا تَأْكُلُونَ",
+      "translationSq": "Nëpërmjet tij (ujit), Ne bëjmë për ju kopshte hurmash dhe rrushi, ku ka shumë fruta për të ngrënë,"
+    },
+    {
+      "surah": 23,
+      "ayah": 20,
+      "verseKey": "23:20",
+      "arabic": "وَشَجَرَةً تَخْرُجُ مِن طُورِ سَيْنَآءَ تَنۢبُتُ بِٱلدُّهْنِ وَصِبْغٍ لِّلْـَٔاكِلِينَ",
+      "translationSq": "si dhe pemën që rritet në malin e Sinait e që u jep vaj dhe mëlmesë, atyre që e hanë."
+    },
+    {
+      "surah": 23,
+      "ayah": 21,
+      "verseKey": "23:21",
+      "arabic": "وَإِنَّ لَكُمْ فِى ٱلْأَنْعَـٰمِ لَعِبْرَةً ۖ نُّسْقِيكُم مِّمَّا فِى بُطُونِهَا وَلَكُمْ فِيهَا مَنَـٰفِعُ كَثِيرَةٌ وَمِنْهَا تَأْكُلُونَ",
+      "translationSq": "Vërtet, edhe te bagëtitë për ju ka shenja (për të medituar): ju pini atë që gjendet në barkun e tyre, hani mishin e tyre, nxirrni shumë dobi të tjera"
+    },
+    {
+      "surah": 23,
+      "ayah": 22,
+      "verseKey": "23:22",
+      "arabic": "وَعَلَيْهَا وَعَلَى ٱلْفُلْكِ تُحْمَلُونَ",
+      "translationSq": "dhe udhëtoni me ato, ashtu siç udhëtoni me anije."
+    },
+    {
+      "surah": 23,
+      "ayah": 23,
+      "verseKey": "23:23",
+      "arabic": "وَلَقَدْ أَرْسَلْنَا نُوحًا إِلَىٰ قَوْمِهِۦ فَقَالَ يَـٰقَوْمِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَـٰهٍ غَيْرُهُۥٓ ۖ أَفَلَا تَتَّقُونَ",
+      "translationSq": "Ne e dërguam Nuhun te populli i tij dhe ai tha: “O populli im, adhuroni Allahun! Ju nuk keni zot tjetër të vërtetë përveç Tij, vallë, a nuk keni frikë (prej Tij)?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 24,
+      "verseKey": "23:24",
+      "arabic": "فَقَالَ ٱلْمَلَؤُا۟ ٱلَّذِينَ كَفَرُوا۟ مِن قَوْمِهِۦ مَا هَـٰذَآ إِلَّا بَشَرٌ مِّثْلُكُمْ يُرِيدُ أَن يَتَفَضَّلَ عَلَيْكُمْ وَلَوْ شَآءَ ٱللَّهُ لَأَنزَلَ مَلَـٰٓئِكَةً مَّا سَمِعْنَا بِهَـٰذَا فِىٓ ءَابَآئِنَا ٱلْأَوَّلِينَ",
+      "translationSq": "Por paria e popullit të tij, që nuk besonte, tha: “Ky është veçse njeri si ju e do vetëm të madhërohet mbi ju. Sikur të kishte dashur Allahu, do të dërgonte engjëj; nuk kemi dëgjuar diçka të tillë nga të parët tanë të lashtë;"
+    },
+    {
+      "surah": 23,
+      "ayah": 25,
+      "verseKey": "23:25",
+      "arabic": "إِنْ هُوَ إِلَّا رَجُلٌۢ بِهِۦ جِنَّةٌ فَتَرَبَّصُوا۟ بِهِۦ حَتَّىٰ حِينٍ",
+      "translationSq": "ai është njeri i marrë, andaj lëreni atë njëfarë kohe!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 26,
+      "verseKey": "23:26",
+      "arabic": "قَالَ رَبِّ ٱنصُرْنِى بِمَا كَذَّبُونِ",
+      "translationSq": "(Nuhu) tha: “O Zoti im, më ndihmo, sepse ata më quajnë për gënjeshtar!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 27,
+      "verseKey": "23:27",
+      "arabic": "فَأَوْحَيْنَآ إِلَيْهِ أَنِ ٱصْنَعِ ٱلْفُلْكَ بِأَعْيُنِنَا وَوَحْيِنَا فَإِذَا جَآءَ أَمْرُنَا وَفَارَ ٱلتَّنُّورُ ۙ فَٱسْلُكْ فِيهَا مِن كُلٍّ زَوْجَيْنِ ٱثْنَيْنِ وَأَهْلَكَ إِلَّا مَن سَبَقَ عَلَيْهِ ٱلْقَوْلُ مِنْهُمْ ۖ وَلَا تُخَـٰطِبْنِى فِى ٱلَّذِينَ ظَلَمُوٓا۟ ۖ إِنَّهُم مُّغْرَقُونَ",
+      "translationSq": "Dhe Ne i shpallëm atij: “Ndërto anijen nën Sytë (mbikëqyrjen) dhe frymëzimin Tonë e, kur të vijë urdhri Ynë e të vërshojë uji nga furra, ngarko në anije prej çdo lloj gjallese nga një çift dhe familjen tënde, përveç atyre që janë dënuar të humbasin, dhe mos M’u drejto për ata që kanë bërë të këqija se ata, me të vërtetë, do të fundosen."
+    },
+    {
+      "surah": 23,
+      "ayah": 28,
+      "verseKey": "23:28",
+      "arabic": "فَإِذَا ٱسْتَوَيْتَ أَنتَ وَمَن مَّعَكَ عَلَى ٱلْفُلْكِ فَقُلِ ٱلْحَمْدُ لِلَّهِ ٱلَّذِى نَجَّىٰنَا مِنَ ٱلْقَوْمِ ٱلظَّـٰلِمِينَ",
+      "translationSq": "Kur të hipësh në barkë ti dhe ata që janë me ty, thuaj: “Qoftë lavdëruar Allahu, i cili na shpëtoi prej popullit keqbërës”"
+    },
+    {
+      "surah": 23,
+      "ayah": 29,
+      "verseKey": "23:29",
+      "arabic": "وَقُل رَّبِّ أَنزِلْنِى مُنزَلًا مُّبَارَكًا وَأَنتَ خَيْرُ ٱلْمُنزِلِينَ",
+      "translationSq": "Dhe thuaj: “Zoti im, më zbarko në vend të bekuar, se Ti je më i miri për të na zbarkuar.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 30,
+      "verseKey": "23:30",
+      "arabic": "إِنَّ فِى ذَٰلِكَ لَـَٔايَـٰتٍ وَإِن كُنَّا لَمُبْتَلِينَ",
+      "translationSq": "Sigurisht që këto ishin shenja. Në të vërtetë, jemi Ne që i vëmë në provë (njerëzit)."
+    },
+    {
+      "surah": 23,
+      "ayah": 31,
+      "verseKey": "23:31",
+      "arabic": "ثُمَّ أَنشَأْنَا مِنۢ بَعْدِهِمْ قَرْنًا ءَاخَرِينَ",
+      "translationSq": "Pas tyre, Ne krijuam një brez tjetër."
+    },
+    {
+      "surah": 23,
+      "ayah": 32,
+      "verseKey": "23:32",
+      "arabic": "فَأَرْسَلْنَا فِيهِمْ رَسُولًا مِّنْهُمْ أَنِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَـٰهٍ غَيْرُهُۥٓ ۖ أَفَلَا تَتَّقُونَ",
+      "translationSq": "Atyre u çuam një të dërguar nga gjiri i tyre, që u tha: “Adhuroni Allahun! Ju nuk keni zot tjetër, përveç Tij! Vallë a nuk frikësoheni?!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 33,
+      "verseKey": "23:33",
+      "arabic": "وَقَالَ ٱلْمَلَأُ مِن قَوْمِهِ ٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِلِقَآءِ ٱلْـَٔاخِرَةِ وَأَتْرَفْنَـٰهُمْ فِى ٱلْحَيَوٰةِ ٱلدُّنْيَا مَا هَـٰذَآ إِلَّا بَشَرٌ مِّثْلُكُمْ يَأْكُلُ مِمَّا تَأْكُلُونَ مِنْهُ وَيَشْرَبُ مِمَّا تَشْرَبُونَ",
+      "translationSq": "Por paria e popullit të tij, e cila nuk besonte dhe e mohonte takimin në botën tjetër dhe, së cilës, i kishim dhënë të mira në këtë botë, tha: “Ky është vetëm njeri si ju, ha nga ato që hani edhe ju dhe pi nga ato që pini edhe ju!"
+    },
+    {
+      "surah": 23,
+      "ayah": 34,
+      "verseKey": "23:34",
+      "arabic": "وَلَئِنْ أَطَعْتُم بَشَرًا مِّثْلَكُمْ إِنَّكُمْ إِذًا لَّخَـٰسِرُونَ",
+      "translationSq": "Nëse ju i bindeni një njeriu si ju, me siguri, do të jeni të humbur!"
+    },
+    {
+      "surah": 23,
+      "ayah": 35,
+      "verseKey": "23:35",
+      "arabic": "أَيَعِدُكُمْ أَنَّكُمْ إِذَا مِتُّمْ وَكُنتُمْ تُرَابًا وَعِظَـٰمًا أَنَّكُم مُّخْرَجُونَ",
+      "translationSq": "A ju premton ai që, kur të vdisni e të bëheni pluhur dhe eshtra, do të ringjalleni vërtet?!"
+    },
+    {
+      "surah": 23,
+      "ayah": 36,
+      "verseKey": "23:36",
+      "arabic": "۞ هَيْهَاتَ هَيْهَاتَ لِمَا تُوعَدُونَ",
+      "translationSq": "Sa premtim qesharak që është!"
+    },
+    {
+      "surah": 23,
+      "ayah": 37,
+      "verseKey": "23:37",
+      "arabic": "إِنْ هِىَ إِلَّا حَيَاتُنَا ٱلدُّنْيَا نَمُوتُ وَنَحْيَا وَمَا نَحْنُ بِمَبْعُوثِينَ",
+      "translationSq": "Nuk ka jetë tjetër përveç jetës së kësaj bote, ne jetojmë e vdesim e nuk do të ringjallemi më."
+    },
+    {
+      "surah": 23,
+      "ayah": 38,
+      "verseKey": "23:38",
+      "arabic": "إِنْ هُوَ إِلَّا رَجُلٌ ٱفْتَرَىٰ عَلَى ٱللَّهِ كَذِبًا وَمَا نَحْنُ لَهُۥ بِمُؤْمِنِينَ",
+      "translationSq": "Ai është vetëm një njeri që trillon gënjeshtra për Allahun, prandaj nuk i besojmë atij.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 39,
+      "verseKey": "23:39",
+      "arabic": "قَالَ رَبِّ ٱنصُرْنِى بِمَا كَذَّبُونِ",
+      "translationSq": "(I dërguari) tha: “O Zoti im, më ndihmo, sepse ata më akuzojnë se gënjej!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 40,
+      "verseKey": "23:40",
+      "arabic": "قَالَ عَمَّا قَلِيلٍ لَّيُصْبِحُنَّ نَـٰدِمِينَ",
+      "translationSq": "(Allahu) tha: “Së shpejti do të pendohen!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 41,
+      "verseKey": "23:41",
+      "arabic": "فَأَخَذَتْهُمُ ٱلصَّيْحَةُ بِٱلْحَقِّ فَجَعَلْنَـٰهُمْ غُثَآءً ۚ فَبُعْدًا لِّلْقَوْمِ ٱلظَّـٰلِمِينَ",
+      "translationSq": "E, me të drejtë i kaploi ata një zë i tmerrshëm dhe Ne i bëmë si gjethe të fishkura. Larg qoftë (nga mëshira e Allahut) populli keqbërës!"
+    },
+    {
+      "surah": 23,
+      "ayah": 42,
+      "verseKey": "23:42",
+      "arabic": "ثُمَّ أَنشَأْنَا مِنۢ بَعْدِهِمْ قُرُونًا ءَاخَرِينَ",
+      "translationSq": "Pas tyre, Ne krijuam brezni të reja."
+    },
+    {
+      "surah": 23,
+      "ayah": 43,
+      "verseKey": "23:43",
+      "arabic": "مَا تَسْبِقُ مِنْ أُمَّةٍ أَجَلَهَا وَمَا يَسْتَـْٔخِرُونَ",
+      "translationSq": "Asnjë popull nuk mund ta shpejtojë apo ta ngadalësojë kohën e caktuar për të."
+    },
+    {
+      "surah": 23,
+      "ayah": 44,
+      "verseKey": "23:44",
+      "arabic": "ثُمَّ أَرْسَلْنَا رُسُلَنَا تَتْرَا ۖ كُلَّ مَا جَآءَ أُمَّةً رَّسُولُهَا كَذَّبُوهُ ۚ فَأَتْبَعْنَا بَعْضَهُم بَعْضًا وَجَعَلْنَـٰهُمْ أَحَادِيثَ ۚ فَبُعْدًا لِّقَوْمٍ لَّا يُؤْمِنُونَ",
+      "translationSq": "Ne i kemi nisur të dërguarit Tanë njëri pas tjetrit. Sa herë që një i dërguar i shkonte ndonjë populli, atë e quanin gënjeshtar! Prandaj Ne i kemi bërë ata (popuj) të ndjekin njëri-tjetrin (në shkatërrim) dhe i kemi bërë histori që rrëfehen. Qoftë larg (nga mëshira e Allahut) populli që nuk beson!"
+    },
+    {
+      "surah": 23,
+      "ayah": 45,
+      "verseKey": "23:45",
+      "arabic": "ثُمَّ أَرْسَلْنَا مُوسَىٰ وَأَخَاهُ هَـٰرُونَ بِـَٔايَـٰتِنَا وَسُلْطَـٰنٍ مُّبِينٍ",
+      "translationSq": "Pastaj dërguam Musain dhe vëllanë e tij, Harunin, me mrekullitë Tona dhe autoritet të qartë"
+    },
+    {
+      "surah": 23,
+      "ayah": 46,
+      "verseKey": "23:46",
+      "arabic": "إِلَىٰ فِرْعَوْنَ وَمَلَإِي۟هِۦ فَٱسْتَكْبَرُوا۟ وَكَانُوا۟ قَوْمًا عَالِينَ",
+      "translationSq": "te Faraoni dhe paria e tij, por ata ishin njerëz arrogantë dhe nuk i pranuan."
+    },
+    {
+      "surah": 23,
+      "ayah": 47,
+      "verseKey": "23:47",
+      "arabic": "فَقَالُوٓا۟ أَنُؤْمِنُ لِبَشَرَيْنِ مِثْلِنَا وَقَوْمُهُمَا لَنَا عَـٰبِدُونَ",
+      "translationSq": "Ata thanë: “Vallë a t’u besojmë dy njerëzve që janë si ne, ndërkohë që populli i tyre na shërben neve?!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 48,
+      "verseKey": "23:48",
+      "arabic": "فَكَذَّبُوهُمَا فَكَانُوا۟ مِنَ ٱلْمُهْلَكِينَ",
+      "translationSq": "Kështu, ata të dy i shpallën për gënjeshtarë, andaj ishin nga të shkatërruarit."
+    },
+    {
+      "surah": 23,
+      "ayah": 49,
+      "verseKey": "23:49",
+      "arabic": "وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَـٰبَ لَعَلَّهُمْ يَهْتَدُونَ",
+      "translationSq": "Në të vërtetë, Ne i dhamë Librin (Teuratin) Musait, që ata të udhëzohen në rrugë të drejtë."
+    },
+    {
+      "surah": 23,
+      "ayah": 50,
+      "verseKey": "23:50",
+      "arabic": "وَجَعَلْنَا ٱبْنَ مَرْيَمَ وَأُمَّهُۥٓ ءَايَةً وَءَاوَيْنَـٰهُمَآ إِلَىٰ رَبْوَةٍ ذَاتِ قَرَارٍ وَمَعِينٍ",
+      "translationSq": "Ne e bëmë birin e Merjemes dhe nënën e tij mrekulli për njerëzimin dhe i strehuam rrëzë një kodre të qetë me burime uji."
+    },
+    {
+      "surah": 23,
+      "ayah": 51,
+      "verseKey": "23:51",
+      "arabic": "يَـٰٓأَيُّهَا ٱلرُّسُلُ كُلُوا۟ مِنَ ٱلطَّيِّبَـٰتِ وَٱعْمَلُوا۟ صَـٰلِحًا ۖ إِنِّى بِمَا تَعْمَلُونَ عَلِيمٌ",
+      "translationSq": "O të dërguar! Hani nga të lejuarat dhe bëni vepra të mira! Vërtet, Unë e di mirë çfarë bëni ju!"
+    },
+    {
+      "surah": 23,
+      "ayah": 52,
+      "verseKey": "23:52",
+      "arabic": "وَإِنَّ هَـٰذِهِۦٓ أُمَّتُكُمْ أُمَّةً وَٰحِدَةً وَأَنَا۠ رَبُّكُمْ فَٱتَّقُونِ",
+      "translationSq": "Vërtet, kjo feja juaj është një fe e vetme, ndërsa Unë jam Zoti juaj, andaj frikësohuni prej Meje!"
+    },
+    {
+      "surah": 23,
+      "ayah": 53,
+      "verseKey": "23:53",
+      "arabic": "فَتَقَطَّعُوٓا۟ أَمْرَهُم بَيْنَهُمْ زُبُرًا ۖ كُلُّ حِزْبٍۭ بِمَا لَدَيْهِمْ فَرِحُونَ",
+      "translationSq": "Por ata (popuj ku u çuan të dërguarit) u ndanë në grupe në çështje të fesë së tyre. Çdo grup ishte i kënaqur me atë që kishte,"
+    },
+    {
+      "surah": 23,
+      "ayah": 54,
+      "verseKey": "23:54",
+      "arabic": "فَذَرْهُمْ فِى غَمْرَتِهِمْ حَتَّىٰ حِينٍ",
+      "translationSq": "andaj, lëri ata në padijen e tyre për njëfarë kohe!"
+    },
+    {
+      "surah": 23,
+      "ayah": 55,
+      "verseKey": "23:55",
+      "arabic": "أَيَحْسَبُونَ أَنَّمَا نُمِدُّهُم بِهِۦ مِن مَّالٍ وَبَنِينَ",
+      "translationSq": "A mos mendojnë ata që Ne, duke u ardhur në ndihmë me pasuri dhe djem,"
+    },
+    {
+      "surah": 23,
+      "ayah": 56,
+      "verseKey": "23:56",
+      "arabic": "نُسَارِعُ لَهُمْ فِى ٱلْخَيْرَٰتِ ۚ بَل لَّا يَشْعُرُونَ",
+      "translationSq": "po nxitojmë drejt tyre me të mira?! Kurrsesi, por ata nuk janë të vetëdijshëm (për këtë)."
+    },
+    {
+      "surah": 23,
+      "ayah": 57,
+      "verseKey": "23:57",
+      "arabic": "إِنَّ ٱلَّذِينَ هُم مِّنْ خَشْيَةِ رَبِّهِم مُّشْفِقُونَ",
+      "translationSq": "Me të vërtetë, ata që dridhen nga frika e Zotit të tyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 58,
+      "verseKey": "23:58",
+      "arabic": "وَٱلَّذِينَ هُم بِـَٔايَـٰتِ رَبِّهِمْ يُؤْمِنُونَ",
+      "translationSq": "që besojnë në shpalljet e Zotit të tyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 59,
+      "verseKey": "23:59",
+      "arabic": "وَٱلَّذِينَ هُم بِرَبِّهِمْ لَا يُشْرِكُونَ",
+      "translationSq": "që nuk i shoqërojnë asgjë (në adhurim) Zotit të tyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 60,
+      "verseKey": "23:60",
+      "arabic": "وَٱلَّذِينَ يُؤْتُونَ مَآ ءَاتَوا۟ وَّقُلُوبُهُمْ وَجِلَةٌ أَنَّهُمْ إِلَىٰ رَبِّهِمْ رَٰجِعُونَ",
+      "translationSq": "dhe që, kur japin atë që japin, zemrat e tyre i kanë plot frikë, ngaqë do të kthehen te Zoti i tyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 61,
+      "verseKey": "23:61",
+      "arabic": "أُو۟لَـٰٓئِكَ يُسَـٰرِعُونَ فِى ٱلْخَيْرَٰتِ وَهُمْ لَهَا سَـٰبِقُونَ",
+      "translationSq": "ata nxitojnë të bëjnë vepra të mira dhe për këto punë janë të parët."
+    },
+    {
+      "surah": 23,
+      "ayah": 62,
+      "verseKey": "23:62",
+      "arabic": "وَلَا نُكَلِّفُ نَفْسًا إِلَّا وُسْعَهَا ۖ وَلَدَيْنَا كِتَـٰبٌ يَنطِقُ بِٱلْحَقِّ ۚ وَهُمْ لَا يُظْلَمُونَ",
+      "translationSq": "Ne nuk ngarkojmë askënd përtej mundësive të tij; te Ne është Libri që flet të vërtetën dhe askujt nuk do t’i bëhet padrejtësi."
+    },
+    {
+      "surah": 23,
+      "ayah": 63,
+      "verseKey": "23:63",
+      "arabic": "بَلْ قُلُوبُهُمْ فِى غَمْرَةٍ مِّنْ هَـٰذَا وَلَهُمْ أَعْمَـٰلٌ مِّن دُونِ ذَٰلِكَ هُمْ لَهَا عَـٰمِلُونَ",
+      "translationSq": "Por zemrat e tyre janë mospërfillëse ndaj këtij (Kurani). Ata kanë punë të tjera më të këqija se këto e të cilat po vazhdojnë t’i bëjnë."
+    },
+    {
+      "surah": 23,
+      "ayah": 64,
+      "verseKey": "23:64",
+      "arabic": "حَتَّىٰٓ إِذَآ أَخَذْنَا مُتْرَفِيهِم بِٱلْعَذَابِ إِذَا هُمْ يَجْـَٔرُونَ",
+      "translationSq": "Por kur i dënuam pasanikët e tyre (në betejën e Bedrit), atëherë ata vajtonin."
+    },
+    {
+      "surah": 23,
+      "ayah": 65,
+      "verseKey": "23:65",
+      "arabic": "لَا تَجْـَٔرُوا۟ ٱلْيَوْمَ ۖ إِنَّكُم مِّنَّا لَا تُنصَرُونَ",
+      "translationSq": "(U thuhet): “Mos u lutni sot! Ju nuk do të keni ndihmë prej Nesh."
+    },
+    {
+      "surah": 23,
+      "ayah": 66,
+      "verseKey": "23:66",
+      "arabic": "قَدْ كَانَتْ ءَايَـٰتِى تُتْلَىٰ عَلَيْكُمْ فَكُنتُمْ عَلَىٰٓ أَعْقَـٰبِكُمْ تَنكِصُونَ",
+      "translationSq": "Juve ju janë lexuar vargjet e Mia, por ju tërhiqeshit mbrapa,"
+    },
+    {
+      "surah": 23,
+      "ayah": 67,
+      "verseKey": "23:67",
+      "arabic": "مُسْتَكْبِرِينَ بِهِۦ سَـٰمِرًا تَهْجُرُونَ",
+      "translationSq": "me kryelartësi! Ju flisnit kotësi për të (Kuranin), si dikush që rrëfen natën përralla.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 68,
+      "verseKey": "23:68",
+      "arabic": "أَفَلَمْ يَدَّبَّرُوا۟ ٱلْقَوْلَ أَمْ جَآءَهُم مَّا لَمْ يَأْتِ ءَابَآءَهُمُ ٱلْأَوَّلِينَ",
+      "translationSq": "Vallë, a nuk kanë medituar ata mbi Fjalën (Kuranin) apo atyre u ka ardhur ajo që nuk u kishte ardhur të parëve të tyre?"
+    },
+    {
+      "surah": 23,
+      "ayah": 69,
+      "verseKey": "23:69",
+      "arabic": "أَمْ لَمْ يَعْرِفُوا۟ رَسُولَهُمْ فَهُمْ لَهُۥ مُنكِرُونَ",
+      "translationSq": "Apo ata nuk e kanë njohur të Dërguarin e tyre, prandaj e mohojnë atë?"
+    },
+    {
+      "surah": 23,
+      "ayah": 70,
+      "verseKey": "23:70",
+      "arabic": "أَمْ يَقُولُونَ بِهِۦ جِنَّةٌۢ ۚ بَلْ جَآءَهُم بِٱلْحَقِّ وَأَكْثَرُهُمْ لِلْحَقِّ كَـٰرِهُونَ",
+      "translationSq": "Apo thonë: “Ai është i çmendur”? Jo, ai ua sjell të Vërtetën atyre, por shumica prej tyre e urrejnë të Vërtetën."
+    },
+    {
+      "surah": 23,
+      "ayah": 71,
+      "verseKey": "23:71",
+      "arabic": "وَلَوِ ٱتَّبَعَ ٱلْحَقُّ أَهْوَآءَهُمْ لَفَسَدَتِ ٱلسَّمَـٰوَٰتُ وَٱلْأَرْضُ وَمَن فِيهِنَّ ۚ بَلْ أَتَيْنَـٰهُم بِذِكْرِهِمْ فَهُمْ عَن ذِكْرِهِم مُّعْرِضُونَ",
+      "translationSq": "Sikur e Vërteta të ishte sipas dëshirave të tyre, atëherë do të shkatërroheshin qiejt dhe Toka dhe gjithçka që gjendet në to. Ne u kemi dërguar atyre Këshillën (Kuranin), por ata shmangen nga ajo."
+    },
+    {
+      "surah": 23,
+      "ayah": 72,
+      "verseKey": "23:72",
+      "arabic": "أَمْ تَسْـَٔلُهُمْ خَرْجًا فَخَرَاجُ رَبِّكَ خَيْرٌ ۖ وَهُوَ خَيْرُ ٱلرَّٰزِقِينَ",
+      "translationSq": "A po kërkon shpërblim prej tyre? Shpërblimi i Zotit tënd është më i mirë. Ai është më i miri i furnizuesve."
+    },
+    {
+      "surah": 23,
+      "ayah": 73,
+      "verseKey": "23:73",
+      "arabic": "وَإِنَّكَ لَتَدْعُوهُمْ إِلَىٰ صِرَٰطٍ مُّسْتَقِيمٍ",
+      "translationSq": "Ti i fton ata në rrugën e drejtë,"
+    },
+    {
+      "surah": 23,
+      "ayah": 74,
+      "verseKey": "23:74",
+      "arabic": "وَإِنَّ ٱلَّذِينَ لَا يُؤْمِنُونَ بِٱلْـَٔاخِرَةِ عَنِ ٱلصِّرَٰطِ لَنَـٰكِبُونَ",
+      "translationSq": "por ata që nuk besojnë jetën tjetër, shmangen nga rruga e drejtë."
+    },
+    {
+      "surah": 23,
+      "ayah": 75,
+      "verseKey": "23:75",
+      "arabic": "۞ وَلَوْ رَحِمْنَـٰهُمْ وَكَشَفْنَا مَا بِهِم مِّن ضُرٍّ لَّلَجُّوا۟ فِى طُغْيَـٰنِهِمْ يَعْمَهُونَ",
+      "translationSq": "Sikur Ne t’i mëshironim ata dhe t’ua largonim fatkeqësitë, sërish ata do të endeshin të hutuar në humbjen dhe mosbesimin e tyre."
+    },
+    {
+      "surah": 23,
+      "ayah": 76,
+      "verseKey": "23:76",
+      "arabic": "وَلَقَدْ أَخَذْنَـٰهُم بِٱلْعَذَابِ فَمَا ٱسْتَكَانُوا۟ لِرَبِّهِمْ وَمَا يَتَضَرَّعُونَ",
+      "translationSq": "Ne i dënuam ata njëherë, por ata nuk iu përulën Zotit të tyre e as nuk i drejtuan lutje."
+    },
+    {
+      "surah": 23,
+      "ayah": 77,
+      "verseKey": "23:77",
+      "arabic": "حَتَّىٰٓ إِذَا فَتَحْنَا عَلَيْهِم بَابًا ذَا عَذَابٍ شَدِيدٍ إِذَا هُمْ فِيهِ مُبْلِسُونَ",
+      "translationSq": "Dhe, kur u hapim atyre derën e një dënimi të madh, atëherë zhyten në dëshpërim."
+    },
+    {
+      "surah": 23,
+      "ayah": 78,
+      "verseKey": "23:78",
+      "arabic": "وَهُوَ ٱلَّذِىٓ أَنشَأَ لَكُمُ ٱلسَّمْعَ وَٱلْأَبْصَـٰرَ وَٱلْأَفْـِٔدَةَ ۚ قَلِيلًا مَّا تَشْكُرُونَ",
+      "translationSq": "Është Ai që jua ka krijuar dëgjimin, shikimin dhe zemrën. Eh, sa pak që e falënderoni ju!"
+    },
+    {
+      "surah": 23,
+      "ayah": 79,
+      "verseKey": "23:79",
+      "arabic": "وَهُوَ ٱلَّذِى ذَرَأَكُمْ فِى ٱلْأَرْضِ وَإِلَيْهِ تُحْشَرُونَ",
+      "translationSq": "Është Ai që ju ka sjellë në Tokë dhe para Tij do të mblidheni të gjithë."
+    },
+    {
+      "surah": 23,
+      "ayah": 80,
+      "verseKey": "23:80",
+      "arabic": "وَهُوَ ٱلَّذِى يُحْىِۦ وَيُمِيتُ وَلَهُ ٱخْتِلَـٰفُ ٱلَّيْلِ وَٱلنَّهَارِ ۚ أَفَلَا تَعْقِلُونَ",
+      "translationSq": "Është Ai që jep jetë dhe vdekje dhe Atij i përket ndërrimi i ditës dhe i natës. Vallë, a nuk kuptoni?"
+    },
+    {
+      "surah": 23,
+      "ayah": 81,
+      "verseKey": "23:81",
+      "arabic": "بَلْ قَالُوا۟ مِثْلَ مَا قَالَ ٱلْأَوَّلُونَ",
+      "translationSq": "Por ata thonë, ashtu siç kanë thënë të mëparshmit."
+    },
+    {
+      "surah": 23,
+      "ayah": 82,
+      "verseKey": "23:82",
+      "arabic": "قَالُوٓا۟ أَءِذَا مِتْنَا وَكُنَّا تُرَابًا وَعِظَـٰمًا أَءِنَّا لَمَبْعُوثُونَ",
+      "translationSq": "Ata pyesin: “Vallë, pasi të vdesim e të bëhemi eshtra e dhé, vërtet do të ringjallemi?!"
+    },
+    {
+      "surah": 23,
+      "ayah": 83,
+      "verseKey": "23:83",
+      "arabic": "لَقَدْ وُعِدْنَا نَحْنُ وَءَابَآؤُنَا هَـٰذَا مِن قَبْلُ إِنْ هَـٰذَآ إِلَّآ أَسَـٰطِيرُ ٱلْأَوَّلِينَ",
+      "translationSq": "Kjo na është premtuar neve dhe të parëve tanë, por këto janë vetëm përralla të popujve të lashtë.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 84,
+      "verseKey": "23:84",
+      "arabic": "قُل لِّمَنِ ٱلْأَرْضُ وَمَن فِيهَآ إِن كُنتُمْ تَعْلَمُونَ",
+      "translationSq": "Thuaj: “E kujt është Toka dhe gjithçka që gjendet në të, nëse e dini?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 85,
+      "verseKey": "23:85",
+      "arabic": "سَيَقُولُونَ لِلَّهِ ۚ قُلْ أَفَلَا تَذَكَّرُونَ",
+      "translationSq": "Ata do të thonë: “Të Allahut!” E ti thuaju: “Vallë, a nuk po ia vini veshin?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 86,
+      "verseKey": "23:86",
+      "arabic": "قُلْ مَن رَّبُّ ٱلسَّمَـٰوَٰتِ ٱلسَّبْعِ وَرَبُّ ٱلْعَرْشِ ٱلْعَظِيمِ",
+      "translationSq": "Thuaj: “Kush është Zoti i shtatë qiejve dhe Zoti i Fronit Madhështor?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 87,
+      "verseKey": "23:87",
+      "arabic": "سَيَقُولُونَ لِلَّهِ ۚ قُلْ أَفَلَا تَتَّقُونَ",
+      "translationSq": "Ata do të thonë: “Allahu!” E ti thuaju: “Vallë, a nuk keni frikë ju?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 88,
+      "verseKey": "23:88",
+      "arabic": "قُلْ مَنۢ بِيَدِهِۦ مَلَكُوتُ كُلِّ شَىْءٍ وَهُوَ يُجِيرُ وَلَا يُجَارُ عَلَيْهِ إِن كُنتُمْ تَعْلَمُونَ",
+      "translationSq": "Thuaj: “Kush është Ai që ka në dorë pushtetin mbi çdo gjë, i Cili mbron, por prej Tij nuk mund të mbrohet askush, nëse e dini?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 89,
+      "verseKey": "23:89",
+      "arabic": "سَيَقُولُونَ لِلَّهِ ۚ قُلْ فَأَنَّىٰ تُسْحَرُونَ",
+      "translationSq": "Ata thonë: “Allahu.” E ti thuaju: “Atëherë, përse magjepseni”?!"
+    },
+    {
+      "surah": 23,
+      "ayah": 90,
+      "verseKey": "23:90",
+      "arabic": "بَلْ أَتَيْنَـٰهُم بِٱلْحَقِّ وَإِنَّهُمْ لَكَـٰذِبُونَ",
+      "translationSq": "Ja! Ne ua kemi zbuluar atyre të Vërtetën, por ata janë gënjeshtarë."
+    },
+    {
+      "surah": 23,
+      "ayah": 91,
+      "verseKey": "23:91",
+      "arabic": "مَا ٱتَّخَذَ ٱللَّهُ مِن وَلَدٍ وَمَا كَانَ مَعَهُۥ مِنْ إِلَـٰهٍ ۚ إِذًا لَّذَهَبَ كُلُّ إِلَـٰهٍۭ بِمَا خَلَقَ وَلَعَلَا بَعْضُهُمْ عَلَىٰ بَعْضٍ ۚ سُبْحَـٰنَ ٱللَّهِ عَمَّا يَصِفُونَ",
+      "translationSq": "Allahu nuk ka zgjedhur për Vete ndonjë bir dhe përveç Atij s’ka asnjë zot tjetër, përndryshe çdo zot do të merrte atë që ka krijuar dhe do të ngriheshin njëri mbi tjetrin. Qoftë i lartësuar Ai nga shpifjet e tyre!"
+    },
+    {
+      "surah": 23,
+      "ayah": 92,
+      "verseKey": "23:92",
+      "arabic": "عَـٰلِمِ ٱلْغَيْبِ وَٱلشَّهَـٰدَةِ فَتَعَـٰلَىٰ عَمَّا يُشْرِكُونَ",
+      "translationSq": "Ai di të padukshmen dhe atë që shihet. Ai është shumë lart mbi zotat që ia quajnë Atij për shok!"
+    },
+    {
+      "surah": 23,
+      "ayah": 93,
+      "verseKey": "23:93",
+      "arabic": "قُل رَّبِّ إِمَّا تُرِيَنِّى مَا يُوعَدُونَ",
+      "translationSq": "Thuaj (o Muhamed): “O Zoti im, sikur të ma tregoje dënimin që u ke premtuar atyre,"
+    },
+    {
+      "surah": 23,
+      "ayah": 94,
+      "verseKey": "23:94",
+      "arabic": "رَبِّ فَلَا تَجْعَلْنِى فِى ٱلْقَوْمِ ٱلظَّـٰلِمِينَ",
+      "translationSq": "atëherë, o Zoti im, mos më lër mua me popullin keqbërës!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 95,
+      "verseKey": "23:95",
+      "arabic": "وَإِنَّا عَلَىٰٓ أَن نُّرِيَكَ مَا نَعِدُهُمْ لَقَـٰدِرُونَ",
+      "translationSq": "Dhe, me të vërtetë, Ne jemi në gjendje të të tregojmë ty, çfarë u kemi premtuar atyre."
+    },
+    {
+      "surah": 23,
+      "ayah": 96,
+      "verseKey": "23:96",
+      "arabic": "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ ۚ نَحْنُ أَعْلَمُ بِمَا يَصِفُونَ",
+      "translationSq": "Largoje të keqen me atë që është më e mira. Ne i dimë mirë shpifjet e tyre."
+    },
+    {
+      "surah": 23,
+      "ayah": 97,
+      "verseKey": "23:97",
+      "arabic": "وَقُل رَّبِّ أَعُوذُ بِكَ مِنْ هَمَزَٰتِ ٱلشَّيَـٰطِينِ",
+      "translationSq": "Dhe thuaj: “O Zoti im, kërkoj të më mbrosh nga nxitjet e djajve,"
+    },
+    {
+      "surah": 23,
+      "ayah": 98,
+      "verseKey": "23:98",
+      "arabic": "وَأَعُوذُ بِكَ رَبِّ أَن يَحْضُرُونِ",
+      "translationSq": "dhe tek Ti mbështetem, o Zoti im, që të mos i kem pranë meje.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 99,
+      "verseKey": "23:99",
+      "arabic": "حَتَّىٰٓ إِذَا جَآءَ أَحَدَهُمُ ٱلْمَوْتُ قَالَ رَبِّ ٱرْجِعُونِ",
+      "translationSq": "Kur i vjen vdekja ndonjërit prej tyre (jobesimtarëve), ai thotë: “O Zoti im, më kthe,"
+    },
+    {
+      "surah": 23,
+      "ayah": 100,
+      "verseKey": "23:100",
+      "arabic": "لَعَلِّىٓ أَعْمَلُ صَـٰلِحًا فِيمَا تَرَكْتُ ۚ كَلَّآ ۚ إِنَّهَا كَلِمَةٌ هُوَ قَآئِلُهَا ۖ وَمِن وَرَآئِهِم بَرْزَخٌ إِلَىٰ يَوْمِ يُبْعَثُونَ",
+      "translationSq": "që të bëj vepra të mira në botën që kam lënë!” Kurrsesi! Me të vërtetë, kjo është një fjalë të cilën ai (kot) e thotë! Prapa (vdekjes së) tyre do të ketë një (kohë) ndarëse, deri në ditën kur do të ringjallen."
+    },
+    {
+      "surah": 23,
+      "ayah": 101,
+      "verseKey": "23:101",
+      "arabic": "فَإِذَا نُفِخَ فِى ٱلصُّورِ فَلَآ أَنسَابَ بَيْنَهُمْ يَوْمَئِذٍ وَلَا يَتَسَآءَلُونَ",
+      "translationSq": "Kur të fryhet në Sur (Ditën e Ringjalljes), atëherë, midis tyre nuk do të ketë lidhje farefisnore dhe ata as që do të pyesin për njëri-tjetrin."
+    },
+    {
+      "surah": 23,
+      "ayah": 102,
+      "verseKey": "23:102",
+      "arabic": "فَمَن ثَقُلَتْ مَوَٰزِينُهُۥ فَأُو۟لَـٰٓئِكَ هُمُ ٱلْمُفْلِحُونَ",
+      "translationSq": "Ata, që u rëndohet peshorja (e punëve të mira), janë të shpëtuar."
+    },
+    {
+      "surah": 23,
+      "ayah": 103,
+      "verseKey": "23:103",
+      "arabic": "وَمَنْ خَفَّتْ مَوَٰزِينُهُۥ فَأُو۟لَـٰٓئِكَ ٱلَّذِينَ خَسِرُوٓا۟ أَنفُسَهُمْ فِى جَهَنَّمَ خَـٰلِدُونَ",
+      "translationSq": "Sa për ata që do të kenë peshore të lehta, mu ata do të jenë (njerëzit) që kanë humbur vetveten, duke qëndruar përherë në Xhehenem."
+    },
+    {
+      "surah": 23,
+      "ayah": 104,
+      "verseKey": "23:104",
+      "arabic": "تَلْفَحُ وُجُوهَهُمُ ٱلنَّارُ وَهُمْ فِيهَا كَـٰلِحُونَ",
+      "translationSq": "Zjarri do t’ua përcëllojë fytyrat dhe buzët (aq sa do t’u duken dhëmbët)."
+    },
+    {
+      "surah": 23,
+      "ayah": 105,
+      "verseKey": "23:105",
+      "arabic": "أَلَمْ تَكُنْ ءَايَـٰتِى تُتْلَىٰ عَلَيْكُمْ فَكُنتُم بِهَا تُكَذِّبُونَ",
+      "translationSq": "(Dhe atyre do t’u thuhet): “Vallë, a nuk ju lexoheshin Shpalljet Tona dhe i quanit ato gënjeshtra?!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 106,
+      "verseKey": "23:106",
+      "arabic": "قَالُوا۟ رَبَّنَا غَلَبَتْ عَلَيْنَا شِقْوَتُنَا وَكُنَّا قَوْمًا ضَآلِّينَ",
+      "translationSq": "Ata do të thonë: “O Zoti ynë, ne na mposhti e keqja (tekat dhe dëshira) jonë dhe ishim një popull i humbur."
+    },
+    {
+      "surah": 23,
+      "ayah": 107,
+      "verseKey": "23:107",
+      "arabic": "رَبَّنَآ أَخْرِجْنَا مِنْهَا فَإِنْ عُدْنَا فَإِنَّا ظَـٰلِمُونَ",
+      "translationSq": "O Zoti ynë, nxirrna prej Xhehenemit e, nëse kthehemi prapë tek e keqja, atëherë jemi keqbërës të vërtetë.”"
+    },
+    {
+      "surah": 23,
+      "ayah": 108,
+      "verseKey": "23:108",
+      "arabic": "قَالَ ٱخْسَـُٔوا۟ فِيهَا وَلَا تُكَلِّمُونِ",
+      "translationSq": "Ai do t’u thotë: “Rrini aty të përbuzur dhe mos Më flisni asgjë!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 109,
+      "verseKey": "23:109",
+      "arabic": "إِنَّهُۥ كَانَ فَرِيقٌ مِّنْ عِبَادِى يَقُولُونَ رَبَّنَآ ءَامَنَّا فَٱغْفِرْ لَنَا وَٱرْحَمْنَا وَأَنتَ خَيْرُ ٱلرَّٰحِمِينَ",
+      "translationSq": "Mes robërve të Mi, ishte një grup i cili thoshte: “O Zoti ynë, ne kemi besuar, andaj na fal dhe na mëshiro! Ti je më i miri i mëshiruesve!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 110,
+      "verseKey": "23:110",
+      "arabic": "فَٱتَّخَذْتُمُوهُمْ سِخْرِيًّا حَتَّىٰٓ أَنسَوْكُمْ ذِكْرِى وَكُنتُم مِّنْهُمْ تَضْحَكُونَ",
+      "translationSq": "Por ju (o jobesimtarë) i keni talluar ata (aq shumë), sa ju bënë të më harronit Mua së përmenduri, e përherë i përqeshnit ata."
+    },
+    {
+      "surah": 23,
+      "ayah": 111,
+      "verseKey": "23:111",
+      "arabic": "إِنِّى جَزَيْتُهُمُ ٱلْيَوْمَ بِمَا صَبَرُوٓا۟ أَنَّهُمْ هُمُ ٱلْفَآئِزُونَ",
+      "translationSq": "Unë i kam shpërblyer ata sot për durimin e tyre e ata, me të vërtetë, janë të shpëtuar."
+    },
+    {
+      "surah": 23,
+      "ayah": 112,
+      "verseKey": "23:112",
+      "arabic": "قَـٰلَ كَمْ لَبِثْتُمْ فِى ٱلْأَرْضِ عَدَدَ سِنِينَ",
+      "translationSq": "Ai do t’u thotë (jobesimtarëve): “Sa vjet keni qëndruar në Tokë?”"
+    },
+    {
+      "surah": 23,
+      "ayah": 113,
+      "verseKey": "23:113",
+      "arabic": "قَالُوا۟ لَبِثْنَا يَوْمًا أَوْ بَعْضَ يَوْمٍ فَسْـَٔلِ ٱلْعَآدِّينَ",
+      "translationSq": "Ata do të përgjigjen: “Kemi qëndruar një ditë ose një pjesë dite. Pyesni ata që i kanë numëruar!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 114,
+      "verseKey": "23:114",
+      "arabic": "قَـٰلَ إِن لَّبِثْتُمْ إِلَّا قَلِيلًا ۖ لَّوْ أَنَّكُمْ كُنتُمْ تَعْلَمُونَ",
+      "translationSq": "Ai do të thotë: “Keni qëndruar shumë pak. Eh, sikur ta kishit ditur!"
+    },
+    {
+      "surah": 23,
+      "ayah": 115,
+      "verseKey": "23:115",
+      "arabic": "أَفَحَسِبْتُمْ أَنَّمَا خَلَقْنَـٰكُمْ عَبَثًا وَأَنَّكُمْ إِلَيْنَا لَا تُرْجَعُونَ",
+      "translationSq": "Mos vallë, keni menduar që Ne ju kemi krijuar kot dhe që nuk do të ktheheshit te Ne (për t’ju gjykuar)?!”"
+    },
+    {
+      "surah": 23,
+      "ayah": 116,
+      "verseKey": "23:116",
+      "arabic": "فَتَعَـٰلَى ٱللَّهُ ٱلْمَلِكُ ٱلْحَقُّ ۖ لَآ إِلَـٰهَ إِلَّا هُوَ رَبُّ ٱلْعَرْشِ ٱلْكَرِيمِ",
+      "translationSq": "I lartësuar është Allahu, Sundimtari i Vërtetë! S’ka zot tjetër të vërtetë, përveç Atij, Zotit të Fronit Madhështor!"
+    },
+    {
+      "surah": 23,
+      "ayah": 117,
+      "verseKey": "23:117",
+      "arabic": "وَمَن يَدْعُ مَعَ ٱللَّهِ إِلَـٰهًا ءَاخَرَ لَا بُرْهَـٰنَ لَهُۥ بِهِۦ فَإِنَّمَا حِسَابُهُۥ عِندَ رَبِّهِۦٓ ۚ إِنَّهُۥ لَا يُفْلِحُ ٱلْكَـٰفِرُونَ",
+      "translationSq": "Ai që pos Allahut, adhuron zot tjetër, duke mos pasur kurrfarë prove për këtë, me siguri do të japë llogari vetëm te Zoti i tij. Me të vërtetë, nuk ka shpëtim për mohuesit."
+    },
+    {
+      "surah": 23,
+      "ayah": 118,
+      "verseKey": "23:118",
+      "arabic": "وَقُل رَّبِّ ٱغْفِرْ وَٱرْحَمْ وَأَنتَ خَيْرُ ٱلرَّٰحِمِينَ",
+      "translationSq": "Dhe thuaj (o Muhamed!): “O Zoti im, fal dhe mëshiro, se Ti je më i miri i mëshiruesve!”"
+    }
+  ]
+}

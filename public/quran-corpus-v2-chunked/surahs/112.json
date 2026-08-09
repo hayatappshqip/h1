@@ -1,0 +1,34 @@
+{
+  "surah": 112,
+  "verseCount": 4,
+  "verses": [
+    {
+      "surah": 112,
+      "ayah": 1,
+      "verseKey": "112:1",
+      "arabic": " قُلْ هُوَ ٱللَّهُ أَحَدٌ",
+      "translationSq": "Thuaj: “Ai është Allahu, Një dhe i Vetëm!"
+    },
+    {
+      "surah": 112,
+      "ayah": 2,
+      "verseKey": "112:2",
+      "arabic": "ٱللَّهُ ٱلصَّمَدُ",
+      "translationSq": "Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim."
+    },
+    {
+      "surah": 112,
+      "ayah": 3,
+      "verseKey": "112:3",
+      "arabic": "لَمْ يَلِدْ وَلَمْ يُولَدْ",
+      "translationSq": "Ai as nuk lind, as nuk është i lindur."
+    },
+    {
+      "surah": 112,
+      "ayah": 4,
+      "verseKey": "112:4",
+      "arabic": "وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ",
+      "translationSq": "Dhe askush nuk është i barabartë (a i krahasueshëm) me Atë!”"
+    }
+  ]
+}

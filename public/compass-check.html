@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hayat — Diagnostikë e Busullës</title>
+<style>
+  :root{--navy:#0a0f1d;--panel:#0f172a;--line:#1e293b;--em:#34d399;--gold:#c5a460;
+        --txt:#e2e8f0;--mut:#94a3b8;--red:#f87171;--amb:#fbbf24;--blue:#60a5fa}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--navy);color:var(--txt);padding:14px 12px 40px;
+    font:13.5px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+  h1{font-size:16px;margin:0 0 12px;color:var(--em);font-weight:600}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;margin-bottom:11px}
+  .card h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--em);margin:0 0 9px;font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  td{padding:5px 0;border-bottom:1px solid rgba(30,41,59,.7)}
+  tr:last-child td{border-bottom:none}
+  td:first-child{color:var(--mut);padding-right:8px}
+  td:last-child{text-align:right;font-family:ui-monospace,monospace;word-break:break-all}
+  .g{color:var(--em)}.r{color:var(--red)}.a{color:var(--amb)}.m{color:var(--mut)}.b{color:var(--blue)}
+  button{width:100%;padding:12px;margin-top:8px;border-radius:11px;border:1px solid rgba(16,185,129,.5);
+    background:rgba(16,185,129,.12);color:var(--em);font-size:13px;font-weight:600;
+    font-family:inherit;-webkit-tap-highlight-color:transparent}
+  button:active{background:rgba(16,185,129,.25)}
+  .verdict{border-radius:13px;padding:14px;margin-bottom:12px;border:1px solid;text-align:center;font-size:12.5px;line-height:1.5}
+  .ok{background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.45);color:var(--em)}
+  .bad{background:rgba(248,113,113,.10);border-color:rgba(248,113,113,.45);color:var(--red)}
+  .warn{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.45);color:var(--amb)}
+  .wait{background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.3);color:var(--mut)}
+  .dial{position:relative;width:190px;height:190px;margin:14px auto;border-radius:50%;
+    border:2px solid var(--line);background:#020617}
+  .nd{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center}
+  .nd i{display:block;width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;
+    border-bottom:26px solid var(--em);margin-top:8px}
+  .nn{position:absolute;top:5px;left:50%;transform:translateX(-50%);font:700 11px ui-monospace,monospace;color:var(--red)}
+  .hint{font-size:11.5px;color:var(--mut);line-height:1.6;margin-top:9px}
+  .hint b{color:var(--txt)}
+  .big{font-size:26px;font-family:ui-monospace,monospace;text-align:center;margin:6px 0}
+</style>
+</head>
+<body>
+<h1>Diagnostikë e Busullës — Kibla</h1>
+
+<div class="verdict wait" id="verdict">Shtyp butonin më poshtë për të nisur.</div>
+<button id="btn">Nis diagnostikën / Lejo busullën</button>
+
+<div class="card">
+  <h2>1 · Mjedisi</h2>
+  <table>
+    <tr><td>Kontekst i sigurt</td><td id="e-sec" class="m">…</td></tr>
+    <tr><td>DeviceOrientationEvent</td><td id="e-doe" class="m">…</td></tr>
+    <tr><td>requestPermission()</td><td id="e-rp" class="m">…</td></tr>
+    <tr><td>Rezultati i lejes</td><td id="e-perm" class="m">—</td></tr>
+    <tr><td>Këndi i ekranit</td><td id="e-scr" class="m">…</td></tr>
+    <tr><td>Platforma</td><td id="e-ua" class="m">…</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>2 · Event-et — burimi i problemit</h2>
+  <table>
+    <tr><td><b>deviceorientationabsolute</b></td><td id="c-abs" class="m">0</td></tr>
+    <tr><td><b>deviceorientation</b></td><td id="c-rel" class="m">0</td></tr>
+    <tr><td>flag <code>absolute</code></td><td id="e-absf" class="m">—</td></tr>
+    <tr><td>alpha</td><td id="e-alpha" class="m">—</td></tr>
+    <tr><td>webkitCompassHeading</td><td id="e-wch" class="m">—</td></tr>
+    <tr><td>webkitCompassAccuracy</td><td id="e-wca" class="m">—</td></tr>
+  </table>
+  <div class="hint" id="conflict"></div>
+</div>
+
+<div class="card">
+  <h2>3 · Headings sipas burimit</h2>
+  <table>
+    <tr><td>Nga <b>absolute</b></td><td id="h-abs" class="g">—</td></tr>
+    <tr><td>Nga <b>deviceorientation</b></td><td id="h-rel" class="b">—</td></tr>
+    <tr><td>Ndryshimi</td><td id="h-diff" class="m">—</td></tr>
+  </table>
+  <div class="hint">Nëse të dyja japin vlera dhe <b>ndryshimi nuk është ~0°</b>, atëherë aplikacioni po
+  përzien dy sisteme referimi — pikërisht kjo e bën gjilpërën të rrotullohet kot.</div>
+</div>
+
+<div class="card">
+  <h2>4 · Gjilpëra (e filtruar, burim i vetëm)</h2>
+  <div class="big" id="hv">—</div>
+  <div class="dial"><div class="nn">N</div><div class="nd" id="needle"><i></i></div></div>
+  <div class="hint">Kjo gjilpërë tregon <b>veriun</b>, me filtrim dhe pa përzierje burimesh.
+  Nëse këtu qëndron e qetë, atëherë problemi është te kodi i aplikacionit, jo te telefoni.</div>
+</div>
+
+<div class="card">
+  <h2>5 · Vendndodhja</h2>
+  <table>
+    <tr><td>Statusi</td><td id="g-st" class="m">—</td></tr>
+    <tr><td>Lat / Lon</td><td id="g-ll" class="m">—</td></tr>
+    <tr><td>Kibla e llogaritur</td><td id="g-q" class="m">—</td></tr>
+  </table>
+  <button id="gbtn">Testo vendndodhjen (me timeout 10s)</button>
+  <div class="hint">Kodi aktual e thërret <code>getCurrentPosition</code> <b>pa timeout</b> — nëse ngec,
+  spinner-i mbetet përgjithmonë. Ky test ka timeout, ndaj do të të thotë çfarë ndodh vërtet.</div>
+</div>
+
+<script>
+(function(){
+function $(i){return document.getElementById(i)}
+function set(i,t,c){var e=$(i);e.textContent=t;if(c)e.className=c}
+function vd(c,h){$('verdict').className='verdict '+c;$('verdict').innerHTML=h}
+
+var nAbs=0,nRel=0,hAbs=null,hRel=null,lastWCA=null,locked=null,sx=0,sy=0,primed=false,disp=0,got=false;
+
+function screenAngle(){
+  var so=screen.orientation;
+  if(so&&typeof so.angle==='number')return so.angle;
+  return (typeof window.orientation==='number')?window.orientation:0;
+}
+function norm(d){return ((d%360)+360)%360}
+
+function feed(raw){
+  var h=norm(raw+screenAngle()),r=h*Math.PI/180,k=primed?0.15:1;primed=true;
+  sx=sx*(1-k)+Math.sin(r)*k; sy=sy*(1-k)+Math.cos(r)*k;
+  var sm=norm(Math.atan2(sx,sy)*180/Math.PI);
+  // unwrap qe CSS te marre rrugen e shkurter
+  var d=((sm-disp+540)%360)-180; disp+=d;
+  $('needle').style.transform='rotate('+(-disp)+'deg)';
+  set('hv',sm.toFixed(1)+'°','g');
+}
+
+function onAbs(e){
+  nAbs++; got=true; set('c-abs',String(nAbs),'g');
+  set('e-absf',String(e.absolute),e.absolute===true?'g':'a');
+  if(e.alpha!==null){hAbs=norm(360-e.alpha);set('h-abs',hAbs.toFixed(1)+'°','g');set('e-alpha',e.alpha.toFixed(1),'m');}
+  if(locked===null)locked='absolute';
+  if(locked==='absolute'&&e.alpha!==null)feed(360-e.alpha);
+  compare();
+}
+function onRel(e){
+  nRel++; got=true; set('c-rel',String(nRel),'m');
+  var w=e.webkitCompassHeading;
+  if(typeof w==='number'){
+    set('e-wch',w.toFixed(1)+'°','g');
+    if(typeof e.webkitCompassAccuracy==='number'){
+      lastWCA=e.webkitCompassAccuracy;
+      set('e-wca',String(lastWCA),lastWCA<0?'r':'g');
+    }
+    hRel=norm(w); set('h-rel',hRel.toFixed(1)+'°','b');
+    if(locked===null)locked='webkit';
+    if(locked==='webkit')feed(w);
+  } else if(e.alpha!==null){
+    hRel=norm(360-e.alpha); set('h-rel',hRel.toFixed(1)+'°','b');
+    if(e.absolute!==true) set('e-absf','false (relative)','r');
+  }
+  compare();
+}
+function compare(){
+  if(hAbs!==null&&hRel!==null){
+    var d=Math.abs(((hAbs-hRel+540)%360)-180);
+    set('h-diff',d.toFixed(1)+'°',d<3?'g':'r');
+    if(d>=3){
+      $('conflict').innerHTML='<b class="r">KONFLIKT BURIMESH.</b> Të dy event-et shkrepin me vlera '+
+        'të ndryshme ('+d.toFixed(0)+'°). Kodi aktual i çon të dyja te i njëjti handler — '+
+        'prandaj gjilpëra rrotullohet pa kuptim. Rregullimi: përdor vetëm '+
+        '<code>deviceorientationabsolute</code>.';
+      vd('bad','<b>SHKAKU U GJET — Android</b><br>Dy burime orientimi me '+d.toFixed(0)+'° ndryshim po përzihen.');
+    }
+  }
+}
+
+function attach(){
+  window.addEventListener('deviceorientationabsolute',onAbs,true);
+  window.addEventListener('deviceorientation',onRel,true);
+  setTimeout(function(){
+    if(!got){
+      vd('bad','<b>ASNJË EVENT NUK MBËRRIN</b><br>Leja u dha, por sensori nuk dërgon të dhëna.<br><br>'+
+        '<b>iPhone:</b> Settings → Safari → <b>Motion &amp; Orientation Access</b> → aktivizoje, '+
+        'pastaj mbyll krejt tab-in dhe rihape.<br>'+
+        'Nëse e ke si PWA në Home Screen, çinstaloje dhe riinstaloje.');
+    } else if(lastWCA!==null&&lastWCA<0){
+      vd('warn','<b>BUSULLA S\'ËSHTË E KALIBRUAR</b><br>iOS raporton accuracy = '+lastWCA+
+        ' — vlerat janë të pavlefshme.<br>Lëvize telefonin në formë tetëshe (∞) disa herë.');
+    } else if(nAbs>0&&nRel===0){
+      vd('ok','<b>Sensori punon</b> — vetëm <code>deviceorientationabsolute</code>. Ky është burimi i saktë.');
+    } else if(nAbs===0&&lastWCA!==null&&lastWCA>=0){
+      vd('ok','<b>Sensori punon</b> — iOS <code>webkitCompassHeading</code>, i kalibruar.');
+    } else if(nAbs===0&&nRel>0&&lastWCA===null){
+      vd('warn','<b>VETËM ORIENTIM RELATIV</b><br>Pajisja nuk jep <code>deviceorientationabsolute</code>. '+
+        'Kjo busull nuk e di ku është veriu — duhet paralajmërim në UI, jo gjilpërë e rreme.');
+    }
+  },2600);
+}
+
+$('btn').addEventListener('click',async function(){
+  vd('wait','Duke lexuar sensorin…');
+  var DOE=window.DeviceOrientationEvent;
+  if(!DOE){ vd('bad','<b>Ky shfletues nuk e mbështet DeviceOrientationEvent.</b>'); return; }
+  if(typeof DOE.requestPermission==='function'){
+    try{
+      var r=await DOE.requestPermission();
+      set('e-perm',r,r==='granted'?'g':'r');
+      if(r!=='granted'){
+        vd('bad','<b>Leja u refuzua ('+r+')</b><br>Settings → Safari → Motion &amp; Orientation Access.');
+        return;
+      }
+    }catch(err){ set('e-perm','ERR','r');
+      vd('bad','<b>requestPermission dështoi:</b> '+err.message+'<br>Duhet thirrur nga një prekje e vërtetë.');
+      return; }
+  } else set('e-perm','nuk nevojitet','m');
+  attach();
+});
+
+$('gbtn').addEventListener('click',function(){
+  set('g-st','duke pritur…','a');
+  if(!('geolocation' in navigator)){set('g-st','nuk mbështetet','r');return}
+  var done=false;
+  var t=setTimeout(function(){ if(!done){set('g-st','TIMEOUT 10s — kjo është arsyeja pse ngec','r')} },10200);
+  navigator.geolocation.getCurrentPosition(function(p){
+    done=true;clearTimeout(t);
+    set('g-st','OK','g');
+    var la=p.coords.latitude,lo=p.coords.longitude;
+    set('g-ll',la.toFixed(4)+' / '+lo.toFixed(4),'m');
+    var KLA=21.4225,KLO=39.8262,a=la*Math.PI/180,n=KLA*Math.PI/180,l=(KLO-lo)*Math.PI/180;
+    var q=norm(Math.atan2(Math.sin(l),Math.cos(a)*Math.tan(n)-Math.sin(a)*Math.cos(l))*180/Math.PI);
+    set('g-q',q.toFixed(2)+'°','g');
+  },function(e){
+    done=true;clearTimeout(t);
+    set('g-st','GABIM '+e.code+': '+e.message,'r');
+  },{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+});
+
+// mjedisi
+set('e-sec',String(window.isSecureContext),window.isSecureContext?'g':'r');
+set('e-doe',(typeof window.DeviceOrientationEvent),window.DeviceOrientationEvent?'g':'r');
+set('e-rp',(window.DeviceOrientationEvent&&typeof window.DeviceOrientationEvent.requestPermission==='function')?'PO (iOS)':'JO (Android)','m');
+set('e-scr',screenAngle()+'°','m');
+set('e-ua',(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||'—','m');
+window.addEventListener('orientationchange',function(){setTimeout(function(){set('e-scr',screenAngle()+'°','m')},250)});
+})();
+</script>
+</body>
+</html>

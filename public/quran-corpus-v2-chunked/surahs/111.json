@@ -1,0 +1,41 @@
+{
+  "surah": 111,
+  "verseCount": 5,
+  "verses": [
+    {
+      "surah": 111,
+      "ayah": 1,
+      "verseKey": "111:1",
+      "arabic": " تَبَّتْ يَدَآ أَبِى لَهَبٍ وَتَبَّ",
+      "translationSq": "Iu thafshin duart Ebu Lehebit dhe u thaftë në gjithçka!"
+    },
+    {
+      "surah": 111,
+      "ayah": 2,
+      "verseKey": "111:2",
+      "arabic": "مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ",
+      "translationSq": "Nuk do ta ndihmojnë atë as pasuria dhe as fitimet e tjera."
+    },
+    {
+      "surah": 111,
+      "ayah": 3,
+      "verseKey": "111:3",
+      "arabic": "سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ",
+      "translationSq": "Ai, me siguri, do të hidhet në zjarrin me flakë të tërbuara,"
+    },
+    {
+      "surah": 111,
+      "ayah": 4,
+      "verseKey": "111:4",
+      "arabic": "وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ",
+      "translationSq": "po ashtu edhe gruaja e tij, që mbart drutë e zjarrit,"
+    },
+    {
+      "surah": 111,
+      "ayah": 5,
+      "verseKey": "111:5",
+      "arabic": "فِى جِيدِهَا حَبْلٌ مِّن مَّسَدٍۭ",
+      "translationSq": "në qafën e saj do të ketë një litar prej fijesh palme."
+    }
+  ]
+}

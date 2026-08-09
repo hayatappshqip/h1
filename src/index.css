@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* KFGQPC Uthmanic Script HAFS v18 - fonti zyrtar i Mus'hafit te Medines.
+ * Rendi i burimeve: 1) skedari lokal (offline, 87.760 bajt, SHA-256
+ *   8c00e7a7d5f773bcfb1642fdcfba505dbd81975fef39f14718827a32d075020c)
+ * 2) fonti i instaluar ne pajisje  3) CDN si rezerve.
+ * Mbulon te 69 codepoint-et e korpusit, perfshire U+06DF (sifr mustadir).
+ */
+@font-face {
+  font-family: "KFGQPC Uthmanic Script";
+  src: url("/fonts/UthmanicHafs1Ver18.woff2") format("woff2"),
+       local("KFGQPC HAFS Uthmanic Script"),
+       local("KFGQPC Uthmanic Script HAFS"),
+       url("https://cdn.jsdelivr.net/gh/thetruetruth/quran-data-kfgqpc@main/hafs/font/hafs.18.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Uthmani Hafs Unicode";
+  src: url("/fonts/UthmanicHafs1Ver18.woff2") format("woff2"),
+       local("KFGQPC HAFS Uthmanic Script"),
+       url("https://cdn.jsdelivr.net/gh/thetruetruth/quran-data-kfgqpc@main/hafs/font/hafs.18.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-arabic: 'KFGQPC Uthmanic Script', 'Uthmani Hafs Unicode', 'UthmanicHafs', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Segoe UI', system-ui, sans-serif;
+}
+
+.font-arabic {
+  font-family: 'KFGQPC Uthmanic Script', 'Uthmani Hafs Unicode', 'UthmanicHafs', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Segoe UI', system-ui, sans-serif;
+  line-height: 2.0;
+}
+
+.font-uthmani-unicode {
+  font-family: 'Uthmani Hafs Unicode', 'KFGQPC Uthmanic Script', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', sans-serif;
+  line-height: 2.0;
+}
+
+.quran-arabic,
+.quran-word,
+.quran-verse {
+  font-family: "KFGQPC Uthmanic Script", "Uthmani Hafs Unicode", "Amiri", "Noto Naskh Arabic", serif;
+  direction: rtl;
+  unicode-bidi: isolate;
+  line-height: 2.0;
+}
+
+/* Shenja e fundit te ajetit renderohet si element I VECANTE.
+ * Teksti arab i korpusit NUK preket kurre (rregulli i pandryshueshmerise).
+ * Perdor U+06DD (ARABIC END OF AYAH) me shifra arabo-indiane brenda. */
+.ayah-marker {
+  font-family: "KFGQPC Uthmanic Script", "Uthmani Hafs Unicode", serif;
+  direction: rtl;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  margin-inline-start: 0.15em;
+  user-select: none;
+}
+
+.dir-rtl {
+  direction: rtl;
+}

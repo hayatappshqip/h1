@@ -1,0 +1,545 @@
+{
+  "surah": 25,
+  "verseCount": 77,
+  "verses": [
+    {
+      "surah": 25,
+      "ayah": 1,
+      "verseKey": "25:1",
+      "arabic": " تَبَارَكَ ٱلَّذِى نَزَّلَ ٱلْفُرْقَانَ عَلَىٰ عَبْدِهِۦ لِيَكُونَ لِلْعَـٰلَمِينَ نَذِيرًا",
+      "translationSq": "I lartësuar qoftë Ai që i ka zbritur Dalluesin robit të Vet, që të jetë paralajmërues për botët;"
+    },
+    {
+      "surah": 25,
+      "ayah": 2,
+      "verseKey": "25:2",
+      "arabic": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ وَلَمْ يَتَّخِذْ وَلَدًا وَلَمْ يَكُن لَّهُۥ شَرِيكٌ فِى ٱلْمُلْكِ وَخَلَقَ كُلَّ شَىْءٍ فَقَدَّرَهُۥ تَقْدِيرًا",
+      "translationSq": "Sunduesi i qiejve dhe i Tokës, i Cili nuk ka bir e nuk ka ortak në pushtet; i Cili ka krijuar çdo gjë dhe e ka rregulluar si duhet!"
+    },
+    {
+      "surah": 25,
+      "ayah": 3,
+      "verseKey": "25:3",
+      "arabic": "وَٱتَّخَذُوا۟ مِن دُونِهِۦٓ ءَالِهَةً لَّا يَخْلُقُونَ شَيْـًٔا وَهُمْ يُخْلَقُونَ وَلَا يَمْلِكُونَ لِأَنفُسِهِمْ ضَرًّا وَلَا نَفْعًا وَلَا يَمْلِكُونَ مَوْتًا وَلَا حَيَوٰةً وَلَا نُشُورًا",
+      "translationSq": "E megjithatë ata adhurojnë në vend të Tij zota, të cilët nuk krijojnë asgjë e që vetë janë të krijuar, që nuk zotërojnë për veten as dëm e as dobi e që nuk janë në gjendje të japin as vdekjen, as jetën e as që të ringjallin."
+    },
+    {
+      "surah": 25,
+      "ayah": 4,
+      "verseKey": "25:4",
+      "arabic": "وَقَالَ ٱلَّذِينَ كَفَرُوٓا۟ إِنْ هَـٰذَآ إِلَّآ إِفْكٌ ٱفْتَرَىٰهُ وَأَعَانَهُۥ عَلَيْهِ قَوْمٌ ءَاخَرُونَ ۖ فَقَدْ جَآءُو ظُلْمًا وَزُورًا",
+      "translationSq": "Jobesimtarët thonë: “Ky (Kuran) është vetëm gënjeshtër, të cilën e ka trilluar ai me ndihmën e njerëzve të tjerë.” Kjo që thonë ata është e padrejtë dhe shpifje."
+    },
+    {
+      "surah": 25,
+      "ayah": 5,
+      "verseKey": "25:5",
+      "arabic": "وَقَالُوٓا۟ أَسَـٰطِيرُ ٱلْأَوَّلِينَ ٱكْتَتَبَهَا فَهِىَ تُمْلَىٰ عَلَيْهِ بُكْرَةً وَأَصِيلًا",
+      "translationSq": "Dhe ata thonë: “Këto janë përralla të popujve të lashtë; të cilat i ka vënë t’i shkruhen e t’i lexohen atij në mëngjes e mbrëmje.”"
+    },
+    {
+      "surah": 25,
+      "ayah": 6,
+      "verseKey": "25:6",
+      "arabic": "قُلْ أَنزَلَهُ ٱلَّذِى يَعْلَمُ ٱلسِّرَّ فِى ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ ۚ إِنَّهُۥ كَانَ غَفُورًا رَّحِيمًا",
+      "translationSq": "Thuaj: “Atë e ka shpallur Ai që di fshehtësitë e qiejve dhe të Tokës. Ai fal shumë dhe është Mëshirues”."
+    },
+    {
+      "surah": 25,
+      "ayah": 7,
+      "verseKey": "25:7",
+      "arabic": "وَقَالُوا۟ مَالِ هَـٰذَا ٱلرَّسُولِ يَأْكُلُ ٱلطَّعَامَ وَيَمْشِى فِى ٱلْأَسْوَاقِ ۙ لَوْلَآ أُنزِلَ إِلَيْهِ مَلَكٌ فَيَكُونَ مَعَهُۥ نَذِيرًا",
+      "translationSq": "Gjithashtu ata thonë: “Ç’është ky i dërguar që ha ushqim dhe shëtit nëpër tregje?! Përse nuk i është dërguar atij një engjëll e të bëhet me të paralajmërues?!"
+    },
+    {
+      "surah": 25,
+      "ayah": 8,
+      "verseKey": "25:8",
+      "arabic": "أَوْ يُلْقَىٰٓ إِلَيْهِ كَنزٌ أَوْ تَكُونُ لَهُۥ جَنَّةٌ يَأْكُلُ مِنْهَا ۚ وَقَالَ ٱلظَّـٰلِمُونَ إِن تَتَّبِعُونَ إِلَّا رَجُلًا مَّسْحُورًا",
+      "translationSq": "Ose, përse nuk i është zbritur një thesar apo të kishte një kopsht, nga i cili të hante?!” Të padrejtët thonë: “Ju ndiqni vetëm një njeri të magjepsur”!"
+    },
+    {
+      "surah": 25,
+      "ayah": 9,
+      "verseKey": "25:9",
+      "arabic": "ٱنظُرْ كَيْفَ ضَرَبُوا۟ لَكَ ٱلْأَمْثَـٰلَ فَضَلُّوا۟ فَلَا يَسْتَطِيعُونَ سَبِيلًا",
+      "translationSq": "Shiko çfarë shembujsh të sjellin e ata (me këtë) kanë humbur e nuk mund të gjejnë rrugën e vërtetë."
+    },
+    {
+      "surah": 25,
+      "ayah": 10,
+      "verseKey": "25:10",
+      "arabic": "تَبَارَكَ ٱلَّذِىٓ إِن شَآءَ جَعَلَ لَكَ خَيْرًا مِّن ذَٰلِكَ جَنَّـٰتٍ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَـٰرُ وَيَجْعَل لَّكَ قُصُورًۢا",
+      "translationSq": "Qoftë i lartësuar Ai, i Cili, nëse do, mund të të japë gjëra më të mira se këto, kopshte nëpër të cilat rrjedhin lumenj dhe të bëjë për ty pallate."
+    },
+    {
+      "surah": 25,
+      "ayah": 11,
+      "verseKey": "25:11",
+      "arabic": "بَلْ كَذَّبُوا۟ بِٱلسَّاعَةِ ۖ وَأَعْتَدْنَا لِمَن كَذَّبَ بِٱلسَّاعَةِ سَعِيرًا",
+      "translationSq": "Jo, ata e quajnë gënjeshtër edhe ardhjen e Orës (së Kiametit), ndërsa Ne kemi përgatitur për ata që e mohojnë Orën zjarr flakërues."
+    },
+    {
+      "surah": 25,
+      "ayah": 12,
+      "verseKey": "25:12",
+      "arabic": "إِذَا رَأَتْهُم مِّن مَّكَانٍۭ بَعِيدٍ سَمِعُوا۟ لَهَا تَغَيُّظًا وَزَفِيرًا",
+      "translationSq": "Kur ai t’i vërë re prej së largu, ata do t’ia dëgjojnë vlimin dhe rënkimin."
+    },
+    {
+      "surah": 25,
+      "ayah": 13,
+      "verseKey": "25:13",
+      "arabic": "وَإِذَآ أُلْقُوا۟ مِنْهَا مَكَانًا ضَيِّقًا مُّقَرَّنِينَ دَعَوْا۟ هُنَالِكَ ثُبُورًا",
+      "translationSq": "E kur të hidhen në një vend të ngushtë të tij, të lidhur duarsh, do të luten për shkatërrimin (e vet)."
+    },
+    {
+      "surah": 25,
+      "ayah": 14,
+      "verseKey": "25:14",
+      "arabic": "لَّا تَدْعُوا۟ ٱلْيَوْمَ ثُبُورًا وَٰحِدًا وَٱدْعُوا۟ ثُبُورًا كَثِيرًا",
+      "translationSq": "“Mos e kërkoni sot shkatërrimin vetëm një herë, por kërkojeni shumë herë!”"
+    },
+    {
+      "surah": 25,
+      "ayah": 15,
+      "verseKey": "25:15",
+      "arabic": "قُلْ أَذَٰلِكَ خَيْرٌ أَمْ جَنَّةُ ٱلْخُلْدِ ٱلَّتِى وُعِدَ ٱلْمُتَّقُونَ ۚ كَانَتْ لَهُمْ جَزَآءً وَمَصِيرًا",
+      "translationSq": "Thuaj: “A është më i mirë ky apo Xheneti i amshuar, i cili u është premtuar të devotshmëve? Ai do të jetë për ta shpërblim dhe vend kthimi."
+    },
+    {
+      "surah": 25,
+      "ayah": 16,
+      "verseKey": "25:16",
+      "arabic": "لَّهُمْ فِيهَا مَا يَشَآءُونَ خَـٰلِدِينَ ۚ كَانَ عَلَىٰ رَبِّكَ وَعْدًا مَّسْـُٔولًا",
+      "translationSq": "Për ata ka aty çfarë të dëshirojnë e do të rrinë në të përherë. Ky është premtimi i Zotit tënd, i kërkuar (prej jush)”."
+    },
+    {
+      "surah": 25,
+      "ayah": 17,
+      "verseKey": "25:17",
+      "arabic": "وَيَوْمَ يَحْشُرُهُمْ وَمَا يَعْبُدُونَ مِن دُونِ ٱللَّهِ فَيَقُولُ ءَأَنتُمْ أَضْلَلْتُمْ عِبَادِى هَـٰٓؤُلَآءِ أَمْ هُمْ ضَلُّوا۟ ٱلسَّبِيلَ",
+      "translationSq": "Ditën, kur Ai t’i tubojë idhujtarët bashkë me ata që i adhuronin në vend të Allahut, do t’u thotë (të adhuruarve): “A jeni ju që i keni shmangur këta robër të Mi apo ata vetë kanë humbur rrugën e drejtë?”"
+    },
+    {
+      "surah": 25,
+      "ayah": 18,
+      "verseKey": "25:18",
+      "arabic": "قَالُوا۟ سُبْحَـٰنَكَ مَا كَانَ يَنۢبَغِى لَنَآ أَن نَّتَّخِذَ مِن دُونِكَ مِنْ أَوْلِيَآءَ وَلَـٰكِن مَّتَّعْتَهُمْ وَءَابَآءَهُمْ حَتَّىٰ نَسُوا۟ ٱلذِّكْرَ وَكَانُوا۟ قَوْمًۢا بُورًا",
+      "translationSq": "Ata do të përgjigjen: “Lavdia qoftë për Ty! Nuk ishte nevoja që ne të marrim mbrojtës tjetër, përveç Teje, por Ti u dhe këtyre dhe etërve të tyre jetë të begatshme, ndërsa ata i harruan paralajmërimet e Tua dhe u bënë popull i shkatërruar”!"
+    },
+    {
+      "surah": 25,
+      "ayah": 19,
+      "verseKey": "25:19",
+      "arabic": "فَقَدْ كَذَّبُوكُم بِمَا تَقُولُونَ فَمَا تَسْتَطِيعُونَ صَرْفًا وَلَا نَصْرًا ۚ وَمَن يَظْلِم مِّنكُمْ نُذِقْهُ عَذَابًا كَبِيرًا",
+      "translationSq": "“Këta e përgënjeshtruan atë që thatë ju e nuk do të munden, as të shmangin dënimin, as të ndihmojnë veten. Kush prej jush ka bërë të këqija, Ne atij do t’i japim të shijojë dënim të madh.”"
+    },
+    {
+      "surah": 25,
+      "ayah": 20,
+      "verseKey": "25:20",
+      "arabic": "وَمَآ أَرْسَلْنَا قَبْلَكَ مِنَ ٱلْمُرْسَلِينَ إِلَّآ إِنَّهُمْ لَيَأْكُلُونَ ٱلطَّعَامَ وَيَمْشُونَ فِى ٱلْأَسْوَاقِ ۗ وَجَعَلْنَا بَعْضَكُمْ لِبَعْضٍ فِتْنَةً أَتَصْبِرُونَ ۗ وَكَانَ رَبُّكَ بَصِيرًا",
+      "translationSq": "Ne edhe para teje kemi nisur vetëm të dërguar, të cilët hanin ushqim dhe shëtisnin nëpër tregje. Ne i kemi bërë disa prej jush të jenë sprovë për të tjerët. A do të jeni të durueshëm ju? Zoti yt i sheh të gjitha."
+    },
+    {
+      "surah": 25,
+      "ayah": 21,
+      "verseKey": "25:21",
+      "arabic": "۞ وَقَالَ ٱلَّذِينَ لَا يَرْجُونَ لِقَآءَنَا لَوْلَآ أُنزِلَ عَلَيْنَا ٱلْمَلَـٰٓئِكَةُ أَوْ نَرَىٰ رَبَّنَا ۗ لَقَدِ ٱسْتَكْبَرُوا۟ فِىٓ أَنفُسِهِمْ وَعَتَوْ عُتُوًّا كَبِيرًا",
+      "translationSq": "Ata, që nuk shpresojnë se do të takohen me Ne, thonë: “Pse nuk na dërgohen neve engjëjt ose të shohim Zotin tonë?” Ata, me të vërtetë, janë treguar kryeneçë dhe kanë kaluar çdo kufi në arrogancë dhe padrejtësi."
+    },
+    {
+      "surah": 25,
+      "ayah": 22,
+      "verseKey": "25:22",
+      "arabic": "يَوْمَ يَرَوْنَ ٱلْمَلَـٰٓئِكَةَ لَا بُشْرَىٰ يَوْمَئِذٍ لِّلْمُجْرِمِينَ وَيَقُولُونَ حِجْرًا مَّحْجُورًا",
+      "translationSq": "Ditën, kur të shohin engjëjt, për keqbërësit nuk do të ketë lajm të mirë dhe do t’u thuhet: “Nuk do të kaloni dot për matanë!”"
+    },
+    {
+      "surah": 25,
+      "ayah": 23,
+      "verseKey": "25:23",
+      "arabic": "وَقَدِمْنَآ إِلَىٰ مَا عَمِلُوا۟ مِنْ عَمَلٍ فَجَعَلْنَـٰهُ هَبَآءً مَّنثُورًا",
+      "translationSq": "Dhe Ne do t’u qasemi veprave që kanë bërë ata dhe do t’i shndërrojmë në pluhur e hi."
+    },
+    {
+      "surah": 25,
+      "ayah": 24,
+      "verseKey": "25:24",
+      "arabic": "أَصْحَـٰبُ ٱلْجَنَّةِ يَوْمَئِذٍ خَيْرٌ مُّسْتَقَرًّا وَأَحْسَنُ مَقِيلًا",
+      "translationSq": "Ndërsa banorët e Xhenetit atë ditë do të kenë vendbanim më të mirë dhe vendpushim më të bukur."
+    },
+    {
+      "surah": 25,
+      "ayah": 25,
+      "verseKey": "25:25",
+      "arabic": "وَيَوْمَ تَشَقَّقُ ٱلسَّمَآءُ بِٱلْغَمَـٰمِ وَنُزِّلَ ٱلْمَلَـٰٓئِكَةُ تَنزِيلًا",
+      "translationSq": "Ditën, kur qielli me ré do të hapet e engjëjt do të lëshohen në zbritjen e madhe,"
+    },
+    {
+      "surah": 25,
+      "ayah": 26,
+      "verseKey": "25:26",
+      "arabic": "ٱلْمُلْكُ يَوْمَئِذٍ ٱلْحَقُّ لِلرَّحْمَـٰنِ ۚ وَكَانَ يَوْمًا عَلَى ٱلْكَـٰفِرِينَ عَسِيرًا",
+      "translationSq": "atë ditë pushteti i vërtetë do t’i përkasë vetëm të Gjithëmëshirshmit. Kjo do të jetë ditë e vështirë për jobesimtarët."
+    },
+    {
+      "surah": 25,
+      "ayah": 27,
+      "verseKey": "25:27",
+      "arabic": "وَيَوْمَ يَعَضُّ ٱلظَّالِمُ عَلَىٰ يَدَيْهِ يَقُولُ يَـٰلَيْتَنِى ٱتَّخَذْتُ مَعَ ٱلرَّسُولِ سَبِيلًا",
+      "translationSq": "Atë Ditë keqbërësi do të hajë gishtat e duarve të veta, duke thënë: “Ah, sikur ta kisha marrë rrugën (e drejtë) me të Dërguarin!"
+    },
+    {
+      "surah": 25,
+      "ayah": 28,
+      "verseKey": "25:28",
+      "arabic": "يَـٰوَيْلَتَىٰ لَيْتَنِى لَمْ أَتَّخِذْ فُلَانًا خَلِيلًا",
+      "translationSq": "Ah, sikur të mos e kisha bërë filanin mik!"
+    },
+    {
+      "surah": 25,
+      "ayah": 29,
+      "verseKey": "25:29",
+      "arabic": "لَّقَدْ أَضَلَّنِى عَنِ ٱلذِّكْرِ بَعْدَ إِذْ جَآءَنِى ۗ وَكَانَ ٱلشَّيْطَـٰنُ لِلْإِنسَـٰنِ خَذُولًا",
+      "translationSq": "Ai më ka larguar nga Këshilla (Kurani) që më kishte ardhur!” Në të vërtetë, djalli e braktis gjithmonë njeriun në çastin e nevojës."
+    },
+    {
+      "surah": 25,
+      "ayah": 30,
+      "verseKey": "25:30",
+      "arabic": "وَقَالَ ٱلرَّسُولُ يَـٰرَبِّ إِنَّ قَوْمِى ٱتَّخَذُوا۟ هَـٰذَا ٱلْقُرْءَانَ مَهْجُورًا",
+      "translationSq": "Dhe i Dërguari do të thotë: “O Zoti im! Populli im e shpërfilli Kuranin, si (diçka) të urryer”."
+    },
+    {
+      "surah": 25,
+      "ayah": 31,
+      "verseKey": "25:31",
+      "arabic": "وَكَذَٰلِكَ جَعَلْنَا لِكُلِّ نَبِىٍّ عَدُوًّا مِّنَ ٱلْمُجْرِمِينَ ۗ وَكَفَىٰ بِرَبِّكَ هَادِيًا وَنَصِيرًا",
+      "translationSq": "Dhe, kështu Ne, çdo profeti i kemi kundërvënë një armik nga keqbërësit. Por ty të mjafton Zoti yt si udhërrëfyes dhe ndihmës!"
+    },
+    {
+      "surah": 25,
+      "ayah": 32,
+      "verseKey": "25:32",
+      "arabic": "وَقَالَ ٱلَّذِينَ كَفَرُوا۟ لَوْلَا نُزِّلَ عَلَيْهِ ٱلْقُرْءَانُ جُمْلَةً وَٰحِدَةً ۚ كَذَٰلِكَ لِنُثَبِّتَ بِهِۦ فُؤَادَكَ ۖ وَرَتَّلْنَـٰهُ تَرْتِيلًا",
+      "translationSq": "Jobesimtarët thonë: “Përse Kurani nuk i është shpallur i tëri përnjëherë?!” Ne ta kemi shpallur kështu për të forcuar zemrën tënde dhe ta kemi zbuluar qartazi varg pas vargu."
+    },
+    {
+      "surah": 25,
+      "ayah": 33,
+      "verseKey": "25:33",
+      "arabic": "وَلَا يَأْتُونَكَ بِمَثَلٍ إِلَّا جِئْنَـٰكَ بِٱلْحَقِّ وَأَحْسَنَ تَفْسِيرًا",
+      "translationSq": "Sapo ata të të sjellin çfarëdo argumenti, Ne të sjellim të Vërtetën dhe shpjegimin më të mirë."
+    },
+    {
+      "surah": 25,
+      "ayah": 34,
+      "verseKey": "25:34",
+      "arabic": "ٱلَّذِينَ يُحْشَرُونَ عَلَىٰ وُجُوهِهِمْ إِلَىٰ جَهَنَّمَ أُو۟لَـٰٓئِكَ شَرٌّ مَّكَانًا وَأَضَلُّ سَبِيلًا",
+      "translationSq": "Ata, që do të tubohen me fytyrat përmbys në Xhehenem, do të jenë në vendin më të keq dhe më të larguarit prej rrugës së vërtetë."
+    },
+    {
+      "surah": 25,
+      "ayah": 35,
+      "verseKey": "25:35",
+      "arabic": "وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَـٰبَ وَجَعَلْنَا مَعَهُۥٓ أَخَاهُ هَـٰرُونَ وَزِيرًا",
+      "translationSq": "Ne i dhamë Musait Librin dhe i bëmë ndihmës vëllanë e tij, Harunin."
+    },
+    {
+      "surah": 25,
+      "ayah": 36,
+      "verseKey": "25:36",
+      "arabic": "فَقُلْنَا ٱذْهَبَآ إِلَى ٱلْقَوْمِ ٱلَّذِينَ كَذَّبُوا۟ بِـَٔايَـٰتِنَا فَدَمَّرْنَـٰهُمْ تَدْمِيرًا",
+      "translationSq": "Pastaj (u) thamë (atyre): “Shkoni të dy te populli, i cili i quan të rreme shenjat Tona!” Pastaj e shkatërruam atë popull krejtësisht."
+    },
+    {
+      "surah": 25,
+      "ayah": 37,
+      "verseKey": "25:37",
+      "arabic": "وَقَوْمَ نُوحٍ لَّمَّا كَذَّبُوا۟ ٱلرُّسُلَ أَغْرَقْنَـٰهُمْ وَجَعَلْنَـٰهُمْ لِلنَّاسِ ءَايَةً ۖ وَأَعْتَدْنَا لِلظَّـٰلِمِينَ عَذَابًا أَلِيمًا",
+      "translationSq": "Popullin e Nuhut, kur i quajti gënjeshtarë të dërguarit, Ne e fundosëm dhe e bëmë mësim për njerëzit. Për keqbërësit kemi përgatitur një dënim të dhembshëm."
+    },
+    {
+      "surah": 25,
+      "ayah": 38,
+      "verseKey": "25:38",
+      "arabic": "وَعَادًا وَثَمُودَا۟ وَأَصْحَـٰبَ ٱلرَّسِّ وَقُرُونًۢا بَيْنَ ذَٰلِكَ كَثِيرًا",
+      "translationSq": "Ne i dënuam fiset Ad dhe Themud, popullin e Ressit, si dhe shumë popujt të tjerë ndërmjet tyre."
+    },
+    {
+      "surah": 25,
+      "ayah": 39,
+      "verseKey": "25:39",
+      "arabic": "وَكُلًّا ضَرَبْنَا لَهُ ٱلْأَمْثَـٰلَ ۖ وَكُلًّا تَبَّرْنَا تَتْبِيرًا",
+      "translationSq": "Të gjithëve u sollëm shembuj dhe, më pas, të gjithë i shkatërruam krejtësisht."
+    },
+    {
+      "surah": 25,
+      "ayah": 40,
+      "verseKey": "25:40",
+      "arabic": "وَلَقَدْ أَتَوْا۟ عَلَى ٱلْقَرْيَةِ ٱلَّتِىٓ أُمْطِرَتْ مَطَرَ ٱلسَّوْءِ ۚ أَفَلَمْ يَكُونُوا۟ يَرَوْنَهَا ۚ بَلْ كَانُوا۟ لَا يَرْجُونَ نُشُورًا",
+      "translationSq": "Ata me kohë kanë kaluar pranë vendbanimit që e shkatërroi shiu i tmerrshëm, e vallë, a nuk e kanë parë atë? Jo, ata nuk prisnin të ringjalleshin."
+    },
+    {
+      "surah": 25,
+      "ayah": 41,
+      "verseKey": "25:41",
+      "arabic": "وَإِذَا رَأَوْكَ إِن يَتَّخِذُونَكَ إِلَّا هُزُوًا أَهَـٰذَا ٱلَّذِى بَعَثَ ٱللَّهُ رَسُولًا",
+      "translationSq": "Sa herë që të shohin ty, të marrin vetëm për tallje: “Vallë, këtë ka sjellë Allahu si të dërguar?!"
+    },
+    {
+      "surah": 25,
+      "ayah": 42,
+      "verseKey": "25:42",
+      "arabic": "إِن كَادَ لَيُضِلُّنَا عَنْ ءَالِهَتِنَا لَوْلَآ أَن صَبَرْنَا عَلَيْهَا ۚ وَسَوْفَ يَعْلَمُونَ حِينَ يَرَوْنَ ٱلْعَذَابَ مَنْ أَضَلُّ سَبِيلًا",
+      "translationSq": "Për pak qe duke na shmangur nga hyjnitë tona, po të mos u kishim qëndruar atyre besnikë!” Por, kur të përballen me dënimin, do ta marrin vesh se kush është shmangur më larg rrugës së drejtë."
+    },
+    {
+      "surah": 25,
+      "ayah": 43,
+      "verseKey": "25:43",
+      "arabic": "أَرَءَيْتَ مَنِ ٱتَّخَذَ إِلَـٰهَهُۥ هَوَىٰهُ أَفَأَنتَ تَكُونُ عَلَيْهِ وَكِيلًا",
+      "translationSq": "A e ke parë ti atë që epshin e vet e ka marrë për zot? A do t’i bëhesh mbrojtës atij?"
+    },
+    {
+      "surah": 25,
+      "ayah": 44,
+      "verseKey": "25:44",
+      "arabic": "أَمْ تَحْسَبُ أَنَّ أَكْثَرَهُمْ يَسْمَعُونَ أَوْ يَعْقِلُونَ ۚ إِنْ هُمْ إِلَّا كَٱلْأَنْعَـٰمِ ۖ بَلْ هُمْ أَضَلُّ سَبِيلًا",
+      "translationSq": "A mendon ti se shumica e tyre dëgjojnë dhe kuptojnë? Ata nuk janë tjetër, veçse si bagëti. Madje, ata janë edhe më të shmangur nga rruga e drejtë."
+    },
+    {
+      "surah": 25,
+      "ayah": 45,
+      "verseKey": "25:45",
+      "arabic": "أَلَمْ تَرَ إِلَىٰ رَبِّكَ كَيْفَ مَدَّ ٱلظِّلَّ وَلَوْ شَآءَ لَجَعَلَهُۥ سَاكِنًا ثُمَّ جَعَلْنَا ٱلشَّمْسَ عَلَيْهِ دَلِيلًا",
+      "translationSq": "A nuk e ke parë ti se si Zoti yt e ka zgjatur hijen?! Sikur të kishte dashur, do ta bënte të pandryshueshme? Pastaj Ne e kemi bërë Diellin udhëzues të saj,"
+    },
+    {
+      "surah": 25,
+      "ayah": 46,
+      "verseKey": "25:46",
+      "arabic": "ثُمَّ قَبَضْنَـٰهُ إِلَيْنَا قَبْضًا يَسِيرًا",
+      "translationSq": "pastaj e tërheqim atë (hijen), dalëngadalë pranë Vetes."
+    },
+    {
+      "surah": 25,
+      "ayah": 47,
+      "verseKey": "25:47",
+      "arabic": "وَهُوَ ٱلَّذِى جَعَلَ لَكُمُ ٱلَّيْلَ لِبَاسًا وَٱلنَّوْمَ سُبَاتًا وَجَعَلَ ٱلنَّهَارَ نُشُورًا",
+      "translationSq": "Dhe është Ai që jua ka bërë natën mbulesë dhe gjumin pushim, kurse ditën jua ka bërë për të lëvizur."
+    },
+    {
+      "surah": 25,
+      "ayah": 48,
+      "verseKey": "25:48",
+      "arabic": "وَهُوَ ٱلَّذِىٓ أَرْسَلَ ٱلرِّيَـٰحَ بُشْرًۢا بَيْنَ يَدَىْ رَحْمَتِهِۦ ۚ وَأَنزَلْنَا مِنَ ٱلسَّمَآءِ مَآءً طَهُورًا",
+      "translationSq": "Është Ai që i dërgon erërat si lajmëtarë të gëzueshëm para mëshirës së Tij, duke lëshuar prej qiellit ujë të pastër,"
+    },
+    {
+      "surah": 25,
+      "ayah": 49,
+      "verseKey": "25:49",
+      "arabic": "لِّنُحْـِۧىَ بِهِۦ بَلْدَةً مَّيْتًا وَنُسْقِيَهُۥ مِمَّا خَلَقْنَآ أَنْعَـٰمًا وَأَنَاسِىَّ كَثِيرًا",
+      "translationSq": "që nëpërmjet atij të ngjallim vendin e vdekur dhe t’u japim ujë kafshëve dhe shumë njerëzve që Ne i kemi krijuar."
+    },
+    {
+      "surah": 25,
+      "ayah": 50,
+      "verseKey": "25:50",
+      "arabic": "وَلَقَدْ صَرَّفْنَـٰهُ بَيْنَهُمْ لِيَذَّكَّرُوا۟ فَأَبَىٰٓ أَكْثَرُ ٱلنَّاسِ إِلَّا كُفُورًا",
+      "translationSq": "Ne e kemi përsëritur (dhuntinë) që të vënë veshin, por shumica e njerëzve kundërshtojnë e janë mosmirënjohës."
+    },
+    {
+      "surah": 25,
+      "ayah": 51,
+      "verseKey": "25:51",
+      "arabic": "وَلَوْ شِئْنَا لَبَعَثْنَا فِى كُلِّ قَرْيَةٍ نَّذِيرًا",
+      "translationSq": "Sikur të donim Ne, do të dërgonim në çdo qytet paralajmërues."
+    },
+    {
+      "surah": 25,
+      "ayah": 52,
+      "verseKey": "25:52",
+      "arabic": "فَلَا تُطِعِ ٱلْكَـٰفِرِينَ وَجَـٰهِدْهُم بِهِۦ جِهَادًا كَبِيرًا",
+      "translationSq": "Mos i dëgjo mohuesit, por luftoji ata me forcë nëpërmjet këtij (Kurani)."
+    },
+    {
+      "surah": 25,
+      "ayah": 53,
+      "verseKey": "25:53",
+      "arabic": "۞ وَهُوَ ٱلَّذِى مَرَجَ ٱلْبَحْرَيْنِ هَـٰذَا عَذْبٌ فُرَاتٌ وَهَـٰذَا مِلْحٌ أُجَاجٌ وَجَعَلَ بَيْنَهُمَا بَرْزَخًا وَحِجْرًا مَّحْجُورًا",
+      "translationSq": "Është Ai që i ka lënë të lirë dy ujëra, - njëri i pijshëm e i ëmbël, kurse tjetri i njelmët e i hidhur, - duke ngritur pengesë e kufi të prerë ndërmjet tyre."
+    },
+    {
+      "surah": 25,
+      "ayah": 54,
+      "verseKey": "25:54",
+      "arabic": "وَهُوَ ٱلَّذِى خَلَقَ مِنَ ٱلْمَآءِ بَشَرًا فَجَعَلَهُۥ نَسَبًا وَصِهْرًا ۗ وَكَانَ رَبُّكَ قَدِيرًا",
+      "translationSq": "Është Ai që ka krijuar prej ujit njeriun, e ka vënë në lidhje me fis nga gjaku dhe nga martesa. Zoti yt është i Plotfuqishëm."
+    },
+    {
+      "surah": 25,
+      "ayah": 55,
+      "verseKey": "25:55",
+      "arabic": "وَيَعْبُدُونَ مِن دُونِ ٱللَّهِ مَا لَا يَنفَعُهُمْ وَلَا يَضُرُّهُمْ ۗ وَكَانَ ٱلْكَافِرُ عَلَىٰ رَبِّهِۦ ظَهِيرًا",
+      "translationSq": "Megjithatë, ata adhurojnë, në vend të Allahut, gjëra që nuk mund t’u sjellin as dobi, as dëm. Jobesimtari është ndihmës (i djallit) kundër Zotit të tij."
+    },
+    {
+      "surah": 25,
+      "ayah": 56,
+      "verseKey": "25:56",
+      "arabic": "وَمَآ أَرْسَلْنَـٰكَ إِلَّا مُبَشِّرًا وَنَذِيرًا",
+      "translationSq": "Ne të kemi dërguar ty vetëm si sjellës të lajmit të mirë dhe paralajmërues."
+    },
+    {
+      "surah": 25,
+      "ayah": 57,
+      "verseKey": "25:57",
+      "arabic": "قُلْ مَآ أَسْـَٔلُكُمْ عَلَيْهِ مِنْ أَجْرٍ إِلَّا مَن شَآءَ أَن يَتَّخِذَ إِلَىٰ رَبِّهِۦ سَبِيلًا",
+      "translationSq": "Thuaj: “Unë nuk kërkoj nga ju kurrfarë shpërblimi, por vetëm që, kush të dëshirojë, le të ndjekë rrugën (që e shpie) drejt Zotit të tij”."
+    },
+    {
+      "surah": 25,
+      "ayah": 58,
+      "verseKey": "25:58",
+      "arabic": "وَتَوَكَّلْ عَلَى ٱلْحَىِّ ٱلَّذِى لَا يَمُوتُ وَسَبِّحْ بِحَمْدِهِۦ ۚ وَكَفَىٰ بِهِۦ بِذُنُوبِ عِبَادِهِۦ خَبِيرًا",
+      "translationSq": "Mbështetu në të Gjithëjetshmin, i Cili nuk vdes dhe madhëroje Atë me falënderim! Ai i di mjaft mirë gjynahet e robërve të Vet."
+    },
+    {
+      "surah": 25,
+      "ayah": 59,
+      "verseKey": "25:59",
+      "arabic": "ٱلَّذِى خَلَقَ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضَ وَمَا بَيْنَهُمَا فِى سِتَّةِ أَيَّامٍ ثُمَّ ٱسْتَوَىٰ عَلَى ٱلْعَرْشِ ۚ ٱلرَّحْمَـٰنُ فَسْـَٔلْ بِهِۦ خَبِيرًا",
+      "translationSq": "Është Ai, i Cili krijoi qiejt, Tokën dhe gjithçka që gjendet midis tyre për gjashtë ditë e pastaj u ngrit mbi Fron. Ai është i Gjithëmëshirshmi dhe pyet për Atë ata që dinë."
+    },
+    {
+      "surah": 25,
+      "ayah": 60,
+      "verseKey": "25:60",
+      "arabic": "وَإِذَا قِيلَ لَهُمُ ٱسْجُدُوا۟ لِلرَّحْمَـٰنِ قَالُوا۟ وَمَا ٱلرَّحْمَـٰنُ أَنَسْجُدُ لِمَا تَأْمُرُنَا وَزَادَهُمْ نُفُورًا ۩",
+      "translationSq": "Kur atyre u thuhet: “Bëjini sexhde të Gjithëmëshirshmit”, ata thonë: “Çfarë është i Gjithëmëshirshmi? Vallë, t’i biem në sexhde atij që na urdhëron ti?” Kjo u shton atyre më shumë largim (prej fesë)."
+    },
+    {
+      "surah": 25,
+      "ayah": 61,
+      "verseKey": "25:61",
+      "arabic": "تَبَارَكَ ٱلَّذِى جَعَلَ فِى ٱلسَّمَآءِ بُرُوجًا وَجَعَلَ فِيهَا سِرَٰجًا وَقَمَرًا مُّنِيرًا",
+      "translationSq": "Qoftë i lartësuar Ai, i Cili e ka stolisur qiellin me yjësi dhe ka vënë në të një Kandil të ndritshëm dhe një Hënë që ndriçon."
+    },
+    {
+      "surah": 25,
+      "ayah": 62,
+      "verseKey": "25:62",
+      "arabic": "وَهُوَ ٱلَّذِى جَعَلَ ٱلَّيْلَ وَٱلنَّهَارَ خِلْفَةً لِّمَنْ أَرَادَ أَن يَذَّكَّرَ أَوْ أَرَادَ شُكُورًا",
+      "translationSq": "Ai krijoi natën dhe ditën që të vijnë njëra pas tjetrës, si këshillë për ata që duan ta kujtojnë ose duan ta falënderojnë."
+    },
+    {
+      "surah": 25,
+      "ayah": 63,
+      "verseKey": "25:63",
+      "arabic": "وَعِبَادُ ٱلرَّحْمَـٰنِ ٱلَّذِينَ يَمْشُونَ عَلَى ٱلْأَرْضِ هَوْنًا وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًا",
+      "translationSq": "Robërit e të Gjithëmëshirshmit janë ata që ecin thjesht nëpër Tokë dhe, kur të paditurit i sulmojnë me fjalë, ata përgjigjen: “Paqe qoftë!”;"
+    },
+    {
+      "surah": 25,
+      "ayah": 64,
+      "verseKey": "25:64",
+      "arabic": "وَٱلَّذِينَ يَبِيتُونَ لِرَبِّهِمْ سُجَّدًا وَقِيَـٰمًا",
+      "translationSq": "dhe ata që e kalojnë natën duke iu falur Zotit të tyre në sexhde dhe në këmbë;"
+    },
+    {
+      "surah": 25,
+      "ayah": 65,
+      "verseKey": "25:65",
+      "arabic": "وَٱلَّذِينَ يَقُولُونَ رَبَّنَا ٱصْرِفْ عَنَّا عَذَابَ جَهَنَّمَ ۖ إِنَّ عَذَابَهَا كَانَ غَرَامًا",
+      "translationSq": "dhe ata që thonë: “O Zoti ynë, largoje prej nesh ndëshkimin e Xhehenemit, sepse, me të vërtetë, dënimi i tij është i përjetshëm"
+    },
+    {
+      "surah": 25,
+      "ayah": 66,
+      "verseKey": "25:66",
+      "arabic": "إِنَّهَا سَآءَتْ مُسْتَقَرًّا وَمُقَامًا",
+      "translationSq": "e ai është vendbanim dhe vendstrehim i keq”;"
+    },
+    {
+      "surah": 25,
+      "ayah": 67,
+      "verseKey": "25:67",
+      "arabic": "وَٱلَّذِينَ إِذَآ أَنفَقُوا۟ لَمْ يُسْرِفُوا۟ وَلَمْ يَقْتُرُوا۟ وَكَانَ بَيْنَ ذَٰلِكَ قَوَامًا",
+      "translationSq": "dhe ata që, kur shpenzojnë, nuk janë as dorëshpuar, as dorështrënguar, por i përmbahen të mesmes;"
+    },
+    {
+      "surah": 25,
+      "ayah": 68,
+      "verseKey": "25:68",
+      "arabic": "وَٱلَّذِينَ لَا يَدْعُونَ مَعَ ٱللَّهِ إِلَـٰهًا ءَاخَرَ وَلَا يَقْتُلُونَ ٱلنَّفْسَ ٱلَّتِى حَرَّمَ ٱللَّهُ إِلَّا بِٱلْحَقِّ وَلَا يَزْنُونَ ۚ وَمَن يَفْعَلْ ذَٰلِكَ يَلْقَ أَثَامًا",
+      "translationSq": "dhe ata që, pos Allahut, nuk adhurojnë zot tjetër, nuk vrasin njeri, gjë që Allahu e ka ndaluar, përveçse me të drejtë dhe që nuk bëjnë kurvëri. E kush i bën këto, do të marrë gjynahe."
+    },
+    {
+      "surah": 25,
+      "ayah": 69,
+      "verseKey": "25:69",
+      "arabic": "يُضَـٰعَفْ لَهُ ٱلْعَذَابُ يَوْمَ ٱلْقِيَـٰمَةِ وَيَخْلُدْ فِيهِۦ مُهَانًا",
+      "translationSq": "Ndëshkimi do t’i dyfishohet në Ditën e Kiametit dhe ai do të qëndrojë përherë në këtë fatkeqësi i poshtëruar."
+    },
+    {
+      "surah": 25,
+      "ayah": 70,
+      "verseKey": "25:70",
+      "arabic": "إِلَّا مَن تَابَ وَءَامَنَ وَعَمِلَ عَمَلًا صَـٰلِحًا فَأُو۟لَـٰٓئِكَ يُبَدِّلُ ٱللَّهُ سَيِّـَٔاتِهِمْ حَسَنَـٰتٍ ۗ وَكَانَ ٱللَّهُ غَفُورًا رَّحِيمًا",
+      "translationSq": "Përjashtim bën ai që pendohet, beson dhe punon vepra të mira. Një njeriu të tillë Allahu ia ndërron veprat e këqija në të mira. Allahu është Falës e Mëshirëplotë."
+    },
+    {
+      "surah": 25,
+      "ayah": 71,
+      "verseKey": "25:71",
+      "arabic": "وَمَن تَابَ وَعَمِلَ صَـٰلِحًا فَإِنَّهُۥ يَتُوبُ إِلَى ٱللَّهِ مَتَابًا",
+      "translationSq": "Ndërsa, ai që pendohet dhe bën vepra të mira, është i kthyer krejtësisht nga Allahu."
+    },
+    {
+      "surah": 25,
+      "ayah": 72,
+      "verseKey": "25:72",
+      "arabic": "وَٱلَّذِينَ لَا يَشْهَدُونَ ٱلزُّورَ وَإِذَا مَرُّوا۟ بِٱللَّغْوِ مَرُّوا۟ كِرَامًا",
+      "translationSq": "(Kështu janë) edhe ata që nuk dëshmojnë në mënyrë të gënjeshtërt e, kur kalojnë pranë kotësive, kalojnë me dinjitet;"
+    },
+    {
+      "surah": 25,
+      "ayah": 73,
+      "verseKey": "25:73",
+      "arabic": "وَٱلَّذِينَ إِذَا ذُكِّرُوا۟ بِـَٔايَـٰتِ رَبِّهِمْ لَمْ يَخِرُّوا۟ عَلَيْهَا صُمًّا وَعُمْيَانًا",
+      "translationSq": "edhe ata, që, kur paralajmërohen nga shpalljet e Zotit të tyre, nuk bëhen as të shurdhër, as të verbër;"
+    },
+    {
+      "surah": 25,
+      "ayah": 74,
+      "verseKey": "25:74",
+      "arabic": "وَٱلَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ أَزْوَٰجِنَا وَذُرِّيَّـٰتِنَا قُرَّةَ أَعْيُنٍ وَٱجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+      "translationSq": "edhe ata që thonë: “O Zoti ynë, dhurona nga gratë tona dhe trashëgimtarët tanë, ç’është prehje për sytë tanë dhe bëna shembull për të mirët!”."
+    },
+    {
+      "surah": 25,
+      "ayah": 75,
+      "verseKey": "25:75",
+      "arabic": "أُو۟لَـٰٓئِكَ يُجْزَوْنَ ٱلْغُرْفَةَ بِمَا صَبَرُوا۟ وَيُلَقَّوْنَ فِيهَا تَحِيَّةً وَسَلَـٰمًا",
+      "translationSq": "Njerëz të tillë do të shpërblehen me Xhenet të lartë për durimin e tyre dhe do të mirëpriten e do të gjejnë paqe."
+    },
+    {
+      "surah": 25,
+      "ayah": 76,
+      "verseKey": "25:76",
+      "arabic": "خَـٰلِدِينَ فِيهَا ۚ حَسُنَتْ مُسْتَقَرًّا وَمُقَامًا",
+      "translationSq": "Aty do të qëndrojnë përherë; sa vendbanim dhe vendstrehim i mrekullueshëm që është ai!"
+    },
+    {
+      "surah": 25,
+      "ayah": 77,
+      "verseKey": "25:77",
+      "arabic": "قُلْ مَا يَعْبَؤُا۟ بِكُمْ رَبِّى لَوْلَا دُعَآؤُكُمْ ۖ فَقَدْ كَذَّبْتُمْ فَسَوْفَ يَكُونُ لِزَامًۢا",
+      "translationSq": "Thuaj: “Zoti im nuk do t’ju përfillte, sikur të mos ishte lutja juaj. Por ju (i) keni përgënjeshtruar (Shpalljet e Tij), andaj dënimi për ju do të jetë i pashmangshëm”."
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "surah": 74,
+  "verseCount": 56,
+  "verses": [
+    {
+      "surah": 74,
+      "ayah": 1,
+      "verseKey": "74:1",
+      "arabic": " يَـٰٓأَيُّهَا ٱلْمُدَّثِّرُ",
+      "translationSq": "O ti i mbështjellë (o Muhamed)!"
+    },
+    {
+      "surah": 74,
+      "ayah": 2,
+      "verseKey": "74:2",
+      "arabic": "قُمْ فَأَنذِرْ",
+      "translationSq": "Çohu dhe paralajmëro!"
+    },
+    {
+      "surah": 74,
+      "ayah": 3,
+      "verseKey": "74:3",
+      "arabic": "وَرَبَّكَ فَكَبِّرْ",
+      "translationSq": "Zotin tënd madhëroje,"
+    },
+    {
+      "surah": 74,
+      "ayah": 4,
+      "verseKey": "74:4",
+      "arabic": "وَثِيَابَكَ فَطَهِّرْ",
+      "translationSq": "petkat e tua pastroji"
+    },
+    {
+      "surah": 74,
+      "ayah": 5,
+      "verseKey": "74:5",
+      "arabic": "وَٱلرُّجْزَ فَٱهْجُرْ",
+      "translationSq": "dhe largohu nga ndyrësia (adhurimi i idhujve)!"
+    },
+    {
+      "surah": 74,
+      "ayah": 6,
+      "verseKey": "74:6",
+      "arabic": "وَلَا تَمْنُن تَسْتَكْثِرُ",
+      "translationSq": "Mos jep gjë me synimin që të marrësh më shumë"
+    },
+    {
+      "surah": 74,
+      "ayah": 7,
+      "verseKey": "74:7",
+      "arabic": "وَلِرَبِّكَ فَٱصْبِرْ",
+      "translationSq": "dhe për hir të Zotit tënd duro,"
+    },
+    {
+      "surah": 74,
+      "ayah": 8,
+      "verseKey": "74:8",
+      "arabic": "فَإِذَا نُقِرَ فِى ٱلنَّاقُورِ",
+      "translationSq": "se, kur të fryhet në Sur,"
+    },
+    {
+      "surah": 74,
+      "ayah": 9,
+      "verseKey": "74:9",
+      "arabic": "فَذَٰلِكَ يَوْمَئِذٍ يَوْمٌ عَسِيرٌ",
+      "translationSq": "ajo do të jetë një ditë e rëndë."
+    },
+    {
+      "surah": 74,
+      "ayah": 10,
+      "verseKey": "74:10",
+      "arabic": "عَلَى ٱلْكَـٰفِرِينَ غَيْرُ يَسِيرٍ",
+      "translationSq": "Për jobesimtarët nuk do të jetë aspak e lehtë."
+    },
+    {
+      "surah": 74,
+      "ayah": 11,
+      "verseKey": "74:11",
+      "arabic": "ذَرْنِى وَمَنْ خَلَقْتُ وَحِيدًا",
+      "translationSq": "Më lër Vetëm (të merrem) me atë që e krijova"
+    },
+    {
+      "surah": 74,
+      "ayah": 12,
+      "verseKey": "74:12",
+      "arabic": "وَجَعَلْتُ لَهُۥ مَالًا مَّمْدُودًا",
+      "translationSq": "dhe i dhashë pasuri të pamasë"
+    },
+    {
+      "surah": 74,
+      "ayah": 13,
+      "verseKey": "74:13",
+      "arabic": "وَبَنِينَ شُهُودًا",
+      "translationSq": "e djem pranë vetes!"
+    },
+    {
+      "surah": 74,
+      "ayah": 14,
+      "verseKey": "74:14",
+      "arabic": "وَمَهَّدتُّ لَهُۥ تَمْهِيدًا",
+      "translationSq": "Unë ia bëra kamjen të lehtë e të shtruar,"
+    },
+    {
+      "surah": 74,
+      "ayah": 15,
+      "verseKey": "74:15",
+      "arabic": "ثُمَّ يَطْمَعُ أَنْ أَزِيدَ",
+      "translationSq": "e, megjithatë, ai lakmon që t’i jap më tepër."
+    },
+    {
+      "surah": 74,
+      "ayah": 16,
+      "verseKey": "74:16",
+      "arabic": "كَلَّآ ۖ إِنَّهُۥ كَانَ لِـَٔايَـٰتِنَا عَنِيدًا",
+      "translationSq": "Jo, kurrsesi! Vërtet, ai i mohoi me kryeneçësi shpalljet Tona,"
+    },
+    {
+      "surah": 74,
+      "ayah": 17,
+      "verseKey": "74:17",
+      "arabic": "سَأُرْهِقُهُۥ صَعُودًا",
+      "translationSq": "prandaj Unë do ta ngarkoj atë me dënime të rënda."
+    },
+    {
+      "surah": 74,
+      "ayah": 18,
+      "verseKey": "74:18",
+      "arabic": "إِنَّهُۥ فَكَّرَ وَقَدَّرَ",
+      "translationSq": "Ai mendoi dhe kurdisi (kundër Kuranit),"
+    },
+    {
+      "surah": 74,
+      "ayah": 19,
+      "verseKey": "74:19",
+      "arabic": "فَقُتِلَ كَيْفَ قَدَّرَ",
+      "translationSq": "dhe qoftë mallkuar, si kurdisi!"
+    },
+    {
+      "surah": 74,
+      "ayah": 20,
+      "verseKey": "74:20",
+      "arabic": "ثُمَّ قُتِلَ كَيْفَ قَدَّرَ",
+      "translationSq": "Dhe sërish qoftë mallkuar, si kurdisi!"
+    },
+    {
+      "surah": 74,
+      "ayah": 21,
+      "verseKey": "74:21",
+      "arabic": "ثُمَّ نَظَرَ",
+      "translationSq": "Pastaj vështroi rreth vetes,"
+    },
+    {
+      "surah": 74,
+      "ayah": 22,
+      "verseKey": "74:22",
+      "arabic": "ثُمَّ عَبَسَ وَبَسَرَ",
+      "translationSq": "mblodhi vetullat e u vrenjt,"
+    },
+    {
+      "surah": 74,
+      "ayah": 23,
+      "verseKey": "74:23",
+      "arabic": "ثُمَّ أَدْبَرَ وَٱسْتَكْبَرَ",
+      "translationSq": "pastaj u kthye i kapardisur"
+    },
+    {
+      "surah": 74,
+      "ayah": 24,
+      "verseKey": "74:24",
+      "arabic": "فَقَالَ إِنْ هَـٰذَآ إِلَّا سِحْرٌ يُؤْثَرُ",
+      "translationSq": "dhe tha: “Ky (Kuran) nuk është gjë tjetër, veçse magji e trashëguar!"
+    },
+    {
+      "surah": 74,
+      "ayah": 25,
+      "verseKey": "74:25",
+      "arabic": "إِنْ هَـٰذَآ إِلَّا قَوْلُ ٱلْبَشَرِ",
+      "translationSq": "Këto janë vetëm fjalë të një vdekatari!”"
+    },
+    {
+      "surah": 74,
+      "ayah": 26,
+      "verseKey": "74:26",
+      "arabic": "سَأُصْلِيهِ سَقَرَ",
+      "translationSq": "Do ta hedh në Sekar (Xhehenem)!"
+    },
+    {
+      "surah": 74,
+      "ayah": 27,
+      "verseKey": "74:27",
+      "arabic": "وَمَآ أَدْرَىٰكَ مَا سَقَرُ",
+      "translationSq": "E si mund ta dish ti tamam se çfarë është Sekari (zjarri përvëlues)?"
+    },
+    {
+      "surah": 74,
+      "ayah": 28,
+      "verseKey": "74:28",
+      "arabic": "لَا تُبْقِى وَلَا تَذَرُ",
+      "translationSq": "Ai nuk lë gjë dhe nuk kursen asgjë,"
+    },
+    {
+      "surah": 74,
+      "ayah": 29,
+      "verseKey": "74:29",
+      "arabic": "لَوَّاحَةٌ لِّلْبَشَرِ",
+      "translationSq": "lëkurat i shkrumbon."
+    },
+    {
+      "surah": 74,
+      "ayah": 30,
+      "verseKey": "74:30",
+      "arabic": "عَلَيْهَا تِسْعَةَ عَشَرَ",
+      "translationSq": "Atij i rrinë roje nëntëmbëdhjetë (engjëj)."
+    },
+    {
+      "surah": 74,
+      "ayah": 31,
+      "verseKey": "74:31",
+      "arabic": "وَمَا جَعَلْنَآ أَصْحَـٰبَ ٱلنَّارِ إِلَّا مَلَـٰٓئِكَةً ۙ وَمَا جَعَلْنَا عِدَّتَهُمْ إِلَّا فِتْنَةً لِّلَّذِينَ كَفَرُوا۟ لِيَسْتَيْقِنَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَـٰبَ وَيَزْدَادَ ٱلَّذِينَ ءَامَنُوٓا۟ إِيمَـٰنًا ۙ وَلَا يَرْتَابَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَـٰبَ وَٱلْمُؤْمِنُونَ ۙ وَلِيَقُولَ ٱلَّذِينَ فِى قُلُوبِهِم مَّرَضٌ وَٱلْكَـٰفِرُونَ مَاذَآ أَرَادَ ٱللَّهُ بِهَـٰذَا مَثَلًا ۚ كَذَٰلِكَ يُضِلُّ ٱللَّهُ مَن يَشَآءُ وَيَهْدِى مَن يَشَآءُ ۚ وَمَا يَعْلَمُ جُنُودَ رَبِّكَ إِلَّا هُوَ ۚ وَمَا هِىَ إِلَّا ذِكْرَىٰ لِلْبَشَرِ",
+      "translationSq": "Ne kemi bërë rojtarë të zjarrit vetëm engjëjt dhe numrin e tyre e kemi bërë sprovë (objekt polemikash) për jobesimtarët, me qëllim që të binden ata që u është dhënë Libri e t’u shtohet besimi atyre që besojnë; që të mos dyshojnë ata që u është dhënë Libri dhe besimtarët e vërtetë dhe që të thonë ata që kanë sëmundjen e dyshimit në zemër dhe jobesimtarët: “Ç’ka dashur të thotë Allahu me këtë shembull?” Kështu, Allahu lë në humbje atë që do dhe çon në rrugë të drejtë atë që do. Askush tjetër, përveç Tij, nuk e di numrin e ushtrisë së Zotit tënd. Ky është vetëm një përkujtesë për njerëzit."
+    },
+    {
+      "surah": 74,
+      "ayah": 32,
+      "verseKey": "74:32",
+      "arabic": "كَلَّا وَٱلْقَمَرِ",
+      "translationSq": "Kurrsesi! Betohem për Hënën,"
+    },
+    {
+      "surah": 74,
+      "ayah": 33,
+      "verseKey": "74:33",
+      "arabic": "وَٱلَّيْلِ إِذْ أَدْبَرَ",
+      "translationSq": "për natën që largohet"
+    },
+    {
+      "surah": 74,
+      "ayah": 34,
+      "verseKey": "74:34",
+      "arabic": "وَٱلصُّبْحِ إِذَآ أَسْفَرَ",
+      "translationSq": "e për agimin që zbardhëllon"
+    },
+    {
+      "surah": 74,
+      "ayah": 35,
+      "verseKey": "74:35",
+      "arabic": "إِنَّهَا لَإِحْدَى ٱلْكُبَرِ",
+      "translationSq": "se ai (Xhehenemi) është vërtet një nga fatkeqësitë më të mëdha,"
+    },
+    {
+      "surah": 74,
+      "ayah": 36,
+      "verseKey": "74:36",
+      "arabic": "نَذِيرًا لِّلْبَشَرِ",
+      "translationSq": "paralajmërim për njerëzit,"
+    },
+    {
+      "surah": 74,
+      "ayah": 37,
+      "verseKey": "74:37",
+      "arabic": "لِمَن شَآءَ مِنكُمْ أَن يَتَقَدَّمَ أَوْ يَتَأَخَّرَ",
+      "translationSq": "për ata nga ju që dëshirojnë të ecin përpara (me vepra të mira) ose të kthehen mbrapsht (me vepra të këqija)."
+    },
+    {
+      "surah": 74,
+      "ayah": 38,
+      "verseKey": "74:38",
+      "arabic": "كُلُّ نَفْسٍۭ بِمَا كَسَبَتْ رَهِينَةٌ",
+      "translationSq": "Çdo njeri është peng i veprave të veta,"
+    },
+    {
+      "surah": 74,
+      "ayah": 39,
+      "verseKey": "74:39",
+      "arabic": "إِلَّآ أَصْحَـٰبَ ٱلْيَمِينِ",
+      "translationSq": "përveç njerëzve të krahut të djathtë;"
+    },
+    {
+      "surah": 74,
+      "ayah": 40,
+      "verseKey": "74:40",
+      "arabic": "فِى جَنَّـٰتٍ يَتَسَآءَلُونَ",
+      "translationSq": "të cilët në kopshtet e Xhenetit pyesin njëri-tjetrin"
+    },
+    {
+      "surah": 74,
+      "ayah": 41,
+      "verseKey": "74:41",
+      "arabic": "عَنِ ٱلْمُجْرِمِينَ",
+      "translationSq": "për keqbërësit:"
+    },
+    {
+      "surah": 74,
+      "ayah": 42,
+      "verseKey": "74:42",
+      "arabic": "مَا سَلَكَكُمْ فِى سَقَرَ",
+      "translationSq": "“Çfarë ju ka sjellë në Sekar?”"
+    },
+    {
+      "surah": 74,
+      "ayah": 43,
+      "verseKey": "74:43",
+      "arabic": "قَالُوا۟ لَمْ نَكُ مِنَ ٱلْمُصَلِّينَ",
+      "translationSq": "Ata do të përgjigjen: “Nuk ishim nga ata që falnin namaz"
+    },
+    {
+      "surah": 74,
+      "ayah": 44,
+      "verseKey": "74:44",
+      "arabic": "وَلَمْ نَكُ نُطْعِمُ ٱلْمِسْكِينَ",
+      "translationSq": "dhe as prej atyre që i ushqenin të varfrit."
+    },
+    {
+      "surah": 74,
+      "ayah": 45,
+      "verseKey": "74:45",
+      "arabic": "وَكُنَّا نَخُوضُ مَعَ ٱلْخَآئِضِينَ",
+      "translationSq": "Ne lëshoheshim në biseda të kota me llafazanët"
+    },
+    {
+      "surah": 74,
+      "ayah": 46,
+      "verseKey": "74:46",
+      "arabic": "وَكُنَّا نُكَذِّبُ بِيَوْمِ ٱلدِّينِ",
+      "translationSq": "dhe mohonim Ditën e Llogarisë,"
+    },
+    {
+      "surah": 74,
+      "ayah": 47,
+      "verseKey": "74:47",
+      "arabic": "حَتَّىٰٓ أَتَىٰنَا ٱلْيَقِينُ",
+      "translationSq": "derisa na erdhi vdekja.”"
+    },
+    {
+      "surah": 74,
+      "ayah": 48,
+      "verseKey": "74:48",
+      "arabic": "فَمَا تَنفَعُهُمْ شَفَـٰعَةُ ٱلشَّـٰفِعِينَ",
+      "translationSq": "Prandaj, kurrfarë ndërmjetësimi i cilitdo ndërmjetësuesi nuk do t’i ndihmojë ata."
+    },
+    {
+      "surah": 74,
+      "ayah": 49,
+      "verseKey": "74:49",
+      "arabic": "فَمَا لَهُمْ عَنِ ٱلتَّذْكِرَةِ مُعْرِضِينَ",
+      "translationSq": "Atëherë, përse shmangen ata nga këshillimi,"
+    },
+    {
+      "surah": 74,
+      "ayah": 50,
+      "verseKey": "74:50",
+      "arabic": "كَأَنَّهُمْ حُمُرٌ مُّسْتَنفِرَةٌ",
+      "translationSq": "sikur të ishin gomarë të egër"
+    },
+    {
+      "surah": 74,
+      "ayah": 51,
+      "verseKey": "74:51",
+      "arabic": "فَرَّتْ مِن قَسْوَرَةٍۭ",
+      "translationSq": "e të frikësuar që ikin prej luanit?!"
+    },
+    {
+      "surah": 74,
+      "ayah": 52,
+      "verseKey": "74:52",
+      "arabic": "بَلْ يُرِيدُ كُلُّ ٱمْرِئٍ مِّنْهُمْ أَن يُؤْتَىٰ صُحُفًا مُّنَشَّرَةً",
+      "translationSq": "Vërtet, çdonjëri prej tyre kërkon që t’i jepen shkrime të hapura (nga Zoti)."
+    },
+    {
+      "surah": 74,
+      "ayah": 53,
+      "verseKey": "74:53",
+      "arabic": "كَلَّا ۖ بَل لَّا يَخَافُونَ ٱلْـَٔاخِرَةَ",
+      "translationSq": "Kurrsesi, pasi ata nuk i frikësohen jetës tjetër!"
+    },
+    {
+      "surah": 74,
+      "ayah": 54,
+      "verseKey": "74:54",
+      "arabic": "كَلَّآ إِنَّهُۥ تَذْكِرَةٌ",
+      "translationSq": "Në të vërtetë, ky (Kuran) është këshillë,"
+    },
+    {
+      "surah": 74,
+      "ayah": 55,
+      "verseKey": "74:55",
+      "arabic": "فَمَن شَآءَ ذَكَرَهُۥ",
+      "translationSq": "prandaj, kush të dojë, le t’ia vërë veshin!"
+    },
+    {
+      "surah": 74,
+      "ayah": 56,
+      "verseKey": "74:56",
+      "arabic": "وَمَا يَذْكُرُونَ إِلَّآ أَن يَشَآءَ ٱللَّهُ ۚ هُوَ أَهْلُ ٱلتَّقْوَىٰ وَأَهْلُ ٱلْمَغْفِرَةِ",
+      "translationSq": "Por atij ia vënë veshin vetëm ata që do Allahu. Vetëm Ai është i Denjë për t’u pasur frikë dhe vetëm Ai është i Denjë për të falur."
+    }
+  ]
+}

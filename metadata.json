@@ -1,0 +1,11 @@
+{
+  "name": "Hayat - Jeta Islame",
+  "description": "Mobile-First Islamic Life Manager featuring Prayer Times, Quran Corpus, Dhikr, Hifz, Fasting Tracker, and Offline PWA Support.",
+  "requestFramePermissions": [
+    "geolocation",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

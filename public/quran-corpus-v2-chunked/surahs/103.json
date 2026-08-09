@@ -1,0 +1,27 @@
+{
+  "surah": 103,
+  "verseCount": 3,
+  "verses": [
+    {
+      "surah": 103,
+      "ayah": 1,
+      "verseKey": "103:1",
+      "arabic": " وَٱلْعَصْرِ",
+      "translationSq": "Për kohën!"
+    },
+    {
+      "surah": 103,
+      "ayah": 2,
+      "verseKey": "103:2",
+      "arabic": "إِنَّ ٱلْإِنسَـٰنَ لَفِى خُسْرٍ",
+      "translationSq": "Me të vërtetë, njeriu është në humbje,"
+    },
+    {
+      "surah": 103,
+      "ayah": 3,
+      "verseKey": "103:3",
+      "arabic": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ",
+      "translationSq": "përveç atyre që besojnë dhe bëjnë vepra të mira, i këshillojnë njëri-tjetrit të vërtetën e i këshillojnë njëri-tjetrit durimin."
+    }
+  ]
+}

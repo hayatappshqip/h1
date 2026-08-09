@@ -1,0 +1,34 @@
+{
+  "surah": 106,
+  "verseCount": 4,
+  "verses": [
+    {
+      "surah": 106,
+      "ayah": 1,
+      "verseKey": "106:1",
+      "arabic": " لِإِيلَـٰفِ قُرَيْشٍ",
+      "translationSq": "(Shkatërrimin e njerëzve të elefantit Allahu e bëri) për të mbrojtur fisin Kurejsh,"
+    },
+    {
+      "surah": 106,
+      "ayah": 2,
+      "verseKey": "106:2",
+      "arabic": "إِۦلَـٰفِهِمْ رِحْلَةَ ٱلشِّتَآءِ وَٱلصَّيْفِ",
+      "translationSq": "për t’i mbrojtur ata në udhëtimin që bëjnë dimër e verë."
+    },
+    {
+      "surah": 106,
+      "ayah": 3,
+      "verseKey": "106:3",
+      "arabic": "فَلْيَعْبُدُوا۟ رَبَّ هَـٰذَا ٱلْبَيْتِ",
+      "translationSq": "Prandaj le të adhurojnë Zotin e kësaj shtëpie (Qabes),"
+    },
+    {
+      "surah": 106,
+      "ayah": 4,
+      "verseKey": "106:4",
+      "arabic": "ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍۭ",
+      "translationSq": "i Cili i ushqen ata në ditë urie dhe i siguron në ditë frike."
+    }
+  ]
+}
