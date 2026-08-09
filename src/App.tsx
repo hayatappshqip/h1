@@ -88,12 +88,12 @@ export default function App() {
  };
  }, []);
 
- // Register Service Worker v44
+ // Register Service Worker v45
  useEffect(() => {
  if ('serviceWorker' in navigator) {
  navigator.serviceWorker
  .register('/service-worker.js')
- .then(reg => console.log('Hayat ServiceWorker v44 registruar:', reg.scope))
+ .then(reg => console.log('Hayat ServiceWorker v45 registruar:', reg.scope))
  .catch(err => console.warn('ServiceWorker error:', err));
  }
  }, []);

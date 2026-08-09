@@ -1,18 +1,11 @@
 /**
  * Hayat Service Worker - Offline Shell Cache
- * CACHE_NAME: hayat-app-shell-v44
- *
- * v44:
- *  - fonti lokal Uthmani shtohet ne app shell (offline i vertete)
- *  - ikonat PWA shtohen ne cache
- *  - CDN i fontit ruhet me strategji cache-first (kerkesa CORS)
- *  - komenti i versionit tani perputhet me CACHE_NAME
+ * CACHE_NAME: hayat-app-shell-v45
  */
 
-const CACHE_VERSION = 'v44';
+const CACHE_VERSION = 'v45';
 const CACHE_NAME = `hayat-app-shell-${CACHE_VERSION}`;
 
-// Burime kritike per guaskën offline. Nese ndonje deshton, instalimi nuk bllokohet.
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -23,13 +16,11 @@ const ASSETS_TO_CACHE = [
   '/assets/icon-512.png'
 ];
 
-// Origjinat e jashtme qe lejohen te ruhen ne cache (fonti si rezerve).
 const CACHEABLE_EXTERNAL_HOSTS = ['cdn.jsdelivr.net'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
-      // addAll deshton i gjithi nese nje burim kthen 404; e bejme tolerant.
       await Promise.all(
         ASSETS_TO_CACHE.map((url) =>
           cache.add(url).catch((err) => {
@@ -61,8 +52,6 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const isExternalFont = CACHEABLE_EXTERNAL_HOSTS.includes(url.hostname);
 
-  // Fonti nga CDN: cache-first. Pergjigjet jane CORS, prandaj ruhen dhe
-  // funksionojne edhe offline pas ngarkimit te pare.
   if (isExternalFont) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
@@ -79,24 +68,37 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Origjina te tjera te jashtme (audio streaming, API) nuk kalojne nga cache.
   if (url.origin !== location.origin && !url.hostname.includes('quran')) {
     return;
   }
 
+  // Use Network-First for HTML (navigation) to ensure the latest assets are loaded
+  if (event.request.mode === 'navigate' || event.request.headers.get('accept').includes('text/html')) {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+        return networkResponse;
+      }).catch(() => {
+        return caches.match('/index.html') || caches.match('/');
+      })
+    );
+    return;
+  }
+
+  // Stale-While-Revalidate for other static assets
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Kthe nga cache dhe fresko ne sfond nese ka rrjet.
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, networkResponse);
             });
           }
-        }).catch(() => {
-          // Mungesa e rrjetit konsumohet ne heshtje.
-        });
+        }).catch(() => {});
         return cachedResponse;
       }
 
@@ -109,11 +111,7 @@ self.addEventListener('fetch', (event) => {
           cache.put(event.request, responseToCache);
         });
         return networkResponse;
-      }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html') || caches.match('/');
-        }
-      });
+      }).catch(() => {});
     })
   );
 });
