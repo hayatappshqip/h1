@@ -1395,7 +1395,7 @@ export const MBUROJA_CHAPTERS: MburojaChapter[] = [
  },
  {
  "id": 1045,
- "ar": "أَسْتَغِ律فِر الله وَأَتُوب إِلَيْهِ",
+ "ar": "أَسْتَغْفِر الله وَأَتُوب إِلَيْهِ",
  "sq": "Kërkoj faljen e Allahut dhe tek Ai pendohem.",
  "transliteration": "Estagfirull-llahe ve etubu ilejhi.",
  "count": 100,
@@ -1420,9 +1420,9 @@ export const MBUROJA_CHAPTERS: MburojaChapter[] = [
  "duas": [
  {
  "id": 99,
- "ar": "I bashkon shuplakat e dorës sikurse kur bën dua, fryen në to dhe lexon:<br /> بَسْم الله الرَّحْمَن الرَّحِيم \"قُل هُو الله أَحَد الله الصَّمَد لَم يَلِد وَلَم يُولَد وَلَم يَكُن لَه كُفُوًا أَحَد. بَسْم الله الرَّحْمَن الرَّحِيم \"قُل أَعُوذ بِرَب الْفَلَق مِن شَر مَا خَلَق وَمِن شَر غَاسِق إِذَا وَقَب وَمِن شَر النَّفَّاثَات فِي الْعُقَد وَمِن شَر حَاسِد إِذَا حَسَد. سْم الله الرَّحْمَن الرَّحِيم \"قُل أَعُوذ بِرَب النَّاس مَلِك النَّاس إِلَه النَّاس مِن شَر الْوَسْوَاس الْخَنَّاس الَّذِي يُوَسْوِس فِي صُدُور النَّاس مِن الْجِنَّة وَالنَّاسِ",
- "sq": "Thuaj: “Ai është Allahu, Një dhe i Vetëm! Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim. Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë (a i krahasueshëm) me Atë!” Thuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar dhe nga sherri i natës, kur kaplon terri dhe nga sherri i falltarëve, që fryjnë në nyje (duke bërë magji) dhe nga sherri i smirëziut, kur vepron me smirë.” Thuaj: “Kërkoj mbështetje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i djallit cytës që fshihet (pasi cyt) e që hedh dyshime në gjokset e njerëzve, (qoftë ai djall) prej xhindeve apo njerëzve!” Pastaj e fërkon me të dy duart trupin, aq sa të mundesh, duke filluar nga koka, fytyra dhe aq sa mund të arrish nga trupi. (kështu vepron tri herë)",
- "transliteration": "Kul huvAll-llahu ehad, All-llahus-samed, lem jelid ve lem juled, ve lem jekun lehu kufuven ehad Kul eudhu bi Rabbil felek, min sherri ma halek, ve min sherri gasikin idha vekab, ve min sherrin-nef-fathati fil ukad, ve min sherr-rri hasidin idha hased Kul eudhu bi Rabbin-nas, melikin-nas, ilahin-nas, minsherr-rril vesvasil han-nas, eledhi juvesvisu fi sudurin-nas, minel xhin-neti ven-nas",
+ "ar": "بِسْم الله الرَّحْمٰن الرَّحِيمِ\nقُل هُو الله أَحَد الله الصَّمَد لَم يَلِد وَلَم يُولَد وَلَم يَكُن لَه كُفُوًا أَحَدٌ\n\nبِسْم الله الرَّحْمٰن الرَّحِيمِ\nقُل أَعُوذ بِرَب الْفَلَق مِن شَر مَا خَلَق وَمِن شَر غَاسِق إِذَا وَقَب وَمِن شَر النَّفَّاثَات فِي الْعُقَد وَمِن شَر حَاسِد إِذَا حَسَدَ\n\nبِسْم الله الرَّحْمٰن الرَّحِيمِ\nقُل أَعُوذ بِرَب النَّاس مَلِك النَّاس إِلَٰه النَّاس مِن شَر الْوَسْوَاس الْخَنَّاس الَّذِي يُوَسْوِس فِي صُدُور النَّاس مِن الْجِنَّة وَالنَّاسِ",
+ "sq": "Surja El-Ihlas:\nThuaj: \"Ai, Allahu është Një! Allahu është Ai që çdo krijesë i nevojitet. Nuk ka lindur kënd, as nuk është i lindur. Dhe Atij askush nuk i është i barabartë.\"\n\nSurja El-Felek:\nThuaj: \"Kërkoj mbështetje te Zoti i agimit, nga dëmi i çdo krijese që Ai ka krijuar, nga dëmi i errësirës së natës kur ajo kaplon, nga dëmi i atyre që fryjnë në nyja (magjistarëve), dhe nga dëmi i lakmuesit kur xhelozon!\"\n\nSurja En-Nas:\nThuaj: \"Kërkoj mbështetje te Zoti i njerëzve, Sunduesi i njerëzve, I Adhuruari i njerëzve, nga dëmi i ngacmuesit që fshihet, i cili bën vesvese në gjokset e njerëzve, qoftë ai nga xhinët apo nga njerëzit!\"",
+ "transliteration": "Bismillahir-Rahmanir-Rahim. Kul huvall-llahu ehad. All-llahus-samed. Lem jelid ve lem juled. Ve lem jekun lehu kufuven ehad.\n\nBismillahir-Rahmanir-Rahim. Kul eudhu bi rabbil-felek. Min sherri ma khalek. Ve min sherri gasikin idha vekab. Ve min sherrin-neffathati fil-ukad. Ve min sherri hasidin idha hased.\n\nBismillahir-Rahmanir-Rahim. Kul eudhu bi rabbin-nas. Melikin-nas. Ilahin-nas. Min sherril-vesvasil-khannas. El-ledhi juvesvisu fi sudurin-nas. Minel-xhinneti ven-nas.",
  "count": 3,
  "reference": "Buhariu “Fet’hul-Bari” 9/62 dhe Muslimi 4/1723."
  },

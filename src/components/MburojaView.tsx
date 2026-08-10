@@ -24,6 +24,115 @@ interface MburojaViewProps {
  onUpdateDuaGoal?: (duaId: number, goal: number | null) => void;
 }
 
+
+// Helper renderers for multi-paragraph or multi-Surah duas (e.g. El-Ihlas, El-Felek, En-Nas)
+const renderFormattedArabic = (arText: string) => {
+  if (!arText) return null;
+  const sanitized = sanitizeArabicText(arText);
+  const parts = sanitized.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+
+  if (parts.length <= 1) {
+    return (
+      <p className="font-arabic text-2xl text-slate-100 leading-[2.2] text-right dir-rtl my-2 select-text whitespace-pre-line" dir="rtl">
+        {sanitized}
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-3.5 my-3 dir-rtl select-text" dir="rtl">
+      {parts.map((part, idx) => (
+        <div key={idx} className={idx > 0 ? "pt-3 border-t border-slate-800/60" : ""}>
+          <p className="font-arabic text-2xl text-slate-100 leading-[2.2] text-right whitespace-pre-line">
+            {part}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const renderFormattedTransliteration = (transText: string) => {
+  if (!transText) return null;
+  const parts = transText.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+
+  if (parts.length <= 1) {
+    return (
+      <p className="text-xs font-mono text-amber-200/90 italic bg-slate-950/70 p-2.5 rounded-lg border border-slate-850 whitespace-pre-line">
+        {transText}
+      </p>
+    );
+  }
+
+  return (
+    <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-850 space-y-2.5 my-2">
+      {parts.map((part, idx) => (
+        <div key={idx} className={idx > 0 ? "pt-2.5 border-t border-slate-800/80" : ""}>
+          <p className="text-xs font-mono text-amber-200/90 italic leading-relaxed whitespace-pre-line">
+            {part}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const renderFormattedAlbanian = (sqText: string) => {
+  if (!sqText) return null;
+  const parts = sqText.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+
+  if (parts.length <= 1) {
+    return (
+      <p className="text-sm font-sans text-slate-200 leading-relaxed whitespace-pre-line">
+        {sqText}
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-3 my-2">
+      {parts.map((part, idx) => {
+        const isSurahHeader = part.startsWith("Surja ");
+        const isIntroHeader = part.startsWith("Leximi i ");
+
+        if (isSurahHeader) {
+          const colonIdx = part.indexOf(":");
+          if (colonIdx !== -1) {
+            const headerTitle = part.substring(0, colonIdx + 1);
+            const headerBody = part.substring(colonIdx + 1).trim();
+            return (
+              <div key={idx} className={idx > 0 ? "pt-2.5 border-t border-slate-800/50 space-y-1" : "space-y-1"}>
+                <p className="text-xs font-semibold text-emerald-400 tracking-wide">
+                  {headerTitle}
+                </p>
+                {headerBody && (
+                  <p className="text-sm font-sans text-slate-200 leading-relaxed whitespace-pre-line">
+                    {headerBody}
+                  </p>
+                )}
+              </div>
+            );
+          }
+        }
+
+        return (
+          <div key={idx} className={idx > 0 && !isIntroHeader ? "pt-2.5 border-t border-slate-800/40" : ""}>
+            <p
+              className={`text-sm font-sans leading-relaxed whitespace-pre-line ${
+                isIntroHeader
+                  ? "text-emerald-300/90 font-medium text-xs bg-slate-950/40 p-2 rounded border border-slate-800/60"
+                  : "text-slate-200"
+              }`}
+            >
+              {part}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export const MburojaView: React.FC<MburojaViewProps> = ({
  initialChapterId,
  mburojaState,
@@ -164,21 +273,13 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </div>
 
  {/* Arabic Text */}
- <p className="font-arabic text-2xl text-slate-100 leading-[2.2] text-right dir-rtl my-2 select-text" dir="rtl">
- {sanitizeArabicText(dua.ar)}
- </p>
+ {renderFormattedArabic(dua.ar)}
 
  {/* Transliteration */}
- {dua.transliteration && (
- <p className="text-xs font-mono text-amber-200/90 italic bg-slate-950/70 p-2.5 rounded-lg border border-slate-850">
- {dua.transliteration}
- </p>
- )}
+ {renderFormattedTransliteration(dua.transliteration || '')}
 
  {/* Albanian Translation */}
- <p className="text-sm font-sans text-slate-200 leading-relaxed">
- {dua.sq}
- </p>
+ {renderFormattedAlbanian(dua.sq)}
 
  {/* Audio Playback for Daily Routine Duas */}
  {(activeChapter.isRoutine || [27, 28, 29].includes(activeChapter.id)) && (
@@ -435,19 +536,9 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </button>
  </div>
 
- <p className="font-arabic text-xl text-slate-100 leading-[2] text-right dir-rtl my-1" dir="rtl">
- {sanitizeArabicText(dua.ar)}
- </p>
-
- {dua.transliteration && (
- <p className="text-xs font-mono text-amber-200/90 italic bg-slate-950 p-2 rounded border border-slate-850">
- {dua.transliteration}
- </p>
- )}
-
- <p className="text-xs font-sans text-slate-200 leading-relaxed">
- {dua.sq}
- </p>
+ {renderFormattedArabic(dua.ar)}
+ {renderFormattedTransliteration(dua.transliteration || '')}
+ {renderFormattedAlbanian(dua.sq)}
 
  {/* Audio Player for Saved Routine Duas */}
  {[27, 28, 29].includes(chapterId) && (

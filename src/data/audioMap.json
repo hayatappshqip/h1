@@ -1,0 +1,1626 @@
+{
+  "1": {
+    "1": {
+      "file": "/audios/001_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/001_01.mp3",
+      "score": 1
+    },
+    "2": {
+      "file": "/audios/001_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/001_02.mp3",
+      "score": 1
+    },
+    "3": {
+      "file": "/audios/001_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/001_03.mp3",
+      "score": 1
+    },
+    "4": {
+      "file": "/audios/001_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/001_04.mp3",
+      "score": 1
+    }
+  },
+  "2": {
+    "5": {
+      "file": "/audios/002_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/002_01.mp3",
+      "score": 1
+    }
+  },
+  "3": {
+    "6": {
+      "file": "/audios/003_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/003_01.mp3",
+      "score": 1
+    }
+  },
+  "4": {
+    "7": {
+      "file": "/audios/004_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/004_01.mp3",
+      "score": 1
+    },
+    "8": {
+      "file": "/audios/004_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/004_02.mp3",
+      "score": 1
+    }
+  },
+  "5": {
+    "9": {
+      "file": "/audios/005_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/005_01.mp3",
+      "score": 1
+    }
+  },
+  "6": {
+    "10": {
+      "file": "/audios/006_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/006_01.mp3",
+      "score": 1
+    }
+  },
+  "7": {
+    "11": {
+      "file": "/audios/007_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/007_01.mp3",
+      "score": 1
+    }
+  },
+  "8": {
+    "12": {
+      "file": "/audios/005_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/005_01.mp3",
+      "score": 1
+    }
+  },
+  "9": {
+    "13": {
+      "file": "/audios/009_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/009_01.mp3",
+      "score": 1
+    },
+    "14": {
+      "file": "/audios/009_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/009_02.mp3",
+      "score": 1
+    },
+    "15": {
+      "file": "/audios/009_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/009_03.mp3",
+      "score": 1
+    }
+  },
+  "10": {
+    "17": {
+      "file": "/audios/010_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/010_01.mp3",
+      "score": 1
+    },
+    "18": {
+      "file": "/audios/010_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/010_02.mp3",
+      "score": 1
+    }
+  },
+  "11": {
+    "19": {
+      "file": "/audios/011_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/011_01.mp3",
+      "score": 1
+    }
+  },
+  "12": {
+    "20": {
+      "file": "/audios/012_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/012_01.mp3",
+      "score": 1
+    },
+    "275": {
+      "file": "/audios/012_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/012_01.mp3",
+      "score": 0.436
+    }
+  },
+  "13": {
+    "21": {
+      "file": "/audios/013_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/013_01.mp3",
+      "score": 1
+    },
+    "276": {
+      "file": "/audios/013_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/013_02.mp3",
+      "score": 1
+    },
+    "277": {
+      "file": "/audios/013_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/013_03.mp3",
+      "score": 1
+    }
+  },
+  "14": {
+    "22": {
+      "file": "/audios/014_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/014_01.mp3",
+      "score": 1
+    }
+  },
+  "15": {
+    "23": {
+      "file": "/audios/015_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/015_01.mp3",
+      "score": 1
+    },
+    "24": {
+      "file": "/audios/015_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/015_02.mp3",
+      "score": 1
+    },
+    "25": {
+      "file": "/audios/015_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/015_03.mp3",
+      "score": 1
+    }
+  },
+  "16": {
+    "26": {
+      "file": "/audios/016_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/016_01.mp3",
+      "score": 1
+    },
+    "27": {
+      "file": "/audios/016_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/016_02.mp3",
+      "score": 1
+    },
+    "28": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "29": {
+      "file": "/audios/016_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/016_04.mp3",
+      "score": 1
+    },
+    "30": {
+      "file": "/audios/016_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/016_05.mp3",
+      "score": 1
+    },
+    "31": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "17": {
+    "32": {
+      "file": "/audios/017_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_01.mp3",
+      "score": 1
+    },
+    "33": {
+      "file": "/audios/017_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_02.mp3",
+      "score": 1
+    },
+    "34": {
+      "file": "/audios/017_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_03.mp3",
+      "score": 1
+    },
+    "35": {
+      "file": "/audios/017_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_04.mp3",
+      "score": 1
+    },
+    "36": {
+      "file": "/audios/017_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_05.mp3",
+      "score": 1
+    }
+  },
+  "18": {
+    "37": {
+      "file": "/audios/018_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/018_01.mp3",
+      "score": 1
+    },
+    "38": {
+      "file": "/audios/018_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/018_02.mp3",
+      "score": 1
+    },
+    "39": {
+      "file": "/audios/018_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/018_03.mp3",
+      "score": 1
+    }
+  },
+  "19": {
+    "40": {
+      "file": "/audios/019_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/019_01.mp3",
+      "score": 1
+    },
+    "41": {
+      "file": "/audios/017_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_02.mp3",
+      "score": 1
+    },
+    "42": {
+      "file": "/audios/019_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/019_03.mp3",
+      "score": 1
+    },
+    "43": {
+      "file": "/audios/019_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/019_04.mp3",
+      "score": 1
+    },
+    "44": {
+      "file": "/audios/017_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/017_05.mp3",
+      "score": 1
+    },
+    "45": {
+      "file": "/audios/019_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/019_06.mp3",
+      "score": 1
+    },
+    "46": {
+      "file": "/audios/019_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/019_07.mp3",
+      "score": 1
+    }
+  },
+  "20": {
+    "47": {
+      "file": "/audios/020_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/020_01.mp3",
+      "score": 1
+    },
+    "48": {
+      "file": "/audios/020_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/020_02.mp3",
+      "score": 1
+    }
+  },
+  "21": {
+    "49": {
+      "file": "/audios/021_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/021_01.mp3",
+      "score": 1
+    },
+    "50": {
+      "file": "/audios/021_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/021_02.mp3",
+      "score": 1
+    }
+  },
+  "22": {
+    "51": {
+      "file": "/audios/022_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/022_01.mp3",
+      "score": 1
+    }
+  },
+  "23": {
+    "52": {
+      "file": "/audios/023_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/023_01.mp3",
+      "score": 1
+    },
+    "53": {
+      "file": "/audios/023_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/023_02.mp3",
+      "score": 1
+    }
+  },
+  "24": {
+    "54": {
+      "file": "/audios/024_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/024_01.mp3",
+      "score": 1
+    },
+    "55": {
+      "file": "/audios/024_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/024_02.mp3",
+      "score": 1
+    },
+    "56": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "57": {
+      "file": "/audios/024_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/024_04.mp3",
+      "score": 1
+    },
+    "58": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "59": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "60": {
+      "file": "/audios/024_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/024_07.mp3",
+      "score": 1
+    },
+    "61": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "62": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "63": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "64": {
+      "file": "/audios/024_11.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/024_11.mp3",
+      "score": 1
+    }
+  },
+  "25": {
+    "65": {
+      "file": "/audios/027_23.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_23.mp3",
+      "score": 0.5
+    },
+    "66": {
+      "file": "/audios/025_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_02.mp3",
+      "score": 1
+    },
+    "67": {
+      "file": "/audios/025_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_03.mp3",
+      "score": 1
+    },
+    "68": {
+      "file": "/audios/025_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_04.mp3",
+      "score": 1
+    },
+    "69": {
+      "file": "/audios/025_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_05.mp3",
+      "score": 1
+    },
+    "70": {
+      "file": "/audios/025_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_06.mp3",
+      "score": 1
+    },
+    "71": {
+      "file": "/audios/025_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_07.mp3",
+      "score": 1
+    },
+    "72": {
+      "file": "/audios/025_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_08.mp3",
+      "score": 1
+    },
+    "73": {
+      "file": "/audios/025_09.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_09.mp3",
+      "score": 1
+    },
+    "74": {
+      "file": "/audios/025_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_10.mp3",
+      "score": 1
+    },
+    "651": {
+      "file": "/audios/025_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_01.mp3",
+      "score": 0.769
+    }
+  },
+  "26": {
+    "75": {
+      "file": "/audios/026_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/026_01.mp3",
+      "score": 1
+    }
+  },
+  "27": {
+    "1001": {
+      "file": "/audios/027_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_01.mp3",
+      "score": 1
+    },
+    "1002": {
+      "file": "/audios/027_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_02.mp3",
+      "score": 1
+    },
+    "1003": {
+      "file": "/audios/027_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_03.mp3",
+      "score": 1
+    },
+    "1004": {
+      "file": "/audios/027_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_04.mp3",
+      "score": 0.932
+    },
+    "1005": {
+      "file": "/audios/027_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_05.mp3",
+      "score": 1
+    },
+    "1006": {
+      "file": "/audios/027_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_06.mp3",
+      "score": 1
+    },
+    "1007": {
+      "file": "/audios/027_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_07.mp3",
+      "score": 1
+    },
+    "1008": {
+      "file": "/audios/027_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_08.mp3",
+      "score": 1
+    },
+    "1009": {
+      "file": "/audios/027_09.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_09.mp3",
+      "score": 0.333
+    },
+    "1010": {
+      "file": "/audios/027_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_10.mp3",
+      "score": 0.846
+    },
+    "1011": {
+      "file": "/audios/027_11.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_11.mp3",
+      "score": 0.676
+    },
+    "1012": {
+      "file": "/audios/027_12.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_12.mp3",
+      "score": 0.943
+    },
+    "1013": {
+      "file": "/audios/027_13.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_13.mp3",
+      "score": 1
+    },
+    "1014": {
+      "file": "/audios/027_14.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_14.mp3",
+      "score": 1
+    },
+    "1015": {
+      "file": "/audios/027_15.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_15.mp3",
+      "score": 1
+    },
+    "1016": {
+      "file": "/audios/027_16.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_16.mp3",
+      "score": 0.852
+    },
+    "1017": {
+      "file": "/audios/027_17.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_17.mp3",
+      "score": 0.84
+    },
+    "1018": {
+      "file": "/audios/027_18.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_18.mp3",
+      "score": 1
+    },
+    "1019": {
+      "file": "/audios/119_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/119_01.mp3",
+      "score": 1
+    },
+    "1020": {
+      "file": "/audios/027_21.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_21.mp3",
+      "score": 0.833
+    },
+    "1021": {
+      "file": "/audios/025_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_10.mp3",
+      "score": 1
+    },
+    "1022": {
+      "file": "/audios/027_23.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_23.mp3",
+      "score": 1
+    },
+    "1023": {
+      "file": "/audios/027_25.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_25.mp3",
+      "score": 1
+    }
+  },
+  "28": {
+    "1024": {
+      "file": "/audios/027_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_01.mp3",
+      "score": 1
+    },
+    "1025": {
+      "file": "/audios/027_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_02.mp3",
+      "score": 1
+    },
+    "1026": {
+      "file": "/audios/027_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_03.mp3",
+      "score": 1
+    },
+    "1027": {
+      "file": "/audios/027_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_04.mp3",
+      "score": 0.735
+    },
+    "1028": {
+      "file": "/audios/027_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_05.mp3",
+      "score": 0.8
+    },
+    "1029": {
+      "file": "/audios/027_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_06.mp3",
+      "score": 1
+    },
+    "1030": {
+      "file": "/audios/027_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_07.mp3",
+      "score": 0.917
+    },
+    "1031": {
+      "file": "/audios/027_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_08.mp3",
+      "score": 0.895
+    },
+    "1032": {
+      "file": "/audios/027_09.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_09.mp3",
+      "score": 0.333
+    },
+    "1033": {
+      "file": "/audios/027_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_10.mp3",
+      "score": 0.846
+    },
+    "1034": {
+      "file": "/audios/027_11.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_11.mp3",
+      "score": 0.676
+    },
+    "1035": {
+      "file": "/audios/027_12.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_12.mp3",
+      "score": 0.943
+    },
+    "1036": {
+      "file": "/audios/027_13.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_13.mp3",
+      "score": 1
+    },
+    "1037": {
+      "file": "/audios/027_14.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_14.mp3",
+      "score": 1
+    },
+    "1038": {
+      "file": "/audios/027_15.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_15.mp3",
+      "score": 1
+    },
+    "1039": {
+      "file": "/audios/027_16.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_16.mp3",
+      "score": 0.351
+    },
+    "1040": {
+      "file": "/audios/027_17.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_17.mp3",
+      "score": 0.769
+    },
+    "1041": {
+      "file": "/audios/027_18.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_18.mp3",
+      "score": 1
+    },
+    "1042": {
+      "file": "/audios/119_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/119_01.mp3",
+      "score": 1
+    },
+    "1043": {
+      "file": "/audios/027_24.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_24.mp3",
+      "score": 1
+    },
+    "1044": {
+      "file": "/audios/028_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_03.mp3",
+      "score": 1
+    },
+    "1045": {
+      "file": "/audios/027_23.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_23.mp3",
+      "score": 1
+    },
+    "1046": {
+      "file": "/audios/027_25.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_25.mp3",
+      "score": 1
+    }
+  },
+  "29": {
+    "99": {
+      "file": "/audios/028_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_01.mp3",
+      "score": 1
+    },
+    "100": {
+      "file": "/audios/025_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/025_08.mp3",
+      "score": 1
+    },
+    "101": {
+      "file": "/audios/028_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_03.mp3",
+      "score": 1
+    },
+    "102": {
+      "file": "/audios/028_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_04.mp3",
+      "score": 1
+    },
+    "103": {
+      "file": "/audios/028_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_05.mp3",
+      "score": 1
+    },
+    "104": {
+      "file": "/audios/028_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_06.mp3",
+      "score": 1
+    },
+    "105": {
+      "file": "/audios/028_07.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_07.mp3",
+      "score": 1
+    },
+    "106": {
+      "file": "/audios/028_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_08.mp3",
+      "score": 1
+    },
+    "107": {
+      "file": "/audios/028_09.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_09.mp3",
+      "score": 1
+    },
+    "108": {
+      "file": "/audios/028_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_10.mp3",
+      "score": 1
+    },
+    "109": {
+      "file": "/audios/028_11.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_11.mp3",
+      "score": 1
+    },
+    "111": {
+      "file": "/audios/028_12.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/028_12.mp3",
+      "score": 1
+    }
+  },
+  "30": {
+    "112": {
+      "file": "/audios/029_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/029_01.mp3",
+      "score": 1
+    }
+  },
+  "31": {
+    "113": {
+      "file": "/audios/030_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/030_01.mp3",
+      "score": 1
+    }
+  },
+  "32": {
+    "267": null
+  },
+  "33": {
+    "114": {
+      "file": "/audios/032_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/032_01.mp3",
+      "score": 1
+    },
+    "115": {
+      "file": "/audios/032_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/032_02.mp3",
+      "score": 1
+    },
+    "116": {
+      "file": "/audios/032_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/032_03.mp3",
+      "score": 1
+    }
+  },
+  "34": {
+    "117": {
+      "file": "/audios/033_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/033_01.mp3",
+      "score": 1
+    }
+  },
+  "35": {
+    "118": {
+      "file": "/audios/034_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/034_01.mp3",
+      "score": 1
+    },
+    "119": {
+      "file": "/audios/034_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/034_02.mp3",
+      "score": 1
+    }
+  },
+  "36": {
+    "120": {
+      "file": "/audios/035_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/035_01.mp3",
+      "score": 1
+    },
+    "121": {
+      "file": "/audios/035_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/035_02.mp3",
+      "score": 1
+    },
+    "122": {
+      "file": "/audios/035_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/035_03.mp3",
+      "score": 1
+    },
+    "123": {
+      "file": "/audios/035_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/035_04.mp3",
+      "score": 1
+    }
+  },
+  "37": {
+    "124": {
+      "file": "/audios/036_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/036_01.mp3",
+      "score": 1
+    },
+    "125": {
+      "file": "/audios/036_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/036_02.mp3",
+      "score": 1
+    },
+    "126": {
+      "file": "/audios/036_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/036_03.mp3",
+      "score": 1
+    }
+  },
+  "38": {
+    "127": {
+      "file": "/audios/037_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/037_01.mp3",
+      "score": 1
+    },
+    "128": {
+      "file": "/audios/037_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/037_02.mp3",
+      "score": 0.957
+    }
+  },
+  "39": {
+    "129": {
+      "file": "/audios/038_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/038_01.mp3",
+      "score": 1
+    }
+  },
+  "40": {
+    "130": {
+      "file": "/audios/039_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/039_01.mp3",
+      "score": 1
+    }
+  },
+  "41": {
+    "131": null,
+    "132": {
+      "file": "/audios/040_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/040_01.mp3",
+      "score": 1
+    },
+    "133": {
+      "file": "/audios/040_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/040_02.mp3",
+      "score": 1
+    }
+  },
+  "42": {
+    "134": {
+      "file": "/audios/041_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/041_01.mp3",
+      "score": 1
+    },
+    "135": {
+      "file": "/audios/034_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/034_02.mp3",
+      "score": 1
+    }
+  },
+  "43": {
+    "136": {
+      "file": "/audios/042_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/042_02.mp3",
+      "score": 1
+    }
+  },
+  "44": {
+    "137": {
+      "file": "/audios/043_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/043_01.mp3",
+      "score": 1
+    }
+  },
+  "45": {
+    "223": null
+  },
+  "46": {
+    "268": null
+  },
+  "47": {
+    "138": {
+      "file": "/audios/046_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/046_01.mp3",
+      "score": 1
+    },
+    "224": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "48": {
+    "269": {
+      "file": "/audios/047_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/047_01.mp3",
+      "score": 1
+    }
+  },
+  "49": {
+    "139": {
+      "file": "/audios/048_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/048_01.mp3",
+      "score": 1
+    }
+  },
+  "50": {
+    "140": {
+      "file": "/audios/049_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/049_01.mp3",
+      "score": 1
+    },
+    "141": {
+      "file": "/audios/049_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/049_02.mp3",
+      "score": 1
+    }
+  },
+  "51": {
+    "266": null
+  },
+  "52": {
+    "142": {
+      "file": "/audios/051_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/051_01.mp3",
+      "score": 1
+    },
+    "143": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "144": {
+      "file": "/audios/051_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/051_03.mp3",
+      "score": 1
+    }
+  },
+  "53": {
+    "145": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "54": {
+    "146": {
+      "file": "/audios/053_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/053_01.mp3",
+      "score": 1
+    }
+  },
+  "55": {
+    "147": {
+      "file": "/audios/054_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/054_01.mp3",
+      "score": 1
+    }
+  },
+  "56": {
+    "148": {
+      "file": "/audios/055_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/055_01.mp3",
+      "score": 1
+    },
+    "149": {
+      "file": "/audios/055_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/055_02.mp3",
+      "score": 1
+    },
+    "150": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "151": {
+      "file": "/audios/055_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/055_04.mp3",
+      "score": 1
+    },
+    "225": null
+  },
+  "57": {
+    "152": {
+      "file": "/audios/056_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/056_01.mp3",
+      "score": 1
+    },
+    "153": {
+      "file": "/audios/056_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/056_02.mp3",
+      "score": 1
+    },
+    "226": null
+  },
+  "58": {
+    "154": {
+      "file": "/audios/057_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/057_01.mp3",
+      "score": 1
+    },
+    "227": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    },
+    "228": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "59": {
+    "155": {
+      "file": "/audios/058_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/058_01.mp3",
+      "score": 1
+    }
+  },
+  "60": {
+    "156": {
+      "file": "/audios/059_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/059_01.mp3",
+      "score": 1
+    },
+    "229": null
+  },
+  "61": {
+    "157": {
+      "file": "/audios/060_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/060_01.mp3",
+      "score": 1
+    }
+  },
+  "62": {
+    "158": {
+      "file": "/audios/061_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/061_01.mp3",
+      "score": 1
+    },
+    "159": {
+      "file": "/audios/061_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/061_02.mp3",
+      "score": 1
+    }
+  },
+  "63": {
+    "160": {
+      "file": "/audios/062_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/062_01.mp3",
+      "score": 1
+    }
+  },
+  "64": {
+    "161": {
+      "file": "/audios/063_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/063_01.mp3",
+      "score": 1
+    },
+    "162": {
+      "file": "/audios/063_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/063_02.mp3",
+      "score": 1
+    },
+    "163": {
+      "file": "/audios/063_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/063_03.mp3",
+      "score": 1
+    }
+  },
+  "65": {
+    "164": {
+      "file": "/audios/064_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/064_01.mp3",
+      "score": 1
+    }
+  },
+  "66": {
+    "165": {
+      "file": "/audios/065_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/065_01.mp3",
+      "score": 1
+    },
+    "230": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "67": {
+    "166": {
+      "file": "/audios/066_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/066_01.mp3",
+      "score": 1
+    },
+    "231": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "68": {
+    "167": {
+      "file": "/audios/067_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/067_01.mp3",
+      "score": 1
+    }
+  },
+  "69": {
+    "168": {
+      "file": "/audios/068_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/068_01.mp3",
+      "score": 1
+    },
+    "169": {
+      "file": "/audios/068_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/068_02.mp3",
+      "score": 1
+    }
+  },
+  "70": {
+    "170": {
+      "file": "/audios/005_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/005_01.mp3",
+      "score": 1
+    },
+    "171": {
+      "file": "/audios/069_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/069_03.mp3",
+      "score": 1
+    },
+    "172": {
+      "file": "/audios/069_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/069_04.mp3",
+      "score": 1
+    },
+    "232": {
+      "file": "/audios/069_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/069_02.mp3",
+      "score": 1
+    }
+  },
+  "71": {
+    "173": {
+      "file": "/audios/070_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/070_01.mp3",
+      "score": 1
+    },
+    "174": {
+      "file": "/audios/070_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/070_02.mp3",
+      "score": 1
+    }
+  },
+  "72": {
+    "175": {
+      "file": "/audios/071_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/071_01.mp3",
+      "score": 1
+    }
+  },
+  "73": {
+    "176": {
+      "file": "/audios/072_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/072_01.mp3",
+      "score": 1
+    }
+  },
+  "74": {
+    "177": {
+      "file": "/audios/073_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/073_01.mp3",
+      "score": 1
+    }
+  },
+  "75": {
+    "270": null
+  },
+  "76": {
+    "178": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "77": {
+    "179": {
+      "file": "/audios/076_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/076_01.mp3",
+      "score": 1
+    }
+  },
+  "78": {
+    "180": {
+      "file": "/audios/077_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/077_01.mp3",
+      "score": 1
+    }
+  },
+  "79": {
+    "181": {
+      "file": "/audios/078_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/078_01.mp3",
+      "score": 1
+    }
+  },
+  "80": {
+    "182": {
+      "file": "/audios/079_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/079_01.mp3",
+      "score": 1
+    }
+  },
+  "81": {
+    "183": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "82": {
+    "184": {
+      "file": "/audios/081_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/081_01.mp3",
+      "score": 1
+    }
+  },
+  "83": {
+    "185": {
+      "file": "/audios/042_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/042_02.mp3",
+      "score": 1
+    },
+    "233": null
+  },
+  "84": {
+    "186": {
+      "file": "/audios/083_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/083_01.mp3",
+      "score": 1
+    }
+  },
+  "85": {
+    "187": {
+      "file": "/audios/084_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/084_01.mp3",
+      "score": 1
+    }
+  },
+  "86": {
+    "188": {
+      "file": "/audios/085_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/085_01.mp3",
+      "score": 1
+    }
+  },
+  "87": {
+    "189": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "88": {
+    "190": {
+      "file": "/audios/087_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/087_01.mp3",
+      "score": 1
+    }
+  },
+  "89": {
+    "271": null
+  },
+  "90": {
+    "191": {
+      "file": "/audios/089_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/089_01.mp3",
+      "score": 1
+    }
+  },
+  "91": {
+    "192": {
+      "file": "/audios/090_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/090_01.mp3",
+      "score": 1
+    }
+  },
+  "92": {
+    "193": {
+      "file": "/audios/091_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/091_01.mp3",
+      "score": 1
+    }
+  },
+  "93": {
+    "194": {
+      "file": "/audios/092_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/092_01.mp3",
+      "score": 1
+    }
+  },
+  "94": {
+    "195": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "95": {
+    "196": {
+      "file": "/audios/094_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/094_01.mp3",
+      "score": 1
+    }
+  },
+  "96": {
+    "197": {
+      "file": "/audios/095_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/095_01.mp3",
+      "score": 1
+    },
+    "234": null
+  },
+  "97": {
+    "198": {
+      "file": "/audios/096_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/096_01.mp3",
+      "score": 1
+    }
+  },
+  "98": {
+    "199": {
+      "file": "/audios/097_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/097_01.mp3",
+      "score": 1
+    }
+  },
+  "99": {
+    "200": {
+      "file": "/audios/098_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/098_01.mp3",
+      "score": 1
+    }
+  },
+  "100": {
+    "201": {
+      "file": "/audios/005_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/005_01.mp3",
+      "score": 1
+    }
+  },
+  "101": {
+    "202": {
+      "file": "/audios/100_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/100_01.mp3",
+      "score": 1
+    }
+  },
+  "102": {
+    "203": {
+      "file": "/audios/101_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/101_01.mp3",
+      "score": 1
+    },
+    "204": {
+      "file": "/audios/101_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/101_02.mp3",
+      "score": 1
+    }
+  },
+  "103": {
+    "272": null
+  },
+  "104": {
+    "205": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "105": {
+    "206": {
+      "file": "/audios/027_24.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_24.mp3",
+      "score": 1
+    }
+  },
+  "106": {
+    "207": {
+      "file": "/audios/105_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/105_01.mp3",
+      "score": 0.935
+    }
+  },
+  "107": {
+    "273": {
+      "file": "/audios/106_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/106_01.mp3",
+      "score": 1
+    }
+  },
+  "108": {
+    "274": null
+  },
+  "109": {
+    "235": null
+  },
+  "110": {
+    "208": {
+      "file": "/audios/109_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/109_01.mp3",
+      "score": 1
+    },
+    "236": {
+      "file": "/audios/106_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/106_01.mp3",
+      "score": 1
+    }
+  },
+  "111": {
+    "237": null
+  },
+  "112": {
+    "238": null,
+    "239": null
+  },
+  "113": {
+    "209": {
+      "file": "/audios/112_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/112_01.mp3",
+      "score": 1
+    },
+    "240": null
+  },
+  "114": {
+    "210": null
+  },
+  "115": {
+    "212": {
+      "file": "/audios/114_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/114_01.mp3",
+      "score": 0.625
+    }
+  },
+  "116": {
+    "213": {
+      "file": "/audios/115_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/115_01.mp3",
+      "score": 1
+    }
+  },
+  "117": {
+    "241": null
+  },
+  "118": {
+    "214": {
+      "file": "/audios/117_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/117_01.mp3",
+      "score": 1
+    }
+  },
+  "119": {
+    "215": {
+      "file": "/audios/118_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/118_01.mp3",
+      "score": 1
+    },
+    "242": {
+      "file": "/audios/118_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/118_02.mp3",
+      "score": 1
+    }
+  },
+  "120": {
+    "243": {
+      "file": "/audios/119_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/119_01.mp3",
+      "score": 1
+    }
+  },
+  "121": {
+    "244": null
+  },
+  "122": {
+    "245": null
+  },
+  "123": {
+    "216": {
+      "file": "/audios/122_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/122_01.mp3",
+      "score": 1
+    },
+    "217": {
+      "file": "/audios/122_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/122_02.mp3",
+      "score": 1
+    }
+  },
+  "124": {
+    "221": null
+  },
+  "125": {
+    "246": {
+      "file": "/audios/124_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/124_01.mp3",
+      "score": 1
+    }
+  },
+  "126": {
+    "247": null
+  },
+  "127": {
+    "248": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  },
+  "128": {
+    "249": {
+      "file": "/audios/127_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/127_01.mp3",
+      "score": 1
+    }
+  },
+  "129": {
+    "250": {
+      "file": "/audios/128_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/128_01.mp3",
+      "score": 1
+    }
+  },
+  "130": {
+    "251": {
+      "file": "/audios/129_01.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/129_01.mp3",
+      "score": 1
+    }
+  },
+  "131": {
+    "254": {
+      "file": "/audios/027_18.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/027_18.mp3",
+      "score": 1
+    },
+    "255": {
+      "file": "/audios/130_02.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_02.mp3",
+      "score": 1
+    },
+    "256": {
+      "file": "/audios/130_03.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_03.mp3",
+      "score": 1
+    },
+    "257": {
+      "file": "/audios/130_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_04.mp3",
+      "score": 1
+    },
+    "258": null,
+    "259": {
+      "file": "/audios/130_05.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_05.mp3",
+      "score": 1
+    },
+    "260": {
+      "file": "/audios/130_06.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_06.mp3",
+      "score": 1
+    },
+    "261": {
+      "file": "/audios/130_04.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_04.mp3",
+      "score": 1
+    },
+    "262": {
+      "file": "/audios/130_08.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_08.mp3",
+      "score": 1
+    },
+    "263": {
+      "file": "/audios/130_09.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_09.mp3",
+      "score": 1
+    },
+    "264": null,
+    "265": {
+      "file": "/audios/130_10.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/130_10.mp3",
+      "score": 1
+    }
+  },
+  "132": {
+    "252": null
+  },
+  "133": {
+    "253": {
+      "file": "/audios/.mp3",
+      "url": "https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master/audios/.mp3",
+      "score": 1
+    }
+  }
+}

@@ -4,87 +4,123 @@ export type AyahStatus = 'NEW' | 'LEARNING' | 'REVIEWING' | 'CONSOLIDATED';
 export type ReviewResult = 'KNEW' | 'STRUGGLED' | 'FORGOT';
 export type SessionType = 'LEARN' | 'REVIEW' | 'TEST';
 export type MemorizationOrder = 'MUSHAF' | 'REVERSE' | 'CUSTOM';
+export type HifzMethod = 'A' | 'B' | 'C';
 
 export interface AyahMemorizationRecord {
- ayahKey: string; // "surah:ayah" (e.g., "114:1")
- status: AyahStatus;
- strength: number; // 0..100
- easeFactor: number; // 1.3..2.8 (SM-2 style)
- intervalDays: number; // current review interval
- dueDate: number; // next review timestamp (milliseconds)
- repetitions: number; // successful reviews in a row
- lapses: number; // times user failed after knowing it
- lastReviewedAt?: number; // timestamp
- lastResult?: ReviewResult;
- totalListens: number; // how many times audio was played
- stumblePoints: number[]; // array of word indices where user paused/failed
- createdAt: number; // timestamp
+  ayahKey: string;
+  status: AyahStatus;
+  strength: number;
+  easeFactor: number;
+  intervalDays: number;
+  dueDate: number;
+  repetitions: number;
+  lapses: number;
+  lastReviewedAt ? : number;
+  lastResult ? : ReviewResult;
+  totalListens: number;
+  stumblePoints: number[];
+  createdAt: number;
 }
 
 export interface SessionRecord {
- id?: string; // UUID for syncability
- startedAt: number;
- endedAt: number;
- type: SessionType;
- ayahsCovered: string[]; // array of ayahKeys
- results: { ayahKey: string; result: ReviewResult }[];
- durationSeconds: number;
+  id ? : string;
+  startedAt: number;
+  endedAt: number;
+  type: SessionType;
+  ayahsCovered: string[];
+  results: { ayahKey: string;result: ReviewResult } [];
+  durationSeconds: number;
+}
+
+// Regjistri i ajeve te mesuara manualisht ("Hifzi Im").
+// Izoluar nga scheduler-i (ayahRecords) qe te mos bien ne rrezik logjika e SM-2.
+export interface MemorizedAyah {
+  ayahKey: string;
+  surah: number;
+  ayah: number;
+  memorizedAt: number;
 }
 
 export interface HifzSettings {
- id?: number; // Single record, ID = 1
- uiLanguage: string; // ISO code
- translationId: string;
- reciterId: string;
- listenRepeats: number;
- readAlongRepeats: number;
- reciteVisibleRepeats: number;
- reciteHiddenRepeats: number;
- dailyNewAyahLimit: number;
- reviewDebtThreshold: number; // gate trigger
- showWordByWord: boolean;
- showTransliteration: boolean;
- memorizationOrder: MemorizationOrder;
- dailyTargetAyahs?: number; // Target ayahs per day for goal tracking
- weeklyTargetAyahs?: number; // Target ayahs per week for goal tracking
+  id ? : number;
+  uiLanguage: string;
+  translationId: string;
+  reciterId: string;
+  listenRepeats: number;
+  readAlongRepeats: number;
+  reciteVisibleRepeats: number;
+  reciteHiddenRepeats: number;
+  dailyNewAyahLimit: number;
+  reviewDebtThreshold: number;
+  showWordByWord: boolean;
+  showTransliteration: boolean;
+  memorizationOrder: MemorizationOrder;
+  preferredMethod: HifzMethod;
 }
 
 export const DEFAULT_HIFZ_SETTINGS: HifzSettings = {
- id: 1,
- uiLanguage: 'sq',
- translationId: 'sq.nahi',
- reciterId: 'ar.alafasy',
- listenRepeats: 10,
- readAlongRepeats: 5,
- reciteVisibleRepeats: 5,
- reciteHiddenRepeats: 5,
- dailyNewAyahLimit: 3,
- reviewDebtThreshold: 15,
- showWordByWord: true,
- showTransliteration: false,
- memorizationOrder: 'REVERSE',
- dailyTargetAyahs: 5,
- weeklyTargetAyahs: 30,
+  id: 1,
+  uiLanguage: 'sq',
+  translationId: 'sq.nahi',
+  reciterId: 'ar.alafasy',
+  listenRepeats: 10,
+  readAlongRepeats: 5,
+  reciteVisibleRepeats: 5,
+  reciteHiddenRepeats: 5,
+  dailyNewAyahLimit: 3,
+  reviewDebtThreshold: 15,
+  showWordByWord: true,
+  showTransliteration: false,
+  memorizationOrder: 'REVERSE',
+  preferredMethod: 'B'
 };
 
 export class HifzDatabase extends Dexie {
- ayahRecords!: Table<AyahMemorizationRecord, string>;
- sessions!: Table<SessionRecord, string>;
- settings!: Table<HifzSettings, number>;
-
- constructor() {
- super('HayatHifzDatabase');
- this.version(1).stores({
- ayahRecords: 'ayahKey, status, dueDate, createdAt', 
- sessions: 'id, startedAt, type',
- settings: 'id'
- });
- }
+  ayahRecords!: Table < AyahMemorizationRecord, string > ;
+  sessions!: Table < SessionRecord, string > ;
+  settings!: Table < HifzSettings, number > ;
+  memorized!: Table < MemorizedAyah, string > ;
+  
+  constructor() {
+    super('HayatHifzDatabase');
+    this.version(1).stores({
+      ayahRecords: 'ayahKey, status, dueDate, createdAt',
+      sessions: 'id, startedAt, type',
+      settings: 'id'
+    });
+    this.version(2).stores({
+      ayahRecords: 'ayahKey, status, dueDate, createdAt',
+      sessions: 'id, startedAt, type',
+      settings: 'id',
+      memorized: 'ayahKey, surah, ayah'
+    });
+  }
 }
 
 export const hifzDb = new HifzDatabase();
 
-// Initialize default settings if not exists
 hifzDb.on('populate', () => {
- hifzDb.settings.add(DEFAULT_HIFZ_SETTINGS);
+  hifzDb.settings.add(DEFAULT_HIFZ_SETTINGS);
 });
+
+// --- Hifzi Im: regjistri i ajeve te mesuara (manual, pa AI) ---
+export async function getAllMemorized(): Promise < MemorizedAyah[] > {
+  return hifzDb.memorized.toArray();
+}
+
+export async function setMemorized(surah: number, ayah: number, value: boolean): Promise < void > {
+  const key = `${surah}:${ayah}`;
+  if (value) {
+    await hifzDb.memorized.put({ ayahKey: key, surah, ayah, memorizedAt: Date.now() });
+  } else {
+    await hifzDb.memorized.delete(key);
+  }
+}
+
+export async function isMemorized(surah: number, ayah: number): Promise < boolean > {
+  return !!(await hifzDb.memorized.get(`${surah}:${ayah}`));
+}
+
+export async function getMemorizedCount(): Promise < number > {
+  return hifzDb.memorized.count();
+}
