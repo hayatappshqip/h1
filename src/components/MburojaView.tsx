@@ -180,10 +180,12 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  {dua.sq}
  </p>
 
- {/* Audio Playback for Pronunciation */}
+ {/* Audio Playback for Daily Routine Duas */}
+ {(activeChapter.isRoutine || [27, 28, 29].includes(activeChapter.id)) && (
  <div className="pt-1">
- <DuaAudioPlayer dua={dua} />
+ <DuaAudioPlayer dua={dua} chapterId={activeChapter.id} />
  </div>
+ )}
 
  {/* Note / Reference */}
  {dua.note && (
@@ -395,19 +397,21 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  return (
  <div className="space-y-3">
  {/* Audio Playback Summary Banner for Saved Duas */}
+ {savedList.some(item => [27, 28, 29].includes(item.chapterId)) && (
  <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-amber-950/40 border border-emerald-800/60 rounded-xl p-3 flex items-center justify-between shadow-sm">
  <div className="flex items-center space-x-2.5">
  <div className="w-8 h-8 rounded-lg bg-emerald-900/60 border border-emerald-700/50 flex items-center justify-center text-emerald-400">
  <Volume2 className="w-4 h-4" />
  </div>
  <div>
- <h4 className="text-xs font-bold text-slate-100">Prononcimi i Duave të Ruajtura</h4>
+ <h4 className="text-xs font-bold text-slate-100">Audio e Dhikreve Ditore</h4>
  <p className="text-[10px] text-slate-400">
- Dëgjoni lexuesin audio për prononcim të saktë të duave tuaja të ruajtura ({savedList.length}).
+ Dëgjoni audion për duat e ruajtura nga Dhikri i Mëngjesit, Mbrëmjes dhe Gjumi.
  </p>
  </div>
  </div>
  </div>
+ )}
 
  {savedList.map(({ dua, chapterTitle, chapterId }) => (
  <div
@@ -445,10 +449,12 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  {dua.sq}
  </p>
 
- {/* Audio Player for Saved Dua Pronunciation */}
+ {/* Audio Player for Saved Routine Duas */}
+ {[27, 28, 29].includes(chapterId) && (
  <div className="pt-1">
- <DuaAudioPlayer dua={dua} />
+ <DuaAudioPlayer dua={dua} chapterId={chapterId} />
  </div>
+ )}
  </div>
  ))}
  </div>
