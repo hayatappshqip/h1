@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const FONT_SIZE_STORAGE_KEY = 'hayat_dhikr_font_size';
+export const FONT_SIZE_STORAGE_KEY = 'hayat_dhikr_font_size';
+const EVENT_NAME = 'hayat_font_size_change';
 
 export function useDhikrFontSize() {
   const [fontScale, setFontScale] = useState<number>(() => {
@@ -25,19 +26,37 @@ export function useDhikrFontSize() {
         }
       }
     };
+    const handleCustomEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<number>;
+      if (typeof customEvent.detail === 'number') {
+        setFontScale(customEvent.detail);
+      }
+    };
+
     window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener(EVENT_NAME, handleCustomEvent);
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener(EVENT_NAME, handleCustomEvent);
+    };
   }, []);
 
-  const changeScale = (delta: number) => {
-    setFontScale(prev => {
-      const next = Math.max(0, Math.min(3, prev + delta));
-      try {
-        localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(next));
-      } catch (e) {}
-      return next;
-    });
+  const updateScale = (nextVal: number) => {
+    const clamped = Math.max(0, Math.min(3, nextVal));
+    try {
+      localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(clamped));
+      window.dispatchEvent(new CustomEvent<number>(EVENT_NAME, { detail: clamped }));
+    } catch (e) {}
+    setFontScale(clamped);
   };
 
-  return { fontScale, changeScale };
+  const changeScale = (delta: number) => {
+    updateScale(fontScale + delta);
+  };
+
+  const setScale = (val: number) => {
+    updateScale(val);
+  };
+
+  return { fontScale, changeScale, setScale };
 }

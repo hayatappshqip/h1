@@ -12,6 +12,8 @@ import { MonthlyPrayerSummary } from './MonthlyPrayerSummary';
 import { PrayerRecordsView } from './PrayerRecordsView';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { getLocalDateString } from '../utils/dateUtils';
+import { useDhikrFontSize } from '../utils/useFontSize';
+import { FontSizeControl } from './FontSizeControl';
 
 interface NamaziViewProps {
  prayerTimes: PrayerTimes | null;
@@ -827,6 +829,7 @@ const PostPrayerDhikrModal: React.FC<{
  onClose: () => void;
  onSave: (items: { [key: string]: number }, isCompleted?: boolean) => void;
 }> = ({ prayerName, hapticEnabled = true, soundEnabled = true, existingSession, onClose, onSave }) => {
+ const { fontScale, changeScale } = useDhikrFontSize();
  const dhikrDefs = getPostPrayerDhikrItemsForPrayer(prayerName);
 
  const [itemCounts, setItemCounts] = useState<{ [key: string]: number }>(() => {
@@ -954,12 +957,15 @@ const PostPrayerDhikrModal: React.FC<{
  Dhikret pas {prayerTitle}
  </h3>
  </div>
+ <div className="flex items-center space-x-2">
+ <FontSizeControl fontScale={fontScale} onChangeScale={changeScale} />
  <button
  onClick={onClose}
  className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
  >
  ✕
  </button>
+ </div>
  </div>
 
  {/* Progress Bar & Status */}
@@ -1019,17 +1025,17 @@ const PostPrayerDhikrModal: React.FC<{
  </div>
  
  {/* Arabic Text */}
- <p className="font-arabic text-lg text-emerald-300 leading-relaxed pt-1 whitespace-pre-line" dir="rtl">
+ <p className={`font-arabic ${fontScale === 0 ? "text-base leading-relaxed" : fontScale === 2 ? "text-2xl leading-relaxed" : fontScale === 3 ? "text-3xl leading-relaxed" : "text-lg leading-relaxed"} text-emerald-300 pt-1 whitespace-pre-line`} dir="rtl">
  {dhikr.ar}
  </p>
  
  {/* Transliteration */}
- <p className="text-xs text-amber-200/90 font-medium italic pt-0.5">
+ <p className={`${fontScale === 0 ? "text-[10px]" : fontScale === 2 ? "text-sm" : fontScale === 3 ? "text-base" : "text-xs"} text-amber-200/90 font-medium italic pt-0.5`}>
  {dhikr.transliteration}
  </p>
 
  {/* Translation */}
- <p className="text-xs text-slate-300 leading-relaxed pt-1">
+ <p className={`${fontScale === 0 ? "text-[11px] leading-relaxed" : fontScale === 2 ? "text-sm leading-relaxed" : fontScale === 3 ? "text-base leading-relaxed" : "text-xs leading-relaxed"} text-slate-300 pt-1`}>
  {dhikr.sq}
  </p>
 

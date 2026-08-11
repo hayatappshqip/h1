@@ -29,6 +29,7 @@ import {
 import { DEFAULT_PRAYER_SETTINGS, getPrayerTimes } from './services/prayerEngine';
 import { checkPrayerNotifications } from './services/notificationEngine';
 import { getLocalDateString } from './utils/dateUtils';
+import { useDhikrFontSize } from './utils/useFontSize';
 import { initQuranCorpus } from './services/quranCorpusStore';
 import {
  getAllFromStore,
@@ -39,7 +40,8 @@ import {
 } from './services/db';
 
 export default function App() {
- const [activeTab, setActiveTab] = useState<ActiveTab>('home');
+  const { fontScale } = useDhikrFontSize();
+  const [activeTab, setActiveTab] = useState<ActiveTab>('home');
  const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
 
  // App States
@@ -421,7 +423,10 @@ export default function App() {
  };
 
  return (
- <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
+ <div
+ data-font-scale={fontScale}
+ className={`min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 dhikr-font-scale-${fontScale}`}
+ >
  <Navbar activeTab={activeTab} setActiveTab={setActiveTab} isOffline={isOffline} />
 
  <main className="max-w-md mx-auto sm:max-w-2xl lg:max-w-4xl px-4 pt-4">

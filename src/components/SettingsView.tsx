@@ -4,8 +4,9 @@
 import React, { useState, useEffect } from 'react';
 import { PrayerSettings, MburojaState, PrayerName } from '../types';
 import { generateBackupV2, restoreBackupV2 } from '../services/db';
-import { Settings, Download, Upload, Shield, CheckCircle2, AlertCircle, RefreshCw, Moon, Sparkles, Database, Bell, BellRing, Volume2, Vibrate } from 'lucide-react';
+import { Settings, Download, Upload, Shield, CheckCircle2, AlertCircle, RefreshCw, Moon, Sparkles, Database, Bell, BellRing, Volume2, Vibrate, Type, BookOpen } from 'lucide-react';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
+import { useDhikrFontSize } from '../utils/useFontSize';
 import {
  isNotificationSupported,
  getNotificationPermissionState,
@@ -25,17 +26,34 @@ interface SettingsViewProps {
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
- prayerSettings,
- mburojaState,
- onUpdatePrayerSettings,
- onRefreshAllData
+  prayerSettings,
+  mburojaState,
+  onUpdatePrayerSettings,
+  onRefreshAllData
 }) => {
- const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const { fontScale, setScale } = useDhikrFontSize();
+  const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
  const [isRestoring, setIsRestoring] = useState(false);
  const [notifPermission, setNotifPermission] = useState<NotificationPermission | 'unsupported'>(
  getNotificationPermissionState()
  );
  const [testNotifMsg, setTestNotifMsg] = useState<string | null>(null);
+
+  const [mushafEdition, setMushafEdition] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hayat_mushaf_prototype_state');
+      if (saved) return JSON.parse(saved).mushafEdition || 'madinah-15-lines-poc';
+    } catch (e) {}
+    return 'madinah-15-lines-poc';
+  });
+
+  const updateMushafEdition = (edition: string) => {
+    const saved = localStorage.getItem('hayat_mushaf_prototype_state');
+    const state = saved ? JSON.parse(saved) : {};
+    localStorage.setItem('hayat_mushaf_prototype_state', JSON.stringify({ ...state, mushafEdition: edition }));
+    setMushafEdition(edition);
+    window.dispatchEvent(new Event('mushaf_settings_changed'));
+  };
 
  useEffect(() => {
  setNotifPermission(getNotificationPermissionState());
@@ -412,7 +430,103 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
  </div>
  </div>
 
- {/* Suggestion Toggles */}
+  {/* Dhikr & Mburoja Font Size Control Card */}
+  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-2">
+        <Type className="w-4 h-4 text-emerald-400" />
+        <h3 className="font-bold text-sm text-emerald-300">Madhësia e Shkrimit (Font Size)</h3>
+      </div>
+      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2 py-0.5 rounded-md">
+        {['A- (Kompakt)', 'A (Standard)', 'A+ (I Madh)', 'A++ (Shumë i Madh)'][fontScale] || 'A (Standard)'}
+      </span>
+    </div>
+
+    <p className="text-xs text-slate-400">
+      Zgjidhni madhësinë e preferuar të tekstit arab, transliterimit dhe përkthimit për lutjet në Mburoja e Muslimanit dhe Dhikrin pas Namazit.
+    </p>
+
+    {/* Size Selector Buttons */}
+    <div className="grid grid-cols-4 gap-2">
+      {[
+        { scale: 0, label: 'A-', desc: 'E Vogël' },
+        { scale: 1, label: 'A', desc: 'Standard' },
+        { scale: 2, label: 'A+', desc: 'E Madhe' },
+        { scale: 3, label: 'A++', desc: 'Shumë E Madhe' }
+      ].map(opt => (
+        <button
+          key={opt.scale}
+          onClick={() => setScale(opt.scale)}
+          className={`p-2.5 rounded-xl border flex flex-col items-center justify-center transition-all ${
+            fontScale === opt.scale
+              ? 'bg-emerald-950/90 border-emerald-500 text-emerald-300 ring-1 ring-emerald-500/50 shadow-md shadow-emerald-950/50'
+              : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+          }`}
+        >
+          <span className="font-bold text-sm">{opt.label}</span>
+          <span className="text-[10px] text-slate-400 mt-0.5">{opt.desc}</span>
+        </button>
+      ))}
+    </div>
+
+    {/* Live Text Preview Box */}
+    <div className="p-3 bg-slate-950 rounded-xl border border-slate-850 space-y-2">
+      <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Pamja paraprake (Preview):</p>
+      <p className={`font-arabic text-emerald-300 ${
+        fontScale === 0 ? 'text-lg leading-relaxed' : fontScale === 2 ? 'text-2xl leading-relaxed' : fontScale === 3 ? 'text-3xl leading-relaxed' : 'text-xl leading-relaxed'
+      }`} dir="rtl">
+        أَسْتَغْفِرُ اللَّهَ
+      </p>
+      <p className={`font-mono text-amber-200/90 italic ${
+        fontScale === 0 ? 'text-[11px]' : fontScale === 2 ? 'text-sm' : fontScale === 3 ? 'text-base' : 'text-xs'
+      }`}>
+        Estagfirullāh
+      </p>
+      <p className={`font-sans text-slate-200 ${
+        fontScale === 0 ? 'text-xs' : fontScale === 2 ? 'text-base' : fontScale === 3 ? 'text-lg' : 'text-sm'
+      }`}>
+        Kërkoj falje nga Allahu.
+      </p>
+    </div>
+  </div>
+
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
+      <div className="flex items-center space-x-2">
+        <BookOpen className="w-4 h-4 text-emerald-400" />
+        <h3 className="font-bold text-sm text-emerald-300">Botimi i Mushafit (Kurani)</h3>
+      </div>
+      <p className="text-xs text-slate-400">
+        Zgjidhni versionin e Kuranit me faqe reale kur jeni në modalitetin "Mushaf".
+      </p>
+      
+      <div className="space-y-2">
+        <button
+          onClick={() => updateMushafEdition('madinah-15-lines-poc')}
+          className={`w-full p-3 rounded-xl border flex flex-col space-y-1 text-left transition-all ${
+            mushafEdition === 'madinah-15-lines-poc'
+              ? 'bg-emerald-950/90 border-emerald-500 shadow-md'
+              : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+          }`}
+        >
+          <span className="font-bold text-sm text-slate-200">Mushafi i Medinës — Normal</span>
+          <span className="text-[11px] text-slate-400">Botimi Standard me 15 rreshta për faqe (Prototip 5 Faqe)</span>
+        </button>
+
+        <button
+          onClick={() => updateMushafEdition('tajweed-color-poc')}
+          className={`w-full p-3 rounded-xl border flex flex-col space-y-1 text-left transition-all ${
+            mushafEdition === 'tajweed-color-poc'
+              ? 'bg-emerald-950/90 border-emerald-500 shadow-md'
+              : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+          }`}
+        >
+          <span className="font-bold text-sm text-slate-200">Mushafi me Texhvid — Prototip</span>
+          <span className="text-[11px] text-slate-400">Rregullat e lexuarit me ngjyra direkt në faqe (Prototip 5 Faqe)</span>
+        </button>
+      </div>
+    </div>
+
+  {/* Suggestion Toggles */}
  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
  <h3 className="font-bold text-sm text-emerald-300">Sugjerimet Automatike në Kreu</h3>
 

@@ -475,6 +475,8 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  <Star className="w-4 h-4 fill-current" />
  <span>{mburojaState.favChapters.length}</span>
  </button>
+
+ <FontSizeControl fontScale={fontScale} onChangeScale={changeScale} />
  </div>
 
  {/* Directory Tabs (Kapitujt vs Duat e Ruajtura) */}
@@ -575,9 +577,9 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </button>
  </div>
 
- {renderFormattedArabic(dua.ar)}
- {renderFormattedTransliteration(dua.transliteration || '')}
- {renderFormattedAlbanian(dua.sq)}
+ {renderFormattedArabic(dua.ar, fontScale)}
+ {renderFormattedTransliteration(dua.transliteration || '', fontScale)}
+ {renderFormattedAlbanian(dua.sq, fontScale)}
 
  {/* Audio Player for Saved Routine Duas */}
  {[27, 28, 29].includes(chapterId) && (

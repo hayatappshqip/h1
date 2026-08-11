@@ -124,7 +124,7 @@ export interface QuranNote {
 }
 
 export type QuranReadingTheme = 'dark' | 'sepia' | 'light' | 'midnight';
-export type QuranLayoutMode = 'cards' | 'mushaf';
+export type QuranLayoutMode = 'cards' | 'continuous' | 'mushaf';
 export type QuranScriptType = 'uthmani_hafs_unicode' | 'uthmani_unicode';
 export type QuranViewMode = 'normal' | 'tajweed';
 
