@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+import * as pdfjsLib from 'pdfjs-dist';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import { 
+  MUSHAF_EDITIONS, 
+  MUSHAF_STORAGE_KEY, 
+  MushafEditionMeta, 
+  MushafPageMeta, 
+  MushafReadingState 
+} from '../data/mushafManifest';
 import { 
   Play, Pause, SkipBack, SkipForward, Maximize, Minimize, X, Bookmark, 
-  ZoomIn, ZoomOut, Maximize2, Layers, BookOpen, Moon, Sun, Search, Check, Volume2 
+  ZoomIn, ZoomOut, Maximize2, Layers, BookOpen, Moon, Sun, Search, Sparkles, Volume2, RefreshCw
 } from 'lucide-react';
 
-// Quran Surahs Index Metadata for Quick Jump
+// Configure pdf.js worker globally
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+
+// Quran Surahs Index Metadata for Quick Jump Drawer
 const SURAH_INDEX = [
   { number: 1, nameAr: 'الفَاتِحَةِ', nameSq: 'El-Fatiha', page: 1, type: 'Meqase', verses: 7 },
   { number: 2, nameAr: 'البَقَرَةِ', nameSq: 'El-Bekare', page: 2, type: 'Medinase', verses: 286 },
@@ -26,93 +38,108 @@ const JUZ_INDEX = Array.from({ length: 30 }, (_, i) => ({
   page: i === 0 ? 1 : Math.min(604, Math.round(i * 20.1) + 2)
 }));
 
-// Medina 15-Lines Uthmanic Content
-const MUSHAF_PAGES_TEXT: Record<number, { surah: string; juz: string; lines: string[] }> = {
-  1: {
-    surah: "سُورَةُ الفَاتِحَةِ",
-    juz: "الجُزْءُ الأَوَّلُ",
-    lines: [
-      "بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيمِ",
-      "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ﴿١﴾",
-      "الرَّحْمَٰنِ الرَّحِيمِ ﴿٢﴾ مَالِكِ يَوْمِ الدِّينِ ﴿٣﴾",
-      "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ﴿٤﴾",
-      "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ﴿٥﴾",
-      "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ ﴿٦﴾",
-      "غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ ﴿٧﴾"
-    ]
-  },
-  2: {
-    surah: "سُورَةُ البَقَرَةِ",
-    juz: "الجُزْءُ الأَوَّلُ",
-    lines: [
-      "بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيمِ",
-      "الم ﴿١﴾ ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ ﴿٢﴾",
-      "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ ﴿٣﴾",
-      "وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ",
-      "وَبِالْآخِرَةِ هُمْ يُوقِنُونَ ﴿٤﴾",
-      "أُولَٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ ﴿٥﴾"
-    ]
-  },
-  3: {
-    surah: "سُورَةُ البَقَرَةِ",
-    juz: "الجُزْءُ الأَوَّلُ",
-    lines: [
-      "إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ ﴿٦﴾",
-      "خَتَمَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ ۖ وَعَلَىٰ أَبْصَارِهِمْ غِشَاوَةٌ ۖ وَلَهُمْ عَذَابٌ عَظِيمٌ ﴿٧﴾",
-      "وَمِنَ النَّاسِ مَن يَقُولُ آمَنَّا بِاللَّهِ وَبِالْآخِرَةِ وَمَا هُم بِمُؤْمِنِينَ ﴿٨﴾",
-      "يُخَادِعُونَ اللَّهَ وَالَّذِينَ آمَنُوا وَمَا يَخْدَعُونَ إِلَّا أَنفُسَهُمْ وَمَا يَشْعُرُونَ ﴿٩﴾",
-      "فِي قُلُوبِهِم مَّرَضٌ فَزَادَهُمُ اللَّهُ مَرَضًا ۖ وَلَهُمْ عَذَابٌ أَلِيمٌ بِمَا كَانُوا يَكْذِبُونَ ﴿١٠﴾",
-      "وَإِذَا قِيلَ لَهُمْ لَا تُفْسِدُوا فِي الْأَرْضِ قَالُوا إِنَّمَا نَحْنُ مُصْلِحُونَ ﴿١١﴾",
-      "أَلَا إِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلَٰكِن لَّا يَشْعُرُونَ ﴿١٢﴾"
-    ]
-  },
-  4: {
-    surah: "سُورَةُ البَقَرَةِ",
-    juz: "الجُزْءُ الأَوَّلُ",
-    lines: [
-      "مَثَلُهُمْ كَمَثَلِ الَّذِي اسْتَوْقَدَ نَارًا فَلَمَّا أَضَاءَتْ مَا حَوْلَهُ ذَهَبَ اللَّهُ بِنُورِهِمْ ﴿١٧﴾",
-      "صُمٌّ بُكْمٌ عُمْيٌ فَهُمْ لَا يَرْجِعُونَ ﴿١٨﴾ أَوْ كَصَيِّبٍ مِّنَ السَّمَاءِ فِيهِ ظُلُمَاتٌ وَرَعْدٌ وَبَرْقٌ",
-      "يَجْعَلُونَ أَصَابِعَهُمْ فِي آذَانِهِم مِّنَ الصَّوَاعِقِ حَذَرَ الْمَوْتِ ۚ وَاللَّهُ مُحِيطٌ بِالْكَافِرِينَ ﴿١٩﴾",
-      "يَكَادُ الْبَرْقُ يَخْطَفُ أَبْصَارَهُمْ ۖ كُلَّمَا أَضَاءَ لَهُم مَّشَوْا فِيهِ وَإِذَا أَظْلَمَ عَلَيْهِمْ قَامُوا ﴿٢٠﴾",
-      "يَا أَيُّهَا النَّاسُ اعْبُدُوا رَبَّكُمُ الَّذِي خَلَقَكُمْ وَالَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ ﴿٢١﴾",
-      "الَّذِي جَعَلَ لَكُمُ الْأَرْضَ فِرَاشًا وَالسَّمَاءَ بِنَاءً وَأَنزَلَ مِنَ السَّمَاءِ مَاءً ﴿٢٢﴾",
-      "فَإِن لَّمْ تَفْعَلُوا وَلَن تَفْعَلُوا فَاتَّقُوا النَّارَ الَّتِي وَقُودُهَا النَّاسُ وَالْحِجَارَةُ ﴿٢٤﴾"
-    ]
-  },
-  5: {
-    surah: "سُورَةُ البَقَرَةِ",
-    juz: "الجُزْءُ الأَوَّلُ",
-    lines: [
-      "وَبَشِّرِ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ أَنَّ لَهُمْ جَنَّاتٍ تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ ﴿٢٥﴾",
-      "إِنَّ اللَّهَ لَا يَسْتَحْيِي أَن يَضْرِبَ مَثَلًا مَّا بَعُوضَةً فَمَا فَوْقَهَا ۚ فَأَمَّا الَّذِينَ آمَنُوا ﴿٢٦﴾",
-      "الَّذِينَ يَنقُضُونَ عَهْدَ اللَّهِ مِن بَعْدِ مِيثَاقِهِ وَيَقْطَعُونَ مَا أَمَرَ اللَّهُ بِهِ أَن يُوصَلَ ﴿٢٧﴾",
-      "كَيْفَ تَكْفُرُونَ بِاللَّهِ وَكُنتُمْ أَمْوَاتًا فَأَحْيَاكُمْ ۖ ثُمَّ يُمِيتُكُمْ ثُمَّ يُحْيِيكُمْ ﴿٢٨﴾",
-      "هُوَ الَّذِي خَلَقَ لَكُم مَّا فِي الْأَرْضِ جَمِيعًا ثُمَّ اسْتَوَىٰ إِلَى السَّمَاءِ فَسَوَّاهُنَّ سَبْعَ سَمَاوَاتٍ ﴿٢٩﴾"
-    ]
-  }
-};
-
 type ReaderTheme = 'parchment' | 'night' | 'white';
 
 interface PageProps {
-  number: number;
+  pageNumber: number;
+  pdfDoc: pdfjsLib.PDFDocumentProxy | null;
+  zoomScale: number;
+  isNearCurrent: boolean;
   theme: ReaderTheme;
   isBookmarked?: boolean;
+  pageMeta?: MushafPageMeta;
 }
 
-const Page = forwardRef<HTMLDivElement, PageProps>(({ number, theme, isBookmarked }, ref) => {
-  const pageTextData = MUSHAF_PAGES_TEXT[number] || MUSHAF_PAGES_TEXT[1];
+/**
+ * Individual Mushaf Page Component
+ * Renders the real PDF vector page onto an HTML5 Canvas using pdfjs-dist.
+ */
+const Page = forwardRef<HTMLDivElement, PageProps>(({ 
+  pageNumber, 
+  pdfDoc, 
+  zoomScale, 
+  isNearCurrent, 
+  theme, 
+  isBookmarked,
+  pageMeta
+}, ref) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [rendered, setRendered] = useState<boolean>(false);
+  const [rendering, setRendering] = useState<boolean>(false);
+  const renderTaskRef = useRef<any>(null);
 
-  // Theme styles
+  useEffect(() => {
+    let active = true;
+
+    // Only render canvas when page is visible or near active viewport
+    if (!pdfDoc || !canvasRef.current || !isNearCurrent) {
+      return;
+    }
+
+    const renderPdfPage = async () => {
+      try {
+        if (renderTaskRef.current) {
+          renderTaskRef.current.cancel();
+          renderTaskRef.current = null;
+        }
+
+        setRendering(true);
+        const page = await pdfDoc.getPage(pageNumber);
+        if (!active) return;
+
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Base render viewport scaled for high-DPI crisp rendering
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        const targetScale = Math.max(1.8, devicePixelRatio * zoomScale * 1.5);
+        const viewport = page.getViewport({ scale: targetScale });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport,
+        };
+
+        const renderTask = page.render(renderContext);
+        renderTaskRef.current = renderTask;
+
+        await renderTask.promise;
+
+        if (active) {
+          setRendered(true);
+          setRendering(false);
+        }
+      } catch (err: any) {
+        if (err?.name !== 'RenderingCancelledException') {
+          console.warn(`PDF Page ${pageNumber} render error:`, err);
+        }
+        if (active) setRendering(false);
+      }
+    };
+
+    renderPdfPage();
+
+    return () => {
+      active = false;
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel();
+      }
+    };
+  }, [pdfDoc, pageNumber, zoomScale, isNearCurrent]);
+
+  // Theme styling
   const isNight = theme === 'night';
   const isWhite = theme === 'white';
 
   const containerBg = isNight ? 'bg-[#0f172a]' : isWhite ? 'bg-white' : 'bg-[#FAF7EE]';
   const outerBorder = isNight ? 'border-amber-500/40' : isWhite ? 'border-emerald-700/30' : 'border-amber-800/40';
   const innerBorder = isNight ? 'border-amber-500/30' : isWhite ? 'border-emerald-600/20' : 'border-amber-700/30';
-  const headerBorder = isNight ? 'border-amber-500/20 text-amber-200/90' : 'border-amber-900/20 text-amber-950/80';
-  const textColor = isNight ? 'text-slate-100' : 'text-amber-950';
-  const numberColor = isNight ? 'text-amber-400' : 'text-amber-900';
 
   return (
     <div 
@@ -120,61 +147,46 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, theme, isBookmarke
       className={`page ${containerBg} shadow-2xl border relative select-none flex flex-col justify-between overflow-hidden transition-colors duration-300`} 
       style={{ width: '100%', height: '100%', minHeight: '420px' }}
     >
-      {/* Golden Bookmark Ribbon Marker if bookmarked */}
+      {/* Golden Bookmark Ribbon Marker */}
       {isBookmarked && (
-        <div className="absolute top-0 right-8 z-30 w-6 h-12 bg-amber-500 shadow-md flex items-end justify-center pb-1 clip-ribbon">
+        <div className="absolute top-0 right-8 z-30 w-6 h-12 bg-amber-500 shadow-lg flex items-end justify-center pb-1 clip-ribbon animate-bounce-short">
           <Bookmark size={14} className="text-slate-950 fill-slate-950" />
         </div>
       )}
 
-      {/* Decorative Traditional Islamic Frame */}
-      <div className={`absolute inset-2 border-2 ${outerBorder} rounded-sm pointer-events-none p-1`}>
+      {/* Decorative Ornate Frame (QuranFlash Style) */}
+      <div className={`absolute inset-2 border-2 ${outerBorder} rounded-sm pointer-events-none p-1 z-20`}>
         <div className={`w-full h-full border ${innerBorder} rounded-xs`}></div>
       </div>
 
-      {/* High-Resolution Native Uthmanic Hafs Medina Page Layout */}
-      <div className={`relative z-10 p-5 sm:p-7 flex-1 flex flex-col justify-between ${textColor} font-arabic`} dir="rtl">
-        {/* Top Header Row */}
-        <div className={`flex justify-between items-center text-[12px] sm:text-xs font-bold border-b pb-2 px-2 ${headerBorder}`}>
-          <span>{pageTextData.juz}</span>
-          <span className="font-extrabold">{pageTextData.surah}</span>
-        </div>
+      {/* Real PDF Vector Canvas */}
+      <div className="relative w-full h-full flex items-center justify-center p-3 sm:p-5 z-10 overflow-hidden">
+        <canvas 
+          ref={canvasRef} 
+          className={`w-full h-full object-contain transition-opacity duration-300 ${
+            rendered ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            filter: isNight ? 'invert(0.9) hue-rotate(180deg) brightness(1.1) contrast(1.1)' : 'none'
+          }}
+        />
 
-        {/* Surah Banner Header if page starts a Surah */}
-        {number === 1 && (
-          <div className={`my-2 py-2 rounded-md text-center shadow-sm border-2 ${
-            isNight 
-              ? 'bg-amber-950/60 border-amber-500/50 text-amber-200' 
-              : 'bg-gradient-to-r from-amber-100 via-amber-200/90 to-amber-100 border-amber-800/50 text-amber-950'
-          }`}>
-            <h3 className="text-lg sm:text-xl font-extrabold tracking-wide">سُورَةُ الفَاتِحَةِ</h3>
-            <p className="text-[11px] font-sans font-medium opacity-80">مكّيّة • آياتُها ٧</p>
-          </div>
-        )}
-        {number === 2 && (
-          <div className={`my-2 py-2 rounded-md text-center shadow-sm border-2 ${
-            isNight 
-              ? 'bg-amber-950/60 border-amber-500/50 text-amber-200' 
-              : 'bg-gradient-to-r from-amber-100 via-amber-200/90 to-amber-100 border-amber-800/50 text-amber-950'
-          }`}>
-            <h3 className="text-lg sm:text-xl font-extrabold tracking-wide">سُورَةُ البَقَرَةِ</h3>
-            <p className="text-[11px] font-sans font-medium opacity-80">مدنيّة • آياتُها ٢٨٦</p>
-          </div>
-        )}
-
-        {/* 15 Lines Text Body with Uthmanic Hafs Script */}
-        <div className={`my-auto py-3 space-y-2.5 sm:space-y-3.5 text-center leading-[2.5] text-base sm:text-lg md:text-xl tracking-wide font-arabic font-bold ${textColor}`} dir="rtl">
-          {pageTextData.lines.map((line, idx) => (
-            <p key={idx} className="leading-loose drop-shadow-[0_0.5px_0.5px_rgba(0,0,0,0.05)]">
-              {line}
+        {/* Loading Spinner / Skeleton if PDF page is rendering */}
+        {(!rendered || rendering) && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 p-6 text-center">
+            <div className={`w-8 h-8 border-3 ${isNight ? 'border-amber-400 border-t-transparent' : 'border-emerald-700 border-t-transparent'} rounded-full animate-spin`}></div>
+            <p className={`text-xs font-bold ${isNight ? 'text-amber-200' : 'text-amber-900'} font-arabic`}>
+              {pageMeta?.surahNameAr || `Faqja ${pageNumber}`}
             </p>
-          ))}
-        </div>
+          </div>
+        )}
+      </div>
 
-        {/* Bottom Page Number Emblem */}
-        <div className={`text-center pt-2 border-t text-xs font-extrabold font-mono ${headerBorder} ${numberColor}`}>
-          {number}
-        </div>
+      {/* Footer Page Number Indicator */}
+      <div className={`absolute bottom-2 inset-x-0 text-center z-20 text-[11px] font-extrabold font-mono pointer-events-none ${
+        isNight ? 'text-amber-400' : 'text-amber-900/80'
+      }`}>
+        {pageNumber}
       </div>
     </div>
   );
@@ -182,32 +194,112 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, theme, isBookmarke
 
 Page.displayName = 'Page';
 
-interface MushafReaderProps {
+export interface MushafReaderProps {
+  editionKey?: string;
   initialPage: number;
   onPageChange: (page: number) => void;
   onClose: () => void;
 }
 
 export const MushafReader: React.FC<MushafReaderProps> = ({
+  editionKey = 'madinah-15-lines-poc',
   initialPage,
   onPageChange,
   onClose,
 }) => {
-  const [scale, setScale] = useState(1.5);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [controlsVisible, setControlsVisible] = useState(true);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [pageInput, setPageInput] = useState(initialPage.toString());
+  const [currentEditionKey, setCurrentEditionKey] = useState<string>(editionKey);
+  const edition: MushafEditionMeta = MUSHAF_EDITIONS[currentEditionKey] || MUSHAF_EDITIONS['madinah-15-lines-poc'];
+
+  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
+  const [pdfLoading, setPdfLoading] = useState<boolean>(true);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  const [zoomScale, setZoomScale] = useState<number>(1.0);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [controlsVisible, setControlsVisible] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(initialPage || 1);
+  const [pageInput, setPageInput] = useState<string>((initialPage || 1).toString());
   const [theme, setTheme] = useState<ReaderTheme>('parchment');
-  const [isIndexOpen, setIsIndexOpen] = useState(false);
+  const [isIndexOpen, setIsIndexOpen] = useState<boolean>(false);
   const [indexTab, setIndexTab] = useState<'surahs' | 'juz' | 'bookmarks'>('surahs');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [bookmarks, setBookmarks] = useState<number[]>([1]);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  // Audio Playback state
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
+  const [currentPlayingAyah, setCurrentPlayingAyah] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const flipBookRef = useRef<any>(null);
-  const numPages = 5;
+
+  // Load PDF Document when currentEditionKey changes
+  useEffect(() => {
+    let active = true;
+    setPdfLoading(true);
+    setPdfError(null);
+
+    const loadPdf = async () => {
+      try {
+        const loadingTask = pdfjsLib.getDocument({
+          url: edition.sourcePdf,
+          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/cmaps/',
+          cMapPacked: true,
+        });
+
+        const doc = await loadingTask.promise;
+        if (active) {
+          setPdfDoc(doc);
+          setPdfLoading(false);
+        }
+      } catch (err: any) {
+        console.error("Error loading Mushaf PDF:", err);
+        if (active) {
+          setPdfError("Dështoi ngarkimi i PDF-së së Mushafit. Ju lutemi kontrolloni lidhjen.");
+          setPdfLoading(false);
+        }
+      }
+    };
+
+    loadPdf();
+
+    return () => {
+      active = false;
+    };
+  }, [currentEditionKey, edition.sourcePdf]);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  // Sync state with localStorage
+  const saveStateToStorage = (page: number, edKey: string) => {
+    const curEdition = MUSHAF_EDITIONS[edKey] || MUSHAF_EDITIONS['madinah-15-lines-poc'];
+    const pMeta = curEdition.pages.find(p => p.mushafPage === page) || curEdition.pages[0];
+    const [surahNum, ayahNum] = pMeta ? pMeta.fromVerse.split(':').map(Number) : [1, 1];
+
+    const stateToSave: MushafReadingState = {
+      readerMode: 'mushaf',
+      mushafEdition: edKey,
+      mushafPage: page,
+      surah: surahNum,
+      ayah: ayahNum,
+      updatedAt: new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem(MUSHAF_STORAGE_KEY, JSON.stringify(stateToSave));
+      window.dispatchEvent(new Event('mushaf_settings_changed'));
+    } catch (e) {
+      // ignore
+    }
+  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -225,6 +317,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isIndexOpen, onClose]);
 
+  // Fullscreen listener
   useEffect(() => {
     const handleFullscreenChange = () => {
       const doc = document as any;
@@ -232,13 +325,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     };
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
   }, []);
 
@@ -273,15 +362,17 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     setCurrentPage(pageIndex);
     setPageInput(pageIndex.toString());
     onPageChange(pageIndex);
+    saveStateToStorage(pageIndex, currentEditionKey);
   };
 
   const goToPage = (page: number) => {
-    const target = Math.max(1, Math.min(page, numPages));
+    const target = Math.max(1, Math.min(page, edition.pageCount));
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().turnToPage(target - 1);
       setCurrentPage(target);
       setPageInput(target.toString());
       onPageChange(target);
+      saveStateToStorage(target, currentEditionKey);
     }
     setIsIndexOpen(false);
   };
@@ -294,11 +385,74 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     );
   };
 
+  // Audio playback for verses on current page
+  const playPageAudio = async () => {
+    if (isPlayingAudio && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlayingAudio(false);
+      return;
+    }
+
+    const pageMeta = edition.pages.find(p => p.mushafPage === currentPage) || edition.pages[0];
+    if (!pageMeta) return;
+
+    const [fromS, fromA] = pageMeta.fromVerse.split(':').map(Number);
+    const [toS, toA] = pageMeta.toVerse.split(':').map(Number);
+
+    // Build verse list to play sequentially
+    const versesToPlay: { surah: number; ayah: number }[] = [];
+    if (fromS === toS) {
+      for (let a = fromA; a <= toA; a++) versesToPlay.push({ surah: fromS, ayah: a });
+    } else {
+      versesToPlay.push({ surah: fromS, ayah: fromA });
+    }
+
+    let currentIndex = 0;
+
+    const playNextVerse = () => {
+      if (currentIndex >= versesToPlay.length) {
+        setIsPlayingAudio(false);
+        setCurrentPlayingAyah(null);
+        return;
+      }
+
+      const verse = versesToPlay[currentIndex];
+      const audioUrl = `https://everyayah.com/data/Alafasy_128kbps/${verse.surah.toString().padStart(3, '0')}${verse.ayah.toString().padStart(3, '0')}.mp3`;
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      setCurrentPlayingAyah(`${verse.surah}:${verse.ayah}`);
+      setIsPlayingAudio(true);
+
+      audio.onended = () => {
+        currentIndex++;
+        playNextVerse();
+      };
+
+      audio.onerror = () => {
+        setIsPlayingAudio(false);
+        setCurrentPlayingAyah(null);
+      };
+
+      audio.play().catch(err => {
+        console.warn("Audio play error:", err);
+        setIsPlayingAudio(false);
+      });
+    };
+
+    playNextVerse();
+  };
+
   const isPortrait = typeof window !== 'undefined' && window.innerHeight > window.innerWidth;
   const width = isPortrait ? window.innerWidth : Math.min(window.innerWidth / 2, 580);
   const height = typeof window !== 'undefined' ? window.innerHeight : 800;
 
   const isCurrentBookmarked = bookmarks.includes(currentPage);
+  const pageMeta = edition.pages.find(p => p.mushafPage === currentPage) || edition.pages[0];
 
   const filteredSurahs = SURAH_INDEX.filter(s => 
     s.nameSq.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -312,14 +466,18 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
       className={`fixed inset-0 ${theme === 'night' ? 'bg-slate-950' : 'bg-slate-900'} z-50 flex flex-col justify-center items-center overflow-hidden touch-none transition-colors duration-300`}
       onClick={() => setControlsVisible(!controlsVisible)}
     >
-      {/* Top Header Navigation Bar (QuranFlash Style) */}
+      {/* Top Header Controls Bar (QuranFlash Style) */}
       <div 
         className={`absolute top-0 inset-x-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 p-3 flex flex-col sm:flex-row items-center justify-between transition-transform duration-300 z-30 space-y-2.5 sm:space-y-0 ${controlsVisible ? 'translate-y-0' : '-translate-y-full'}`} 
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
           <div className="flex items-center space-x-2">
-            <button aria-label="Mbull" onClick={onClose} className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition-colors">
+            <button 
+              aria-label="Mbull" 
+              onClick={onClose} 
+              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition-colors"
+            >
               <X size={18} />
             </button>
             
@@ -334,16 +492,55 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           </div>
 
           <div className="text-right sm:text-left">
-            <h2 className="font-bold text-xs sm:text-sm text-emerald-400 flex items-center space-x-1">
-              <span>Mushafi i Medinës</span>
-              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1.5 py-0.5 rounded font-mono">15 Rreshta</span>
+            <h2 className="font-bold text-xs sm:text-sm text-emerald-400 flex items-center space-x-1.5">
+              <span>{edition.title}</span>
+              {pageMeta?.surahNameSq && (
+                <span className="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.5 rounded font-medium">
+                  {pageMeta.surahNameSq}
+                </span>
+              )}
             </h2>
-            <p className="text-[11px] text-slate-400">Faqja {currentPage} nga {numPages}</p>
+            <p className="text-[11px] text-slate-400">
+              Faqja {currentPage} nga {edition.pageCount} • Ajetet {pageMeta?.fromVerse} - {pageMeta?.toVerse}
+            </p>
           </div>
         </div>
         
-        {/* Toolbar controls */}
+        {/* Toolbar Controls */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+          {/* Edition Switcher (Standard vs Tajweed) */}
+          <div className="flex bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/60 text-xs">
+            <button
+              onClick={() => {
+                setCurrentEditionKey('madinah-15-lines-poc');
+                saveStateToStorage(currentPage, 'madinah-15-lines-poc');
+              }}
+              className={`px-2.5 py-1 rounded-md font-bold transition-all ${
+                currentEditionKey === 'madinah-15-lines-poc' 
+                  ? 'bg-emerald-600 text-white shadow' 
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Standard (15)
+            </button>
+            <button
+              onClick={() => {
+                setCurrentEditionKey('tajweed-color-poc');
+                saveStateToStorage(currentPage, 'tajweed-color-poc');
+              }}
+              className={`px-2.5 py-1 rounded-md font-bold transition-all flex items-center space-x-1 ${
+                currentEditionKey === 'tajweed-color-poc' 
+                  ? 'bg-amber-600 text-white shadow' 
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Sparkles size={12} className="text-amber-300" />
+              <span>Texhvid</span>
+            </button>
+          </div>
+
+          <div className="h-4 w-[1px] bg-slate-800 mx-1"></div>
+
           {/* Theme mode toggles */}
           <div className="flex bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/60">
             <button 
@@ -371,11 +568,15 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
           <div className="h-4 w-[1px] bg-slate-800 mx-1"></div>
 
-          <button aria-label="Zmadho" onClick={() => setScale(s => Math.min(s + 0.2, 2.5))} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors">
+          {/* Zoom Buttons */}
+          <button aria-label="Zmadho" onClick={() => setZoomScale(s => Math.min(s + 0.25, 2.5))} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors">
             <ZoomIn size={16} />
           </button>
-          <button aria-label="Zvogëlo" onClick={() => setScale(s => Math.max(s - 0.2, 0.8))} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors">
+          <button aria-label="Zvogëlo" onClick={() => setZoomScale(s => Math.max(s - 0.25, 0.75))} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors">
             <ZoomOut size={16} />
+          </button>
+          <button aria-label="Përshtat" onClick={() => setZoomScale(1.0)} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors" title="Rivendos zoom-in">
+            <Maximize2 size={16} />
           </button>
           <button aria-label="Fullscreen" onClick={toggleFullscreen} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 hover:text-white transition-colors">
             {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
@@ -405,39 +606,67 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
         </div>
       </div>
 
-      {/* Main QuranFlash 3D Page Flipbook Canvas */}
+      {/* Main QuranFlash 3D Canvas Flipbook Stage */}
       <div className="flex-1 w-full h-full flex items-center justify-center relative p-2 md:p-6" onClick={e => e.stopPropagation()}>
-        <HTMLFlipBook 
-          width={width - (isPortrait ? 16 : 40)} 
-          height={height - (controlsVisible ? 140 : 20)}
-          size="stretch"
-          minWidth={280}
-          maxWidth={800}
-          minHeight={380}
-          maxHeight={1200}
-          showCover={false}
-          mobileScrollSupport={true}
-          startPage={Math.max(0, Math.min(initialPage - 1, numPages - 1))}
-          onFlip={handleFlip}
-          usePortrait={isPortrait}
-          className="flip-book shadow-2xl rounded-lg"
-          style={{ margin: '0 auto' }}
-          ref={flipBookRef}
-          startZIndex={0}
-          drawShadow={true}
-          flippingTime={700}
-          useMouseEvents={true}
-          swipeDistance={25}
-          showPageCorners={true}
-          disableFlipByClick={false}
-        >
-          {Array.from({ length: numPages }, (_, i) => (
-            <Page key={i} number={i + 1} theme={theme} isBookmarked={bookmarks.includes(i + 1)} />
-          ))}
-        </HTMLFlipBook>
+        {pdfLoading ? (
+          <div className="flex flex-col items-center justify-center space-y-4 text-center p-8 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl">
+            <RefreshCw size={32} className="text-emerald-400 animate-spin" />
+            <p className="text-sm font-bold text-slate-200">Duke ngarkuar Mushafin e Medinës...</p>
+            <p className="text-xs text-slate-400">PDF Rendering (Vector PDFjs engine)</p>
+          </div>
+        ) : pdfError ? (
+          <div className="text-center p-8 bg-slate-900 border border-red-500/30 rounded-2xl max-w-md">
+            <p className="text-red-400 font-bold text-sm mb-2">{pdfError}</p>
+            <button onClick={onClose} className="bg-slate-800 text-white text-xs px-4 py-2 rounded-lg font-bold">
+              Kthehu te Lexuesi Standard
+            </button>
+          </div>
+        ) : (
+          <HTMLFlipBook 
+            width={width - (isPortrait ? 16 : 40)} 
+            height={height - (controlsVisible ? 140 : 20)}
+            size="stretch"
+            minWidth={280}
+            maxWidth={800}
+            minHeight={380}
+            maxHeight={1200}
+            showCover={false}
+            mobileScrollSupport={true}
+            startPage={Math.max(0, Math.min(currentPage - 1, edition.pageCount - 1))}
+            onFlip={handleFlip}
+            usePortrait={isPortrait}
+            className="flip-book shadow-2xl rounded-lg"
+            style={{ margin: '0 auto' }}
+            ref={flipBookRef}
+            startZIndex={0}
+            drawShadow={true}
+            flippingTime={650}
+            useMouseEvents={true}
+            swipeDistance={25}
+            showPageCorners={true}
+            disableFlipByClick={false}
+          >
+            {Array.from({ length: edition.pageCount }, (_, i) => {
+              const pageNum = i + 1;
+              const isNear = Math.abs(pageNum - currentPage) <= 2;
+              return (
+                <Page 
+                  key={`${currentEditionKey}_${pageNum}`} 
+                  pageNumber={pageNum} 
+                  pdfDoc={pdfDoc}
+                  zoomScale={zoomScale}
+                  isNearCurrent={isNear}
+                  theme={theme}
+                  isBookmarked={bookmarks.includes(pageNum)}
+                  pageMeta={edition.pages.find(p => p.mushafPage === pageNum)}
+                />
+              );
+            })}
+          </HTMLFlipBook>
+        )}
       </div>
 
-      {/* Bottom Control Bar & Audio Player (QuranFlash Reader Navigation) */}
+      {/* Bottom Control Bar & Audio Reciter Player */}
       <div 
         className={`absolute bottom-0 inset-x-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-3 flex items-center justify-between transition-transform duration-300 z-30 ${controlsVisible ? 'translate-y-0' : 'translate-y-full'}`} 
         onClick={e => e.stopPropagation()}
@@ -453,14 +682,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           </button>
         </div>
         
-        {/* Audio Reciter Trigger & Fast Page Jump */}
+        {/* Audio Reciter & Fast Page Jump */}
         <div className="flex items-center space-x-3">
           <button 
-            onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+            onClick={playPageAudio}
             className={`w-10 h-10 flex items-center justify-center rounded-full shadow-lg text-white transition-all active:scale-95 ${
-              isPlayingAudio ? 'bg-amber-600 hover:bg-amber-500 animate-pulse' : 'bg-emerald-600 hover:bg-emerald-500'
+              isPlayingAudio ? 'bg-amber-600 hover:bg-amber-500 animate-pulse ring-4 ring-amber-500/30' : 'bg-emerald-600 hover:bg-emerald-500'
             }`}
-            title="Dëgjo leximin e faqes"
+            title={isPlayingAudio ? `Ndalo audio (${currentPlayingAyah || ''})` : "Dëgjo leximin e ajetit të faqes (Alafasy)"}
           >
             {isPlayingAudio ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
           </button>
@@ -478,7 +707,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
               }}
               className="w-10 bg-slate-950 text-emerald-400 font-bold text-center py-1 outline-none appearance-none border-x border-slate-700/80"
             />
-            <span className="px-2.5 text-slate-400 font-medium">/ {numPages}</span>
+            <span className="px-2.5 text-slate-400 font-medium">/ {edition.pageCount}</span>
           </div>
         </div>
 
@@ -642,5 +871,3 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     </div>
   );
 };
-
-
