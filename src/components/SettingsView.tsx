@@ -496,33 +496,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <h3 className="font-bold text-sm text-emerald-300">Botimi i Mushafit (Kurani)</h3>
       </div>
       <p className="text-xs text-slate-400">
-        Zgjidhni versionin e Kuranit me faqe reale kur jeni në modalitetin "Mushaf".
+        Mushafi i Medinës me faqe reale 15 rreshta për faqe.
       </p>
       
-      <div className="space-y-2">
-        <button
-          onClick={() => updateMushafEdition('madinah-15-lines-poc')}
-          className={`w-full p-3 rounded-xl border flex flex-col space-y-1 text-left transition-all ${
-            mushafEdition === 'madinah-15-lines-poc'
-              ? 'bg-emerald-950/90 border-emerald-500 shadow-md'
-              : 'bg-slate-950 border-slate-800 hover:border-slate-700'
-          }`}
-        >
-          <span className="font-bold text-sm text-slate-200">Mushafi i Medinës — Normal</span>
-          <span className="text-[11px] text-slate-400">Botimi Standard me 15 rreshta për faqe (Prototip 5 Faqe)</span>
-        </button>
-
-        <button
-          onClick={() => updateMushafEdition('tajweed-color-poc')}
-          className={`w-full p-3 rounded-xl border flex flex-col space-y-1 text-left transition-all ${
-            mushafEdition === 'tajweed-color-poc'
-              ? 'bg-emerald-950/90 border-emerald-500 shadow-md'
-              : 'bg-slate-950 border-slate-800 hover:border-slate-700'
-          }`}
-        >
-          <span className="font-bold text-sm text-slate-200">Mushafi me Texhvid — Prototip</span>
-          <span className="text-[11px] text-slate-400">Rregullat e lexuarit me ngjyra direkt në faqe (Prototip 5 Faqe)</span>
-        </button>
+      <div className="p-3 bg-emerald-950/80 border border-emerald-500 rounded-xl flex items-center justify-between">
+        <div>
+          <p className="font-bold text-sm text-emerald-200">Mushafi i Medinës (Standard)</p>
+          <p className="text-[11px] text-emerald-400/80">Formatimi origjinal me 15 rreshta për faqe (Prototip 5 Faqe)</p>
+        </div>
+        <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></div>
       </div>
     </div>
 
