@@ -11,29 +11,61 @@ import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { getLocalDateString } from '../utils/dateUtils';
 import { sanitizeArabicText } from '../utils/arabicUtils';
 import { DuaAudioPlayer } from './DuaAudioPlayer';
+import { useDhikrFontSize } from '../utils/useFontSize';
+import { FontSizeControl } from './FontSizeControl';
 
 interface MburojaViewProps {
- initialChapterId?: number | null;
- mburojaState: MburojaState;
- hapticEnabled?: boolean;
- soundEnabled?: boolean;
- onToggleFavChapter: (chapterId: number) => void;
- onToggleSaveDua: (duaId: number) => void;
- onToggleChapterCompletedToday: (chapterId: number) => void;
- onUpdateDuaCount: (duaId: number, count: number) => void;
- onUpdateDuaGoal?: (duaId: number, goal: number | null) => void;
+  initialChapterId?: number | null;
+  mburojaState: MburojaState;
+  hapticEnabled?: boolean;
+  soundEnabled?: boolean;
+  onToggleFavChapter: (chapterId: number) => void;
+  onToggleSaveDua: (duaId: number) => void;
+  onToggleChapterCompletedToday: (chapterId: number) => void;
+  onUpdateDuaCount: (duaId: number, count: number) => void;
+  onUpdateDuaGoal?: (duaId: number, goal: number | null) => void;
 }
 
+const getArabicClass = (scale: number) => {
+  switch (scale) {
+    case 0: return "text-xl leading-[2.0]";
+    case 2: return "text-3xl leading-[2.3]";
+    case 3: return "text-4xl leading-[2.4]";
+    case 1:
+    default: return "text-2xl leading-[2.2]";
+  }
+};
+
+const getTransliterationClass = (scale: number) => {
+  switch (scale) {
+    case 0: return "text-[11px]";
+    case 2: return "text-sm";
+    case 3: return "text-base";
+    case 1:
+    default: return "text-xs";
+  }
+};
+
+const getAlbanianClass = (scale: number) => {
+  switch (scale) {
+    case 0: return "text-xs leading-relaxed";
+    case 2: return "text-base leading-relaxed";
+    case 3: return "text-lg leading-relaxed";
+    case 1:
+    default: return "text-sm leading-relaxed";
+  }
+};
 
 // Helper renderers for multi-paragraph or multi-Surah duas (e.g. El-Ihlas, El-Felek, En-Nas)
-const renderFormattedArabic = (arText: string) => {
+const renderFormattedArabic = (arText: string, fontScale: number = 1) => {
   if (!arText) return null;
   const sanitized = sanitizeArabicText(arText);
   const parts = sanitized.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+  const arClass = getArabicClass(fontScale);
 
   if (parts.length <= 1) {
     return (
-      <p className="font-arabic text-2xl text-slate-100 leading-[2.2] text-right dir-rtl my-2 select-text whitespace-pre-line" dir="rtl">
+      <p className={`font-arabic ${arClass} text-slate-100 text-right dir-rtl my-2 select-text whitespace-pre-line`} dir="rtl">
         {sanitized}
       </p>
     );
@@ -43,7 +75,7 @@ const renderFormattedArabic = (arText: string) => {
     <div className="space-y-3.5 my-3 dir-rtl select-text" dir="rtl">
       {parts.map((part, idx) => (
         <div key={idx} className={idx > 0 ? "pt-3 border-t border-slate-800/60" : ""}>
-          <p className="font-arabic text-2xl text-slate-100 leading-[2.2] text-right whitespace-pre-line">
+          <p className={`font-arabic ${arClass} text-slate-100 text-right whitespace-pre-line`}>
             {part}
           </p>
         </div>
@@ -52,13 +84,14 @@ const renderFormattedArabic = (arText: string) => {
   );
 };
 
-const renderFormattedTransliteration = (transText: string) => {
+const renderFormattedTransliteration = (transText: string, fontScale: number = 1) => {
   if (!transText) return null;
   const parts = transText.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+  const transClass = getTransliterationClass(fontScale);
 
   if (parts.length <= 1) {
     return (
-      <p className="text-xs font-mono text-amber-200/90 italic bg-slate-950/70 p-2.5 rounded-lg border border-slate-850 whitespace-pre-line">
+      <p className={`${transClass} font-mono text-amber-200/90 italic bg-slate-950/70 p-2.5 rounded-lg border border-slate-850 whitespace-pre-line`}>
         {transText}
       </p>
     );
@@ -68,7 +101,7 @@ const renderFormattedTransliteration = (transText: string) => {
     <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-850 space-y-2.5 my-2">
       {parts.map((part, idx) => (
         <div key={idx} className={idx > 0 ? "pt-2.5 border-t border-slate-800/80" : ""}>
-          <p className="text-xs font-mono text-amber-200/90 italic leading-relaxed whitespace-pre-line">
+          <p className={`${transClass} font-mono text-amber-200/90 italic leading-relaxed whitespace-pre-line`}>
             {part}
           </p>
         </div>
@@ -77,13 +110,14 @@ const renderFormattedTransliteration = (transText: string) => {
   );
 };
 
-const renderFormattedAlbanian = (sqText: string) => {
+const renderFormattedAlbanian = (sqText: string, fontScale: number = 1) => {
   if (!sqText) return null;
   const parts = sqText.split(/\n\s*\n|<br\s*\/?>\s*<br\s*\/?>/gi).map(p => p.trim()).filter(Boolean);
+  const sqClass = getAlbanianClass(fontScale);
 
   if (parts.length <= 1) {
     return (
-      <p className="text-sm font-sans text-slate-200 leading-relaxed whitespace-pre-line">
+      <p className={`${sqClass} font-sans text-slate-200 whitespace-pre-line`}>
         {sqText}
       </p>
     );
@@ -106,7 +140,7 @@ const renderFormattedAlbanian = (sqText: string) => {
                   {headerTitle}
                 </p>
                 {headerBody && (
-                  <p className="text-sm font-sans text-slate-200 leading-relaxed whitespace-pre-line">
+                  <p className={`${sqClass} font-sans text-slate-200 whitespace-pre-line`}>
                     {headerBody}
                   </p>
                 )}
@@ -118,7 +152,7 @@ const renderFormattedAlbanian = (sqText: string) => {
         return (
           <div key={idx} className={idx > 0 && !isIntroHeader ? "pt-2.5 border-t border-slate-800/40" : ""}>
             <p
-              className={`text-sm font-sans leading-relaxed whitespace-pre-line ${
+              className={`${sqClass} font-sans whitespace-pre-line ${
                 isIntroHeader
                   ? "text-emerald-300/90 font-medium text-xs bg-slate-950/40 p-2 rounded border border-slate-800/60"
                   : "text-slate-200"
@@ -144,6 +178,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  onUpdateDuaCount,
  onUpdateDuaGoal
 }) => {
+ const { fontScale, changeScale } = useDhikrFontSize();
  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
  const [selectedChapterId, setSelectedChapterId] = useState<number | null>(initialChapterId || null);
  const [searchQuery, setSearchQuery] = useState<string>('');
@@ -210,9 +245,12 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  <span>Lista e Kapitujve</span>
  </button>
 
- <h3 className="font-bold font-serif text-slate-100 text-sm truncate max-w-[200px]">
+ <h3 className="font-bold font-serif text-slate-100 text-sm truncate text-center flex-1 px-2">
  {activeChapter.title}
  </h3>
+
+ <div className="flex items-center space-x-2 shrink-0">
+ <FontSizeControl fontScale={fontScale} onChangeScale={changeScale} />
 
  {/* Chapter Favorite Star Button */}
  <button
@@ -227,6 +265,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  >
  <Star className="w-4 h-4 fill-current" />
  </button>
+ </div>
  </div>
 
  {/* Duas List */}
@@ -273,13 +312,13 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </div>
 
  {/* Arabic Text */}
- {renderFormattedArabic(dua.ar)}
+ {renderFormattedArabic(dua.ar, fontScale)}
 
  {/* Transliteration */}
- {renderFormattedTransliteration(dua.transliteration || '')}
+ {renderFormattedTransliteration(dua.transliteration || '', fontScale)}
 
  {/* Albanian Translation */}
- {renderFormattedAlbanian(dua.sq)}
+ {renderFormattedAlbanian(dua.sq, fontScale)}
 
  {/* Audio Playback for Daily Routine Duas */}
  {(activeChapter.isRoutine || [27, 28, 29].includes(activeChapter.id)) && (

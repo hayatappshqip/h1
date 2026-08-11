@@ -684,7 +684,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'estagfirullah',
  title: '1. Istigfari',
- ar: 'أَسْتَغْفِر اللهَ',
+ ar: 'أَسْتَغْفِرُ اللَّهَ',
  transliteration: 'Estagfirullah (3 herë)',
  sq: 'Kërkoj falje nga Allahu (3 herë).',
  reference: 'Muslimi 1/414 (Mburoja e Muslimanit #65)',
@@ -693,7 +693,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'entes_selam',
  title: '2. Duaja pas Selamit',
- ar: 'اللَّهُم أَنْت السَّلَام وَمِنْك السَّلَام، تَبَارَكْت يَا ذَا الْجَلَال وَالْإِكْرَامِ',
+ ar: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ',
  transliteration: 'All-llahumme entes-selamu ve minkes-selamu tebarekte ja dhel xhelali vel-ikram',
  sq: 'O Allahu im, Ti je shpëtimi dhe nga Ti vjen shpëtimi, i Lartësuar qofsh o zotërues i Madhërisë dhe i Nderit.',
  reference: 'Muslimi 1/414 (Mburoja e Muslimanit #65)',
@@ -702,7 +702,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'la_ilahe_la_mania',
  title: '3. Teuhidi & Mbrojtja nga çdo e keqe',
- ar: 'لَا إِله إِلَّا الله وَحْدَه لَا شَرِيك لَه، لَه الْمُلْك وَلَه الْحَمْد وَهُو عَلَى كُل شَيْء قَدِير، اللَّهُم لَا مَانِع لِمَا أَعْطَيْت، وَلَا مُعْطِي لِمَا مَنَعْت، وَلَا يَنْفَع ذَا الْجَد مِنْك الْجَدُّ',
+ ar: 'لَا إِلَـٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، اللَّهُمَّ لَا مَانِعَ لِمَا أَعْطَيْتَ، وَلَا مُعْطِيَ لِمَا مَنَعْتَ، وَلَا يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ',
  transliteration: 'La ilahe il-lAll-llahu vahdehu la sherike leh, lehul mulku ve lehul hamdu ve huve ala kul-li shejin kadir. All-llahume la mani’a lima a’tajte ve la m’utije lima mena’te ve la jenfe’u dhel xheddi minkel xheddu',
  sq: 'Nuk ka hyjni që meriton të adhurohet përveç Allahut, të Vetëm e i pa rival. Atij i takon Sundimi dhe Lavdërimi, Ai është i Plotfuqishmi mbi çdo send. O Allahu im, nuk ka kush e ndalon atë që Ti e ke dhënë dhe nuk ka kush e jep atë që Ti e ke ndaluar; tek Ti nuk ka vlerë dobia e askujt, ngase çdo dobi vjen prej Teje.',
  reference: 'Buhariu 1/255 & Muslimi 1/414 (Mburoja e Muslimanit #66)',
@@ -711,7 +711,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'la_ilahe_la_havle',
  title: '4. Dhikri i Madhërimit dhe Sinqeritetit',
- ar: 'لَا إِلَه إِلَّا الله وَحْدَه لَا شَرِيك لَه، لَه الْمُلْك وَلَه الْحَمْد وَهُو عَلَى كُل شَيْء قَدِير، لَا حَوْل وَلَا قُوَّة إِلَّا بِالله، لَا إِلَه إِلَّا الله، وَلَا نَعْبُد إِلَّا إِيَّاه، لَه النِّعْمَة وَلَه الْفَضْل وَلَه الثَّنَاء الْحَسَن، لَا إِلَه إِلَّا الله مُخْلِصِين لَه الدِّين وَلَو كَرِه الْكَافِرُونَ',
+ ar: 'لَا إِلَـٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ، لَا إِلَـٰهَ إِلَّا اللَّهُ، وَلَا نَعْبُدُ إِلَّا إِيَّاهُ، لَهُ النِّعْمَةُ وَلَهُ الْفَضْلُ وَلَهُ الثَّنَاءُ الْحَسَنُ، لَا إِلَـٰهَ إِلَّا اللَّهُ مُخْلِصِينَ لَهُ الدِّينَ وَلَوْ كَرِهَ الْكَافِرُونَ',
  transliteration: 'La ilahe il-lAll-llahu vahdehu la sherike leh... la havle ve la kuvete il-la bil-lah, la ilahe il-lAll-llahu ve la na’budu il-la ijjahu lehun-ni’metu ve lehul-fadlu ve lehuth-thenaul hasen. La ilahe il-lAll-llahu muhlisine lehud-din ve lev kerihel-kafirun',
  sq: 'Nuk ka hyjni që meriton të adhurohet përveç Allahut, të Vetëm e i pa rival. Atij i takon Sundimi dhe Lavdërimi, Ai është i Gjithëfuqishmi mbi çdo gjë. Nuk ka ndryshim e as forcë pa ndihmën e Allahut; nuk ka Zot tjetër përveç Allahut dhe nuk e adhurojmë askënd tjetër përveç Tij...',
  reference: 'Muslimi 1/415 (Mburoja e Muslimanit #67)',
@@ -720,7 +720,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'subhanallah',
  title: '5. Tasbeeh - Subḥãnallãh',
- ar: 'سُبْحَان اللهِ',
+ ar: 'سُبْحَانَ اللَّهِ',
  transliteration: 'Subḥãnallãh (33 herë)',
  sq: 'I pastër është Allahu nga çdo e metë.',
  reference: 'Muslimi 1/418 (Mburoja e Muslimanit #68)',
@@ -729,7 +729,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'alhamdulillah',
  title: '6. Tahmeed - El-ḥamdu lillãh',
- ar: 'الْحَمْد لِلَّهِ',
+ ar: 'الْحَمْدُ لِلَّهِ',
  transliteration: 'El-ḥamdu lillãh (33 herë)',
  sq: 'Falënderimi i përket vetëm Allahut.',
  reference: 'Muslimi 1/418 (Mburoja e Muslimanit #68)',
@@ -738,7 +738,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'allahuakbar',
  title: '7. Takbeer - Allãhu Ekber',
- ar: 'اللَّه أَكْبَرُ',
+ ar: 'اللَّهُ أَكْبَرُ',
  transliteration: 'Allãhu Ekber (33 herë)',
  sq: 'Allahu është më i Madhi.',
  reference: 'Muslimi 1/418 (Mburoja e Muslimanit #68)',
@@ -747,7 +747,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'la_ilahe_completion',
  title: '8. Plotësimi i të 100-tës me Teuhid',
- ar: 'لَا إِلَه إِلَّا الله وَحْدَه لَا شَرِيك لَه، لَه الْمُلْك وَلَه الْحَمْد وَهُو عَلَى كُل شَيْء قَدِيرٌ',
+ ar: 'لَا إِلَـٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
  transliteration: 'La ilahe il-lAll-llahu vahdehu la sherike leh, lehul mulku ve lehul hamdu ve huve ala kul-li shejin kadir',
  sq: 'Nuk ka hyjni që meriton të adhurohet përveç Allahut, të Vetëm e i pa rival. Atij i takon Sundimi dhe Lavdërimi dhe Ai është i Gjithëfuqishëm mbi çdo gjë.',
  reference: 'Muslimi 1/418 (Mburoja e Muslimanit #68)',
@@ -756,7 +756,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'ajetul_kursi',
  title: '9. Ajetul Kursi (Mbrojtja e Xhenetit)',
- ar: 'الله لَا إِلَه إِلَّا هُو الْحَي الْقَيُّوم لَا تَأْخُذُه سِنَة وَلَا نَوْم لَه مَا فِي السَّمَاوَات وَمَا فِي الْأَرْض مَن ذَا الَّذِي يَشْفَع عِنْدَه إِلَّا بِإِذْنِه يَعْلَم مَا بَيْن أَيْدِيهِم وَمَا خَلْفَهُم وَلَا يُحِيطُون بِشَيْء مِن عِلْمِه إِلَّا بِمَا شَاء وَسِع كُرْسِيُّه السَّمَاوَات وَالْأَرْض وَلَا يَئُودُه حِفْظُهُمَا وَهُو الْعَلِي الْعَظِيمُ',
+ ar: 'اللَّهُ لَا إِلَـٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْن أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',
  transliteration: 'All-llahu La Ilahe il-la huvel-Hajjul-Kajjumu...',
  sq: 'Allahu është Një, nuk ka Zot tjetër përveç Atij, Ai është Mbikëqyrës i përhershëm dhe i përjetshëm... (Kush e lexon pas çdo namazi farz, nuk e pengon asgjë nga hyrja në Xhenet përveç vdekjes).',
  reference: 'Nesaiu & Ibën Sunnijj (Mburoja e Muslimanit #72)',
@@ -765,7 +765,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'ihlas',
  title: '10. Surja El-Ihlas',
- ar: 'بَسْم الله الرَّحْمَن الرَّحِيمِ\nقُل هُو الله أَحَد الله الصَّمَد لَم يَلِد وَلَم يُولَد وَلَم يَكُن لَه كُفُوًا أَحَدٌ',
+ ar: 'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
  transliteration: 'Kul huvAll-llahu ehad, All-llahus-samed, lem jelid ve lem juled, ve lem jekun lehu kufuven ehad',
  sq: 'Thuaj: “Ai është Allahu, Një dhe i Vetëm! Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim. Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!”',
  reference: 'Ebu Davudi & Nesaiu (Mburoja e Muslimanit #69)',
@@ -774,7 +774,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'felek',
  title: '11. Surja El-Felek',
- ar: 'بَسْم الله الرَّحْمَن الرَّحِيمِ\nقُل أَعُوذ بِرَب الْفَلَق مِن شَر مَا خَلَق وَمِن شَر غَاسِق إِذَا وَقَب وَمِن شَر النَّفَّاثَات فِي الْعُقَد وَمِن شَر حَاسِد إِذَا حَسَدَ',
+ ar: 'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',
  transliteration: 'Kul eudhu bi Rabbil felek, min sherri ma halek, ve min sherri gasikin idha vekab, ve min sherrin-nef-fathati fil ukad, ve min sherr-rri hasidin idha hased',
  sq: 'Thuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar...”.',
  reference: 'Ebu Davudi & Nesaiu (Mburoja e Muslimanit #70)',
@@ -783,7 +783,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  {
  key: 'nas',
  title: '12. Surja En-Nas',
- ar: 'بَسْم الله الرَّحْمَن الرَّحِيمِ\nقُل أَعُوذ بِرَب النَّاس مَلِك النَّاس إِلَه النَّاس مِن شَر الْوَسْوَاس الْخَنَّاس الَّذِي يُوَسْوِس فِي صُدُور النَّاس مِن الْجِنَّة وَالنَّاسِ',
+ ar: 'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَـٰهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ',
  transliteration: 'Kul eudhu bi Rabbin-nas, melikin-nas, ilahin-nas, minsherr-rril vesvasil-han-nas, eledhi juvesvisu fi sudurin-nas, minel xhin-neti ven-nas',
  sq: 'Thuaj: “Kërkoj mbështetje te Zoti i njerëzve, Sundimtari i njerëzve...”.',
  reference: 'Ebu Davudi & Nesaiu (Mburoja e Muslimanit #71)',
@@ -795,7 +795,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  items.push({
  key: 'juhji_ve_jumitu',
  title: '13. Dhikri pas Sabahut & Akshamit (10 herë)',
- ar: 'لَا إِلَه إِلَّا الله وَحْدَه لَا شَرِيك لَه، لَه الْمُلْك وَلَه الْحَمْد يُحْيِي وَيُمِيت، وَهُو عَلَى كُل شَيْء قَدِيرٌ',
+ ar: 'لَا إِلَـٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ يُحْيِي وَيُمِيتُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
  transliteration: 'La Ilahe il-lAll-llahu vahdehu la sherike leh, lehul mulku ve lehul hamdu juhji ve jumitu ve huve ala kul-li shej’in kadir',
  sq: 'Nuk ka hyjni që meriton të adhurohet përveç Allahut, të Vetëm e i pa rival. Atij i takon Sundimi dhe Lavdërimi, Ai jep jetë dhe vdekje dhe Ai është i Gjithëfuqishëm mbi çdo gjë.',
  reference: 'Tirmidhiu & Ahmedi (Mburoja e Muslimanit #73)',
@@ -807,7 +807,7 @@ const getPostPrayerDhikrItemsForPrayer = (prayerName: PrayerName): DhikrItemDef[
  items.push({
  key: 'ilmen_nafi',
  title: '14. Lutja për Dituri, Furnizim & Vepra të Pranuara (Sabah)',
- ar: 'اللَّهُم إِنِّي أَسْأَلُك عِلْما نَافِعا، وَرِزْقا طَيِّبا، وَعَمَلا مُتَقَبَّلاً',
+ ar: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا',
  transliteration: 'All-llahume inni es‘eluke ilmen nafi’an ve rizkan tajjiben ve amelen mutekabbelen',
  sq: 'O Allahu im, të lutem më jep dituri të dobishme dhe furnizim të mirë, si dhe të lutem Të m’i pranosh veprat e mia.',
  reference: 'Ibën Maxheh (Mburoja e Muslimanit #74)',
