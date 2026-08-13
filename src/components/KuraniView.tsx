@@ -130,7 +130,6 @@ import { QuranStatsChart } from './QuranStatsChart';
 import { HifzModule } from './HifzModule';
 import { KhatamTrackerView } from './KhatamTrackerView';
 import { QcfMushafReader } from './QcfMushafReader';
-import { KuraniCardsBackup } from './KuraniCardsBackup';
 
 export interface Reciter {
  key: string;
@@ -1304,8 +1303,8 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  )}
  </div>
  ) : (
- /* Cards Mode (Default) */
- <div className="space-y-3.5">
+ /* Cards Mode (Verse-by-Verse with generous spacing) */
+ <div className="space-y-6 sm:space-y-8 my-5">
  {surahData.ayahs.map(ayah => {
  const isLastRead =
  readingState.lastReadSurah === selectedSurahNum &&
@@ -1327,9 +1326,9 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  id={`ayah-${ayah.numberInSurah}`}
  data-ayah-num={ayah.numberInSurah}
  data-surah-num={selectedSurahNum}
- className={`ayah-container-trackable p-4 rounded-2xl border transition-all ${
+ className={`ayah-container-trackable p-5 sm:p-6 rounded-2xl border shadow-md transition-all ${
  isAyahPlaying
- ? 'border-emerald-500 shadow-md ring-2 ring-emerald-500/30'
+ ? 'border-emerald-500 shadow-lg ring-2 ring-emerald-500/30'
  : isLastRead
  ? 'border-emerald-600/80 shadow-inner'
  : currentTheme.cardBorder
@@ -2138,17 +2137,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  setSelectedSurahNum(surahNum);
  setActiveTab('surahs');
  }}
- />
- ) : activeTab === 'cards_backup' ? (
- <KuraniCardsBackup
- readingState={readingState}
- bookmarks={bookmarks}
- notes={notes}
- onUpdateReadingState={onUpdateReadingState}
- onAddBookmark={onAddBookmark}
- onRemoveBookmark={onRemoveBookmark}
- onSaveNote={onSaveNote}
- onDeleteNote={onDeleteNote}
  />
  ) : activeTab === 'hifz' ? (
  <HifzModule />

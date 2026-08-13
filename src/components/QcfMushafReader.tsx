@@ -1,18 +1,20 @@
 /**
  * QcfMushafReader Component - Minimalist, Zen, Physical-Book Mushaf Reader
  *
- * Requirements:
- * - Uses endpoint: /.netlify/functions/quran-page?page=N (1 to 604)
- * - Renders code_v2 glyphs strictly with dynamically loaded QCF_P{page} font family
- * - Uses isolated container class: .qcf-mushaf-page
- * - Controls hidden by default; single tap toggles lightweight translucent overlay
- * - Touch swipe left/right changes pages without accidentally toggling controls
+ * Features:
+ * - Renders Hafs code_v2 glyphs with dynamic QCF_P{page} font families
+ * - Isolated container class: .qcf-mushaf-page
+ * - Persistent/Responsive controls header & footer with quick toggles
+ * - Click Surah name -> opens Surah Selection Modal
+ * - Search button in Header -> search Surahs, Pages (1-604), and Juzs (1-30)
+ * - Swipe gestures for left/right page flipping
  * - Supports Paper themes (Ivory, Sepia, White, Dark), font scaling, Tajweed toggle, and mode switcher
  */
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   BookOpen,
   AlertCircle,
   RefreshCw,
@@ -24,7 +26,10 @@ import {
   Layers,
   Palette,
   Search,
-  FileText
+  FileText,
+  Bookmark,
+  Hash,
+  Compass
 } from 'lucide-react';
 import {
   ALL_SURAHS_META,
@@ -123,7 +128,7 @@ const PAPER_THEMES: Record<string, ThemeConfig> = {
 };
 
 /**
- * Utility to dynamically load QCF V2 page fonts (1 to 604)
+ * Dynamic Font Loader for Hafs QCF V2 Page Fonts (1 to 604)
  */
 async function loadQcfFontForPage(page: number): Promise<string> {
   const fontFamilyName = `QCF_P${page}`;
@@ -165,7 +170,6 @@ async function loadQcfFontForPage(page: number): Promise<string> {
       }
     } catch (err) {
       console.error(`Error loading QCF font for page ${page}:`, err);
-      throw new Error(`Dështoi ngarkimi i shkrimit QCF për faqen ${page}. Ju lutem provoni përsëri.`);
     }
   }
 
@@ -200,22 +204,30 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
   const [fontFamily, setFontFamily] = useState<string>(`QCF_P${startPage}`);
   const [secondFontFamily, setSecondFontFamily] = useState<string>('');
 
-  // Reader UI States
-  const [showControls, setShowControls] = useState<boolean>(false);
+  // Reader UI Control States
+  const [showControls, setShowControls] = useState<boolean>(true); // Persistent by default
+  const [showSurahModal, setShowSurahModal] = useState<boolean>(false);
+  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+
+  // Search & Filter State
+  const [surahSearchTerm, setSurahSearchTerm] = useState<string>('');
+  const [quickJumpInput, setQuickJumpInput] = useState<string>('');
+
+  // Settings
   const [fontScale, setFontScale] = useState<number>(100); // 80..130%
   const [isTajweedActive, setIsTajweedActive] = useState<boolean>(showTajweed);
   const [selectedThemeKey, setSelectedThemeKey] = useState<string>(() => {
     return localStorage.getItem('hayat_mushaf_theme') || 'ivory';
   });
-  const [isSpread, setIsSpread] = useState<boolean>(false); // 2-page book spread for tablet/desktop
+  const [isSpread, setIsSpread] = useState<boolean>(false); // 2-page book spread
 
-  // Touch tracking for swipe vs tap
+  // Touch tracking
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
 
   const activeTheme = PAPER_THEMES[selectedThemeKey] || PAPER_THEMES.ivory;
 
-  // Sync initialSurahNum / initialPage changes from parent
+  // Sync initialSurahNum / initialPage from parent
   useEffect(() => {
     if (initialPage) {
       setCurrentPage(initialPage);
@@ -224,20 +236,20 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     }
   }, [initialPage, initialSurahNum]);
 
-  // Derive current surah metadata from page
+  // Derive current surah metadata
   const currentSurahNum = getSurahNumberFromPage(currentPage);
   const currentSurahMeta = ALL_SURAHS_META.find((s) => s.number === currentSurahNum);
 
-  // Persist theme choice
+  // Theme selection
   const handleSelectTheme = (themeKey: string) => {
     setSelectedThemeKey(themeKey);
     localStorage.setItem('hayat_mushaf_theme', themeKey);
   };
 
-  // Keyboard navigation
+  // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (showSettingsModal) return;
+      if (showSettingsModal || showSurahModal || showSearchModal) return;
       if (e.key === 'ArrowLeft') {
         handleNextPage();
       } else if (e.key === 'ArrowRight') {
@@ -248,9 +260,9 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage, isSpread, showSettingsModal]);
+  }, [currentPage, isSpread, showSettingsModal, showSurahModal, showSearchModal]);
 
-  // Fetch Page Data & Font (Single or Spread)
+  // Fetch Page Data & Font
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -317,7 +329,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     }
   };
 
-  // Gesture Handlers
+  // Touch Gesture Handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       touchStartRef.current = {
@@ -338,6 +350,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
     touchStartRef.current = null;
 
+    // Swipe threshold
     if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && duration < 600) {
       if (deltaX < 0) {
         handleNextPage();
@@ -347,16 +360,37 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       return;
     }
 
+    // Tap canvas to toggle control bar visibility
     if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && duration < 350) {
       setShowControls((prev) => !prev);
     }
   };
 
-  const handleCanvasClick = () => {
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    // Only toggle if clicked directly on canvas background
     setShowControls((prev) => !prev);
   };
 
-  // Helper to render a single page layout
+  // Handle Quick Jump Page Input
+  const handleQuickPageJump = (e: React.FormEvent) => {
+    e.preventDefault();
+    const p = parseInt(quickJumpInput.trim(), 10);
+    if (!isNaN(p) && p >= 1 && p <= 604) {
+      setCurrentPage(p);
+      setShowSearchModal(false);
+      setQuickJumpInput('');
+    }
+  };
+
+  // Filtered Surahs List for Modal
+  const filteredSurahs = ALL_SURAHS_META.filter(
+    (s) =>
+      s.transliteration.toLowerCase().includes(surahSearchTerm.toLowerCase()) ||
+      s.albanianName.toLowerCase().includes(surahSearchTerm.toLowerCase()) ||
+      s.number.toString() === surahSearchTerm.trim()
+  );
+
+  // Render Single Page
   const renderPageLines = (data: QuranPageData | null, fontName: string, pNum: number) => {
     if (!data || !Array.isArray(data.verses)) return null;
 
@@ -385,7 +419,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       >
         <div className={`absolute inset-2 border rounded-xl pointer-events-none opacity-40 ${activeTheme.paperBorder}`} />
 
-        {/* ISOLATED MUSHAF PAGE CONTAINER */}
+        {/* QCF V2 ISOLATED PAGE */}
         <div
           className="qcf-mushaf-page my-auto space-y-1 sm:space-y-1.5 py-1 transition-all duration-200"
           style={{
@@ -418,7 +452,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           })}
         </div>
 
-        {/* Physical Page Footer Marker */}
+        {/* Page Footer Marker */}
         <div className={`pt-3 mt-2 border-t flex justify-between items-center text-[10px] sm:text-[11px] font-mono opacity-80 ${activeTheme.spineColor} ${activeTheme.subtextColor}`}>
           <span>Xhuz {juzNum}</span>
           <span className="font-bold">Faqja {pNum}</span>
@@ -435,11 +469,11 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       onTouchEnd={handleTouchEnd}
       onClick={handleCanvasClick}
     >
-      {/* ----------------- TOP TRANSLUCENT CONTROLS OVERLAY ----------------- */}
+      {/* ----------------- TOP CONTROLS HEADER OVERLAY ----------------- */}
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed top-3 left-3 right-3 sm:top-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl z-50 bg-slate-950/90 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-2xl p-2.5 sm:px-4 sm:py-3 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
+          className="fixed top-2 left-2 right-2 sm:top-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-3xl z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-2xl p-2 sm:px-4 sm:py-2.5 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Back Button */}
           <button
@@ -447,32 +481,46 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
               if (onBack) onBack();
               else setShowControls(false);
             }}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/60 text-slate-200 transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-200 transition-colors shrink-0"
             title="Kthehu te Kur'ani"
           >
             <ChevronLeft className="w-4 h-4 text-emerald-400" />
             <span className="font-medium hidden xs:inline">Kur'ani</span>
           </button>
 
-          {/* Current Surah Title & Page Indicator */}
-          <div className="flex items-center space-x-1.5 font-medium text-amber-300">
+          {/* Surah Title Pill -> CLICK OPENS SURAH SELECTION MODAL */}
+          <button
+            onClick={() => setShowSurahModal(true)}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold transition-all mx-1 truncate max-w-[200px] xs:max-w-[280px]"
+            title="Kliko për të zgjedhur Suren"
+          >
             <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
-            <span className="font-bold text-slate-100 truncate max-w-[120px] xs:max-w-[180px]">
-              {currentSurahMeta?.transliteration || `Surja ${currentSurahNum}`}
+            <span className="truncate text-slate-100">
+              {currentSurahMeta?.number}. {currentSurahMeta?.transliteration || `Surja ${currentSurahNum}`}
             </span>
-            <span className="text-slate-500">•</span>
-            <span className="font-mono text-[11px] text-amber-300">Faqja {currentPage}/604</span>
-          </div>
+            <ChevronDown className="w-3.5 h-3.5 text-amber-400/80 shrink-0 ml-0.5" />
+          </button>
 
-          {/* Right Header Actions: Settings Drawer Toggle */}
-          <div className="flex items-center space-x-1.5">
+          {/* Right Action Icons: Search & Settings */}
+          <div className="flex items-center space-x-1.5 shrink-0">
+            {/* Search Button */}
+            <button
+              onClick={() => setShowSearchModal(true)}
+              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center space-x-1"
+              title="Kërko Suren apo Faqen"
+            >
+              <Search className="w-4 h-4 text-amber-400" />
+              <span className="hidden sm:inline font-medium text-xs">Kërko</span>
+            </button>
+
+            {/* Settings Button */}
             <button
               onClick={() => setShowSettingsModal(true)}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold transition-colors"
-              title="Rregullo cilësimet e leximit"
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center space-x-1.5"
+              title="Cilësimet"
             >
-              <Settings className="w-4 h-4" />
-              <span className="hidden xs:inline text-xs">Cilësimet</span>
+              <Settings className="w-4 h-4 text-slate-300" />
+              <span className="hidden sm:inline font-medium text-xs">Cilësimet</span>
             </button>
           </div>
         </div>
@@ -515,51 +563,280 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
         )}
       </div>
 
-      {/* ----------------- BOTTOM TRANSLUCENT CONTROLS OVERLAY ----------------- */}
+      {/* ----------------- BOTTOM CONTROLS FOOTER OVERLAY ----------------- */}
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed bottom-4 left-3 right-3 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/90 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
+          className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Previous Page Button */}
           <button
             onClick={handlePrevPage}
             disabled={currentPage <= 1 || loading}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all"
+            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium"
             title="Faqja e Mëparshme"
           >
             <ChevronLeft className="w-4 h-4" />
-            <span className="hidden xs:inline">Para</span>
+            <span>Para</span>
           </button>
 
-          {/* Page Counter */}
-          <div className="flex items-center space-x-2 font-mono text-xs">
-            <span className="font-bold text-amber-300">Faqja {currentPage}</span>
+          {/* Page Counter & Direct Jump */}
+          <button
+            onClick={() => setShowSearchModal(true)}
+            className="flex items-center space-x-2 font-mono text-xs px-3 py-1 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
+            title="Kliko për të kërkuar apo kërkuar faqen"
+          >
+            <span>Faqja {currentPage}</span>
             <span className="text-slate-500">/</span>
             <span className="text-slate-400">604</span>
-          </div>
+          </button>
 
           {/* Next Page Button */}
           <button
             onClick={handleNextPage}
             disabled={currentPage >= 604 || loading}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all"
+            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium"
             title="Faqja Tjetër"
           >
-            <span className="hidden xs:inline">Tjetra</span>
+            <span>Tjetra</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* ----------------- SETTINGS MODAL / DRAWER OVERLAY ----------------- */}
+      {/* ========================================================================= */}
+      {/* 1. SURAH SELECTION MODAL */}
+      {/* ========================================================================= */}
+      {showSurahModal && (
+        <div
+          onClick={() => setShowSurahModal(false)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden animate-fadeIn"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-4 sm:p-6 shadow-2xl flex flex-col max-h-[85vh]"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-slate-100">Lista e Sureve (114)</h3>
+                  <p className="text-[11px] text-slate-400">Zgjidh suren për të hapur faqen e saj në Mushaf</p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowSurahModal(false)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Search Input */}
+            <div className="relative mb-3">
+              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+              <input
+                type="text"
+                value={surahSearchTerm}
+                onChange={(e) => setSurahSearchTerm(e.target.value)}
+                placeholder="Kërko suren sipas emrit ose numrit..."
+                className="w-full bg-slate-950 border border-slate-800 text-xs text-slate-100 pl-9 pr-3 py-2.5 rounded-xl focus:border-amber-500 focus:outline-none"
+                autoFocus
+              />
+              {surahSearchTerm && (
+                <button
+                  onClick={() => setSurahSearchTerm('')}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Scrollable Surahs Grid/List */}
+            <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 divide-y divide-slate-800/50">
+              {filteredSurahs.map((s) => {
+                const startPage = SURAH_START_PAGES[s.number] || 1;
+                const isCurrentSurah = s.number === currentSurahNum;
+
+                return (
+                  <div
+                    key={s.number}
+                    onClick={() => {
+                      setCurrentPage(startPage);
+                      setShowSurahModal(false);
+                      setSurahSearchTerm('');
+                    }}
+                    className={`p-2.5 rounded-xl cursor-pointer transition-all flex items-center justify-between ${
+                      isCurrentSurah
+                        ? 'bg-amber-500/15 border border-amber-500/50 text-amber-300 font-bold'
+                        : 'hover:bg-slate-800/80 text-slate-200'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono text-xs ${
+                          isCurrentSurah
+                            ? 'bg-amber-500 text-slate-950 font-bold'
+                            : 'bg-slate-950 border border-slate-800 text-slate-400'
+                        }`}
+                      >
+                        {s.number}
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-slate-100">{s.transliteration}</h4>
+                        <p className="text-[10px] text-slate-400">
+                          {s.albanianName} • {s.numberOfAyahs} Ajete
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <span className="font-arabic text-sm text-amber-300 block">{s.name}</span>
+                      <span className="text-[10px] text-slate-400 font-mono">Faqja {startPage}</span>
+                    </div>
+                  </div>
+                );
+              })}
+              {filteredSurahs.length === 0 && (
+                <div className="text-center py-8 text-xs text-slate-500">
+                  Nuk u gjet asnjë sure me këtë kërkim.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 2. QUICK SEARCH / JUMP MODAL */}
+      {/* ========================================================================= */}
+      {showSearchModal && (
+        <div
+          onClick={() => setShowSearchModal(false)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden animate-fadeIn"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-5 shadow-2xl space-y-4"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center space-x-2">
+                <Search className="w-5 h-5 text-amber-400" />
+                <h3 className="font-bold text-sm text-slate-100">Kërko & Shko tek Faqja</h3>
+              </div>
+              <button
+                onClick={() => setShowSearchModal(false)}
+                className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Direct Page Number Input */}
+            <form onSubmit={handleQuickPageJump} className="space-y-2">
+              <label className="text-xs font-semibold text-slate-300 block">
+                Shkruaj numrin e faqes (1 deri 604):
+              </label>
+              <div className="flex space-x-2">
+                <input
+                  type="number"
+                  min={1}
+                  max={604}
+                  value={quickJumpInput}
+                  onChange={(e) => setQuickJumpInput(e.target.value)}
+                  placeholder="nr. 1 - 604"
+                  className="flex-1 bg-slate-950 border border-slate-800 text-xs text-slate-100 px-3 py-2.5 rounded-xl focus:border-amber-500 focus:outline-none font-mono"
+                  autoFocus
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-colors"
+                >
+                  Shko
+                </button>
+              </div>
+            </form>
+
+            {/* Quick Jump Shortcuts */}
+            <div className="space-y-2 pt-2 border-t border-slate-800">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+                Sugjerime të Shpejta:
+              </span>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <button
+                  onClick={() => {
+                    setCurrentPage(1);
+                    setShowSearchModal(false);
+                  }}
+                  className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 text-slate-300 text-left"
+                >
+                  <span className="font-bold block text-slate-100">1. Al-Fatihah</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Faqja 1</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setCurrentPage(2);
+                    setShowSearchModal(false);
+                  }}
+                  className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 text-slate-300 text-left"
+                >
+                  <span className="font-bold block text-slate-100">2. Al-Baqarah</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Faqja 2</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setCurrentPage(440);
+                    setShowSearchModal(false);
+                  }}
+                  className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 text-slate-300 text-left"
+                >
+                  <span className="font-bold block text-slate-100">36. Ya-Sin</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Faqja 440</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setCurrentPage(582);
+                    setShowSearchModal(false);
+                  }}
+                  className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 text-slate-300 text-left"
+                >
+                  <span className="font-bold block text-slate-100">Xhuzi 30 (Amme)</span>
+                  <span className="text-[10px] text-amber-400 font-mono">Faqja 582</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Open Full Surah List */}
+            <button
+              onClick={() => {
+                setShowSearchModal(false);
+                setShowSurahModal(true);
+              }}
+              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-colors flex items-center justify-center space-x-2"
+            >
+              <BookOpen className="w-4 h-4 text-amber-400" />
+              <span>Shfletoni të gjitha 114 Suret</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 3. SETTINGS MODAL / DRAWER OVERLAY */}
+      {/* ========================================================================= */}
       {showSettingsModal && (
         <div
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowSettingsModal(false);
-          }}
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fadeIn"
+          onClick={() => setShowSettingsModal(false)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -579,13 +856,13 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
               <button
                 onClick={() => setShowSettingsModal(false)}
-                className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* 1. Reading Mode Selector */}
+            {/* 1. Reading Mode Switcher */}
             <div className="space-y-2">
               <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
                 <Layers className="w-3.5 h-3.5 text-amber-400" />
@@ -611,7 +888,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                   className="p-3.5 rounded-2xl border bg-slate-950/80 border-slate-800 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 font-medium text-xs flex flex-col items-center justify-center space-y-1.5 transition-all"
                 >
                   <FileText className="w-5 h-5 text-emerald-400" />
-                  <span>Ajet për Ajet</span>
+                  <span>Varg pas Vargu</span>
                   <span className="text-[10px] font-normal text-slate-400">Përkthim & Audio</span>
                 </button>
               </div>
