@@ -588,24 +588,16 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           </button>
 
           {/* Page Counter & Direct Jump */}
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setShowNavigationModal(true)}
-              className="p-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-400 transition-colors"
-              title="Shko te Mushafi"
-            >
-              <Compass className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setShowSearchModal(true)}
-              className="flex items-center space-x-2 font-mono text-xs px-3 py-1 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
-              title="Kliko për të kërkuar apo kërkuar faqen"
-            >
-              <span>Faqja {currentPage}</span>
-              <span className="text-slate-500">/</span>
-              <span className="text-slate-400">604</span>
-            </button>
-          </div>
+          <button
+            onClick={() => setShowNavigationModal(true)}
+            className="flex items-center space-x-2 font-mono text-xs px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
+            title="Kliko për navigim"
+          >
+            <Compass className="w-4 h-4 text-amber-400" />
+            <span>Faqja {currentPage}</span>
+            <span className="text-slate-500">/</span>
+            <span className="text-slate-400">604</span>
+          </button>
 
           {/* Next Page Button */}
           <button
