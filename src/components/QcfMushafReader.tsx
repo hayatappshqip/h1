@@ -209,10 +209,17 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
   const [showSurahModal, setShowSurahModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+  const [showNavigationModal, setShowNavigationModal] = useState<boolean>(false);
 
   // Search & Filter State
   const [surahSearchTerm, setSurahSearchTerm] = useState<string>('');
   const [quickJumpInput, setQuickJumpInput] = useState<string>('');
+  
+  // Navigation Modal State
+  const [navTab, setNavTab] = useState<'faqe' | 'sure' | 'xhuz'>('faqe');
+  const [navFaqeInput, setNavFaqeInput] = useState<string>('');
+  const [navFaqeError, setNavFaqeError] = useState<string>('');
+  const [navSureSearch, setNavSureSearch] = useState<string>('');
 
   // Settings
   const [fontScale, setFontScale] = useState<number>(100); // 80..130%
@@ -581,15 +588,24 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           </button>
 
           {/* Page Counter & Direct Jump */}
-          <button
-            onClick={() => setShowSearchModal(true)}
-            className="flex items-center space-x-2 font-mono text-xs px-3 py-1 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
-            title="Kliko për të kërkuar apo kërkuar faqen"
-          >
-            <span>Faqja {currentPage}</span>
-            <span className="text-slate-500">/</span>
-            <span className="text-slate-400">604</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setShowNavigationModal(true)}
+              className="p-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-400 transition-colors"
+              title="Shko te Mushafi"
+            >
+              <Compass className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setShowSearchModal(true)}
+              className="flex items-center space-x-2 font-mono text-xs px-3 py-1 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
+              title="Kliko për të kërkuar apo kërkuar faqen"
+            >
+              <span>Faqja {currentPage}</span>
+              <span className="text-slate-500">/</span>
+              <span className="text-slate-400">604</span>
+            </button>
+          </div>
 
           {/* Next Page Button */}
           <button
@@ -1031,6 +1047,164 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 4. MUSHAF NAVIGATION MODAL */}
+      {/* ========================================================================= */}
+      {showNavigationModal && (
+        <div
+          onClick={() => setShowNavigationModal(false)}
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-6 overflow-hidden animate-fadeIn"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full sm:max-w-md bg-slate-900 border-t sm:border border-slate-800 text-slate-100 rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl flex flex-col max-h-[85vh] transition-transform transform translate-y-0"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div className="flex items-center space-x-2">
+                <Compass className="w-5 h-5 text-amber-400" />
+                <h3 className="font-bold text-sm text-slate-100">Shko te Mushafi</h3>
+              </div>
+              <button
+                onClick={() => setShowNavigationModal(false)}
+                className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex space-x-2 mb-4 bg-slate-950 p-1 rounded-xl">
+              <button
+                onClick={() => setNavTab('faqe')}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${navTab === 'faqe' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+              >
+                Faqe
+              </button>
+              <button
+                onClick={() => setNavTab('sure')}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${navTab === 'sure' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+              >
+                Sure
+              </button>
+              <button
+                onClick={() => setNavTab('xhuz')}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${navTab === 'xhuz' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+              >
+                Xhuz
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            <div className="flex-1 overflow-y-auto pr-1">
+              {navTab === 'faqe' && (
+                <div className="space-y-4 pt-2">
+                  <label className="text-xs font-semibold text-slate-300 block">
+                    Shkruaj numrin e faqes (1 - 604):
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={604}
+                    value={navFaqeInput}
+                    onChange={(e) => {
+                      setNavFaqeInput(e.target.value);
+                      setNavFaqeError('');
+                    }}
+                    placeholder="P.sh. 12"
+                    className="w-full bg-slate-950 border border-slate-800 text-sm text-slate-100 px-4 py-3 rounded-xl focus:border-amber-500 focus:outline-none font-mono"
+                  />
+                  {navFaqeError && <p className="text-xs text-rose-400">{navFaqeError}</p>}
+                  <button
+                    onClick={() => {
+                      const p = parseInt(navFaqeInput.trim(), 10);
+                      if (isNaN(p) || p < 1 || p > 604) {
+                        setNavFaqeError('Ju lutem shkruani një numër faqeje të vlefshëm nga 1 deri në 604.');
+                      } else {
+                        setCurrentPage(p);
+                        setShowNavigationModal(false);
+                      }
+                    }}
+                    className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-xl shadow-md transition-colors"
+                  >
+                    Hape faqen
+                  </button>
+                </div>
+              )}
+
+              {navTab === 'sure' && (
+                <div className="space-y-3 flex flex-col h-full">
+                  <div className="relative shrink-0">
+                    <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+                    <input
+                      type="text"
+                      value={navSureSearch}
+                      onChange={(e) => setNavSureSearch(e.target.value)}
+                      placeholder="Kërko suren..."
+                      className="w-full bg-slate-950 border border-slate-800 text-xs text-slate-100 pl-9 pr-3 py-2.5 rounded-xl focus:border-amber-500 focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex-1 overflow-y-auto space-y-1.5 divide-y divide-slate-800/50">
+                    {ALL_SURAHS_META.filter(s =>
+                      s.transliteration.toLowerCase().includes(navSureSearch.toLowerCase()) ||
+                      s.albanianName.toLowerCase().includes(navSureSearch.toLowerCase()) ||
+                      s.number.toString() === navSureSearch.trim()
+                    ).map(s => (
+                      <button
+                        key={s.number}
+                        onClick={() => {
+                          setCurrentPage(SURAH_START_PAGES[s.number] || 1);
+                          setShowNavigationModal(false);
+                        }}
+                        className="w-full text-left p-2.5 rounded-xl hover:bg-slate-800/80 text-slate-200 transition-all flex items-center justify-between"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center font-mono text-xs text-slate-400">
+                            {s.number}
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-bold text-slate-100">{s.transliteration}</h4>
+                            <p className="text-[10px] text-slate-400">{s.albanianName}</p>
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-amber-400 font-mono">Faqja {SURAH_START_PAGES[s.number]}</div>
+                      </button>
+                    ))}
+                    {ALL_SURAHS_META.filter(s =>
+                      s.transliteration.toLowerCase().includes(navSureSearch.toLowerCase()) ||
+                      s.albanianName.toLowerCase().includes(navSureSearch.toLowerCase()) ||
+                      s.number.toString() === navSureSearch.trim()
+                    ).length === 0 && (
+                      <div className="text-center py-6 text-xs text-slate-500">
+                        Nuk u gjet asnjë sure.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {navTab === 'xhuz' && (
+                <div className="grid grid-cols-3 gap-2 pb-2">
+                  {Array.from({ length: 30 }, (_, i) => i + 1).map(j => (
+                    <button
+                      key={j}
+                      onClick={() => {
+                        setCurrentPage(JUZ_START_PAGES[j] || 1);
+                        setShowNavigationModal(false);
+                      }}
+                      className="p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 flex flex-col items-center justify-center space-y-1 transition-colors"
+                    >
+                      <span className="font-bold text-xs text-slate-100">Xhuzi {j}</span>
+                      <span className="text-[10px] text-amber-400 font-mono">Faqja {JUZ_START_PAGES[j]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
