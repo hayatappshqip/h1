@@ -115,26 +115,52 @@ const PAPER_THEMES: Record<string, ThemeConfig> = {
 };
 
 /**
- * Utility to dynamically inject @font-face for QCF V2 page fonts (1 to 604)
+ * Utility to dynamically load QCF V2 page fonts (1 to 604)
+ * Uses official Quran Foundation URL format:
+ * https://verses.quran.foundation/fonts/quran/hafs/v2/woff2/p{PAGE}.woff2
  */
-function loadQcfFontForPage(page: number): string {
+async function loadQcfFontForPage(page: number): Promise<string> {
   const fontFamilyName = `QCF_P${page}`;
-  const fontId = `qcf-v2-font-style-p${page}`;
+  const fontUrl = `https://verses.quran.foundation/fonts/quran/hafs/v2/woff2/p${page}.woff2`;
 
+  const fontId = `qcf-v2-font-style-p${page}`;
   if (!document.getElementById(fontId)) {
     const styleEl = document.createElement('style');
     styleEl.id = fontId;
     styleEl.textContent = `
       @font-face {
         font-family: '${fontFamilyName}';
-        src: url('https://cdn.qurancdn.com/fonts/quran/hafs/v2/woff2/p${page}.woff2') format('woff2'),
-             url('https://fonts.quran.com/v2/p${page}.woff2') format('woff2');
+        src: url('${fontUrl}') format('woff2');
         font-weight: normal;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
       }
     `;
     document.head.appendChild(styleEl);
+  }
+
+  if ('fonts' in document) {
+    const isAlreadyLoaded = Array.from(document.fonts).some(
+      (font) => font.family === fontFamilyName && font.status === 'loaded'
+    );
+    if (isAlreadyLoaded) {
+      return fontFamilyName;
+    }
+
+    try {
+      if ('FontFace' in window) {
+        const fontFace = new FontFace(fontFamilyName, `url('${fontUrl}')`, {
+          display: 'block',
+        });
+        const loadedFace = await fontFace.load();
+        document.fonts.add(loadedFace);
+      } else {
+        await document.fonts.load(`16px "${fontFamilyName}"`);
+      }
+    } catch (err) {
+      console.error(`Error loading QCF font for page ${page}:`, err);
+      throw new Error(`Dështoi ngarkimi i shkrimit QCF për faqen ${page}. Ju lutem provoni përsëri.`);
+    }
   }
 
   return fontFamilyName;
@@ -192,21 +218,19 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentPage, isSpread]);
 
-  // Fetch Page Data (Single or Spread)
+  // Fetch Page Data & Font (Single or Spread)
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
     setErrorMessage(null);
 
-    const primaryFont = loadQcfFontForPage(currentPage);
-    setFontFamily(primaryFont);
-
-    // If 2-page spread mode is active, fetch second page (e.g. currentPage + 1)
     const secondPageNum = currentPage < 604 ? currentPage + 1 : null;
-    if (isSpread && secondPageNum) {
-      const secFont = loadQcfFontForPage(secondPageNum);
-      setSecondFontFamily(secFont);
-    }
+
+    const primaryFontPromise = loadQcfFontForPage(currentPage);
+    const secondaryFontPromise =
+      isSpread && secondPageNum
+        ? loadQcfFontForPage(secondPageNum)
+        : Promise.resolve('');
 
     const fetchPrimary = fetch(`/.netlify/functions/quran-page?page=${currentPage}`).then((res) =>
       res.json()
@@ -217,11 +241,13 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
         ? fetch(`/.netlify/functions/quran-page?page=${secondPageNum}`).then((res) => res.json())
         : Promise.resolve(null);
 
-    Promise.all([fetchPrimary, fetchSecondary])
-      .then(([p1Data, p2Data]) => {
+    Promise.all([primaryFontPromise, secondaryFontPromise, fetchPrimary, fetchSecondary])
+      .then(([pFont, sFont, p1Data, p2Data]) => {
         if (!isMounted) return;
         if (p1Data && p1Data.error) throw new Error(p1Data.error);
 
+        setFontFamily(pFont);
+        if (sFont) setSecondFontFamily(sFont);
         setPageData(p1Data);
         setSecondPageData(p2Data);
         setLoading(false);
@@ -230,7 +256,9 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       })
       .catch((err: any) => {
         if (!isMounted) return;
-        setErrorMessage(err.message || 'Pati një gabim gjatë lidhjes me shërbimin e Kuranit.');
+        setErrorMessage(
+          err.message || `Dështoi ngarkimi i shkrimit QCF për faqen ${currentPage}. Ju lutem provoni përsëri.`
+        );
         setLoading(false);
       });
 
@@ -452,7 +480,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           <div className={`p-8 rounded-3xl border text-center space-y-3 shadow-lg ${activeTheme.paperBg} ${activeTheme.paperBorder}`}>
             <RefreshCw className={`w-7 h-7 animate-spin mx-auto ${activeTheme.textColor}`} />
             <p className={`text-xs font-medium ${activeTheme.subtextColor}`}>
-              Duke ngarkuar faqen {currentPage}...
+              Duke ngarkuar shkrimin QCF për faqen {currentPage}...
             </p>
           </div>
         ) : errorMessage ? (
