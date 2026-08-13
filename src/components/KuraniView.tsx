@@ -2116,7 +2116,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  )}
  </div>
  ) : activeTab === 'mushaf_qcf' ? (
- <QcfMushafReader />
+ <QcfMushafReader onBack={() => setActiveTab('surahs')} />
  ) : activeTab === 'cards_backup' ? (
  <KuraniCardsBackup
  readingState={readingState}
