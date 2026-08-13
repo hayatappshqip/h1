@@ -402,6 +402,8 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     if (!data || !Array.isArray(data.verses)) return null;
 
     const linesMap: { [lineNumber: number]: CleanWord[] } = {};
+    const headersMap: { [lineNumber: number]: { type: 'surah' | 'bismillah', surahId?: number, surahName?: string } } = {};
+
     data.verses.forEach((verse) => {
       if (Array.isArray(verse.words)) {
         verse.words.forEach((word) => {
@@ -409,12 +411,35 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           if (!linesMap[lNum]) linesMap[lNum] = [];
           linesMap[lNum].push(word);
         });
+
+        // Inject missing Surah Headers and Bismillahs
+        if (verse.verse_number === 1) {
+          const firstWordLine = verse.words[0]?.line_number || 1;
+          const surahMeta = ALL_SURAHS_META.find(s => s.number === verse.chapter_id);
+          const surahName = surahMeta?.albanianName || `Surja ${verse.chapter_id}`;
+          
+          if (verse.chapter_id === 1) {
+            // Al-Fatiha: Bismillah is verse 1. Header is just above it.
+            headersMap[firstWordLine - 1] = { type: 'surah', surahId: 1, surahName };
+          } else if (verse.chapter_id === 9) {
+            // At-Tawbah: No Bismillah. Header is just above it.
+            headersMap[firstWordLine - 1] = { type: 'surah', surahId: 9, surahName };
+          } else {
+            // All other Surahs: Header is 2 lines above, Bismillah is 1 line above.
+            headersMap[firstWordLine - 2] = { type: 'surah', surahId: verse.chapter_id, surahName };
+            headersMap[firstWordLine - 1] = { type: 'bismillah' };
+          }
+        }
       }
     });
 
-    const sortedLineNumbers = Object.keys(linesMap)
-      .map((n) => parseInt(n, 10))
-      .sort((a, b) => a - b);
+    // Determine the max line, fallback to 15 (standard QCF page length)
+    const maxLine = Math.max(
+      15, 
+      ...Object.keys(linesMap).map(n => parseInt(n, 10)), 
+      ...Object.keys(headersMap).map(n => parseInt(n, 10))
+    );
+    const sortedLineNumbers = Array.from({ length: maxLine }, (_, i) => i + 1);
 
     const firstVerse = data.verses[0];
     const juzNum = firstVerse?.juz_number || 1;
@@ -434,7 +459,38 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           }}
         >
           {sortedLineNumbers.map((lineNum) => {
+            // Check for injected headers first
+            const header = headersMap[lineNum];
+            if (header) {
+              if (header.type === 'surah') {
+                return (
+                  <div key={`header-${lineNum}`} className={`flex items-center justify-center w-full my-1.5 h-10 sm:h-12 border rounded-lg sm:rounded-xl relative overflow-hidden bg-black/5 dark:bg-white/5 ${activeTheme.paperBorder}`}>
+                    <span className={`font-bold text-sm sm:text-base z-10 tracking-widest uppercase ${activeTheme.textColor}`}>
+                       {header.surahName}
+                    </span>
+                  </div>
+                );
+              } else if (header.type === 'bismillah') {
+                return (
+                  <div key={`bsml-${lineNum}`} className="flex items-center justify-center w-full my-1 sm:my-1.5">
+                     <span 
+                       className={`text-xl sm:text-2xl md:text-3xl opacity-90 ${activeTheme.textColor}`}
+                       style={{ fontFamily: "'Amiri', 'Traditional Arabic', 'Arabic Typesetting', serif" }}
+                     >
+                        بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+                     </span>
+                  </div>
+                );
+              }
+            }
+
             const words = linesMap[lineNum] || [];
+            
+            // Render spacer if line is empty (no words, no header)
+            if (words.length === 0) {
+                return <div key={`empty-${lineNum}`} className="w-full h-4 sm:h-6" />;
+            }
+
             return (
               <div
                 key={lineNum}
