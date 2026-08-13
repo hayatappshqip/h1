@@ -4,11 +4,10 @@
  * Requirements:
  * - Uses endpoint: /.netlify/functions/quran-page?page=N (1 to 604)
  * - Renders code_v2 glyphs strictly with dynamically loaded QCF_P{page} font family
- * - NEVER uses KFGQPC Uthmanic Script, UthmanicHafs1Ver18, .font-arabic, .quran-arabic, .quran-word, or .quran-verse for code_v2
  * - Uses isolated container class: .qcf-mushaf-page
  * - Controls hidden by default; single tap toggles lightweight translucent overlay
  * - Touch swipe left/right changes pages without accidentally toggling controls
- * - Supports Paper themes (Ivory, Sepia, White, Dark) and optional 2-Page Spread
+ * - Supports Paper themes (Ivory, Sepia, White, Dark), font scaling, Tajweed toggle, and mode switcher
  */
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -18,12 +17,21 @@ import {
   AlertCircle,
   RefreshCw,
   X,
-  Maximize2,
-  Minimize2,
-  SlidersHorizontal,
-  Sun,
-  Moon
+  Sliders,
+  Settings,
+  Type,
+  Sparkles,
+  Layers,
+  Palette,
+  Search,
+  FileText
 } from 'lucide-react';
+import {
+  ALL_SURAHS_META,
+  SURAH_START_PAGES,
+  JUZ_START_PAGES,
+  getSurahNumberFromPage
+} from '../data/quranData';
 
 interface CleanWord {
   position: number;
@@ -116,8 +124,6 @@ const PAPER_THEMES: Record<string, ThemeConfig> = {
 
 /**
  * Utility to dynamically load QCF V2 page fonts (1 to 604)
- * Uses official Quran Foundation URL format:
- * https://verses.quran.foundation/fonts/quran/hafs/v2/woff2/p{PAGE}.woff2
  */
 async function loadQcfFontForPage(page: number): Promise<string> {
   const fontFamilyName = `QCF_P${page}`;
@@ -168,25 +174,37 @@ async function loadQcfFontForPage(page: number): Promise<string> {
 
 interface QcfMushafReaderProps {
   initialPage?: number;
+  initialSurahNum?: number;
   onPageChange?: (page: number) => void;
   onBack?: () => void;
+  onSwitchToVerseByVerse?: (surahNum: number) => void;
+  showTajweed?: boolean;
+  onToggleTajweed?: () => void;
 }
 
 export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
-  initialPage = 1,
+  initialPage,
+  initialSurahNum,
   onPageChange,
   onBack,
+  onSwitchToVerseByVerse,
+  showTajweed = false,
+  onToggleTajweed
 }) => {
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+  const startPage = initialPage || (initialSurahNum ? (SURAH_START_PAGES[initialSurahNum] || 1) : 1);
+  const [currentPage, setCurrentPage] = useState<number>(startPage);
   const [pageData, setPageData] = useState<QuranPageData | null>(null);
   const [secondPageData, setSecondPageData] = useState<QuranPageData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [fontFamily, setFontFamily] = useState<string>(`QCF_P${initialPage}`);
+  const [fontFamily, setFontFamily] = useState<string>(`QCF_P${startPage}`);
   const [secondFontFamily, setSecondFontFamily] = useState<string>('');
 
   // Reader UI States
   const [showControls, setShowControls] = useState<boolean>(false);
+  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+  const [fontScale, setFontScale] = useState<number>(100); // 80..130%
+  const [isTajweedActive, setIsTajweedActive] = useState<boolean>(showTajweed);
   const [selectedThemeKey, setSelectedThemeKey] = useState<string>(() => {
     return localStorage.getItem('hayat_mushaf_theme') || 'ivory';
   });
@@ -197,6 +215,19 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
   const activeTheme = PAPER_THEMES[selectedThemeKey] || PAPER_THEMES.ivory;
 
+  // Sync initialSurahNum / initialPage changes from parent
+  useEffect(() => {
+    if (initialPage) {
+      setCurrentPage(initialPage);
+    } else if (initialSurahNum && SURAH_START_PAGES[initialSurahNum]) {
+      setCurrentPage(SURAH_START_PAGES[initialSurahNum]);
+    }
+  }, [initialPage, initialSurahNum]);
+
+  // Derive current surah metadata from page
+  const currentSurahNum = getSurahNumberFromPage(currentPage);
+  const currentSurahMeta = ALL_SURAHS_META.find((s) => s.number === currentSurahNum);
+
   // Persist theme choice
   const handleSelectTheme = (themeKey: string) => {
     setSelectedThemeKey(themeKey);
@@ -206,6 +237,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (showSettingsModal) return;
       if (e.key === 'ArrowLeft') {
         handleNextPage();
       } else if (e.key === 'ArrowRight') {
@@ -216,7 +248,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage, isSpread]);
+  }, [currentPage, isSpread, showSettingsModal]);
 
   // Fetch Page Data & Font (Single or Spread)
   useEffect(() => {
@@ -306,26 +338,21 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
     touchStartRef.current = null;
 
-    // Swipe threshold: >40px horizontally, duration <600ms, predominantly horizontal
     if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && duration < 600) {
       if (deltaX < 0) {
-        // Swiped left -> Next page
         handleNextPage();
       } else {
-        // Swiped right -> Previous page
         handlePrevPage();
       }
       return;
     }
 
-    // Tap threshold: <10px movement, <350ms duration
     if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && duration < 350) {
       setShowControls((prev) => !prev);
     }
   };
 
-  const handleCanvasClick = (e: React.MouseEvent) => {
-    // Only toggle if clicked directly on the canvas background/wrapper
+  const handleCanvasClick = () => {
     setShowControls((prev) => !prev);
   };
 
@@ -356,11 +383,15 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       <div
         className={`w-full h-full flex flex-col justify-between p-3 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border shadow-xl relative overflow-hidden select-none transition-colors duration-300 ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
       >
-        {/* Subtle inner page frame */}
         <div className={`absolute inset-2 border rounded-xl pointer-events-none opacity-40 ${activeTheme.paperBorder}`} />
 
-        {/* ISOLATED MUSHAF PAGE CONTAINER: .qcf-mushaf-page */}
-        <div className="qcf-mushaf-page my-auto space-y-1 sm:space-y-1.5 py-1">
+        {/* ISOLATED MUSHAF PAGE CONTAINER */}
+        <div
+          className="qcf-mushaf-page my-auto space-y-1 sm:space-y-1.5 py-1 transition-all duration-200"
+          style={{
+            fontSize: fontScale !== 100 ? `${fontScale}%` : undefined
+          }}
+        >
           {sortedLineNumbers.map((lineNum) => {
             const words = linesMap[lineNum] || [];
             return (
@@ -372,7 +403,9 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                 {words.map((w, wIdx) => (
                   <span
                     key={`${w.code_v2}-${wIdx}`}
-                    className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.9rem] md:text-[2.2rem] lg:text-[2.5rem] text-center inline-block transition-colors ${activeTheme.textColor} ${activeTheme.hoverColor}`}
+                    className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.9rem] md:text-[2.2rem] lg:text-[2.5rem] text-center inline-block transition-colors ${
+                      isTajweedActive ? 'hover:text-emerald-600' : ''
+                    } ${activeTheme.textColor} ${activeTheme.hoverColor}`}
                     style={{
                       fontFamily: `'${fontName}'`,
                     }}
@@ -385,7 +418,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           })}
         </div>
 
-        {/* Minimal Physical Page Footer Marker */}
+        {/* Physical Page Footer Marker */}
         <div className={`pt-3 mt-2 border-t flex justify-between items-center text-[10px] sm:text-[11px] font-mono opacity-80 ${activeTheme.spineColor} ${activeTheme.subtextColor}`}>
           <span>Xhuz {juzNum}</span>
           <span className="font-bold">Faqja {pNum}</span>
@@ -406,7 +439,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed top-3 left-3 right-3 sm:top-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl z-50 bg-slate-950/85 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-2xl p-2.5 sm:px-4 sm:py-3 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
+          className="fixed top-3 left-3 right-3 sm:top-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl z-50 bg-slate-950/90 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-2xl p-2.5 sm:px-4 sm:py-3 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Back Button */}
           <button
@@ -417,58 +450,29 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/60 text-slate-200 transition-colors"
             title="Kthehu te Kur'ani"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4 text-emerald-400" />
             <span className="font-medium hidden xs:inline">Kur'ani</span>
           </button>
 
-          {/* Page Jumper Selector */}
-          <div className="flex items-center space-x-2 font-mono">
-            <span className="text-slate-400 text-[11px]">Faqja</span>
-            <select
-              value={currentPage}
-              onChange={(e) => setCurrentPage(parseInt(e.target.value, 10))}
-              disabled={loading}
-              className="bg-slate-900 border border-slate-700 text-amber-300 text-xs font-bold rounded-xl px-2.5 py-1 focus:outline-none focus:border-amber-500"
-            >
-              {Array.from({ length: 604 }, (_, i) => i + 1).map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-            <span className="text-slate-400 text-[11px]">/ 604</span>
+          {/* Current Surah Title & Page Indicator */}
+          <div className="flex items-center space-x-1.5 font-medium text-amber-300">
+            <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="font-bold text-slate-100 truncate max-w-[120px] xs:max-w-[180px]">
+              {currentSurahMeta?.transliteration || `Surja ${currentSurahNum}`}
+            </span>
+            <span className="text-slate-500">•</span>
+            <span className="font-mono text-[11px] text-amber-300">Faqja {currentPage}/604</span>
           </div>
 
-          {/* Theme Selector & Optional Book Spread Toggle */}
+          {/* Right Header Actions: Settings Drawer Toggle */}
           <div className="flex items-center space-x-1.5">
-            {/* Paper Theme Dots */}
-            <div className="flex items-center bg-slate-900/80 p-1 rounded-xl border border-slate-800 space-x-1">
-              {Object.values(PAPER_THEMES).map((th) => (
-                <button
-                  key={th.id}
-                  onClick={() => handleSelectTheme(th.id)}
-                  className={`w-5 h-5 rounded-full border transition-all ${
-                    selectedThemeKey === th.id
-                      ? 'scale-110 ring-2 ring-amber-400 border-white'
-                      : 'opacity-70 hover:opacity-100 border-transparent'
-                  } ${th.paperBg}`}
-                  title={`Tema: ${th.name}`}
-                />
-              ))}
-            </div>
-
-            {/* Book Spread Toggle (visible on tablet/desktop) */}
             <button
-              onClick={() => setIsSpread(!isSpread)}
-              className={`hidden sm:flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
-                isSpread
-                  ? 'bg-amber-600 border-amber-500 text-slate-950 font-bold'
-                  : 'bg-slate-900 border-slate-700/60 text-slate-300 hover:bg-slate-800'
-              }`}
-              title={isSpread ? 'Kaloni në 1 Faqe' : 'Kaloni në 2 Faqe (Libër)'}
+              onClick={() => setShowSettingsModal(true)}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold transition-colors"
+              title="Rregullo cilësimet e leximit"
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>{isSpread ? '2 Faqe' : '1 Faqe'}</span>
+              <Settings className="w-4 h-4" />
+              <span className="hidden xs:inline text-xs">Cilësimet</span>
             </button>
           </div>
         </div>
@@ -496,7 +500,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center gap-3 md:gap-6">
-            {/* If 2-page spread is active, render second page on the left */}
+            {/* 2-page spread */}
             {isSpread && secondPageData && (
               <div className="flex-1 h-full max-w-lg hidden sm:block">
                 {renderPageLines(secondPageData, secondFontFamily, currentPage + 1)}
@@ -515,7 +519,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed bottom-4 left-3 right-3 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/85 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
+          className="fixed bottom-4 left-3 right-3 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/90 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-300 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Previous Page Button */}
           <button
@@ -528,7 +532,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             <span className="hidden xs:inline">Para</span>
           </button>
 
-          {/* Page Counter & Quick Slider */}
+          {/* Page Counter */}
           <div className="flex items-center space-x-2 font-mono text-xs">
             <span className="font-bold text-amber-300">Faqja {currentPage}</span>
             <span className="text-slate-500">/</span>
@@ -545,6 +549,213 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             <span className="hidden xs:inline">Tjetra</span>
             <ChevronRight className="w-4 h-4" />
           </button>
+        </div>
+      )}
+
+      {/* ----------------- SETTINGS MODAL / DRAWER OVERLAY ----------------- */}
+      {showSettingsModal && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowSettingsModal(false);
+          }}
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fadeIn"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5 my-auto max-h-[90vh] overflow-y-auto"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center">
+                  <Sliders className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-slate-100">Cilësimet e Leximit</h3>
+                  <p className="text-[11px] text-slate-400">Personalizo Mushafin dhe leximin tënd</p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* 1. Reading Mode Selector */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+                <Layers className="w-3.5 h-3.5 text-amber-400" />
+                <span>Mënyra e Leximit</span>
+              </label>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  onClick={() => setShowSettingsModal(false)}
+                  className="p-3.5 rounded-2xl border bg-amber-500/10 border-amber-500/60 text-amber-300 font-bold text-xs flex flex-col items-center justify-center space-y-1.5 shadow-sm"
+                >
+                  <BookOpen className="w-5 h-5 text-amber-400" />
+                  <span>Faqe Mushafi (QCF V2)</span>
+                  <span className="text-[10px] font-normal text-amber-400/80">Format Fizik</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowSettingsModal(false);
+                    if (onSwitchToVerseByVerse) {
+                      onSwitchToVerseByVerse(currentSurahNum);
+                    }
+                  }}
+                  className="p-3.5 rounded-2xl border bg-slate-950/80 border-slate-800 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 font-medium text-xs flex flex-col items-center justify-center space-y-1.5 transition-all"
+                >
+                  <FileText className="w-5 h-5 text-emerald-400" />
+                  <span>Ajet për Ajet</span>
+                  <span className="text-[10px] font-normal text-slate-400">Përkthim & Audio</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Font Size Scaling */}
+            <div className="space-y-2 pt-2 border-t border-slate-800">
+              <div className="flex justify-between items-center">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+                  <Type className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Madhësia e Shkrimit</span>
+                </label>
+                <span className="text-xs font-mono text-amber-300 font-bold">{fontScale}%</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                {[80, 90, 100, 115, 130].map((sc) => (
+                  <button
+                    key={sc}
+                    onClick={() => setFontScale(sc)}
+                    className={`flex-1 py-2 rounded-xl border text-xs font-semibold transition-all ${
+                      fontScale === sc
+                        ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-sm'
+                        : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'
+                    }`}
+                  >
+                    {sc === 100 ? 'Normale' : `${sc}%`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 3. Tajweed Rules Toggle */}
+            <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+              <div>
+                <label className="text-xs font-bold text-slate-200 flex items-center space-x-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Rregullat e Texhvidit</span>
+                </label>
+                <p className="text-[10px] text-slate-400">Ngjyrosje për rregullat e leximit të Kuranit</p>
+              </div>
+              <button
+                onClick={() => {
+                  const nextState = !isTajweedActive;
+                  setIsTajweedActive(nextState);
+                  if (onToggleTajweed) onToggleTajweed();
+                }}
+                className={`w-12 h-6.5 rounded-full p-1 transition-colors flex items-center ${
+                  isTajweedActive ? 'bg-emerald-600 justify-end' : 'bg-slate-800 justify-start'
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
+              </button>
+            </div>
+
+            {/* 4. Paper Theme Selector */}
+            <div className="space-y-2 pt-2 border-t border-slate-800">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+                <Palette className="w-3.5 h-3.5 text-amber-400" />
+                <span>Tema e Letrës</span>
+              </label>
+              <div className="grid grid-cols-4 gap-2">
+                {Object.values(PAPER_THEMES).map((th) => (
+                  <button
+                    key={th.id}
+                    onClick={() => handleSelectTheme(th.id)}
+                    className={`p-2.5 rounded-2xl border flex flex-col items-center space-y-1.5 transition-all ${
+                      selectedThemeKey === th.id
+                        ? 'border-amber-400 ring-2 ring-amber-400/40 bg-slate-800/90'
+                        : 'border-slate-800 bg-slate-950/60 hover:bg-slate-800'
+                    }`}
+                  >
+                    <span className={`w-6 h-6 rounded-full border shadow-sm ${th.paperBg}`} />
+                    <span className="text-[10px] text-slate-300 font-semibold">{th.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 5. 2-Page Book Spread */}
+            <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+              <div>
+                <label className="text-xs font-bold text-slate-200 flex items-center space-x-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Format Libri (2 Faqe)</span>
+                </label>
+                <p className="text-[10px] text-slate-400">Shfaq dy faqe përballe (Për ekran më të madh)</p>
+              </div>
+              <button
+                onClick={() => setIsSpread(!isSpread)}
+                className={`w-12 h-6.5 rounded-full p-1 transition-colors flex items-center ${
+                  isSpread ? 'bg-amber-600 justify-end' : 'bg-slate-800 justify-start'
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
+              </button>
+            </div>
+
+            {/* 6. Quick Navigation Dropdowns */}
+            <div className="space-y-2.5 pt-2 border-t border-slate-800">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+                <Search className="w-3.5 h-3.5 text-amber-400" />
+                <span>Navigim i Shpejtë</span>
+              </label>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <span className="text-[10px] text-slate-400 font-mono">Zgjidh Suren:</span>
+                  <select
+                    value={currentSurahNum}
+                    onChange={(e) => {
+                      const sNum = parseInt(e.target.value, 10);
+                      const p = SURAH_START_PAGES[sNum] || 1;
+                      setCurrentPage(p);
+                    }}
+                    className="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-200 rounded-xl p-2.5 focus:border-amber-500 focus:outline-none"
+                  >
+                    {ALL_SURAHS_META.map((s) => (
+                      <option key={s.number} value={s.number}>
+                        {s.number}. {s.transliteration} ({s.albanianName})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] text-slate-400 font-mono">Zgjidh Xhuzin:</span>
+                  <select
+                    onChange={(e) => {
+                      const jNum = parseInt(e.target.value, 10);
+                      const p = JUZ_START_PAGES[jNum] || 1;
+                      setCurrentPage(p);
+                    }}
+                    className="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-200 rounded-xl p-2.5 focus:border-amber-500 focus:outline-none"
+                  >
+                    {Array.from({ length: 30 }, (_, i) => i + 1).map((j) => (
+                      <option key={j} value={j}>
+                        Xhuzi {j} (Faqja {JUZ_START_PAGES[j]})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

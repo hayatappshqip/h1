@@ -358,6 +358,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  onDeleteNote
 }) => {
  const [selectedSurahNum, setSelectedSurahNum] = useState<number | null>(initialSurahNumber || null);
+ const [mushafSurahNum, setMushafSurahNum] = useState<number | null>(initialSurahNumber || null);
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
@@ -870,6 +871,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  
  {/* Reader Sticky Header Bar */}
  <div className={`p-3 rounded-xl border flex items-center justify-between sticky top-14 z-30 backdrop-blur shadow-md transition-colors ${currentTheme.headerBg} ${currentTheme.headerBorder}`}>
+ <div className="flex items-center space-x-2">
  <button
  id="btn-back-surahs"
  onClick={() => {
@@ -885,6 +887,23 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  <ChevronLeft className="w-4 h-4" />
  <span>Surjet</span>
  </button>
+
+ {selectedSurahNum && (
+ <button
+ onClick={() => {
+ const sNum = selectedSurahNum;
+ setSelectedSurahNum(null);
+ setMushafSurahNum(sNum);
+ setActiveTab('mushaf_qcf');
+ }}
+ className="text-xs font-semibold flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 transition-colors"
+ title="Kaloni në formatin faqe Mushafi"
+ >
+ <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+ <span className="hidden xs:inline">Faqe Mushafi</span>
+ </button>
+ )}
+ </div>
 
  {surahData && (
  <div className="text-center px-1">
@@ -1884,24 +1903,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
       </div>
 
       {/* 2. Grid of Quick Feature Menu Boxes */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-        {/* Mus'hafi QCF (Faqe) */}
-        <div
-          onClick={() => setActiveTab('mushaf_qcf')}
-          className="bg-slate-900/90 hover:bg-slate-850 border border-amber-500/30 hover:border-amber-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
-        >
-          <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-amber-950/60 border border-amber-700/50 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-              <BookOpen className="w-4 h-4" />
-            </div>
-            <span className="text-[10px] font-mono text-amber-400/80 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-800/40">QCF V2</span>
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-slate-100 group-hover:text-amber-300 transition-colors">Mus'hafi (Faqe)</h4>
-            <p className="text-[10px] text-slate-400 truncate">Format origjinal faqe</p>
-          </div>
-        </div>
-
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         {/* Planifikuesi i Hatmes */}
         <div
           onClick={() => setActiveTab('khatam')}
@@ -1969,23 +1971,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
             <p className="text-[10px] text-slate-400 truncate">Ruajtjet & shënimet</p>
           </div>
         </div>
-
-        {/* Kartelat (Backup) */}
-        <div
-          onClick={() => setActiveTab('cards_backup')}
-          className="bg-slate-900/90 hover:bg-slate-850 border border-cyan-500/30 hover:border-cyan-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
-        >
-          <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-700/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-              <Layers className="w-4 h-4" />
-            </div>
-            <span className="text-[10px] font-mono text-cyan-400/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-800/40">Shqip</span>
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">Kartelat (Backup)</h4>
-            <p className="text-[10px] text-slate-400 truncate">Ajetet me përkthim</p>
-          </div>
-        </div>
       </div>
 
       {/* Section Divider Header for 114 Surahs */}
@@ -2029,7 +2014,10 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  <div
  key={surah.number}
  id={`surah-card-${surah.number}`}
- onClick={() => setSelectedSurahNum(surah.number)}
+ onClick={() => {
+ setMushafSurahNum(surah.number);
+ setActiveTab('mushaf_qcf');
+ }}
  className="bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-emerald-700/50 p-3.5 rounded-xl cursor-pointer transition-all flex items-center justify-between shadow-sm"
  >
  <div className="flex items-center space-x-3">
@@ -2143,7 +2131,14 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  )}
  </div>
  ) : activeTab === 'mushaf_qcf' ? (
- <QcfMushafReader onBack={() => setActiveTab('surahs')} />
+ <QcfMushafReader
+ initialSurahNum={mushafSurahNum || 1}
+ onBack={() => setActiveTab('surahs')}
+ onSwitchToVerseByVerse={(surahNum) => {
+ setSelectedSurahNum(surahNum);
+ setActiveTab('surahs');
+ }}
+ />
  ) : activeTab === 'cards_backup' ? (
  <KuraniCardsBackup
  readingState={readingState}
