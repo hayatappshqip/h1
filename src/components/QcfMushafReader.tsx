@@ -360,19 +360,19 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
         <div className={`absolute inset-2 border rounded-xl pointer-events-none opacity-40 ${activeTheme.paperBorder}`} />
 
         {/* ISOLATED MUSHAF PAGE CONTAINER: .qcf-mushaf-page */}
-        <div className="qcf-mushaf-page my-auto space-y-1 sm:space-y-2 py-1">
+        <div className="qcf-mushaf-page my-auto space-y-1 sm:space-y-1.5 py-1">
           {sortedLineNumbers.map((lineNum) => {
             const words = linesMap[lineNum] || [];
             return (
               <div
                 key={lineNum}
-                className="flex items-center justify-between w-full my-0.5 leading-none"
+                className="flex items-center justify-center flex-wrap w-full my-0.5 leading-none gap-x-1 sm:gap-x-1.5"
                 dir="rtl"
               >
                 {words.map((w, wIdx) => (
                   <span
                     key={`${w.code_v2}-${wIdx}`}
-                    className={`qcf-v2-word text-[1.4rem] xs:text-[1.7rem] sm:text-3xl md:text-4xl text-center inline-block px-0.5 transition-colors ${activeTheme.textColor} ${activeTheme.hoverColor}`}
+                    className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.9rem] md:text-[2.2rem] lg:text-[2.5rem] text-center inline-block transition-colors ${activeTheme.textColor} ${activeTheme.hoverColor}`}
                     style={{
                       fontFamily: `'${fontName}'`,
                     }}
