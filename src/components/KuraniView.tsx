@@ -361,7 +361,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
- const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'mushaf_qcf');
+ const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(null);
 
  // Reading Settings state (Persisted in localStorage)
@@ -1731,9 +1731,9 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  ) : (
  /* Surahs Directory View */
  <div className="space-y-4">
- {/* Sub Navigation */}
+ {/* Search Section Top Anchor */}
  <div className="space-y-3">
- {/* Big Top Search Bar */}
+ {/* Search Input Container */}
  <div className="relative">
  <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
  <input
@@ -1753,130 +1753,22 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  }}
  placeholder="Kërko sure, ajet, fjalë ose frazë..."
  className="w-full bg-slate-900 border border-slate-800 focus:border-emerald-500 rounded-xl pl-10 pr-10 py-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors shadow-sm font-medium"
- aria-label="Kërko sure, ajet, fjalë ose frazë..."
  />
- {searchQuery && (
- <button
- onClick={() => {
- setSearchQuery('');
- }}
- className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-200"
- aria-label="Pastro kërkimin"
- >
- <X className="w-4 h-4" />
- </button>
- )}
- </div>
-
- {/* Tabs Header */}
- <div className="flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs flex-wrap sm:flex-nowrap gap-1">
- <button
- onClick={() => setActiveTab('mushaf_qcf')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'mushaf_qcf'
- ? 'bg-amber-600 text-slate-950 font-bold shadow'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <BookOpen className="w-3.5 h-3.5" />
- <span>Mus'haf QCF (Faqe)</span>
- </button>
-
- <button
- onClick={() => setActiveTab('surahs')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold transition-all text-center ${
- activeTab === 'surahs'
- ? 'bg-emerald-600 text-slate-950 shadow font-bold'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- Surjet (114)
- </button>
-
- <button
- onClick={() => setActiveTab('cards_backup')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'cards_backup'
- ? 'bg-teal-600 text-white shadow font-bold'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <Layers className="w-3.5 h-3.5" />
- <span>Kartelat (Backup)</span>
- </button>
-
- <button
- onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
- className="flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
- title="Cilësimet e leximit"
- >
- <Sliders className="w-3.5 h-3.5 text-emerald-400" />
- <span className="truncate">Cilësimet e leximit</span>
- </button>
-
- <button
- onClick={() => setActiveTab('hifz')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'hifz'
- ? 'bg-emerald-600 text-slate-950 shadow font-bold'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <Brain className="w-3.5 h-3.5" />
- <span>Hifz / Memorizimi</span>
- </button>
-
+  {searchQuery && (
   <button
-    onClick={() => setActiveTab('khatam')}
-    className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
-      activeTab === 'khatam'
-        ? 'bg-emerald-600 text-slate-950 shadow font-bold'
-        : 'text-slate-400 hover:text-slate-200'
-    }`}
+  onClick={() => {
+  setSearchQuery('');
+  }}
+  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-200"
+  aria-label="Pastro kërkimin"
   >
-    <Award className="w-3.5 h-3.5" />
-    <span>Planifikuesi (Hatme)</span>
+  <X className="w-4 h-4" />
   </button>
+  )}
+  </div>
+  </div>
 
- <button
- onClick={() => setActiveTab('bookmarks')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'bookmarks'
- ? 'bg-amber-600 text-white shadow'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <Bookmark className="w-3.5 h-3.5" />
- <span>Bookmarks ({bookmarks.length})</span>
- </button>
-
- <button
- onClick={() => setActiveTab('notes')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'notes'
- ? 'bg-blue-600 text-white shadow'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <FileText className="w-3.5 h-3.5" />
- <span>Shënimet ({notes.length})</span>
- </button>
-
- <button
- onClick={() => setActiveTab('stats')}
- className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
- activeTab === 'stats'
- ? 'bg-purple-600 text-white shadow'
- : 'text-slate-400 hover:text-slate-200'
- }`}
- >
- <BarChart3 className="w-3.5 h-3.5" />
- <span>Statistikat</span>
- </button>
- </div>
- </div>
-
- {/* Quick Settings Drawer on main screen */}
+ {/* Quick Settings Drawer Bottom Anchor */}
  {showSettingsDrawer && (
  <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-4">
  <div className="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -1951,26 +1843,161 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  )}
 
- {/* Last Read Tracker Banner */}
- {readingState.lastReadSurah && activeTab === 'surahs' && (
- <div
- onClick={() => setSelectedSurahNum(readingState.lastReadSurah)}
- className="bg-emerald-950/40 border border-emerald-800/60 p-3.5 rounded-xl cursor-pointer hover:bg-emerald-950/60 transition-colors flex items-center justify-between"
- >
- <div className="flex items-center space-x-3">
- <div className="w-8 h-8 rounded-lg bg-emerald-900/60 border border-emerald-700/50 flex items-center justify-center text-emerald-300 font-bold">
- <BookOpen className="w-4 h-4" />
- </div>
- <div>
- <p className="text-[10px] text-emerald-400 font-mono uppercase tracking-wider">Vazhdo Leximin (Hatmah)</p>
- <h4 className="text-xs font-bold text-slate-100">
- Surja {readingState.lastReadSurah} • Ajeti {readingState.lastReadAyah}
- </h4>
- </div>
- </div>
- <ChevronRight className="w-4 h-4 text-emerald-400" />
- </div>
- )}
+  {/* Featured Menu Boxes Section */}
+  {activeTab === 'surahs' && (
+    <div className="space-y-3 pt-1">
+      {/* 1. Continuation Box / Last Read Hero Banner */}
+      <div
+        onClick={() => {
+          if (readingState.lastReadSurah) {
+            setSelectedSurahNum(readingState.lastReadSurah);
+          } else {
+            setSelectedSurahNum(1);
+          }
+        }}
+        className="bg-gradient-to-r from-emerald-950/90 via-slate-900 to-amber-950/50 border border-emerald-500/40 hover:border-emerald-400/80 p-4 rounded-2xl cursor-pointer transition-all shadow-lg hover:shadow-emerald-900/20 flex items-center justify-between group"
+      >
+        <div className="flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-emerald-900/60 border border-emerald-500/50 flex items-center justify-center text-emerald-300 font-bold group-hover:scale-105 transition-transform">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] bg-emerald-900/80 text-emerald-300 border border-emerald-700/60 px-2 py-0.5 rounded-full font-mono uppercase tracking-wider font-bold">
+                Vazhdo Leximin
+              </span>
+              {readingState.lastReadSurah && (
+                <span className="text-[10px] text-slate-400 font-mono">Hatmah e Aktivizuar</span>
+              )}
+            </div>
+            <h4 className="text-sm font-bold text-slate-100 mt-1">
+              {readingState.lastReadSurah
+                ? `Surja ${readingState.lastReadSurah} • Ajeti ${readingState.lastReadAyah}`
+                : 'Fillo nga Surja 1 (El-Fatiha)'}
+            </h4>
+          </div>
+        </div>
+        <div className="flex items-center space-x-1 text-xs font-bold text-emerald-400 group-hover:translate-x-0.5 transition-transform">
+          <span>Vazhdo</span>
+          <ChevronRight className="w-4 h-4" />
+        </div>
+      </div>
+
+      {/* 2. Grid of Quick Feature Menu Boxes */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        {/* Mus'hafi QCF (Faqe) */}
+        <div
+          onClick={() => setActiveTab('mushaf_qcf')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-amber-500/30 hover:border-amber-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-amber-950/60 border border-amber-700/50 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-amber-400/80 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-800/40">QCF V2</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-amber-300 transition-colors">Mus'hafi (Faqe)</h4>
+            <p className="text-[10px] text-slate-400 truncate">Format origjinal faqe</p>
+          </div>
+        </div>
+
+        {/* Planifikuesi i Hatmes */}
+        <div
+          onClick={() => setActiveTab('khatam')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-emerald-500/30 hover:border-emerald-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-700/50 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+              <Award className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400/80 bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-800/40">Hatme</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-emerald-300 transition-colors">Planifikuesi</h4>
+            <p className="text-[10px] text-slate-400 truncate">Ndjekja e progresit</p>
+          </div>
+        </div>
+
+        {/* Moduli i Hifzit */}
+        <div
+          onClick={() => setActiveTab('hifz')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-teal-500/30 hover:border-teal-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-teal-950/60 border border-teal-700/50 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
+              <Brain className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-teal-400/80 bg-teal-950/40 px-1.5 py-0.5 rounded border border-teal-800/40">Memorizim</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-teal-300 transition-colors">Moduli Hifz</h4>
+            <p className="text-[10px] text-slate-400 truncate">Flashcards & Përsëritja</p>
+          </div>
+        </div>
+
+        {/* Statistikat */}
+        <div
+          onClick={() => setActiveTab('stats')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-purple-500/30 hover:border-purple-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-purple-950/60 border border-purple-700/50 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+              <BarChart3 className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-purple-400/80 bg-purple-950/40 px-1.5 py-0.5 rounded border border-purple-800/40">Grafikët</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-purple-300 transition-colors">Statistikat</h4>
+            <p className="text-[10px] text-slate-400 truncate">Leximi ditor & historiku</p>
+          </div>
+        </div>
+
+        {/* Bookmarks & Shënime */}
+        <div
+          onClick={() => setActiveTab('bookmarks')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-blue-500/30 hover:border-blue-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-blue-950/60 border border-blue-700/50 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+              <Bookmark className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-blue-400/80 bg-blue-950/40 px-1.5 py-0.5 rounded border border-blue-800/40">{bookmarks.length + notes.length}</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-blue-300 transition-colors">Bookmarks & Notes</h4>
+            <p className="text-[10px] text-slate-400 truncate">Ruajtjet & shënimet</p>
+          </div>
+        </div>
+
+        {/* Kartelat (Backup) */}
+        <div
+          onClick={() => setActiveTab('cards_backup')}
+          className="bg-slate-900/90 hover:bg-slate-850 border border-cyan-500/30 hover:border-cyan-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-lg bg-cyan-950/60 border border-cyan-700/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+              <Layers className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] font-mono text-cyan-400/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-800/40">Shqip</span>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">Kartelat (Backup)</h4>
+            <p className="text-[10px] text-slate-400 truncate">Ajetet me përkthim</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Section Divider Header for 114 Surahs */}
+      <div className="pt-3 pb-1 border-b border-slate-800/80 flex items-center justify-between">
+        <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center space-x-2">
+          <Book className="w-4 h-4 text-emerald-400" />
+          <span>Lista e Sureve (114)</span>
+        </h3>
+        <span className="text-[10px] text-slate-400 font-mono">Zgjidhni për lexim</span>
+      </div>
+    </div>
+  )}
 
  {activeTab === 'search' ? (
  <QuranSearchView
