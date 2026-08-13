@@ -75,8 +75,6 @@ export const QuranVerseRenderer: React.FC<QuranVerseRendererProps> = ({
 		</span>
 	);
 };
-import { MUSHAF_STORAGE_KEY, MushafReadingState, getMushafPageForVerse } from '../data/mushafManifest';
-import { MushafReader } from './MushafReader';
 import { getLocalDateString } from '../utils/dateUtils';
 import { QuranSearchView } from './QuranSearchView';
 import {
@@ -110,7 +108,6 @@ import {
  Edit3,
  X,
  Sun,
- AlignLeft,
  Moon,
  Feather,
  Music,
@@ -364,40 +361,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [searchQuery, setSearchQuery] = useState<string>('');
  const [activeTab, setActiveTab] = useState<'surahs' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(null);
-
-  const [mushafState, setMushafState] = useState<MushafReadingState>(() => {
-    try {
-      const saved = localStorage.getItem(MUSHAF_STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {}
-    return {
-      readerMode: 'mushaf',
-      mushafEdition: 'madinah-15-lines-poc',
-      mushafPage: 1,
-      surah: 1,
-      ayah: 1,
-      updatedAt: new Date().toISOString()
-    };
-  });
-
-  const saveMushafState = (updates: Partial<MushafReadingState>) => {
-    setMushafState(prev => {
-      const next = { ...prev, ...updates, updatedAt: new Date().toISOString() };
-      localStorage.setItem(MUSHAF_STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
-  };
-
-  useEffect(() => {
-    const syncMushafSettings = () => {
-      try {
-        const saved = localStorage.getItem(MUSHAF_STORAGE_KEY);
-        if (saved) setMushafState(JSON.parse(saved));
-      } catch (e) {}
-    };
-    window.addEventListener('mushaf_settings_changed', syncMushafSettings);
-    return () => window.removeEventListener('mushaf_settings_changed', syncMushafSettings);
-  }, []);
 
  // Reading Settings state (Persisted in localStorage)
  const [readingSettings, setReadingSettings] = useState<QuranReadingSettings>(() => {
@@ -899,17 +862,8 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
 
  return (
  <div className="space-y-4 pb-28 animate-fadeIn">
- {/* Reader View Modal/Overlay if a Surah is opened or if we are in Mushaf mode */}
- {readingSettings.layoutMode === 'mushaf' ? (
- <MushafReader
- editionKey={mushafState.mushafEdition}
- initialPage={selectedSurahNum ? getMushafPageForVerse(selectedSurahNum, 1, mushafState.mushafEdition) : mushafState.mushafPage}
- onPageChange={(page) => saveMushafState({ mushafPage: page })}
- onClose={() => {
- updateSettings({ layoutMode: 'cards' });
- }}
- />
- ) : selectedSurahNum !== null ? (
+ {/* Reader View Modal/Overlay if a Surah is opened */}
+ {selectedSurahNum !== null ? (
  <div className={`min-h-screen p-3 rounded-2xl transition-colors duration-200 ${currentTheme.bg} ${currentTheme.text}`}>
  
  {/* Reader Sticky Header Bar */}
@@ -1107,26 +1061,11 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  }`}
  >
  <Layers className="w-4 h-4" />
- <span>Ajet pas ajeti</span>
+ <span>Ajete</span>
  </button>
 
  <button
- onClick={() => updateSettings({ layoutMode: 'continuous' })}
- className={`flex-1 py-2 px-2 rounded-xl border text-[10px] font-medium flex flex-col items-center justify-center space-y-1 ${
- readingSettings.layoutMode === 'continuous'
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <AlignLeft className="w-4 h-4" />
- <span>Rrjedhshëm</span>
- </button>
-
- <button
- onClick={() => {
-   updateSettings({ layoutMode: 'mushaf' });
-   setShowSettingsDrawer(false);
- }}
+ onClick={() => updateSettings({ layoutMode: 'mushaf' })}
  className={`flex-1 py-2 px-2 rounded-xl border text-[10px] font-medium flex flex-col items-center justify-center space-y-1 ${
  readingSettings.layoutMode === 'mushaf'
  ? currentTheme.btnActive
@@ -1287,8 +1226,8 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  )}
 
- {/* Continuous Flow Mode vs Card View */}
- {readingSettings.layoutMode === 'continuous' ? (
+ {/* Continuous Mushaf View vs Card View */}
+ {readingSettings.layoutMode === 'mushaf' ? (
  /* Continuous Mushaf Flow Mode */
  <div className={`p-6 rounded-2xl border space-y-6 ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
  <div

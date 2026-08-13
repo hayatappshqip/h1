@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
+import { fetchQuranPageData } from './netlify/functions/quran-page';
 
 async function startServer() {
   const app = express();
@@ -11,6 +12,18 @@ async function startServer() {
   // API Health Check
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', app: 'Hayat' });
+  });
+
+  // Netlify function route proxy for local Express / server environment
+  app.get('/.netlify/functions/quran-page', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
+    const pageStr = req.query.page as string | undefined;
+    const result = await fetchQuranPageData(pageStr);
+
+    res.status(result.statusCode).json(result.data);
   });
 
   // Vite middleware for development vs static serve for production

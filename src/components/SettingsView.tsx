@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { PrayerSettings, MburojaState, PrayerName } from '../types';
 import { generateBackupV2, restoreBackupV2 } from '../services/db';
-import { Settings, Download, Upload, Shield, CheckCircle2, AlertCircle, RefreshCw, Moon, Sparkles, Database, Bell, BellRing, Volume2, Vibrate, Type, BookOpen } from 'lucide-react';
+import { Settings, Download, Upload, Shield, CheckCircle2, AlertCircle, RefreshCw, Moon, Sparkles, Database, Bell, BellRing, Volume2, Vibrate, Type } from 'lucide-react';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { useDhikrFontSize } from '../utils/useFontSize';
 import {
@@ -38,22 +38,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
  getNotificationPermissionState()
  );
  const [testNotifMsg, setTestNotifMsg] = useState<string | null>(null);
-
-  const [mushafEdition, setMushafEdition] = useState(() => {
-    try {
-      const saved = localStorage.getItem('hayat_mushaf_prototype_state');
-      if (saved) return JSON.parse(saved).mushafEdition || 'madinah-15-lines-poc';
-    } catch (e) {}
-    return 'madinah-15-lines-poc';
-  });
-
-  const updateMushafEdition = (edition: string) => {
-    const saved = localStorage.getItem('hayat_mushaf_prototype_state');
-    const state = saved ? JSON.parse(saved) : {};
-    localStorage.setItem('hayat_mushaf_prototype_state', JSON.stringify({ ...state, mushafEdition: edition }));
-    setMushafEdition(edition);
-    window.dispatchEvent(new Event('mushaf_settings_changed'));
-  };
 
  useEffect(() => {
  setNotifPermission(getNotificationPermissionState());
@@ -489,24 +473,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </p>
     </div>
   </div>
-
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
-      <div className="flex items-center space-x-2">
-        <BookOpen className="w-4 h-4 text-emerald-400" />
-        <h3 className="font-bold text-sm text-emerald-300">Botimi i Mushafit (Kurani)</h3>
-      </div>
-      <p className="text-xs text-slate-400">
-        Mushafi i Medinës me faqe reale 15 rreshta për faqe.
-      </p>
-      
-      <div className="p-3 bg-emerald-950/80 border border-emerald-500 rounded-xl flex items-center justify-between">
-        <div>
-          <p className="font-bold text-sm text-emerald-200">Mushafi i Medinës (Standard)</p>
-          <p className="text-[11px] text-emerald-400/80">Formatimi origjinal me 15 rreshta për faqe (Prototip 5 Faqe)</p>
-        </div>
-        <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></div>
-      </div>
-    </div>
 
   {/* Suggestion Toggles */}
  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">

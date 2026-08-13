@@ -12,8 +12,6 @@ const ASSETS_TO_CACHE = [
   '/manifest.json',
   '/quran-corpus-v2-chunked/manifest.json',
   '/fonts/UthmanicHafs1Ver18.woff2',
-  '/assets/mushaf/madinah-15-lines-poc.pdf',
-  '/assets/mushaf/tajweed-color-poc.pdf',
   '/assets/icon-192.png',
   '/assets/icon-512.png'
 ];
