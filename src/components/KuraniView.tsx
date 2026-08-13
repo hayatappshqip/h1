@@ -129,6 +129,8 @@ import {
 import { QuranStatsChart } from './QuranStatsChart';
 import { HifzModule } from './HifzModule';
 import { KhatamTrackerView } from './KhatamTrackerView';
+import { QcfMushafReader } from './QcfMushafReader';
+import { KuraniCardsBackup } from './KuraniCardsBackup';
 
 export interface Reciter {
  key: string;
@@ -359,7 +361,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
- const [activeTab, setActiveTab] = useState<'surahs' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
+ const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'mushaf_qcf');
  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(null);
 
  // Reading Settings state (Persisted in localStorage)
@@ -1769,6 +1771,18 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  {/* Tabs Header */}
  <div className="flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs flex-wrap sm:flex-nowrap gap-1">
  <button
+ onClick={() => setActiveTab('mushaf_qcf')}
+ className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
+ activeTab === 'mushaf_qcf'
+ ? 'bg-amber-600 text-slate-950 font-bold shadow'
+ : 'text-slate-400 hover:text-slate-200'
+ }`}
+ >
+ <BookOpen className="w-3.5 h-3.5" />
+ <span>Mus'haf QCF (Faqe)</span>
+ </button>
+
+ <button
  onClick={() => setActiveTab('surahs')}
  className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold transition-all text-center ${
  activeTab === 'surahs'
@@ -1777,6 +1791,18 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  }`}
  >
  Surjet (114)
+ </button>
+
+ <button
+ onClick={() => setActiveTab('cards_backup')}
+ className={`flex-1 min-w-[30%] sm:min-w-0 py-2 px-1.5 rounded-lg font-semibold flex items-center justify-center space-x-1 transition-all ${
+ activeTab === 'cards_backup'
+ ? 'bg-teal-600 text-white shadow font-bold'
+ : 'text-slate-400 hover:text-slate-200'
+ }`}
+ >
+ <Layers className="w-3.5 h-3.5" />
+ <span>Kartelat (Backup)</span>
  </button>
 
  <button
@@ -2089,6 +2115,19 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  ))
  )}
  </div>
+ ) : activeTab === 'mushaf_qcf' ? (
+ <QcfMushafReader />
+ ) : activeTab === 'cards_backup' ? (
+ <KuraniCardsBackup
+ readingState={readingState}
+ bookmarks={bookmarks}
+ notes={notes}
+ onUpdateReadingState={onUpdateReadingState}
+ onAddBookmark={onAddBookmark}
+ onRemoveBookmark={onRemoveBookmark}
+ onSaveNote={onSaveNote}
+ onDeleteNote={onDeleteNote}
+ />
  ) : activeTab === 'hifz' ? (
  <HifzModule />
   ) : activeTab === 'khatam' ? (
