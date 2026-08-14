@@ -173,6 +173,28 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextPage, prevPage, showSettingsModal, showSurahModal, showSearchModal, showNavigationModal, showAyahModal]);
 
+  // Auto-hide controls after inactivity period during normal reading
+  useEffect(() => {
+    if (!showControls) return;
+    if (showSettingsModal || showSurahModal || showSearchModal || showNavigationModal || showAyahModal) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowControls(false);
+    }, 4500);
+
+    return () => clearTimeout(timer);
+  }, [
+    showControls,
+    currentPage,
+    showSettingsModal,
+    showSurahModal,
+    showSearchModal,
+    showNavigationModal,
+    showAyahModal,
+  ]);
+
   // Touch gestures (Quran swipe)
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
