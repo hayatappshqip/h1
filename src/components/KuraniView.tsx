@@ -905,13 +905,27 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
 
  {surahData && (
- <div className="text-center px-1">
+ <div className="text-center px-1 flex-1 flex flex-col items-center justify-center">
  <h3 className="font-bold font-serif text-xs sm:text-sm">
  {surahData.number}. {surahData.transliteration} ({surahData.albanianName})
  </h3>
- <p className="text-[10px] opacity-75 font-mono">
+ <p className="text-[10px] opacity-75 font-mono mt-0.5">
  {surahData.revelationType === 'Meccan' ? 'Mekase' : 'Medinase'} • {surahData.numberOfAyahs} Ajete
  </p>
+
+ {readingState.lastReadSurah === selectedSurahNum && surahData.numberOfAyahs > 0 && (
+ <div className="w-full max-w-[140px] mt-1.5 flex items-center space-x-2 opacity-90" title={`Lexuar: ${readingState.lastReadAyah} nga ${surahData.numberOfAyahs} ajete`}>
+ <div className={`flex-1 h-1.5 rounded-full overflow-hidden ${readingSettings.theme === 'dark' || readingSettings.theme === 'midnight' ? 'bg-white/10' : 'bg-black/10'}`}>
+ <div 
+ className="bg-emerald-500 h-1.5 rounded-full transition-all duration-700 ease-out"
+ style={{ width: `${Math.min(100, Math.max(0, (readingState.lastReadAyah / surahData.numberOfAyahs) * 100))}%` }}
+ />
+ </div>
+ <span className="text-[9px] font-bold font-mono text-emerald-600 dark:text-emerald-400 min-w-[24px] text-right">
+ {Math.round((readingState.lastReadAyah / surahData.numberOfAyahs) * 100)}%
+ </span>
+ </div>
+ )}
  </div>
  )}
 
@@ -1230,22 +1244,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  ) : surahData ? (
  <div className="space-y-4 mt-3">
- {/* Bismillah Header (Except Surah 9 & 1) */}
- {selectedSurahNum !== 9 && selectedSurahNum !== 1 && (
- <div className={`text-center py-6 px-4 rounded-2xl border ${currentTheme.cardBg} ${currentTheme.cardBorder} flex flex-col items-center justify-center space-y-3`}>
- <div
- className="font-arabic text-3xl transition-all leading-[2.4]"
- style={{ fontSize: `${readingSettings.arabicFontSize + 4}px` }}
- dir="rtl"
- >
- {renderTajweedText("بِسْم اللَّه الرَّحْمَٰن الرَّحِيمِ", readingSettings.showTajweed)}
- </div>
- {readingSettings.showTranslation && (
- <p className="text-xs opacity-75 font-sans pt-1">Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!</p>
- )}
- </div>
- )}
-
  {/* Continuous Mushaf View vs Card View */}
  {readingSettings.layoutMode === 'mushaf' ? (
  /* Continuous Mushaf Flow Mode */

@@ -95,36 +95,39 @@ export async function getSurahData(surahNumber: number): Promise<QuranSurahData>
  };
 
  try {
- // Quran.com API with Arabic + Hasan Efendi Nahi translation (ID 88)
- const url = `https://api.quran.com/api/v4/verses/by_chapter/${surahNumber}?translations=88&fields=text_uthmani&per_page=300`;
+ // AlQuran.cloud API with Arabic + Hasan Efendi Nahi translation
+ const url = `https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,sq.nahi`;
  const res = await fetch(url);
  if (res.ok) {
- const data = await res.json();
+ const json = await res.json();
+ if (json && json.code === 200 && json.data && json.data.length === 2) {
+ const arabicEdition = json.data[0];
+ const albanianEdition = json.data[1];
  
- const ayahs = data.verses.map((verse: any) => {
- const rawTextSq = verse.translations?.[0]?.text || '';
- // Remove footnote tags like <sup foot_note=123>1</sup>
- const textSq = rawTextSq.replace(/<sup[^>]*>.*?<\/sup>/g, '').trim();
-
+ const ayahs = arabicEdition.ayahs.map((verse: any, index: number) => {
+ let textAr = verse.text || '';
+ let textSq = albanianEdition.ayahs[index]?.text || '';
+ 
  return {
- numberInSurah: verse.verse_number,
- textAr: cleanAyahArabicText(verse.text_uthmani, meta.number, verse.verse_number),
+ numberInSurah: verse.numberInSurah,
+ textAr: cleanAyahArabicText(textAr, meta.number, verse.numberInSurah),
  textSq
  };
  });
 
  const result: QuranSurahData = {
- number: meta.number,
- name: meta.name,
- transliteration: meta.transliteration,
+ number: arabicEdition.number,
+ name: arabicEdition.name,
+ transliteration: arabicEdition.englishName,
  albanianName: meta.albanianName,
- numberOfAyahs: meta.numberOfAyahs,
- revelationType: meta.revelationType,
+ numberOfAyahs: arabicEdition.numberOfAyahs,
+ revelationType: arabicEdition.revelationType === 'Meccan' ? 'Meccan' : 'Medinan',
  ayahs
  };
 
  await saveMeta(cacheKey, result);
  return result;
+ }
  }
  } catch (err) {
  console.warn(`Could not fetch surah ${surahNumber} online, using fallback template:`, err);
