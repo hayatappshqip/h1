@@ -113,11 +113,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   };
 
   const handleRetry = useCallback(() => {
-    const [p1, p2] = spreadPages;
+    const p1 = isTwoPageSpread ? spreadPages[0] : currentPage;
+    const p2 = isTwoPageSpread ? spreadPages[1] : null;
     clearPageDataCache(p1);
     if (p2) clearPageDataCache(p2);
     setRetryCount((c) => c + 1);
-  }, [spreadPages]);
+  }, [isTwoPageSpread, spreadPages, currentPage]);
 
   // Load active page data and font
   useEffect(() => {
@@ -125,7 +126,8 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     setLoading(true);
     setErrorMessage(null);
 
-    const [p1, p2] = spreadPages;
+    const p1 = isTwoPageSpread ? spreadPages[0] : currentPage;
+    const p2 = isTwoPageSpread ? spreadPages[1] : null;
 
     const font1Promise = prefetchQcfFont(p1);
     const font2Promise = isTwoPageSpread && p2 ? prefetchQcfFont(p2) : Promise.resolve('');

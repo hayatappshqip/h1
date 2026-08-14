@@ -413,6 +413,37 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       }
     });
 
+    // Identify special lines for Surah headers and Bismillah
+    const specialLines: Record<number, { type: 'surah_header'; surahNumber: number } | { type: 'bismillah'; surahNumber: number }> = {};
+
+    data.verses.forEach((verse) => {
+      if (verse.verse_number === 1) {
+        const sNum = verse.chapter_id;
+        const firstWordLine = verse.words?.[0]?.line_number || 1;
+
+        if (sNum === 1) {
+          if (firstWordLine > 1) {
+            specialLines[firstWordLine - 1] = { type: 'surah_header', surahNumber: 1 };
+          } else {
+            specialLines[1] = { type: 'surah_header', surahNumber: 1 };
+          }
+        } else if (sNum === 9) {
+          if (firstWordLine > 1) {
+            specialLines[firstWordLine - 1] = { type: 'surah_header', surahNumber: 9 };
+          } else {
+            specialLines[1] = { type: 'surah_header', surahNumber: 9 };
+          }
+        } else {
+          if (firstWordLine >= 3) {
+            specialLines[firstWordLine - 2] = { type: 'surah_header', surahNumber: sNum };
+            specialLines[firstWordLine - 1] = { type: 'bismillah', surahNumber: sNum };
+          } else if (firstWordLine === 2) {
+            specialLines[1] = { type: 'surah_header', surahNumber: sNum };
+          }
+        }
+      }
+    });
+
     // Determine the max line, fallback to 15 (standard QCF page length)
     const maxLine = Math.max(
       15, 
@@ -438,6 +469,42 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           }}
         >
           {sortedLineNumbers.map((lineNum) => {
+            const special = specialLines[lineNum];
+            if (special) {
+              if (special.type === 'surah_header') {
+                const meta = ALL_SURAHS_META.find((s) => s.number === special.surahNumber);
+                const sName = meta?.name ? (meta.name.startsWith('سورة') || meta.name.startsWith('سُورَة') ? meta.name : `سُورَةُ ${meta.name}`) : `سُورَةُ ${special.surahNumber}`;
+                return (
+                  <div
+                    key={`header-${special.surahNumber}-${lineNum}`}
+                    className={`w-full my-0.5 sm:my-1 px-3 sm:px-5 py-1 rounded-xl border text-center transition-colors shadow-sm ${
+                      activeTheme.isDark
+                        ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
+                        : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
+                    }`}
+                    dir="rtl"
+                  >
+                    <span className="font-arabic font-bold text-xs sm:text-sm md:text-base">
+                      {sName}
+                    </span>
+                  </div>
+                );
+              }
+              if (special.type === 'bismillah') {
+                return (
+                  <div
+                    key={`bismillah-${special.surahNumber}-${lineNum}`}
+                    className="w-full my-0.5 text-center select-none flex items-center justify-center"
+                    dir="rtl"
+                  >
+                    <span className={`font-arabic text-[1.15rem] xs:text-[1.35rem] sm:text-[1.65rem] md:text-[1.95rem] leading-none ${activeTheme.textColor}`}>
+                      بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                    </span>
+                  </div>
+                );
+              }
+            }
+
             const words = linesMap[lineNum] || [];
             
             // Render spacer if line is empty

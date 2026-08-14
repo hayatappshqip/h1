@@ -8,6 +8,62 @@ import { MushafPageFrame, PaperTheme } from './MushafPageFrame';
 import { AyahInteractionLayer } from './AyahInteractionLayer';
 import { ALL_SURAHS_META, getSurahNumberFromPage } from '../../../data/quranData';
 
+function toArabicDigits(num: number): string {
+  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return num.toString().split('').map((d) => digits[parseInt(d, 10)] || d).join('');
+}
+
+export const SurahHeaderBanner: React.FC<{
+  surahNumber: number;
+  theme: PaperTheme;
+}> = ({ surahNumber, theme }) => {
+  const meta = ALL_SURAHS_META.find((s) => s.number === surahNumber);
+  const rawName = meta?.name || '';
+  const surahName = rawName.startsWith('سورة') || rawName.startsWith('سُورَة') ? rawName : `سُورَةُ ${rawName}`;
+  const revelationLabel = meta?.revelationType === 'Meccan' ? 'مَكِّيَّة' : 'مَدَنِيَّة';
+  const ayahCountLabel = meta ? `${toArabicDigits(meta.numberOfAyahs)} آيَاتُهَا` : '';
+
+  return (
+    <div
+      data-surah-header={surahNumber}
+      className={`w-full my-0.5 sm:my-1 px-3 sm:px-5 py-1 sm:py-1.5 rounded-xl border flex items-center justify-between transition-colors shadow-sm ${
+        theme.isDark
+          ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
+          : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
+      }`}
+      dir="rtl"
+    >
+      <span className="text-[10px] sm:text-xs font-arabic opacity-75 hidden xs:inline">
+        {ayahCountLabel}
+      </span>
+      <span className="font-arabic font-bold text-xs sm:text-sm md:text-base tracking-wide mx-auto">
+        {surahName}
+      </span>
+      <span className="text-[10px] sm:text-xs font-arabic opacity-75 hidden xs:inline">
+        {revelationLabel}
+      </span>
+    </div>
+  );
+};
+
+export const BismillahFrame: React.FC<{
+  theme: PaperTheme;
+}> = ({ theme }) => {
+  return (
+    <div
+      data-bismillah-frame="true"
+      className="w-full my-0.5 text-center select-none flex items-center justify-center"
+      dir="rtl"
+    >
+      <span
+        className={`font-arabic text-[1.15rem] xs:text-[1.35rem] sm:text-[1.65rem] md:text-[1.95rem] leading-none transition-colors ${theme.textColor}`}
+      >
+        بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+      </span>
+    </div>
+  );
+};
+
 interface CleanWord {
   position: number;
   char_type_name: string;
@@ -127,6 +183,40 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
     }
   });
 
+  // Identify special lines for Surah headers and Bismillah
+  const specialLines: Record<number, { type: 'surah_header'; surahNumber: number } | { type: 'bismillah'; surahNumber: number }> = {};
+
+  pageData.verses.forEach((verse) => {
+    if (verse.verse_number === 1) {
+      const sNum = verse.chapter_id;
+      const firstWordLine = verse.words?.[0]?.line_number || 1;
+
+      if (sNum === 1) {
+        // Surah Al-Fatihah (page 1): 1:1 is Bismillah on line 2; line 1 is the header
+        if (firstWordLine > 1) {
+          specialLines[firstWordLine - 1] = { type: 'surah_header', surahNumber: 1 };
+        } else {
+          specialLines[1] = { type: 'surah_header', surahNumber: 1 };
+        }
+      } else if (sNum === 9) {
+        // Surah At-Tawbah (page 187): No Bismillah; line 1 is the header
+        if (firstWordLine > 1) {
+          specialLines[firstWordLine - 1] = { type: 'surah_header', surahNumber: 9 };
+        } else {
+          specialLines[1] = { type: 'surah_header', surahNumber: 9 };
+        }
+      } else {
+        // All other surahs: Header banner followed by Bismillah
+        if (firstWordLine >= 3) {
+          specialLines[firstWordLine - 2] = { type: 'surah_header', surahNumber: sNum };
+          specialLines[firstWordLine - 1] = { type: 'bismillah', surahNumber: sNum };
+        } else if (firstWordLine === 2) {
+          specialLines[1] = { type: 'surah_header', surahNumber: sNum };
+        }
+      }
+    }
+  });
+
   const maxLine = Math.max(15, ...Object.keys(linesMap).map((n) => parseInt(n, 10)));
   const sortedLineNumbers = Array.from({ length: maxLine }, (_, i) => i + 1);
 
@@ -146,6 +236,27 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
         }}
       >
         {sortedLineNumbers.map((lineNum) => {
+          const special = specialLines[lineNum];
+          if (special) {
+            if (special.type === 'surah_header') {
+              return (
+                <SurahHeaderBanner
+                  key={`header-${special.surahNumber}-${lineNum}`}
+                  surahNumber={special.surahNumber}
+                  theme={theme}
+                />
+              );
+            }
+            if (special.type === 'bismillah') {
+              return (
+                <BismillahFrame
+                  key={`bismillah-${special.surahNumber}-${lineNum}`}
+                  theme={theme}
+                />
+              );
+            }
+          }
+
           const lineItems = linesMap[lineNum] || [];
 
           if (lineItems.length === 0) {
