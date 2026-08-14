@@ -19,6 +19,9 @@ interface MushafPageSpreadProps {
   fontFamily1: string;
   pageData2: QuranPageData | null;
   fontFamily2: string;
+  isLoading?: boolean;
+  errorMessage?: string | null;
+  onRetry?: () => void;
   onVerseSelect?: (verseKey: string) => void;
 }
 
@@ -34,6 +37,9 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
   fontFamily1,
   pageData2,
   fontFamily2,
+  isLoading = false,
+  errorMessage = null,
+  onRetry,
   onVerseSelect,
 }) => {
   const [rightPageNum, leftPageNum] = spreadPages;
@@ -51,6 +57,9 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
           side="single"
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          onRetry={onRetry}
           onVerseSelect={onVerseSelect}
         />
       </div>
@@ -72,6 +81,9 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
           side="left"
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          onRetry={onRetry}
           onVerseSelect={onVerseSelect}
         />
       </div>
@@ -92,6 +104,9 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
           side="right"
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          onRetry={onRetry}
           onVerseSelect={onVerseSelect}
         />
       </div>

@@ -104,53 +104,60 @@ export async function fetchQuranPageData(pageStr: string | undefined): Promise<{
   const clientId = process.env.QURAN_CLIENT_ID;
   const clientSecret = process.env.QURAN_CLIENT_SECRET;
 
-  if (!clientId || !clientSecret) {
-    return {
-      statusCode: 500,
-      data: {
-        error: 'Mungojnë të dhënat e hyrjes për API-në e Kuranit (QURAN_CLIENT_ID ose QURAN_CLIENT_SECRET).',
-      },
-    };
-  }
-
-  const accessToken = await getOAuthToken();
-  if (!accessToken) {
-    return {
-      statusCode: 502,
-      data: {
-        error: 'Dështoi autorizimi me shërbimin e Kuranit. Ju lutemi kontrolloni kredencialet.',
-      },
-    };
-  }
-
-  // Attempt fetch from primary Quran Foundation API endpoint, then fallback if necessary
-  const endpoints = [
-    `https://apis.quran.foundation/content/api/v4/verses/by_page/${pageNum}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`,
-    `https://api.quran.com/api/v4/verses/by_page/${pageNum}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`,
-  ];
-
   let rawVerses: any[] | null = null;
 
-  for (const url of endpoints) {
+  // 1. If OAuth client credentials exist, attempt authorized Quran Foundation API call
+  if (clientId && clientSecret) {
+    const accessToken = await getOAuthToken();
+    if (accessToken) {
+      const authEndpoints = [
+        `https://apis.quran.foundation/content/api/v4/verses/by_page/${pageNum}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`,
+        `https://api.quran.com/api/v4/verses/by_page/${pageNum}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`,
+      ];
+
+      for (const url of authEndpoints) {
+        try {
+          const apiRes = await fetch(url, {
+            headers: {
+              'x-auth-token': accessToken,
+              'Authorization': `Bearer ${accessToken}`,
+              'x-client-id': clientId,
+              'Accept': 'application/json',
+            },
+          });
+
+          if (apiRes.ok) {
+            const json = await apiRes.json();
+            if (json && Array.isArray(json.verses) && json.verses.length > 0) {
+              rawVerses = json.verses;
+              break;
+            }
+          }
+        } catch {
+          // ignore and try next
+        }
+      }
+    }
+  }
+
+  // 2. If OAuth was missing, failed, or returned no verses, gracefully fall back to public Quran API
+  if (!rawVerses) {
     try {
-      const apiRes = await fetch(url, {
+      const publicUrl = `https://api.quran.com/api/v4/verses/by_page/${pageNum}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`;
+      const publicRes = await fetch(publicUrl, {
         headers: {
-          'x-auth-token': accessToken,
-          'Authorization': `Bearer ${accessToken}`,
-          'x-client-id': clientId,
           'Accept': 'application/json',
         },
       });
 
-      if (apiRes.ok) {
-        const json = await apiRes.json();
-        if (json && Array.isArray(json.verses)) {
+      if (publicRes.ok) {
+        const json = await publicRes.json();
+        if (json && Array.isArray(json.verses) && json.verses.length > 0) {
           rawVerses = json.verses;
-          break;
         }
       }
-    } catch (e) {
-      // try next endpoint
+    } catch (err) {
+      console.warn(`Public Quran API fallback fetch error for page ${pageNum}:`, err);
     }
   }
 

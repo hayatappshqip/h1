@@ -32,6 +32,7 @@ import {
   prefetchQcfFont,
   fetchMushafPageData,
   prefetchPageNeighborhood,
+  clearPageDataCache,
 } from '../../../services/quran/mushafPrefetchService';
 import {
   ALL_SURAHS_META,
@@ -70,6 +71,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   const [fontFamily2, setFontFamily2] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState<number>(0);
 
   // Active interaction
   const [activeVerseKey, setActiveVerseKey] = useState<string | null>(null);
@@ -110,6 +112,13 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     localStorage.setItem('hayat_mushaf_theme', themeKey);
   };
 
+  const handleRetry = useCallback(() => {
+    const [p1, p2] = spreadPages;
+    clearPageDataCache(p1);
+    if (p2) clearPageDataCache(p2);
+    setRetryCount((c) => c + 1);
+  }, [spreadPages]);
+
   // Load active page data and font
   useEffect(() => {
     let isMounted = true;
@@ -120,8 +129,8 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
     const font1Promise = prefetchQcfFont(p1);
     const font2Promise = isTwoPageSpread && p2 ? prefetchQcfFont(p2) : Promise.resolve('');
-    const data1Promise = fetchMushafPageData(p1);
-    const data2Promise = isTwoPageSpread && p2 ? fetchMushafPageData(p2) : Promise.resolve(null);
+    const data1Promise = fetchMushafPageData(p1, retryCount > 0);
+    const data2Promise = isTwoPageSpread && p2 ? fetchMushafPageData(p2, retryCount > 0) : Promise.resolve(null);
 
     Promise.all([font1Promise, font2Promise, data1Promise, data2Promise])
       .then(([f1, f2, d1, d2]) => {
@@ -138,7 +147,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
       .catch((err) => {
         if (!isMounted) return;
         setErrorMessage(
-          err?.message || `Dështoi ngarkimi i të dhënave për faqen ${currentPage}. Ju lutem provoni përsëri.`
+          err?.message || `Dështoi ngarkimi i të dhënave për faqen ${currentPage}. Ju lutemi provoni përsëri.`
         );
         setLoading(false);
       });
@@ -146,12 +155,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [currentPage, spreadPages, isTwoPageSpread]);
+  }, [currentPage, spreadPages, isTwoPageSpread, retryCount]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (showSettingsModal || showSurahModal || showSearchModal || showNavigationModal) return;
+      if (showSettingsModal || showSurahModal || showSearchModal || showNavigationModal || showAyahModal) return;
       if (e.key === 'ArrowLeft') {
         nextPage();
       } else if (e.key === 'ArrowRight') {
@@ -162,7 +171,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextPage, prevPage, showSettingsModal, showSurahModal, showSearchModal, showNavigationModal]);
+  }, [nextPage, prevPage, showSettingsModal, showSurahModal, showSearchModal, showNavigationModal, showAyahModal]);
 
   // Touch gestures (Quran swipe)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -215,23 +224,23 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     <div
       id="hayat-mushaf-reader"
       className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden transition-colors duration-500 ${activeTheme.bg}`}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onClick={() => setShowControls((prev) => !prev)}
     >
       {/* ----------------- TOP CONTROLS HEADER ----------------- */}
       {showControls && (
         <div
           id="mushaf-top-header"
           onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed top-2 left-2 right-2 sm:top-4 sm:left-6 sm:right-6 z-50 flex items-center justify-between p-2 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 shadow-2xl transition-all"
         >
           {/* Back Button */}
           <button
+            type="button"
             onClick={() => {
               if (onBack) onBack();
             }}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-200 transition-colors shrink-0 text-xs font-semibold"
+            className="flex items-center space-x-1 px-3 py-2 min-h-[44px] rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-200 transition-colors shrink-0 text-xs font-semibold cursor-pointer"
             title="Kthehu"
           >
             <ChevronLeft className="w-4 h-4 text-emerald-400" />
@@ -240,8 +249,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
           {/* Surah Title Pill */}
           <button
+            type="button"
             onClick={() => setShowSurahModal(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold transition-all mx-1 truncate max-w-[200px] xs:max-w-[280px] text-xs"
+            className="flex items-center space-x-1.5 px-3 py-2 min-h-[44px] rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold transition-all mx-1 truncate max-w-[200px] xs:max-w-[280px] text-xs cursor-pointer"
             title="Zgjidh Suren"
           >
             <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
@@ -255,8 +265,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           <div className="flex items-center space-x-1.5 shrink-0">
             {/* Search/Navigation Jump */}
             <button
+              type="button"
               onClick={() => setShowNavigationModal(true)}
-              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center space-x-1"
+              className="p-2 sm:px-3 sm:py-2 min-h-[44px] min-w-[44px] rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center justify-center space-x-1 cursor-pointer"
               title="Navigo sipas Faqes / Sures / Xhuzit"
             >
               <Compass className="w-4 h-4 text-amber-400" />
@@ -266,8 +277,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             {/* Switch to Verse by Verse */}
             {onSwitchToVerseByVerse && (
               <button
+                type="button"
                 onClick={() => onSwitchToVerseByVerse(currentSurahNum)}
-                className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-emerald-300 transition-colors hidden xs:flex items-center space-x-1"
+                className="p-2 min-h-[44px] rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-emerald-300 transition-colors hidden xs:flex items-center space-x-1 cursor-pointer"
                 title="Kalo në modalitetin Ajet pas Ajeti"
               >
                 <Layers className="w-4 h-4 text-emerald-400" />
@@ -277,8 +289,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
             {/* Settings */}
             <button
+              type="button"
               onClick={() => setShowSettingsModal(true)}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center space-x-1.5"
+              className="p-2 sm:px-3 sm:py-2 min-h-[44px] min-w-[44px] rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-amber-300 transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
               title="Cilësimet e Mushafit"
             >
               <Settings className="w-4 h-4 text-slate-300" />
@@ -289,43 +302,33 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
       )}
 
       {/* ----------------- MAIN READING CANVAS ----------------- */}
-      <div className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all">
-        {loading ? (
-          <div
-            className={`p-8 rounded-3xl border text-center space-y-3 shadow-lg ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
-          >
-            <RefreshCw className={`w-7 h-7 animate-spin mx-auto ${activeTheme.textColor}`} />
-            <p className={`text-xs font-medium ${activeTheme.subtextColor}`}>
-              Duke ngarkuar faqen {currentPage} të Mushafit...
-            </p>
-          </div>
-        ) : errorMessage ? (
-          <div className="bg-rose-950/40 border border-rose-800/80 p-6 rounded-2xl text-center space-y-3 max-w-sm">
-            <AlertCircle className="w-8 h-8 text-rose-400 mx-auto" />
-            <p className="text-xs text-rose-200">{errorMessage}</p>
-            <button
-              onClick={() => goToPage(currentPage)}
-              className="px-4 py-2 bg-rose-900 hover:bg-rose-800 text-white rounded-xl text-xs font-semibold"
-            >
-              Riprovo
-            </button>
-          </div>
-        ) : (
-          <MushafPageSpread
-            currentPage={currentPage}
-            spreadPages={spreadPages}
-            isTwoPageSpread={isTwoPageSpread}
-            theme={activeTheme}
-            fontScale={fontScale}
-            showTajweed={showTajweed}
-            activeVerseKey={activeVerseKey}
-            pageData1={pageData1}
-            fontFamily1={fontFamily1}
-            pageData2={pageData2}
-            fontFamily2={fontFamily2}
-            onVerseSelect={handleVerseSelect}
-          />
-        )}
+      <div
+        id="mushaf-reading-canvas"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowControls((prev) => !prev);
+        }}
+        className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all cursor-pointer select-none"
+      >
+        <MushafPageSpread
+          currentPage={currentPage}
+          spreadPages={spreadPages}
+          isTwoPageSpread={isTwoPageSpread}
+          theme={activeTheme}
+          fontScale={fontScale}
+          showTajweed={showTajweed}
+          activeVerseKey={activeVerseKey}
+          pageData1={pageData1}
+          fontFamily1={fontFamily1}
+          pageData2={pageData2}
+          fontFamily2={fontFamily2}
+          isLoading={loading}
+          errorMessage={errorMessage}
+          onRetry={handleRetry}
+          onVerseSelect={handleVerseSelect}
+        />
       </div>
 
       {/* ----------------- BOTTOM CONTROLS FOOTER ----------------- */}
@@ -333,13 +336,16 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
         <div
           id="mushaf-bottom-footer"
           onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all flex items-center justify-between text-xs"
         >
           {/* Previous Page */}
           <button
+            type="button"
             onClick={prevPage}
             disabled={currentPage <= 1 || loading}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium"
+            className="flex items-center space-x-1 px-3 py-2 min-h-[44px] rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium cursor-pointer"
             title="Faqja e Mëparshme"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -348,11 +354,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
           {/* Page Counter & Direct Jump */}
           <button
+            type="button"
             onClick={() => {
               setNavTab('faqe');
               setShowNavigationModal(true);
             }}
-            className="flex items-center space-x-2 font-mono text-xs px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors"
+            className="flex items-center space-x-2 font-mono text-xs px-3 py-2 min-h-[44px] rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold transition-colors cursor-pointer"
             title="Kliko për navigim"
           >
             <Compass className="w-4 h-4 text-amber-400" />
@@ -363,9 +370,10 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
 
           {/* Next Page */}
           <button
+            type="button"
             onClick={nextPage}
             disabled={currentPage >= 604 || loading}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium"
+            className="flex items-center space-x-1 px-3 py-2 min-h-[44px] rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700/60 disabled:opacity-30 transition-all font-medium cursor-pointer"
             title="Faqja Tjetër"
           >
             <span>Tjetra</span>
@@ -381,10 +389,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowAyahModal(false);
           }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-6"
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="bg-slate-900 border border-slate-800 rounded-3xl p-5 w-full max-w-sm text-slate-100 shadow-2xl space-y-4 animate-fadeIn"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -395,8 +407,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <span className="text-sm font-bold">Ajeti {activeVerseKey}</span>
               </div>
               <button
+                type="button"
                 onClick={() => setShowAyahModal(false)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400"
+                className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -405,11 +418,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             <div className="grid grid-cols-2 gap-2 text-xs font-medium">
               {/* Play Audio */}
               <button
+                type="button"
                 onClick={() => {
                   if (onPlayAyahAudio) onPlayAyahAudio(activeVerseKey);
                   setShowAyahModal(false);
                 }}
-                className="p-3 rounded-2xl bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-700/50 text-emerald-300 flex items-center space-x-2 transition-colors"
+                className="p-3 min-h-[44px] rounded-2xl bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-700/50 text-emerald-300 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
               >
                 <Volume2 className="w-4 h-4 text-emerald-400" />
                 <span>Dëgjo Ajetin</span>
@@ -418,12 +432,13 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
               {/* Jump to Verse-by-Verse */}
               {onSwitchToVerseByVerse && (
                 <button
+                  type="button"
                   onClick={() => {
                     const surahNum = parseInt(activeVerseKey.split(':')[0], 10);
                     onSwitchToVerseByVerse(surahNum);
                     setShowAyahModal(false);
                   }}
-                  className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center space-x-2 transition-colors"
+                  className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
                 >
                   <BookOpen className="w-4 h-4 text-amber-400" />
                   <span>Përkthimi</span>
@@ -441,10 +456,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowSurahModal(false);
           }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden shadow-2xl text-slate-100"
           >
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
@@ -453,8 +472,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <span>Zgjidhni Suren</span>
               </h3>
               <button
+                type="button"
                 onClick={() => setShowSurahModal(false)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400"
+                className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -466,7 +486,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 value={surahSearchTerm}
                 onChange={(e) => setSurahSearchTerm(e.target.value)}
                 placeholder="Kërko Suren sipas emrit ose numrit..."
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full px-3 py-2.5 min-h-[44px] rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -478,7 +498,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                     goToSurah(surah.number);
                     setShowSurahModal(false);
                   }}
-                  className={`pt-1.5 pb-1 px-2.5 rounded-xl cursor-pointer flex items-center justify-between transition-colors ${
+                  className={`py-2 px-2.5 min-h-[44px] rounded-xl cursor-pointer flex items-center justify-between transition-colors ${
                     currentSurahNum === surah.number
                       ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300'
                       : 'hover:bg-slate-800 text-slate-200'
@@ -508,10 +528,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowNavigationModal(false);
           }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden shadow-2xl text-slate-100"
           >
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
@@ -520,8 +544,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <span>Navigimi në Mushaf</span>
               </h3>
               <button
+                type="button"
                 onClick={() => setShowNavigationModal(false)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400"
+                className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -530,25 +555,28 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             {/* Tab Selector */}
             <div className="grid grid-cols-3 p-2 bg-slate-950 border-b border-slate-800 gap-1 text-xs font-semibold">
               <button
+                type="button"
                 onClick={() => setNavTab('faqe')}
-                className={`py-1.5 rounded-lg transition-colors ${
-                  navTab === 'faqe' ? 'bg-amber-500 text-slate-950' : 'text-slate-400 hover:text-slate-200'
+                className={`py-2 min-h-[44px] rounded-lg transition-colors cursor-pointer ${
+                  navTab === 'faqe' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Faqe (1-604)
               </button>
               <button
+                type="button"
                 onClick={() => setNavTab('sure')}
-                className={`py-1.5 rounded-lg transition-colors ${
-                  navTab === 'sure' ? 'bg-amber-500 text-slate-950' : 'text-slate-400 hover:text-slate-200'
+                className={`py-2 min-h-[44px] rounded-lg transition-colors cursor-pointer ${
+                  navTab === 'sure' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Sure (114)
               </button>
               <button
+                type="button"
                 onClick={() => setNavTab('xhuz')}
-                className={`py-1.5 rounded-lg transition-colors ${
-                  navTab === 'xhuz' ? 'bg-amber-500 text-slate-950' : 'text-slate-400 hover:text-slate-200'
+                className={`py-2 min-h-[44px] rounded-lg transition-colors cursor-pointer ${
+                  navTab === 'xhuz' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Xhuz (30)
@@ -586,14 +614,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                         setNavFaqeError('');
                       }}
                       placeholder={`psh. ${currentPage}`}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm font-mono text-center text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500"
+                      className="w-full px-4 py-2.5 min-h-[44px] rounded-xl bg-slate-950 border border-slate-700 text-sm font-mono text-center text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500"
                     />
                     {navFaqeError && <p className="text-xs text-rose-400 mt-1">{navFaqeError}</p>}
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors"
+                    className="w-full py-2.5 min-h-[44px] rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors cursor-pointer flex items-center justify-center"
                   >
                     Shko te Faqja
                   </button>
@@ -609,7 +637,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                         goToSurah(surah.number);
                         setShowNavigationModal(false);
                       }}
-                      className="pt-1.5 pb-1 px-2 rounded-xl cursor-pointer flex items-center justify-between hover:bg-slate-800 text-xs"
+                      className="py-2.5 px-2 min-h-[44px] rounded-xl cursor-pointer flex items-center justify-between hover:bg-slate-800 text-xs"
                     >
                       <span className="font-medium text-slate-200">
                         {surah.number}. {surah.transliteration}
@@ -625,11 +653,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                   {Array.from({ length: 30 }, (_, i) => i + 1).map((juz) => (
                     <button
                       key={juz}
+                      type="button"
                       onClick={() => {
                         goToJuz(juz);
                         setShowNavigationModal(false);
                       }}
-                      className="p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-center transition-colors font-medium text-xs"
+                      className="p-3 min-h-[44px] rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-center transition-colors font-medium text-xs cursor-pointer"
                     >
                       <div className="text-amber-400 font-bold">Xhuz {juz}</div>
                       <div className="text-[10px] text-slate-500 mt-0.5">Faqja {JUZ_START_PAGES[juz]}</div>
@@ -649,10 +678,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowSettingsModal(false);
           }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl text-slate-100 p-5 space-y-4"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -661,8 +694,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <span>Cilësimet e Mushafit</span>
               </h3>
               <button
+                type="button"
                 onClick={() => setShowSettingsModal(false)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400"
+                className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -675,8 +709,9 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 {Object.values(MUSHAF_THEMES).map((theme) => (
                   <button
                     key={theme.id}
+                    type="button"
                     onClick={() => handleSelectTheme(theme.id)}
-                    className={`p-2.5 rounded-xl border flex items-center justify-between transition-all ${
+                    className={`p-2.5 min-h-[44px] rounded-xl border flex items-center justify-between transition-all cursor-pointer ${
                       selectedThemeKey === theme.id
                         ? 'border-amber-500 bg-amber-500/10 text-amber-300'
                         : 'border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800'
@@ -697,13 +732,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                   <div className="text-[10px] text-slate-400">Rekomanduar për Ekran të Gjerë / Tablet</div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setTwoPageSpread(!isTwoPageSpread)}
-                  className={`w-10 h-6 rounded-full transition-colors relative ${
+                  className={`w-12 h-7 rounded-full transition-colors relative cursor-pointer ${
                     isTwoPageSpread ? 'bg-amber-500' : 'bg-slate-800'
                   }`}
                 >
                   <div
-                    className={`w-4 h-4 rounded-full bg-white transition-transform absolute top-1 ${
+                    className={`w-5 h-5 rounded-full bg-white transition-transform absolute top-1 ${
                       isTwoPageSpread ? 'right-1' : 'left-1'
                     }`}
                   />
@@ -724,7 +760,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 step={5}
                 value={fontScale}
                 onChange={(e) => setFontScale(parseInt(e.target.value, 10))}
-                className="w-full accent-amber-500"
+                className="w-full accent-amber-500 h-6 cursor-pointer"
               />
             </div>
           </div>

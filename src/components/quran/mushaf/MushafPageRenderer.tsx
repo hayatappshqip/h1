@@ -42,6 +42,9 @@ interface MushafPageRendererProps {
   showTajweed?: boolean;
   activeVerseKey?: string | null;
   side?: 'left' | 'right' | 'single';
+  isLoading?: boolean;
+  errorMessage?: string | null;
+  onRetry?: () => void;
   onVerseSelect?: (verseKey: string) => void;
 }
 
@@ -54,6 +57,9 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   showTajweed = false,
   activeVerseKey = null,
   side = 'single',
+  isLoading = false,
+  errorMessage = null,
+  onRetry,
   onVerseSelect,
 }) => {
   if (!pageData || !Array.isArray(pageData.verses) || pageData.verses.length === 0) {
@@ -65,9 +71,33 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
         theme={theme}
         side={side}
       >
-        <div className="flex items-center justify-center h-64 text-xs italic text-slate-400">
-          Duke ngarkuar faqen {pageNumber}...
-        </div>
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center h-64 space-y-3">
+            <div className="w-6 h-6 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+            <div className="text-xs italic text-slate-400">
+              Duke ngarkuar faqen {pageNumber}...
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-64 space-y-3 text-center px-4">
+            <p className="text-sm font-medium text-rose-400">Faqja nuk u ngarkua.</p>
+            {errorMessage && (
+              <p className="text-xs text-slate-400 max-w-xs">{errorMessage}</p>
+            )}
+            {onRetry && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRetry();
+                }}
+                className="px-4 py-2 min-h-[44px] min-w-[88px] text-xs font-semibold text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 rounded-xl transition-colors cursor-pointer flex items-center justify-center"
+              >
+                Riprovo
+              </button>
+            )}
+          </div>
+        )}
       </MushafPageFrame>
     );
   }
