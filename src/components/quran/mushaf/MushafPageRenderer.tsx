@@ -1,0 +1,160 @@
+/**
+ * MushafPageRenderer Component
+ * Renders the authentic 15-line Madinah Mushaf layout for a single page with QCF V2 glyphs,
+ * Surah header banners, Bismillah frames, and verse interaction.
+ */
+import React from 'react';
+import { MushafPageFrame, PaperTheme } from './MushafPageFrame';
+import { AyahInteractionLayer } from './AyahInteractionLayer';
+import { ALL_SURAHS_META, getSurahNumberFromPage } from '../../../data/quranData';
+
+interface CleanWord {
+  position: number;
+  char_type_name: string;
+  code_v2: string;
+  v2_page: number;
+  line_number: number;
+  page_number: number;
+}
+
+interface CleanVerse {
+  page_number: number;
+  juz_number: number;
+  hizb_number: number;
+  rub_el_hizb_number: number;
+  chapter_id: number;
+  verse_number: number;
+  verse_key: string;
+  words: CleanWord[];
+}
+
+export interface QuranPageData {
+  page_number: number;
+  verses: CleanVerse[];
+}
+
+interface MushafPageRendererProps {
+  pageNumber: number;
+  pageData: QuranPageData | null;
+  fontFamily: string;
+  theme: PaperTheme;
+  fontScale?: number;
+  showTajweed?: boolean;
+  activeVerseKey?: string | null;
+  side?: 'left' | 'right' | 'single';
+  onVerseSelect?: (verseKey: string) => void;
+}
+
+export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
+  pageNumber,
+  pageData,
+  fontFamily,
+  theme,
+  fontScale = 100,
+  showTajweed = false,
+  activeVerseKey = null,
+  side = 'single',
+  onVerseSelect,
+}) => {
+  if (!pageData || !Array.isArray(pageData.verses) || pageData.verses.length === 0) {
+    return (
+      <MushafPageFrame
+        pageNumber={pageNumber}
+        juzNumber={1}
+        hizbNumber={1}
+        theme={theme}
+        side={side}
+      >
+        <div className="flex items-center justify-center h-64 text-xs italic text-slate-400">
+          Duke ngarkuar faqen {pageNumber}...
+        </div>
+      </MushafPageFrame>
+    );
+  }
+
+  // Derive metadata
+  const firstVerse = pageData.verses[0];
+  const juzNum = firstVerse?.juz_number || 1;
+  const hizbNum = firstVerse?.hizb_number || 1;
+  const primarySurahNum = getSurahNumberFromPage(pageNumber);
+  const primarySurahMeta = ALL_SURAHS_META.find((s) => s.number === primarySurahNum);
+
+  // Group words into lines and associate with their parent verse_key
+  const linesMap: { [lineNumber: number]: { word: CleanWord; verseKey: string; surah: number; ayah: number }[] } = {};
+
+  pageData.verses.forEach((verse) => {
+    if (Array.isArray(verse.words)) {
+      verse.words.forEach((word) => {
+        const lNum = word.line_number || 1;
+        if (!linesMap[lNum]) linesMap[lNum] = [];
+        linesMap[lNum].push({
+          word,
+          verseKey: verse.verse_key,
+          surah: verse.chapter_id,
+          ayah: verse.verse_number,
+        });
+      });
+    }
+  });
+
+  const maxLine = Math.max(15, ...Object.keys(linesMap).map((n) => parseInt(n, 10)));
+  const sortedLineNumbers = Array.from({ length: maxLine }, (_, i) => i + 1);
+
+  return (
+    <MushafPageFrame
+      pageNumber={pageNumber}
+      juzNumber={juzNum}
+      hizbNumber={hizbNum}
+      surahNameArabic={primarySurahMeta?.name}
+      theme={theme}
+      side={side}
+    >
+      <div
+        className="qcf-mushaf-page flex flex-col justify-between w-full h-full py-0.5 space-y-1 sm:space-y-1.5 select-none"
+        style={{
+          fontSize: fontScale !== 100 ? `${fontScale}%` : undefined,
+        }}
+      >
+        {sortedLineNumbers.map((lineNum) => {
+          const lineItems = linesMap[lineNum] || [];
+
+          if (lineItems.length === 0) {
+            return <div key={`empty-line-${lineNum}`} className="w-full h-6 sm:h-8" />;
+          }
+
+          return (
+            <div
+              key={`line-${lineNum}`}
+              className="flex items-center justify-center flex-wrap w-full my-0.5 leading-none gap-x-1 sm:gap-x-1.5"
+              dir="rtl"
+            >
+              {lineItems.map(({ word, verseKey }, wIdx) => {
+                const isEndOfAyah = word.char_type_name === 'end';
+                return (
+                  <AyahInteractionLayer
+                    key={`${verseKey}-${word.position}-${wIdx}`}
+                    verseKey={verseKey}
+                    isSelected={activeVerseKey === verseKey}
+                    onSelect={onVerseSelect}
+                  >
+                    <span
+                      className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.85rem] md:text-[2.15rem] lg:text-[2.45rem] text-center inline-block transition-colors ${
+                        showTajweed ? 'hover:text-emerald-600' : ''
+                      } ${isEndOfAyah ? 'opacity-90 font-bold' : ''} ${theme.textColor} ${theme.hoverColor}`}
+                      style={{
+                        fontFamily: `'${fontFamily}'`,
+                      }}
+                      title={verseKey}
+                    >
+                      {word.code_v2}
+                    </span>
+                  </AyahInteractionLayer>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </MushafPageFrame>
+  );
+};

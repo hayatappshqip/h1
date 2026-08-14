@@ -108,6 +108,8 @@ export function resolveQuranPosition(input: {
   surah?: number;
   ayah?: number;
   page?: number;
+  activeReadingMode?: 'mushaf' | 'mushaf_tajweed' | 'verse';
+  updatedAt?: number;
 }): QuranPosition {
   let surah = input.surah;
   let ayah = input.ayah;
@@ -135,12 +137,14 @@ export function resolveQuranPosition(input: {
   const pageMeta = CANONICAL_MUSHAF_PAGES[resolvedPage - 1];
 
   return {
-    verseKey,
     surah: validSurah,
     ayah: validAyah,
+    verseKey,
     page: resolvedPage,
     juz: pageMeta ? pageMeta.juz : 1,
     hizbQuarter: pageMeta ? pageMeta.hizbQuarter : 1,
+    activeReadingMode: input.activeReadingMode || 'mushaf',
+    updatedAt: input.updatedAt || Date.now(),
   };
 }
 

@@ -155,3 +155,49 @@ export function navigateToHizbQuarter(state: QuranNavigationState, hizbQuarter: 
     spreadPages: calculateSpreadPages(startPage),
   };
 }
+
+/**
+ * Pure transition for jumping to a specific Verse (by verseKey or surah + ayah).
+ */
+export function navigateToVerse(
+  state: QuranNavigationState,
+  input: { verseKey?: string; surah?: number; ayah?: number }
+): QuranNavigationState {
+  const newPos = resolveQuranPosition({
+    verseKey: input.verseKey,
+    surah: input.surah,
+    ayah: input.ayah,
+  });
+  return {
+    ...state,
+    currentPosition: newPos,
+    spreadPages: calculateSpreadPages(newPos.page),
+  };
+}
+
+/**
+ * Pure transition for toggling or setting two-page spread mode.
+ */
+export function setTwoPageSpread(state: QuranNavigationState, isSpread: boolean): QuranNavigationState {
+  return {
+    ...state,
+    isTwoPageSpread: isSpread,
+    spreadPages: calculateSpreadPages(state.currentPosition.page),
+  };
+}
+
+/**
+ * Pure transition for switching reading mode (mushaf, by_verse, continuous).
+ */
+export function setReadingMode(state: QuranNavigationState, mode: QuranReadingMode): QuranNavigationState {
+  return {
+    ...state,
+    readingMode: mode,
+    currentPosition: {
+      ...state.currentPosition,
+      activeReadingMode: mode === 'by_verse' ? 'verse' : 'mushaf',
+      updatedAt: Date.now(),
+    },
+  };
+}
+

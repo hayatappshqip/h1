@@ -31,12 +31,14 @@ export interface QuranTranslation {
  * Explicitly DOES NOT contain UI, audio playback, or modal state.
  */
 export interface QuranPosition {
-  verseKey: string;              // "2:255"
   surah: number;                 // 2
   ayah: number;                  // 255
+  verseKey: string;              // "2:255"
   page: number;                  // 42
   juz: number;                   // 3
   hizbQuarter: number;           // 17
+  activeReadingMode?: 'mushaf' | 'mushaf_tajweed' | 'verse';
+  updatedAt?: number;
 }
 
 export interface MushafPageSurahHeader {

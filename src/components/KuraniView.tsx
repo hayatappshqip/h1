@@ -130,6 +130,10 @@ import { QuranStatsChart } from './QuranStatsChart';
 import { HifzModule } from './HifzModule';
 import { KhatamTrackerView } from './KhatamTrackerView';
 import { QcfMushafReader } from './QcfMushafReader';
+import { MushafReader } from './quran/mushaf/MushafReader';
+import { QuranPositionProvider } from '../context/QuranPositionContext';
+
+const QURAN_V2_MUSHAF_ENABLED = true;
 
 export interface Reciter {
  key: string;
@@ -2128,6 +2132,21 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  )}
  </div>
  ) : activeTab === 'mushaf_qcf' ? (
+ QURAN_V2_MUSHAF_ENABLED ? (
+ <QuranPositionProvider initialSurah={mushafSurahNum || 1}>
+ <MushafReader
+ onBack={() => setActiveTab('surahs')}
+ onSwitchToVerseByVerse={(surahNum) => {
+ setSelectedSurahNum(surahNum);
+ setActiveTab('surahs');
+ }}
+ onPlayAyahAudio={(verseKey) => {
+ const [s, a] = verseKey.split(':').map(Number);
+ playAyahAudio(a, s);
+ }}
+ />
+ </QuranPositionProvider>
+ ) : (
  <QcfMushafReader
  initialSurahNum={mushafSurahNum || 1}
  onBack={() => setActiveTab('surahs')}
@@ -2136,6 +2155,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  setActiveTab('surahs');
  }}
  />
+ )
  ) : activeTab === 'hifz' ? (
  <HifzModule />
   ) : activeTab === 'khatam' ? (
