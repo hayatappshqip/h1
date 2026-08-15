@@ -91,7 +91,7 @@ export const MushafPageFrame: React.FC<MushafPageFrameProps> = ({
   return (
     <div
       id={`mushaf-page-frame-${pageNumber}`}
-      className={`relative w-full h-full flex flex-col justify-between p-3 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border shadow-2xl overflow-hidden select-none transition-colors duration-300 ${theme.paperBg} ${theme.paperBorder} ${
+      className={`@container relative w-full h-full aspect-[1/1.42] max-h-[calc(100dvh-7.5rem)] flex flex-col justify-between p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-2xl overflow-hidden select-none transition-colors duration-300 ${theme.paperBg} ${theme.paperBorder} ${
         side === 'right' ? 'sm:rounded-l-none' : side === 'left' ? 'sm:rounded-r-none' : ''
       }`}
     >
@@ -108,30 +108,30 @@ export const MushafPageFrame: React.FC<MushafPageFrameProps> = ({
 
       {/* Page Header (Surah Name & Juz Number) */}
       <div
-        className={`pt-1 pb-2 border-b flex justify-between items-center text-[10px] sm:text-xs font-serif opacity-85 transition-colors ${theme.spineColor} ${theme.subtextColor}`}
+        className={`pt-0.5 pb-1 border-b flex justify-between items-center text-[clamp(10px,2.4cqw,13px)] font-serif opacity-85 transition-colors whitespace-nowrap ${theme.spineColor} ${theme.subtextColor}`}
       >
-        <span className="font-arabic text-xs sm:text-sm font-semibold">
+        <span className="font-arabic text-[clamp(11px,2.8cqw,15px)] font-semibold whitespace-nowrap">
           {surahNameArabic || `Surja`}
         </span>
-        <span className="font-mono tracking-wider">
+        <span className="font-mono tracking-wider whitespace-nowrap">
           Xhuzi {juzNumber}
         </span>
       </div>
 
       {/* Main 15-Line Quran Reading Stage */}
-      <div className="flex-1 flex flex-col justify-center my-auto py-1">
+      <div className="flex-1 flex flex-col justify-between my-auto py-1 min-h-0 overflow-hidden">
         {children}
       </div>
 
       {/* Page Footer (Page Number & Hizb Quarter Marker) */}
       <div
-        className={`pt-2 mt-1 border-t flex justify-between items-center text-[10px] sm:text-xs font-mono opacity-85 transition-colors ${theme.spineColor} ${theme.subtextColor}`}
+        className={`pt-1 mt-0.5 border-t flex justify-between items-center text-[clamp(10px,2.2cqw,12px)] font-mono opacity-85 transition-colors whitespace-nowrap ${theme.spineColor} ${theme.subtextColor}`}
       >
-        <span>Hizb {hizbNumber}</span>
-        <span className="font-bold text-xs sm:text-sm">
+        <span className="whitespace-nowrap">Hizb {hizbNumber}</span>
+        <span className="font-bold text-[clamp(11px,2.8cqw,14px)] whitespace-nowrap">
           {pageNumber}
         </span>
-        <span>Madinah Mushaf</span>
+        <span className="whitespace-nowrap">Madinah Mushaf</span>
       </div>
     </div>
   );

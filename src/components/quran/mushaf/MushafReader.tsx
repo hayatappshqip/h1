@@ -334,7 +334,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           e.stopPropagation();
           setShowControls((prev) => !prev);
         }}
-        className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all cursor-pointer select-none"
+        className="flex-1 w-full max-w-6xl mx-auto flex items-center justify-center p-1 sm:p-3 md:p-4 transition-all cursor-pointer select-none overflow-hidden"
       >
         <MushafPageSpread
           currentPage={currentPage}

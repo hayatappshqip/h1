@@ -457,16 +457,19 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
     return (
       <div
-        className={`w-full h-full flex flex-col justify-between p-3 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border shadow-xl relative overflow-hidden select-none transition-colors duration-300 ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
+        className={`@container w-full h-full aspect-[1/1.42] max-h-[calc(100dvh-7.5rem)] flex flex-col justify-between p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-xl relative overflow-hidden select-none transition-colors duration-300 ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
       >
         <div className={`absolute inset-2 border rounded-xl pointer-events-none opacity-40 ${activeTheme.paperBorder}`} />
 
+        {/* Traditional Page Header */}
+        <div className={`pt-0.5 pb-1 border-b flex justify-between items-center text-[clamp(10px,2.4cqw,13px)] font-serif opacity-85 ${activeTheme.spineColor} ${activeTheme.subtextColor}`}>
+          <span className="font-arabic text-[clamp(11px,2.8cqw,15px)] font-semibold">Surja</span>
+          <span className="font-mono">Xhuzi {juzNum}</span>
+        </div>
+
         {/* QCF V2 ISOLATED PAGE */}
         <div
-          className="qcf-mushaf-page my-auto space-y-1 sm:space-y-1.5 py-1 transition-all duration-200"
-          style={{
-            fontSize: fontScale !== 100 ? `${fontScale}%` : undefined
-          }}
+          className="qcf-mushaf-page flex-1 flex flex-col justify-between my-auto py-1 min-h-0 overflow-hidden select-none"
         >
           {sortedLineNumbers.map((lineNum) => {
             const special = specialLines[lineNum];
@@ -477,14 +480,14 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                 return (
                   <div
                     key={`header-${special.surahNumber}-${lineNum}`}
-                    className={`w-full my-0.5 sm:my-1 px-3 sm:px-5 py-1 rounded-xl border text-center transition-colors shadow-sm ${
+                    className={`flex-1 w-full max-h-[6.5cqw] min-h-[22px] px-[3%] py-[0.5%] rounded-lg sm:rounded-xl border flex items-center justify-between transition-colors shadow-sm select-none ${
                       activeTheme.isDark
                         ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
                         : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
                     }`}
                     dir="rtl"
                   >
-                    <span className="font-arabic font-bold text-xs sm:text-sm md:text-base">
+                    <span className="font-arabic font-bold text-[clamp(11px,3.2cqw,18px)] tracking-wide mx-auto whitespace-nowrap">
                       {sName}
                     </span>
                   </div>
@@ -494,10 +497,10 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                 return (
                   <div
                     key={`bismillah-${special.surahNumber}-${lineNum}`}
-                    className="w-full my-0.5 text-center select-none flex items-center justify-center"
+                    className="flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap"
                     dir="rtl"
                   >
-                    <span className={`font-arabic text-[1.15rem] xs:text-[1.35rem] sm:text-[1.65rem] md:text-[1.95rem] leading-none ${activeTheme.textColor}`}>
+                    <span className={`font-arabic text-[clamp(13px,3.8cqw,22px)] leading-none whitespace-nowrap ${activeTheme.textColor}`}>
                       بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
                     </span>
                   </div>
@@ -509,23 +512,25 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             
             // Render spacer if line is empty
             if (words.length === 0) {
-                return <div key={`empty-${lineNum}`} className="w-full h-8 sm:h-10" />;
+                return <div key={`empty-${lineNum}`} className="flex-1 w-full min-h-[14px]" />;
             }
 
             return (
               <div
                 key={lineNum}
-                className="flex items-center justify-center flex-wrap w-full my-0.5 leading-none gap-x-1 sm:gap-x-1.5"
+                className="flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none"
                 dir="rtl"
               >
                 {words.map((w, wIdx) => (
                   <span
                     key={`${w.code_v2}-${wIdx}`}
-                    className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.9rem] md:text-[2.2rem] lg:text-[2.5rem] text-center inline-block transition-colors ${
+                    className={`qcf-v2-word text-center inline-flex items-center justify-center whitespace-nowrap transition-colors ${
                       isTajweedActive ? 'hover:text-emerald-600' : ''
                     } ${activeTheme.textColor} ${activeTheme.hoverColor}`}
                     style={{
                       fontFamily: `'${fontName}'`,
+                      fontSize: `calc(${fontScale / 100} * clamp(13px, 5.2cqw, 32px))`,
+                      lineHeight: 1,
                     }}
                   >
                     {w.code_v2}
@@ -537,10 +542,10 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
         </div>
 
         {/* Page Footer Marker */}
-        <div className={`pt-3 mt-2 border-t flex justify-between items-center text-[10px] sm:text-[11px] font-mono opacity-80 ${activeTheme.spineColor} ${activeTheme.subtextColor}`}>
-          <span>Xhuz {juzNum}</span>
-          <span className="font-bold">Faqja {pNum}</span>
-          <span>Hizb {hizbNum}</span>
+        <div className={`pt-1 mt-0.5 border-t flex justify-between items-center text-[clamp(10px,2.2cqw,12px)] font-mono opacity-80 whitespace-nowrap ${activeTheme.spineColor} ${activeTheme.subtextColor}`}>
+          <span className="whitespace-nowrap">Xhuz {juzNum}</span>
+          <span className="font-bold text-[clamp(11px,2.8cqw,14px)] whitespace-nowrap">Faqja {pNum}</span>
+          <span className="whitespace-nowrap">Hizb {hizbNum}</span>
         </div>
       </div>
     );
@@ -631,16 +636,16 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             </button>
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center gap-3 md:gap-6">
+          <div className="w-full h-full max-w-5xl max-h-[calc(100dvh-7.5rem)] flex items-center justify-center gap-1 sm:gap-2">
             {/* 2-page spread */}
             {isSpread && secondPageData && (
-              <div className="flex-1 h-full max-w-lg hidden sm:block">
+              <div className="flex-1 h-full max-w-[min(50%,calc((100dvh-7.5rem)/1.42))] aspect-[1/1.42] flex items-center justify-center hidden sm:flex">
                 {renderPageLines(secondPageData, secondFontFamily, currentPage + 1)}
               </div>
             )}
 
             {/* Primary Page */}
-            <div className="flex-1 h-full max-w-lg">
+            <div className={`flex-1 h-full ${isSpread ? 'max-w-[min(50%,calc((100dvh-7.5rem)/1.42))]' : 'max-w-[min(100%,calc((100dvh-7.5rem)/1.42))]'} aspect-[1/1.42] flex items-center justify-center`}>
               {renderPageLines(pageData, fontFamily, currentPage)}
             </div>
           </div>

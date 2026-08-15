@@ -236,4 +236,62 @@ describe('Mushaf Content Rendering Suite', () => {
     // Clean up
     fetchSpy.mockRestore();
   });
+
+  it('preserves fixed 15-line Mushaf geometry with non-wrapping lines and container aspect ratio', () => {
+    // Mock 15 lines of data
+    const mockFullPageData: QuranPageData = {
+      page_number: 106,
+      verses: [
+        {
+          page_number: 106,
+          juz_number: 6,
+          hizb_number: 11,
+          rub_el_hizb_number: 21,
+          chapter_id: 5,
+          verse_number: 1,
+          verse_key: '5:1',
+          words: Array.from({ length: 13 }, (_, i) => ({
+            position: i + 1,
+            char_type_name: i === 12 ? 'end' : 'word',
+            code_v2: `glyph_${i + 1}`,
+            v2_page: 106,
+            line_number: i + 3,
+            page_number: 106,
+          })),
+        },
+      ],
+    };
+
+    const { container } = render(
+      <MushafPageRenderer
+        pageNumber={106}
+        pageData={mockFullPageData}
+        fontFamily="QCF_P106"
+        theme={defaultTheme}
+      />
+    );
+
+    // Verify page frame enforces @container and fixed aspect ratio
+    const frame = container.querySelector('#mushaf-page-frame-106');
+    expect(frame).toBeInTheDocument();
+    expect(frame?.className).toContain('@container');
+    expect(frame?.className).toContain('aspect-[1/1.42]');
+
+    // Verify that every line row enforces nowrap so lines never reflow or break
+    const lines = container.querySelectorAll('.qcf-mushaf-page > div');
+    expect(lines.length).toBe(15);
+
+    // Line 1 is Surah Header
+    expect(lines[0]).toHaveAttribute('data-surah-header', '5');
+    // Line 2 is Bismillah Frame
+    expect(lines[1]).toHaveAttribute('data-bismillah-frame', 'true');
+
+    // Lines 3-15 are verse lines
+    for (let l = 2; l < 15; l++) {
+      const lineEl = lines[l];
+      expect(lineEl.className).toContain('flex-nowrap');
+      expect(lineEl.className).toContain('whitespace-nowrap');
+      expect(lineEl.className).toContain('overflow-hidden');
+    }
+  });
 });

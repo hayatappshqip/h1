@@ -26,20 +26,20 @@ export const SurahHeaderBanner: React.FC<{
   return (
     <div
       data-surah-header={surahNumber}
-      className={`w-full my-0.5 sm:my-1 px-3 sm:px-5 py-1 sm:py-1.5 rounded-xl border flex items-center justify-between transition-colors shadow-sm ${
+      className={`flex-1 w-full max-h-[6.5cqw] min-h-[22px] px-[3%] py-[0.5%] rounded-lg sm:rounded-xl border flex items-center justify-between transition-colors shadow-sm select-none ${
         theme.isDark
           ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
           : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
       }`}
       dir="rtl"
     >
-      <span className="text-[10px] sm:text-xs font-arabic opacity-75 hidden xs:inline">
+      <span className="text-[clamp(9px,2.2cqw,12px)] font-arabic opacity-75 hidden xs:inline whitespace-nowrap">
         {ayahCountLabel}
       </span>
-      <span className="font-arabic font-bold text-xs sm:text-sm md:text-base tracking-wide mx-auto">
+      <span className="font-arabic font-bold text-[clamp(11px,3.2cqw,18px)] tracking-wide mx-auto whitespace-nowrap">
         {surahName}
       </span>
-      <span className="text-[10px] sm:text-xs font-arabic opacity-75 hidden xs:inline">
+      <span className="text-[clamp(9px,2.2cqw,12px)] font-arabic opacity-75 hidden xs:inline whitespace-nowrap">
         {revelationLabel}
       </span>
     </div>
@@ -52,11 +52,11 @@ export const BismillahFrame: React.FC<{
   return (
     <div
       data-bismillah-frame="true"
-      className="w-full my-0.5 text-center select-none flex items-center justify-center"
+      className="flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap"
       dir="rtl"
     >
       <span
-        className={`font-arabic text-[1.15rem] xs:text-[1.35rem] sm:text-[1.65rem] md:text-[1.95rem] leading-none transition-colors ${theme.textColor}`}
+        className={`font-arabic text-[clamp(13px,3.8cqw,22px)] leading-none transition-colors whitespace-nowrap ${theme.textColor}`}
       >
         بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
       </span>
@@ -230,10 +230,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
       side={side}
     >
       <div
-        className="qcf-mushaf-page flex flex-col justify-between w-full h-full py-0.5 space-y-1 sm:space-y-1.5 select-none"
-        style={{
-          fontSize: fontScale !== 100 ? `${fontScale}%` : undefined,
-        }}
+        className="qcf-mushaf-page flex flex-col justify-between w-full h-full my-auto select-none overflow-hidden"
       >
         {sortedLineNumbers.map((lineNum) => {
           const special = specialLines[lineNum];
@@ -260,13 +257,13 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
           const lineItems = linesMap[lineNum] || [];
 
           if (lineItems.length === 0) {
-            return <div key={`empty-line-${lineNum}`} className="w-full h-6 sm:h-8" />;
+            return <div key={`empty-line-${lineNum}`} className="flex-1 w-full min-h-[14px]" />;
           }
 
           return (
             <div
               key={`line-${lineNum}`}
-              className="flex items-center justify-center flex-wrap w-full my-0.5 leading-none gap-x-1 sm:gap-x-1.5"
+              className="flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none"
               dir="rtl"
             >
               {lineItems.map(({ word, verseKey }, wIdx) => {
@@ -279,11 +276,13 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                     onSelect={onVerseSelect}
                   >
                     <span
-                      className={`qcf-v2-word text-[1.25rem] xs:text-[1.45rem] sm:text-[1.85rem] md:text-[2.15rem] lg:text-[2.45rem] text-center inline-block transition-colors ${
+                      className={`qcf-v2-word text-center inline-flex items-center justify-center whitespace-nowrap transition-colors ${
                         showTajweed ? 'hover:text-emerald-600' : ''
                       } ${isEndOfAyah ? 'opacity-90 font-bold' : ''} ${theme.textColor} ${theme.hoverColor}`}
                       style={{
                         fontFamily: `'${fontFamily}'`,
+                        fontSize: `calc(${fontScale / 100} * clamp(13px, 5.2cqw, 32px))`,
+                        lineHeight: 1,
                       }}
                       title={verseKey}
                     >
