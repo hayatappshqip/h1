@@ -19,6 +19,7 @@ import {
   Palette,
   Search,
   Bookmark,
+  BookMarked,
   Compass,
   Volume2,
   Check,
@@ -29,6 +30,7 @@ import { useQuranPosition } from '../../../context/QuranPositionContext';
 import { MushafPageSpread } from './MushafPageSpread';
 import { MUSHAF_THEMES, PaperTheme } from './MushafPageFrame';
 import { QuranPageData } from './MushafPageRenderer';
+import { TafsirOverlay } from './TafsirOverlay';
 import { QuranBookmark } from '../../../types';
 import {
   loadDurableBookmarks,
@@ -90,6 +92,8 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   // Active interaction
   const [activeVerseKey, setActiveVerseKey] = useState<string | null>(null);
   const [showAyahModal, setShowAyahModal] = useState<boolean>(false);
+  const [showTafsirOverlay, setShowTafsirOverlay] = useState<boolean>(false);
+  const [tafsirVerseKey, setTafsirVerseKey] = useState<string | null>(null);
 
   // Bookmarks State & Sync
   const [internalBookmarks, setInternalBookmarks] = useState<QuranBookmark[]>(bookmarksProp || []);
@@ -569,15 +573,43 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                     onSwitchToVerseByVerse(surahNum);
                     setShowAyahModal(false);
                   }}
-                  className="col-span-2 p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
+                  className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
                 >
                   <BookOpen className="w-4 h-4 text-amber-400" />
-                  <span>Përkthimi në Shqip</span>
+                  <span>Përkthimi</span>
                 </button>
               )}
+
+              {/* View Tafsir */}
+              <button
+                type="button"
+                data-testid="mushaf-view-tafsir-btn"
+                onClick={() => {
+                  setTafsirVerseKey(activeVerseKey);
+                  setShowTafsirOverlay(true);
+                  setShowAyahModal(false);
+                }}
+                className={`${
+                  onSwitchToVerseByVerse ? '' : 'col-span-2'
+                } p-3 min-h-[44px] rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 flex items-center justify-center space-x-2 transition-colors cursor-pointer`}
+              >
+                <BookMarked className="w-4 h-4 text-amber-400" />
+                <span>Shiko Tefsirin</span>
+              </button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* ----------------- TAFSIR OVERLAY ----------------- */}
+      {showTafsirOverlay && tafsirVerseKey && (
+        <TafsirOverlay
+          verseKey={tafsirVerseKey}
+          onClose={() => {
+            setShowTafsirOverlay(false);
+            setTafsirVerseKey(null);
+          }}
+        />
       )}
 
       {/* ----------------- SURAH SELECTION MODAL ----------------- */}

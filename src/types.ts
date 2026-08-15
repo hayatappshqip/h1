@@ -243,3 +243,32 @@ export interface HayatBackupV2 {
  postPrayerDhikrSessions: PostPrayerDhikrSession[];
  fastingState?: FastingState;
 }
+
+// Tafsir Types
+export type TafsirLanguage = 'sq' | 'en' | 'ar';
+
+export interface TafsirSource {
+ id: string; // e.g. 'ibn-kathir', 'muyassar', 'saadi', 'nahi-footnotes'
+ name: string; // e.g. 'Tefsiri i Ibn Kethirit (I shkurtuar)'
+ author: string; // e.g. 'Hafidh Ibn Kethir'
+ language: TafsirLanguage;
+ languageLabel: string; // 'Shqip' | 'English' | 'العربية'
+ provider: 'quran.com' | 'quranenc';
+ resourceId?: number;
+ translationKey?: string;
+ attribution: string;
+}
+
+export interface TafsirEntry {
+ verseKey: string; // e.g. '1:2'
+ surahNumber: number;
+ ayahNumber: number;
+ source: TafsirSource;
+ text: string;
+ rawHtml?: string;
+ attribution: string;
+ fetchedAt?: number;
+}
+
+export type TafsirLoadingStatus = 'idle' | 'loading' | 'success' | 'error' | 'empty';
+
