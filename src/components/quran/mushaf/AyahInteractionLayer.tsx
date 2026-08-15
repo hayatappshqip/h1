@@ -27,15 +27,10 @@ export const AyahInteractionLayer: React.FC<AyahInteractionProps> = ({
     }
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    e.stopPropagation();
-  };
-
   return (
     <span
       data-verse-key={verseKey}
       onClick={handleClick}
-      onTouchEnd={handleTouchEnd}
       className={`inline transition-colors duration-150 rounded cursor-pointer ${
         isActiveAudio
           ? 'bg-amber-400/20 ring-1 ring-amber-400/50'

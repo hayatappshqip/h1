@@ -223,11 +223,6 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
       } else {
         prevPage();
       }
-      return;
-    }
-
-    if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && duration < 350) {
-      setShowControls((prev) => !prev);
     }
   };
 

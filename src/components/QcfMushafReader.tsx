@@ -364,12 +364,6 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       } else {
         handlePrevPage();
       }
-      return;
-    }
-
-    // Tap canvas to toggle control bar visibility
-    if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && duration < 350) {
-      setShowControls((prev) => !prev);
     }
   };
 
