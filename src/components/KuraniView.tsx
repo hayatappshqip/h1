@@ -2144,6 +2144,9 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [s, a] = verseKey.split(':').map(Number);
  playAyahAudio(a, s);
  }}
+											bookmarks={bookmarks}
+											onAddBookmark={onAddBookmark}
+											onRemoveBookmark={onRemoveBookmark}
  />
  </QuranPositionProvider>
  ) : (

@@ -23,11 +23,18 @@ import {
   Volume2,
   Check,
   Share2,
+  Trash2,
 } from 'lucide-react';
 import { useQuranPosition } from '../../../context/QuranPositionContext';
 import { MushafPageSpread } from './MushafPageSpread';
 import { MUSHAF_THEMES, PaperTheme } from './MushafPageFrame';
 import { QuranPageData } from './MushafPageRenderer';
+import { QuranBookmark } from '../../../types';
+import {
+  loadDurableBookmarks,
+  saveDurableBookmark,
+  removeDurableBookmark,
+} from '../../../services/quran/quranPersistenceService';
 import {
   prefetchQcfFont,
   fetchMushafPageData,
@@ -44,12 +51,18 @@ interface MushafReaderProps {
   onBack?: () => void;
   onSwitchToVerseByVerse?: (surahNum: number) => void;
   onPlayAyahAudio?: (verseKey: string) => void;
+  bookmarks?: QuranBookmark[];
+  onAddBookmark?: (bookmark: Omit<QuranBookmark, 'id' | 'createdAt'>) => void;
+  onRemoveBookmark?: (id: string) => void;
 }
 
 export const MushafReader: React.FC<MushafReaderProps> = ({
   onBack,
   onSwitchToVerseByVerse,
   onPlayAyahAudio,
+  bookmarks: bookmarksProp,
+  onAddBookmark: onAddBookmarkProp,
+  onRemoveBookmark: onRemoveBookmarkProp,
 }) => {
   const {
     currentPosition,
@@ -61,6 +74,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
     prevPage,
     goToSurah,
     goToJuz,
+    goToVerse,
     setTwoPageSpread,
   } = useQuranPosition();
 
@@ -77,6 +91,79 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   const [activeVerseKey, setActiveVerseKey] = useState<string | null>(null);
   const [showAyahModal, setShowAyahModal] = useState<boolean>(false);
 
+  // Bookmarks State & Sync
+  const [internalBookmarks, setInternalBookmarks] = useState<QuranBookmark[]>(bookmarksProp || []);
+
+  useEffect(() => {
+    if (bookmarksProp) {
+      setInternalBookmarks(bookmarksProp);
+    }
+  }, [bookmarksProp]);
+
+  useEffect(() => {
+    if (!bookmarksProp) {
+      loadDurableBookmarks()
+        .then((data) => {
+          if (data && Array.isArray(data)) {
+            setInternalBookmarks(data);
+          }
+        })
+        .catch((err) => {
+          console.warn('Failed to load durable bookmarks:', err);
+        });
+    }
+  }, [bookmarksProp]);
+
+  const effectiveBookmarks = bookmarksProp || internalBookmarks;
+
+  const bookmarkedVerseKeys = React.useMemo(() => {
+    const keys = new Set<string>();
+    for (const b of effectiveBookmarks) {
+      keys.add(`${b.surahNumber}:${b.ayahNumber}`);
+    }
+    return keys;
+  }, [effectiveBookmarks]);
+
+  const handleToggleBookmark = async (verseKey: string) => {
+    const [sNum, aNum] = verseKey.split(':').map(Number);
+    if (!sNum || !aNum) return;
+
+    const existing = effectiveBookmarks.find(
+      (b) => b.surahNumber === sNum && b.ayahNumber === aNum
+    );
+
+    if (existing) {
+      if (onRemoveBookmarkProp) {
+        onRemoveBookmarkProp(existing.id);
+      } else {
+        const updated = internalBookmarks.filter((b) => b.id !== existing.id);
+        setInternalBookmarks(updated);
+        await removeDurableBookmark(existing.id);
+      }
+    } else {
+      const surahMeta = ALL_SURAHS_META.find((s) => s.number === sNum);
+      const surahName = surahMeta ? surahMeta.transliteration : `Surja ${sNum}`;
+      const newBkmData = {
+        surahNumber: sNum,
+        ayahNumber: aNum,
+        surahName,
+      };
+
+      if (onAddBookmarkProp) {
+        onAddBookmarkProp(newBkmData);
+      } else {
+        const newBkm: QuranBookmark = {
+          ...newBkmData,
+          id: `bkm_${Date.now()}_${sNum}_${aNum}`,
+          createdAt: Date.now(),
+        };
+        const updated = [...internalBookmarks, newBkm];
+        setInternalBookmarks(updated);
+        await saveDurableBookmark(newBkm);
+      }
+    }
+  };
+
   // Overlays and Modals
   const [showControls, setShowControls] = useState<boolean>(true);
   const [showSurahModal, setShowSurahModal] = useState<boolean>(false);
@@ -85,7 +172,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   const [showNavigationModal, setShowNavigationModal] = useState<boolean>(false);
 
   // Navigation Modal State
-  const [navTab, setNavTab] = useState<'faqe' | 'sure' | 'xhuz'>('faqe');
+  const [navTab, setNavTab] = useState<'faqe' | 'sure' | 'xhuz' | 'faqeshënues'>('faqe');
   const [navFaqeInput, setNavFaqeInput] = useState<string>('');
   const [navFaqeError, setNavFaqeError] = useState<string>('');
   const [surahSearchTerm, setSurahSearchTerm] = useState<string>('');
@@ -339,6 +426,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           fontScale={fontScale}
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
+          bookmarkedVerseKeys={bookmarkedVerseKeys}
           pageData1={pageData1}
           fontFamily1={fontFamily1}
           pageData2={pageData2}
@@ -408,14 +496,10 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowAyahModal(false);
           }}
-          
-          
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-6"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            
-            
             className="bg-slate-900 border border-slate-800 rounded-3xl p-5 w-full max-w-sm text-slate-100 shadow-2xl space-y-4 animate-fadeIn"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -448,6 +532,34 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <span>Dëgjo Ajetin</span>
               </button>
 
+              {/* Bookmark Toggle */}
+              <button
+                type="button"
+                data-testid="mushaf-bookmark-toggle-btn"
+                onClick={async () => {
+                  await handleToggleBookmark(activeVerseKey);
+                  setShowAyahModal(false);
+                }}
+                className={`p-3 min-h-[44px] rounded-2xl border flex items-center justify-center space-x-2 transition-colors cursor-pointer ${
+                  bookmarkedVerseKeys.has(activeVerseKey)
+                    ? 'bg-amber-500/20 hover:bg-amber-500/30 border-amber-500/50 text-amber-300'
+                    : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200'
+                }`}
+              >
+                <Bookmark
+                  className={`w-4 h-4 ${
+                    bookmarkedVerseKeys.has(activeVerseKey)
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-400'
+                  }`}
+                />
+                <span>
+                  {bookmarkedVerseKeys.has(activeVerseKey)
+                    ? 'Hiq Faqeshënuesin'
+                    : 'Ruaj Faqeshënues'}
+                </span>
+              </button>
+
               {/* Jump to Verse-by-Verse */}
               {onSwitchToVerseByVerse && (
                 <button
@@ -457,10 +569,10 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                     onSwitchToVerseByVerse(surahNum);
                     setShowAyahModal(false);
                   }}
-                  className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
+                  className="col-span-2 p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
                 >
                   <BookOpen className="w-4 h-4 text-amber-400" />
-                  <span>Përkthimi</span>
+                  <span>Përkthimi në Shqip</span>
                 </button>
               )}
             </div>
@@ -572,7 +684,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             </div>
 
             {/* Tab Selector */}
-            <div className="grid grid-cols-3 p-2 bg-slate-950 border-b border-slate-800 gap-1 text-xs font-semibold">
+            <div className="grid grid-cols-4 p-2 bg-slate-950 border-b border-slate-800 gap-1 text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setNavTab('faqe')}
@@ -580,7 +692,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                   navTab === 'faqe' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Faqe (1-604)
+                Faqe
               </button>
               <button
                 type="button"
@@ -589,7 +701,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                   navTab === 'sure' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Sure (114)
+                Sure
               </button>
               <button
                 type="button"
@@ -598,7 +710,20 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                   navTab === 'xhuz' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Xhuz (30)
+                Xhuz
+              </button>
+              <button
+                type="button"
+                data-testid="mushaf-nav-bookmarks-tab"
+                onClick={() => setNavTab('faqeshënues')}
+                className={`py-2 min-h-[44px] rounded-lg transition-colors cursor-pointer flex items-center justify-center space-x-1 ${
+                  navTab === 'faqeshënues'
+                    ? 'bg-amber-500 text-slate-950 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Bookmark className="w-3.5 h-3.5" />
+                <span>Ruajtur ({effectiveBookmarks.length})</span>
               </button>
             </div>
 
@@ -683,6 +808,63 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                       <div className="text-[10px] text-slate-500 mt-0.5">Faqja {JUZ_START_PAGES[juz]}</div>
                     </button>
                   ))}
+                </div>
+              )}
+
+              {navTab === 'faqeshënues' && (
+                <div className="space-y-2">
+                  {effectiveBookmarks.length === 0 ? (
+                    <div className="text-center py-8 text-slate-400 space-y-2">
+                      <Bookmark className="w-8 h-8 text-slate-600 mx-auto" />
+                      <p className="text-xs">Nuk keni asnjë faqeshënues të ruajtur ende.</p>
+                      <p className="text-[11px] text-slate-500">
+                        Kliko mbi çdo ajet në Mushaf për ta ruajtur si faqeshënues.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5 divide-y divide-slate-800/50">
+                      {effectiveBookmarks.map((bkm) => (
+                        <div
+                          key={bkm.id}
+                          data-testid={`mushaf-bkm-item-${bkm.surahNumber}-${bkm.ayahNumber}`}
+                          onClick={() => {
+                            goToVerse({ surah: bkm.surahNumber, ayah: bkm.ayahNumber });
+                            setShowNavigationModal(false);
+                          }}
+                          className="py-2.5 px-3 min-h-[44px] rounded-xl cursor-pointer flex items-center justify-between hover:bg-slate-800/80 bg-slate-950/40 border border-slate-800/60 transition-colors text-xs group"
+                        >
+                          <div className="flex items-center space-x-2.5">
+                            <span className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 flex items-center justify-center font-mono font-bold text-[10px]">
+                              {bkm.surahNumber}:{bkm.ayahNumber}
+                            </span>
+                            <div>
+                              <div className="font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">
+                                Surja {bkm.surahName}
+                              </div>
+                              <div className="text-[10px] text-slate-500">
+                                Ajeti {bkm.ayahNumber}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <button
+                              type="button"
+                              data-testid={`mushaf-delete-bkm-${bkm.id}`}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await handleToggleBookmark(`${bkm.surahNumber}:${bkm.ayahNumber}`);
+                              }}
+                              className="p-1.5 min-h-[32px] min-w-[32px] rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 transition-colors cursor-pointer"
+                              title="Fshij faqeshënuesin"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                            <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 transition-colors" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

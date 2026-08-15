@@ -5,8 +5,9 @@
  * - IndexedDB: Durable long-term persistence with zero-regression legacy sync
  */
 import { QuranPosition } from '../../types/quran';
+import { QuranBookmark } from '../../types';
 import { resolveQuranPosition } from './quranPositionService';
-import { getMeta, saveMeta, putInStore } from '../db';
+import { getMeta, saveMeta, putInStore, getAllFromStore, deleteFromStore } from '../db';
 
 export const LOCAL_STORAGE_ACTIVE_POSITION_KEY = 'hayat_quran_active_position';
 export const LOCAL_STORAGE_LEGACY_BACKUP_KEY = 'hayat_quran_legacy_reading_state_backup';
@@ -143,5 +144,40 @@ export async function saveQuranPosition(position: QuranPosition): Promise<void> 
     });
   } catch (err) {
     console.warn('Failed to save durable Quran position in IndexedDB:', err);
+  }
+}
+
+/**
+ * Loads all bookmarked ayahs from durable IndexedDB storage.
+ */
+export async function loadDurableBookmarks(): Promise<QuranBookmark[]> {
+  try {
+    const bookmarks = await getAllFromStore<QuranBookmark>('quranBookmarks');
+    return bookmarks || [];
+  } catch (err) {
+    console.warn('Failed to load durable bookmarks from IndexedDB:', err);
+    return [];
+  }
+}
+
+/**
+ * Persists a bookmark to durable IndexedDB storage.
+ */
+export async function saveDurableBookmark(bookmark: QuranBookmark): Promise<void> {
+  try {
+    await putInStore('quranBookmarks', bookmark);
+  } catch (err) {
+    console.warn('Failed to save durable bookmark in IndexedDB:', err);
+  }
+}
+
+/**
+ * Removes a bookmark from durable IndexedDB storage by ID.
+ */
+export async function removeDurableBookmark(id: string): Promise<void> {
+  try {
+    await deleteFromStore('quranBookmarks', id);
+  } catch (err) {
+    console.warn('Failed to remove durable bookmark from IndexedDB:', err);
   }
 }

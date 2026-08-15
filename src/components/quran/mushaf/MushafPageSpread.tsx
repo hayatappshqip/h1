@@ -15,6 +15,7 @@ interface MushafPageSpreadProps {
   fontScale: number;
   showTajweed: boolean;
   activeVerseKey: string | null;
+  bookmarkedVerseKeys?: Set<string> | string[];
   pageData1: QuranPageData | null;
   fontFamily1: string;
   pageData2: QuranPageData | null;
@@ -33,6 +34,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
   fontScale,
   showTajweed,
   activeVerseKey,
+  bookmarkedVerseKeys,
   pageData1,
   fontFamily1,
   pageData2,
@@ -56,6 +58,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           fontScale={fontScale}
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
+          bookmarkedVerseKeys={bookmarkedVerseKeys}
           side="single"
           isLoading={isLoading}
           errorMessage={errorMessage}
@@ -80,6 +83,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           fontScale={fontScale}
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
+          bookmarkedVerseKeys={bookmarkedVerseKeys}
           side="left"
           isLoading={isLoading}
           errorMessage={errorMessage}
@@ -103,6 +107,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
           fontScale={fontScale}
           showTajweed={showTajweed}
           activeVerseKey={activeVerseKey}
+          bookmarkedVerseKeys={bookmarkedVerseKeys}
           side="right"
           isLoading={isLoading}
           errorMessage={errorMessage}

@@ -99,6 +99,7 @@ interface MushafPageRendererProps {
   fontScale?: number;
   showTajweed?: boolean;
   activeVerseKey?: string | null;
+  bookmarkedVerseKeys?: Set<string> | string[];
   side?: 'left' | 'right' | 'single';
   isLoading?: boolean;
   errorMessage?: string | null;
@@ -114,6 +115,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   fontScale = 100,
   showTajweed = false,
   activeVerseKey = null,
+  bookmarkedVerseKeys,
   side = 'single',
   isLoading = false,
   errorMessage = null,
@@ -285,11 +287,20 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
             >
               {lineItems.map(({ word, verseKey }, wIdx) => {
                 const isEndOfAyah = word.char_type_name === 'end';
+                const isBookmarked = bookmarkedVerseKeys
+                  ? bookmarkedVerseKeys instanceof Set
+                    ? bookmarkedVerseKeys.has(verseKey)
+                    : Array.isArray(bookmarkedVerseKeys)
+                    ? bookmarkedVerseKeys.includes(verseKey)
+                    : false
+                  : false;
+
                 return (
                   <AyahInteractionLayer
                     key={`${verseKey}-${word.position}-${wIdx}`}
                     verseKey={verseKey}
                     isSelected={activeVerseKey === verseKey}
+                    isBookmarked={isBookmarked}
                     onSelect={onVerseSelect}
                   >
                     <span
