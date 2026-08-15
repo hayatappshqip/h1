@@ -446,10 +446,20 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
     // Determine the max line, fallback to 15 (standard QCF page length)
     const maxLine = Math.max(
-      15, 
+      15,
       ...Object.keys(linesMap).map(n => parseInt(n, 10))
     );
     const sortedLineNumbers = Array.from({ length: maxLine }, (_, i) => i + 1);
+
+    // Vertically center content on opening pages (1 and 2) by shifting empty bottom lines to the top
+    const lastContentLine = Math.max(
+      ...Object.keys(linesMap).map(Number),
+      ...Object.keys(specialLines).map(Number),
+      0
+    );
+    const emptyLinesAtEnd = sortedLineNumbers.filter((l) => l > lastContentLine);
+    const shiftCount = (pNum === 1 || pNum === 2) ? Math.floor(emptyLinesAtEnd.length / 2) : 0;
+    const linesToShiftToTop = emptyLinesAtEnd.slice(0, shiftCount);
 
     const firstVerse = data.verses[0];
     const juzNum = firstVerse?.juz_number || 1;
@@ -472,6 +482,9 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
           className="qcf-mushaf-page flex-1 flex flex-col justify-between my-auto py-1 min-h-0 overflow-hidden select-none"
         >
           {sortedLineNumbers.map((lineNum) => {
+            const isShiftedToTop = linesToShiftToTop.includes(lineNum);
+            const orderClass = isShiftedToTop ? 'order-first' : '';
+
             const special = specialLines[lineNum];
             if (special) {
               if (special.type === 'surah_header') {
@@ -484,7 +497,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                       activeTheme.isDark
                         ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
                         : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
-                    }`}
+                    } ${orderClass}`}
                     dir="rtl"
                   >
                     <span className="font-arabic font-bold text-[clamp(11px,3.2cqw,18px)] tracking-wide mx-auto whitespace-nowrap">
@@ -497,7 +510,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
                 return (
                   <div
                     key={`bismillah-${special.surahNumber}-${lineNum}`}
-                    className="flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap"
+                    className={`flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap ${orderClass}`}
                     dir="rtl"
                   >
                     <span className={`font-arabic text-[clamp(13px,3.8cqw,22px)] leading-none whitespace-nowrap ${activeTheme.textColor}`}>
@@ -512,13 +525,13 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             
             // Render spacer if line is empty
             if (words.length === 0) {
-                return <div key={`empty-${lineNum}`} className="flex-1 w-full min-h-[14px]" />;
+                return <div key={`empty-${lineNum}`} className={`flex-1 w-full min-h-[14px] ${orderClass}`} />;
             }
 
             return (
               <div
                 key={lineNum}
-                className="flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none"
+                className={`flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
                 dir="rtl"
               >
                 {words.map((w, wIdx) => (

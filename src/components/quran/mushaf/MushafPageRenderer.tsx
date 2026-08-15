@@ -16,7 +16,8 @@ function toArabicDigits(num: number): string {
 export const SurahHeaderBanner: React.FC<{
   surahNumber: number;
   theme: PaperTheme;
-}> = ({ surahNumber, theme }) => {
+  className?: string;
+}> = ({ surahNumber, theme, className = '' }) => {
   const meta = ALL_SURAHS_META.find((s) => s.number === surahNumber);
   const rawName = meta?.name || '';
   const surahName = rawName.startsWith('سورة') || rawName.startsWith('سُورَة') ? rawName : `سُورَةُ ${rawName}`;
@@ -30,7 +31,7 @@ export const SurahHeaderBanner: React.FC<{
         theme.isDark
           ? 'bg-amber-950/25 border-amber-500/30 text-amber-200'
           : 'bg-amber-500/10 border-amber-600/30 text-amber-950'
-      }`}
+      } ${className}`}
       dir="rtl"
     >
       <span className="text-[clamp(9px,2.2cqw,12px)] font-arabic opacity-75 hidden xs:inline whitespace-nowrap">
@@ -48,11 +49,12 @@ export const SurahHeaderBanner: React.FC<{
 
 export const BismillahFrame: React.FC<{
   theme: PaperTheme;
-}> = ({ theme }) => {
+  className?: string;
+}> = ({ theme, className = '' }) => {
   return (
     <div
       data-bismillah-frame="true"
-      className="flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap"
+      className={`flex-1 w-full max-h-[6cqw] min-h-[20px] text-center select-none flex items-center justify-center whitespace-nowrap ${className}`}
       dir="rtl"
     >
       <span
@@ -220,6 +222,16 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   const maxLine = Math.max(15, ...Object.keys(linesMap).map((n) => parseInt(n, 10)));
   const sortedLineNumbers = Array.from({ length: maxLine }, (_, i) => i + 1);
 
+  // Vertically center content on opening pages (1 and 2) by shifting empty bottom lines to the top
+  const lastContentLine = Math.max(
+    ...Object.keys(linesMap).map(Number),
+    ...Object.keys(specialLines).map(Number),
+    0
+  );
+  const emptyLinesAtEnd = sortedLineNumbers.filter((l) => l > lastContentLine);
+  const shiftCount = (pageNumber === 1 || pageNumber === 2) ? Math.floor(emptyLinesAtEnd.length / 2) : 0;
+  const linesToShiftToTop = emptyLinesAtEnd.slice(0, shiftCount);
+
   return (
     <MushafPageFrame
       pageNumber={pageNumber}
@@ -233,6 +245,9 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
         className="qcf-mushaf-page flex flex-col justify-between w-full h-full my-auto select-none overflow-hidden"
       >
         {sortedLineNumbers.map((lineNum) => {
+          const isShiftedToTop = linesToShiftToTop.includes(lineNum);
+          const orderClass = isShiftedToTop ? 'order-first' : '';
+
           const special = specialLines[lineNum];
           if (special) {
             if (special.type === 'surah_header') {
@@ -241,6 +256,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                   key={`header-${special.surahNumber}-${lineNum}`}
                   surahNumber={special.surahNumber}
                   theme={theme}
+                  className={orderClass}
                 />
               );
             }
@@ -249,6 +265,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                 <BismillahFrame
                   key={`bismillah-${special.surahNumber}-${lineNum}`}
                   theme={theme}
+                  className={orderClass}
                 />
               );
             }
@@ -257,13 +274,13 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
           const lineItems = linesMap[lineNum] || [];
 
           if (lineItems.length === 0) {
-            return <div key={`empty-line-${lineNum}`} className="flex-1 w-full min-h-[14px]" />;
+            return <div key={`empty-line-${lineNum}`} className={`flex-1 w-full min-h-[14px] ${orderClass}`} />;
           }
 
           return (
             <div
               key={`line-${lineNum}`}
-              className="flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none"
+              className={`flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
               dir="rtl"
             >
               {lineItems.map(({ word, verseKey }, wIdx) => {
