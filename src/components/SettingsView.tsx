@@ -2,11 +2,40 @@
  * SettingsView Component - Cilësimet, Rregullimet e Namazit & Data Safety v2
  */
 import React, { useState, useEffect } from 'react';
-import { PrayerSettings, MburojaState, PrayerName } from '../types';
+import { PrayerSettings, MburojaState, PrayerName, QuranReadingSettings } from '../types';
 import { generateBackupV2, restoreBackupV2 } from '../services/db';
-import { Settings, Download, Upload, Shield, CheckCircle2, AlertCircle, RefreshCw, Moon, Sparkles, Database, Bell, BellRing, Volume2, Vibrate, Type } from 'lucide-react';
+import {
+  Settings,
+  Download,
+  Upload,
+  Shield,
+  CheckCircle2,
+  AlertCircle,
+  RefreshCw,
+  Moon,
+  Sparkles,
+  Database,
+  Bell,
+  BellRing,
+  Volume2,
+  Vibrate,
+  Type,
+  BookOpen,
+  Palette,
+  Layers,
+  Check,
+  Sun,
+  Target
+} from 'lucide-react';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { useDhikrFontSize } from '../utils/useFontSize';
+import {
+  QURAN_RECITERS,
+  loadQuranReadingSettings,
+  saveQuranReadingSettings,
+  SETTINGS_CHANGED_EVENT,
+} from '../services/quran/quranSettingsService';
+import { QuranSettingsContent } from './quran/QuranSettingsContent';
 import {
  isNotificationSupported,
  getNotificationPermissionState,
@@ -33,11 +62,29 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 }) => {
   const { fontScale, setScale } = useDhikrFontSize();
   const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
- const [isRestoring, setIsRestoring] = useState(false);
- const [notifPermission, setNotifPermission] = useState<NotificationPermission | 'unsupported'>(
- getNotificationPermissionState()
- );
- const [testNotifMsg, setTestNotifMsg] = useState<string | null>(null);
+  const [isRestoring, setIsRestoring] = useState(false);
+  const [notifPermission, setNotifPermission] = useState<NotificationPermission | 'unsupported'>(
+    getNotificationPermissionState()
+  );
+  const [testNotifMsg, setTestNotifMsg] = useState<string | null>(null);
+  const [quranSettings, setQuranSettings] = useState<QuranReadingSettings>(() => loadQuranReadingSettings());
+
+  useEffect(() => {
+    const handleQuranSettingsChange = (e: Event) => {
+      const customEv = e as CustomEvent<QuranReadingSettings>;
+      if (customEv.detail) {
+        setQuranSettings(customEv.detail);
+      }
+    };
+
+    window.addEventListener(SETTINGS_CHANGED_EVENT, handleQuranSettingsChange);
+    return () => window.removeEventListener(SETTINGS_CHANGED_EVENT, handleQuranSettingsChange);
+  }, []);
+
+  const handleUpdateQuranSettings = (partial: Partial<QuranReadingSettings>) => {
+    const updated = saveQuranReadingSettings(partial);
+    setQuranSettings(updated);
+  };
 
  useEffect(() => {
  setNotifPermission(getNotificationPermissionState());
@@ -513,6 +560,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
  className="w-4 h-4 accent-emerald-500 rounded"
  />
  </div>
+ </div>
+
+ {/* Preferencat e Leximit të Kuranit (Canonical Quran Preferences) */}
+ <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
+   <div className="flex items-center justify-between">
+     <div className="flex items-center space-x-2">
+       <BookOpen className="w-4 h-4 text-emerald-400" />
+       <h3 className="font-bold text-sm text-emerald-300">Preferencat e Leximit të Kuranit</h3>
+     </div>
+     <span className="text-[10px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800/80 px-2 py-0.5 rounded-full font-bold">
+       Sinkronizim i Plotë
+     </span>
+   </div>
+
+   <p className="text-xs text-slate-400">
+     Përshtatni pamjen, madhësinë e shkrimit, recituesin e zërit dhe qëllimin ditor për të gjithë modulet e Kuranit.
+   </p>
+
+   <QuranSettingsContent />
  </div>
 
  {/* Data Safety Export/Import v2 */}

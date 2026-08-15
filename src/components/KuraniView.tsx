@@ -132,157 +132,25 @@ import { KhatamTrackerView } from './KhatamTrackerView';
 import { QcfMushafReader } from './QcfMushafReader';
 import { MushafReader } from './quran/mushaf/MushafReader';
 import { QuranPositionProvider } from '../context/QuranPositionContext';
+import { QuranSettingsContent } from './quran/QuranSettingsContent';
+import {
+  Reciter,
+  QURAN_RECITERS,
+  DEFAULT_READING_SETTINGS,
+  normalizeScriptType,
+  loadQuranReadingSettings,
+  saveQuranReadingSettings,
+  SETTINGS_CHANGED_EVENT,
+} from '../services/quran/quranSettingsService';
+
+export type { Reciter };
+export { QURAN_RECITERS };
 
 const QURAN_V2_MUSHAF_ENABLED = true;
 
-export interface Reciter {
- key: string;
- name: string;
- arabicName: string;
- style: string;
- getSurahAudioUrl: (surahNum: number) => string;
- getAyahAudioUrl: (surahNum: number, ayahNum: number) => string;
-}
 
-export const QURAN_RECITERS: Reciter[] = [
- {
- key: 'alafasy',
- name: 'Mishary Rashid Alafasy',
- arabicName: 'مشاري راشد العفاسي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server8.mp3quran.net/afs/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Alafasy_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'minshawi',
- name: 'Siddiq El-Minshawi',
- arabicName: 'محمد صديق المنشاوي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server10.mp3quran.net/minsh/Rewayat-Hafs-A-n-Asim/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Minshawy_Murattal_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'abdulbasit',
- name: 'Abdul Basit Abdul Samad',
- arabicName: 'عبد الباسط عبد الصمد',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server7.mp3quran.net/basit/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Abdul_Basit_Murattal_192kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'husary',
- name: 'Mahmoud Khalil Al-Husary',
- arabicName: 'محمود خليل الحصري',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server13.mp3quran.net/hssr/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Husary_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'ghamdi',
- name: 'Saad Al-Ghamdi',
- arabicName: 'سعد الغامدي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server7.mp3quran.net/s_gmd/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Ghamadi_40kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'shatri',
- name: 'Abu Bakr Al-Shatri',
- arabicName: 'أبو بكر الشاطري',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server11.mp3quran.net/shatri/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Shatri_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'muaiqly',
- name: 'Maher Al-Muaiqly',
- arabicName: 'ماهر المعيقلي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server12.mp3quran.net/maher/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/MaherAlMuaiqly128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'shuraim',
- name: 'Saud Al-Shuraim',
- arabicName: 'سعود الشريم',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server7.mp3quran.net/shrm/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Saood_ash-Shuraym_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'hudhaify',
- name: 'Ali Al-Hudhaify',
- arabicName: 'علي بن عبد الرحمن الحذيفي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server9.mp3quran.net/hthfi/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Hudhaify_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'dosari',
- name: 'Yasser Al-Dosari',
- arabicName: 'ياسر الدوسري',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server11.mp3quran.net/yasser/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Yasser_Ad-Dussary_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'qatami',
- name: 'Nasser Al-Qatami',
- arabicName: 'ناصر القطامي',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server6.mp3quran.net/qtm/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Nasser_Alqatami_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'ayyub',
- name: 'Muhammad Ayyub',
- arabicName: 'محمد أيوب',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server8.mp3quran.net/ayyub/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Muhammad_Ayyoub_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'budair',
- name: 'Salah Al-Budair',
- arabicName: 'صلاح البدير',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server10.mp3quran.net/bdr/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Salah_Al_Budair_128kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- },
- {
- key: 'basfar',
- name: 'Abdullah Basfar',
- arabicName: 'عبد الله بصفر',
- style: 'Murattal',
- getSurahAudioUrl: (s) => `https://server6.mp3quran.net/bsfr/${s.toString().padStart(3, '0')}.mp3`,
- getAyahAudioUrl: (s, a) => `https://everyayah.com/data/Abdullah_Basfar_192kbps/${s.toString().padStart(3, '0')}${a.toString().padStart(3, '0')}.mp3`
- }
-];
 
-/**
- * Migrim i cilesimeve te ruajtura: emri i vjeter 'qcf4' ishte cshenjues, sepse
- * aplikacioni NUK perdor fonte QCF4 per faqe. Perdoret KFGQPC Uthmanic Script
- * Hafs (Unicode). Vlerat e vjetra te ruajtura ne pajisje perkthehen ne heshtje.
- */
-function normalizeScriptType(value?: string): QuranScriptType {
- if (value === 'uthmani_unicode') return 'uthmani_unicode';
- return 'uthmani_hafs_unicode'; // perfshin edhe vleren e vjeter 'qcf4' dhe undefined
-}
 
-const DEFAULT_READING_SETTINGS: QuranReadingSettings = {
- theme: 'sepia', // Default to Sepia for ultimate eye comfort
- arabicFontSize: 28,
- albanianFontSize: 15,
- lineSpacing: 1.8,
- layoutMode: 'cards',
- showTranslation: true,
- selectedReciterKey: 'alafasy',
- scriptType: 'uthmani_hafs_unicode',
- viewMode: 'normal',
- showTajweed: false,
- tajweedHighContrast: false,
- dailyAyahGoal: 0
-};
 
 interface ExpandableNoteTextProps {
  text: string;
@@ -368,22 +236,21 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(null);
 
- // Reading Settings state (Persisted in localStorage)
- const [readingSettings, setReadingSettings] = useState<QuranReadingSettings>(() => {
- try {
- const saved = localStorage.getItem('hayat_quran_reading_settings');
- if (saved) {
- const parsed = JSON.parse(saved);
- if (parsed.lineSpacing && parsed.lineSpacing > 2.0) {
- parsed.lineSpacing = 1.8;
- }
- return parsed;
- }
- } catch (e) {
- // fallback
- }
- return DEFAULT_READING_SETTINGS;
- });
+ // Reading Settings state (Canonical unified settings)
+ const [readingSettings, setReadingSettings] = useState<QuranReadingSettings>(() => loadQuranReadingSettings());
+
+ // Real-time synchronization of Quran preferences
+ useEffect(() => {
+   const handleSettingsChange = (e: Event) => {
+     const customEv = e as CustomEvent<QuranReadingSettings>;
+     if (customEv.detail) {
+       setReadingSettings(customEv.detail);
+     }
+   };
+
+   window.addEventListener(SETTINGS_CHANGED_EVENT, handleSettingsChange);
+   return () => window.removeEventListener(SETTINGS_CHANGED_EVENT, handleSettingsChange);
+ }, []);
 
  const [showSettingsDrawer, setShowSettingsDrawer] = useState<boolean>(false);
 
@@ -556,15 +423,8 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
 
  // Save settings helper
  const updateSettings = (newPartialSettings: Partial<QuranReadingSettings>) => {
- setReadingSettings(prev => {
- const updated = { ...prev, ...newPartialSettings };
- try {
- localStorage.setItem('hayat_quran_reading_settings', JSON.stringify(updated));
- } catch (e) {
- // ignore
- }
- return updated;
- });
+ const updated = saveQuranReadingSettings(newPartialSettings);
+ setReadingSettings(updated);
  };
 
  useEffect(() => {
@@ -968,276 +828,21 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
 
  {/* Eye-Comfort Settings Control Panel (Drawer) */}
  {showSettingsDrawer && (
- <div className={`my-3 p-4 rounded-xl border space-y-4 shadow-lg animate-fadeIn ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
- <div className="flex items-center justify-between border-b pb-2.5 border-current/10">
+ <div className={`my-3 p-4 rounded-xl border shadow-lg animate-fadeIn bg-slate-900 border-slate-800`}>
+ <div className="flex items-center justify-between border-b pb-2.5 border-slate-800 mb-4">
  <div className="flex items-center space-x-2">
- <Sliders className={`w-4 h-4 ${currentTheme.accent}`} />
- <h4 className="text-xs font-bold uppercase tracking-wider">Cilësimet e Pamjes & Sytë</h4>
+ <Sliders className={`w-4 h-4 text-emerald-400`} />
+ <h4 className="text-xs font-bold uppercase tracking-wider text-slate-100">Cilësimet e Pamjes & Sytë</h4>
  </div>
  <button
  onClick={() => setShowSettingsDrawer(false)}
- className="p-1 rounded-lg opacity-70 hover:opacity-100"
+ className="p-1 rounded-lg text-slate-400 hover:text-white"
  >
  <X className="w-4 h-4" />
  </button>
  </div>
-
- {/* Theme Selector (Pamja e Sytë) */}
- <div className="space-y-1.5">
- <label className="text-[11px] font-semibold opacity-80 block">Tema e Leximit (Relaksim për sytë)</label>
- <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
- <button
- onClick={() => updateSettings({ theme: 'sepia' })}
- className={`p-2.5 rounded-xl border text-xs font-medium flex items-center space-x-2 transition-all ${
- readingSettings.theme === 'sepia'
- ? 'border-[#0E6243] bg-[#EAE0CD] text-[#0E6243] font-bold shadow'
- : 'border-[#E5D8BF] bg-[#FAF0DD] text-[#3D3327]'
- }`}
- >
- <Feather className="w-3.5 h-3.5" />
- <span>Letër e Ngrohtë</span>
- </button>
-
- <button
- onClick={() => updateSettings({ theme: 'dark' })}
- className={`p-2.5 rounded-xl border text-xs font-medium flex items-center space-x-2 transition-all ${
- readingSettings.theme === 'dark'
- ? 'border-emerald-500 bg-slate-800 text-emerald-400 font-bold shadow'
- : 'border-slate-800 bg-slate-900 text-slate-300'
- }`}
- >
- <Moon className="w-3.5 h-3.5" />
- <span>Nata (Slate)</span>
- </button>
-
- <button
- onClick={() => updateSettings({ theme: 'light' })}
- className={`p-2.5 rounded-xl border text-xs font-medium flex items-center space-x-2 transition-all ${
- readingSettings.theme === 'light'
- ? 'border-emerald-600 bg-emerald-50 text-emerald-800 font-bold shadow'
- : 'border-slate-200 bg-white text-slate-700'
- }`}
- >
- <Sun className="w-3.5 h-3.5" />
- <span>Dritë e Pastër</span>
- </button>
-
- <button
- onClick={() => updateSettings({ theme: 'midnight' })}
- className={`p-2.5 rounded-xl border text-xs font-medium flex items-center space-x-2 transition-all ${
- readingSettings.theme === 'midnight'
- ? 'border-emerald-500 bg-zinc-900 text-emerald-400 font-bold shadow'
- : 'border-zinc-800 bg-black text-zinc-400'
- }`}
- >
- <Sparkles className="w-3.5 h-3.5" />
- <span>Mbrëmje OLED</span>
- </button>
- </div>
- </div>
-
- {/* Font Size & Spacing Controls */}
- <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-current/10">
- {/* Arabic Font Size */}
- <div className="space-y-1.5">
- <div className="flex justify-between items-center text-[11px]">
- <span className="font-semibold opacity-80">Madhësia e Tekstit Arabisht</span>
- <span className="font-mono text-xs">{readingSettings.arabicFontSize}px</span>
- </div>
- <div className="flex items-center space-x-1.5">
- {[22, 28, 34, 42].map(size => (
- <button
- key={size}
- onClick={() => updateSettings({ arabicFontSize: size })}
- className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
- readingSettings.arabicFontSize === size
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- {size === 22 ? 'S' : size === 28 ? 'M' : size === 34 ? 'L' : 'XL'}
- </button>
- ))}
- </div>
- </div>
-
- {/* Albanian Translation Font Size */}
- <div className="space-y-1.5">
- <div className="flex justify-between items-center text-[11px]">
- <span className="font-semibold opacity-80">Madhësia e Përkthimit Shqip</span>
- <span className="font-mono text-xs">{readingSettings.albanianFontSize}px</span>
- </div>
- <div className="flex items-center space-x-1.5">
- {[13, 15, 17, 19].map(size => (
- <button
- key={size}
- onClick={() => updateSettings({ albanianFontSize: size })}
- className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
- readingSettings.albanianFontSize === size
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- {size === 13 ? '13' : size === 15 ? '15' : size === 17 ? '17' : '19'}
- </button>
- ))}
- </div>
- </div>
- </div>
-
- {/* Display Mode & Translation Toggle */}
- <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-current/10">
- <div className="space-y-1.5">
- <label className="text-[11px] font-semibold opacity-80 block">Mënyra e Paraqitjes</label>
- <div className="flex space-x-2">
- <button
- onClick={() => updateSettings({ layoutMode: 'cards' })}
- className={`flex-1 py-2 px-2 rounded-xl border text-[10px] font-medium flex flex-col items-center justify-center space-y-1 ${
- readingSettings.layoutMode === 'cards'
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <Layers className="w-4 h-4" />
- <span>Ajete</span>
- </button>
-
- <button
- onClick={() => updateSettings({ layoutMode: 'mushaf' })}
- className={`flex-1 py-2 px-2 rounded-xl border text-[10px] font-medium flex flex-col items-center justify-center space-y-1 ${
- readingSettings.layoutMode === 'mushaf'
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <BookOpen className="w-4 h-4" />
- <span>Mushaf</span>
- </button>
- </div>
- </div>
-
- <div className="space-y-1.5">
- <label className="text-[11px] font-semibold opacity-80 block">Përkthimi Shqip</label>
- <button
- onClick={() => updateSettings({ showTranslation: !readingSettings.showTranslation })}
- className={`w-full py-2 px-3 rounded-xl border text-xs font-medium flex items-center justify-center space-x-2 ${
- readingSettings.showTranslation
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <span>{readingSettings.showTranslation ? 'Tregon Përkthimin Shqip' : 'Vetëm Arabisht (Përkthimi i fshehur)'}</span>
- </button>
- </div>
- </div>
-
- {/* Font Script Picker: Shkrimi i Kuranit */}
- <div className="pt-2 border-t border-current/10 space-y-1.5">
- <label className="text-[11px] font-semibold opacity-80 block">Shkrimi i Kuranit</label>
- <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
- <button
- onClick={() => updateSettings({ scriptType: 'uthmani_hafs_unicode' })}
- className={`p-2.5 rounded-xl border text-xs font-medium text-left transition-all ${
- normalizeScriptType(readingSettings.scriptType) === 'uthmani_hafs_unicode'
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <div className="font-bold">KFGQPC Uthmanic Script Hafs — Unicode</div>
- <div className="text-[10px] opacity-70">خط قرآن مصحف المدينة (KFGQPC)</div>
- </button>
-
- <button
- onClick={() => updateSettings({ scriptType: 'uthmani_unicode' })}
- className={`p-2.5 rounded-xl border text-xs font-medium text-left transition-all ${
- readingSettings.scriptType === 'uthmani_unicode'
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- <div className="font-bold">Uthmani Hafs Unicode — fallback i lehtë</div>
- <div className="text-[10px] opacity-70">Tekst standard Uthmani</div>
- </button>
- </div>
- </div>
-
- {/* Tajweed & View Mode Control */}
- <div className="pt-2 border-t border-current/10 space-y-2.5">
- <div className="flex items-center justify-between">
- <div>
- <label className="text-[11px] font-semibold opacity-80 block">Pamja e Tekstit</label>
- <p className="text-[10px] opacity-65">Lloji i shikimit të tekstit kuranor</p>
- </div>
- <div className="flex space-x-1.5">
- <button
- onClick={() => updateSettings({ viewMode: 'normal', showTajweed: false })}
- className={`py-1.5 px-3 rounded-xl border text-xs font-bold transition-all ${
- (readingSettings.viewMode || 'normal') === 'normal' && !readingSettings.showTajweed
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- Normale
- </button>
- <button
- onClick={() => updateSettings({ viewMode: 'tajweed', showTajweed: true })}
- className={`py-1.5 px-3 rounded-xl border text-xs font-bold transition-all ${
- readingSettings.viewMode === 'tajweed' || readingSettings.showTajweed
- ? 'bg-amber-600 text-white border-amber-500 shadow-md'
- : currentTheme.btnBg
- }`}
- >
- Texhvid
- </button>
- </div>
- </div>
-
- {(readingSettings.viewMode === 'tajweed' || readingSettings.showTajweed) && (
- <div className="space-y-2 pt-1 border-t border-current/10">
- <TajweedLegend onOpenModal={() => setIsTajweedModalOpen(true)} />
- </div>
- )}
- </div>
-
- {/* Daily Ayah Goal Setting */}
- <div className="pt-2 border-t border-current/10 space-y-1.5">
- <label className="text-[11px] font-semibold opacity-80 block">Synimi Ditor i Leximit</label>
- <div className="flex space-x-2">
- {[0, 20, 50, 100].map(goal => (
- <button
- key={goal}
- onClick={() => updateSettings({ dailyAyahGoal: goal })}
- className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
- (readingSettings.dailyAyahGoal || 0) === goal
- ? currentTheme.btnActive
- : currentTheme.btnBg
- }`}
- >
- {goal === 0 ? 'Fikur' : `${goal} Ajete`}
- </button>
- ))}
- </div>
- </div>
-
- {/* Reciter Selector */}
- <div className="pt-2 border-t border-current/10 space-y-1.5">
- <div className="flex items-center space-x-2 text-[11px] font-semibold opacity-80">
- <Music className="w-3.5 h-3.5" />
- <span>Recituesi i Zgjedhur i Audio-s</span>
- </div>
- <select
- value={readingSettings.selectedReciterKey}
- onChange={e => updateSettings({ selectedReciterKey: e.target.value })}
- className={`w-full p-2.5 rounded-xl border text-xs font-medium focus:outline-none ${currentTheme.btnBg}`}
- >
- {QURAN_RECITERS.map(reciter => (
- <option key={reciter.key} value={reciter.key}>
- {reciter.name} ({reciter.arabicName})
- </option>
- ))}
- </select>
- </div>
-
+ 
+ <QuranSettingsContent />
  </div>
  )}
 

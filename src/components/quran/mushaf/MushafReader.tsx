@@ -31,12 +31,20 @@ import { MushafPageSpread } from './MushafPageSpread';
 import { MUSHAF_THEMES, PaperTheme } from './MushafPageFrame';
 import { QuranPageData } from './MushafPageRenderer';
 import { TafsirOverlay } from './TafsirOverlay';
-import { QuranBookmark } from '../../../types';
+import { QuranBookmark, QuranReadingSettings } from '../../../types';
 import {
   loadDurableBookmarks,
   saveDurableBookmark,
   removeDurableBookmark,
 } from '../../../services/quran/quranPersistenceService';
+import {
+  QURAN_RECITERS,
+  loadQuranReadingSettings,
+  saveQuranReadingSettings,
+  mapMushafThemeToReadingTheme,
+  mapReadingThemeToMushafTheme,
+  SETTINGS_CHANGED_EVENT,
+} from '../../../services/quran/quranSettingsService';
 import {
   prefetchQcfFont,
   fetchMushafPageData,
@@ -48,6 +56,7 @@ import {
   JUZ_START_PAGES,
   getSurahNumberFromPage,
 } from '../../../data/quranData';
+import { QuranSettingsContent } from '../QuranSettingsContent';
 
 interface MushafReaderProps {
   onBack?: () => void;
@@ -184,11 +193,32 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   // Reader Preferences
   const [fontScale, setFontScale] = useState<number>(100);
   const [showTajweed, setShowTajweed] = useState<boolean>(false);
+  const [readingSettings, setReadingSettings] = useState<QuranReadingSettings>(() => loadQuranReadingSettings());
   const [selectedThemeKey, setSelectedThemeKey] = useState<string>(() => {
-    return localStorage.getItem('hayat_mushaf_theme') || 'ivory';
+    const saved = localStorage.getItem('hayat_mushaf_theme');
+    if (saved && MUSHAF_THEMES[saved]) return saved;
+    const initialSettings = loadQuranReadingSettings();
+    return mapReadingThemeToMushafTheme(initialSettings.theme);
   });
 
   const activeTheme: PaperTheme = MUSHAF_THEMES[selectedThemeKey] || MUSHAF_THEMES.ivory;
+
+  // Real-time synchronization of Quran preferences
+  useEffect(() => {
+    const handleSettingsChange = (e: Event) => {
+      const customEv = e as CustomEvent<QuranReadingSettings>;
+      if (customEv.detail) {
+        setReadingSettings(customEv.detail);
+        if (customEv.detail.theme) {
+          const syncedMushafTheme = mapReadingThemeToMushafTheme(customEv.detail.theme);
+          setSelectedThemeKey(syncedMushafTheme);
+        }
+      }
+    };
+
+    window.addEventListener(SETTINGS_CHANGED_EVENT, handleSettingsChange);
+    return () => window.removeEventListener(SETTINGS_CHANGED_EVENT, handleSettingsChange);
+  }, []);
 
   // Touch Tracking
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
@@ -197,10 +227,17 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
   const currentSurahNum = currentPosition.surah || getSurahNumberFromPage(currentPage);
   const currentSurahMeta = ALL_SURAHS_META.find((s) => s.number === currentSurahNum);
 
-  // Save theme selection
+  // Save theme selection and synchronize canonical reading settings
   const handleSelectTheme = (themeKey: string) => {
     setSelectedThemeKey(themeKey);
     localStorage.setItem('hayat_mushaf_theme', themeKey);
+    const readingTheme = mapMushafThemeToReadingTheme(themeKey);
+    saveQuranReadingSettings({ theme: readingTheme });
+  };
+
+  // Save reciter selection
+  const handleSelectReciter = (reciterKey: string) => {
+    saveQuranReadingSettings({ selectedReciterKey: reciterKey });
   };
 
   const handleRetry = useCallback(() => {
@@ -917,14 +954,12 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            
-            
-            className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl text-slate-100 p-5 space-y-4"
+            className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl text-slate-100 flex flex-col max-h-[85vh]"
           >
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex-shrink-0 flex items-center justify-between border-b border-slate-800 p-5 pb-4">
               <h3 className="font-bold text-sm flex items-center space-x-2">
                 <Settings className="w-4 h-4 text-amber-400" />
-                <span>Cilësimet e Mushafit</span>
+                <span>Cilësimet e Kuranit & Mushafit</span>
               </h3>
               <button
                 type="button"
@@ -935,66 +970,48 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
               </button>
             </div>
 
-            {/* Paper Theme Picker */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-300">Tema e Letrës</label>
-              <div className="grid grid-cols-2 gap-2">
-                {Object.values(MUSHAF_THEMES).map((theme) => (
+            <div className="p-5 overflow-y-auto space-y-4">
+              <QuranSettingsContent />
+
+              {/* Two-page spread toggle on desktop */}
+              <div className="space-y-2 pt-4 border-t border-slate-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-semibold text-slate-200">Pamje Dy-Faqëshe (Libër)</div>
+                    <div className="text-[10px] text-slate-400">Rekomanduar për Ekran të Gjerë / Tablet</div>
+                  </div>
                   <button
-                    key={theme.id}
                     type="button"
-                    onClick={() => handleSelectTheme(theme.id)}
-                    className={`p-2.5 min-h-[44px] rounded-xl border flex items-center justify-between transition-all cursor-pointer ${
-                      selectedThemeKey === theme.id
-                        ? 'border-amber-500 bg-amber-500/10 text-amber-300'
-                        : 'border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800'
+                    onClick={() => setTwoPageSpread(!isTwoPageSpread)}
+                    className={`w-12 h-7 rounded-full transition-colors relative cursor-pointer ${
+                      isTwoPageSpread ? 'bg-amber-500' : 'bg-slate-800'
                     }`}
                   >
-                    <span className="text-xs font-medium">{theme.name}</span>
-                    {selectedThemeKey === theme.id && <Check className="w-3.5 h-3.5 text-amber-400" />}
+                    <div
+                      className={`w-5 h-5 rounded-full bg-white transition-transform absolute top-1 ${
+                        isTwoPageSpread ? 'right-1' : 'left-1'
+                      }`}
+                    />
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Two-page spread toggle on desktop */}
-            <div className="space-y-2 pt-2 border-t border-slate-800">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-semibold text-slate-200">Pamje Dy-Faqëshe (Libër)</div>
-                  <div className="text-[10px] text-slate-400">Rekomanduar për Ekran të Gjerë / Tablet</div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setTwoPageSpread(!isTwoPageSpread)}
-                  className={`w-12 h-7 rounded-full transition-colors relative cursor-pointer ${
-                    isTwoPageSpread ? 'bg-amber-500' : 'bg-slate-800'
-                  }`}
-                >
-                  <div
-                    className={`w-5 h-5 rounded-full bg-white transition-transform absolute top-1 ${
-                      isTwoPageSpread ? 'right-1' : 'left-1'
-                    }`}
-                  />
-                </button>
               </div>
-            </div>
 
-            {/* Font Scale slider */}
-            <div className="space-y-1.5 pt-2 border-t border-slate-800">
-              <div className="flex justify-between text-xs font-semibold">
-                <span className="text-slate-300">Madhësia e Shkrimit</span>
-                <span className="text-amber-400 font-mono">{fontScale}%</span>
+              {/* Font Scale slider */}
+              <div className="space-y-1.5 pt-4 border-t border-slate-800">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-slate-300">Zmadhimi i Faqes (Image Scale)</span>
+                  <span className="text-amber-400 font-mono">{fontScale}%</span>
+                </div>
+                <input
+                  type="range"
+                  min={80}
+                  max={130}
+                  step={5}
+                  value={fontScale}
+                  onChange={(e) => setFontScale(parseInt(e.target.value, 10))}
+                  className="w-full accent-amber-500 h-6 cursor-pointer"
+                />
               </div>
-              <input
-                type="range"
-                min={80}
-                max={130}
-                step={5}
-                value={fontScale}
-                onChange={(e) => setFontScale(parseInt(e.target.value, 10))}
-                className="w-full accent-amber-500 h-6 cursor-pointer"
-              />
             </div>
           </div>
         </div>
