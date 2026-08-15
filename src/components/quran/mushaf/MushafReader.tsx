@@ -254,8 +254,8 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
         <div
           id="mushaf-top-header"
           onClick={(e) => e.stopPropagation()}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed top-2 left-2 right-2 sm:top-4 sm:left-6 sm:right-6 z-50 flex items-center justify-between p-2 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 shadow-2xl transition-all"
         >
           {/* Back Button */}
@@ -360,8 +360,8 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
         <div
           id="mushaf-bottom-footer"
           onClick={(e) => e.stopPropagation()}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all flex items-center justify-between text-xs"
         >
           {/* Previous Page */}
@@ -413,14 +413,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowAyahModal(false);
           }}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-6"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            
+            
             className="bg-slate-900 border border-slate-800 rounded-3xl p-5 w-full max-w-sm text-slate-100 shadow-2xl space-y-4 animate-fadeIn"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -480,14 +480,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowSurahModal(false);
           }}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            
+            
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden shadow-2xl text-slate-100"
           >
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
@@ -552,14 +552,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowNavigationModal(false);
           }}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            
+            
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden shadow-2xl text-slate-100"
           >
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
@@ -702,14 +702,14 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
             e.stopPropagation();
             setShowSettingsModal(false);
           }}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
+          
+          
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            
+            
             className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl text-slate-100 p-5 space-y-4"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">

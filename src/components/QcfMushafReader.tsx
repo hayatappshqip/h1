@@ -567,9 +567,6 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
   return (
     <div
       className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden transition-colors duration-500 ${activeTheme.bg}`}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onClick={handleCanvasClick}
     >
       {/* ----------------- TOP CONTROLS HEADER OVERLAY ----------------- */}
       {showControls && (
@@ -629,7 +626,12 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       )}
 
       {/* ----------------- MAIN READING CANVAS ----------------- */}
-      <div className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all">
+      <div
+        className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all cursor-pointer select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onClick={handleCanvasClick}
+      >
         {loading ? (
           <div className={`p-8 rounded-3xl border text-center space-y-3 shadow-lg ${activeTheme.paperBg} ${activeTheme.paperBorder}`}>
             <RefreshCw className={`w-7 h-7 animate-spin mx-auto ${activeTheme.textColor}`} />
