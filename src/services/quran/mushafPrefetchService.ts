@@ -127,7 +127,11 @@ export async function prefetchQcfFont(page: number): Promise<string> {
         const fontFace = new FontFace(fontFamilyName, `url('${fontUrl}')`, {
           display: 'block',
         });
-        const loadedFace = await fontFace.load();
+        const loadPromise = fontFace.load();
+        const timeoutPromise = new Promise<FontFace>((_, reject) => 
+          setTimeout(() => reject(new Error('Font load timeout')), 5000)
+        );
+        const loadedFace = await Promise.race([loadPromise, timeoutPromise]);
         document.fonts.add(loadedFace);
         LOADED_FONTS.add(fontFamilyName);
       } else {
@@ -169,7 +173,14 @@ export async function fetchMushafPageData(page: number, forceRefresh = false): P
   const fetchPromise = (async (): Promise<QuranPageData> => {
     // Strategy 1: Fetch via local backend Netlify function proxy
     try {
-      const res = await fetch(`/.netlify/functions/quran-page?page=${normPage}`);
+      const abortController = new AbortController();
+      const timeoutId = setTimeout(() => abortController.abort(), 8000);
+      
+      const res = await fetch(`/.netlify/functions/quran-page?page=${normPage}`, {
+        signal: abortController.signal
+      });
+      clearTimeout(timeoutId);
+      
       if (res.ok) {
         const data = await res.json();
         if (data && Array.isArray(data.verses) && data.verses.length > 0) {
@@ -183,12 +194,17 @@ export async function fetchMushafPageData(page: number, forceRefresh = false): P
 
     // Strategy 2: Direct public Quran API fallback
     try {
+      const abortController = new AbortController();
+      const timeoutId = setTimeout(() => abortController.abort(), 8000);
+
       const publicUrl = `https://api.quran.com/api/v4/verses/by_page/${normPage}?words=true&word_fields=v2_page,code_v2,line_number,position,char_type_name,page_number&per_page=50`;
       const publicRes = await fetch(publicUrl, {
         headers: {
           'Accept': 'application/json',
         },
+        signal: abortController.signal
       });
+      clearTimeout(timeoutId);
 
       if (publicRes.ok) {
         const json = await publicRes.json();
@@ -206,7 +222,7 @@ export async function fetchMushafPageData(page: number, forceRefresh = false): P
     }
 
     // If both failed, throw explicit descriptive error
-    throw new Error(`Dështoi ngarkimi i faqes ${normPage}. Ju lutemi kontrolloni lidhjen dhe provoni përsëri.`);
+    throw new Error(`Nuk u arrit të ngarkohet faqja ${normPage}. Ju lutemi provoni përsëri.`);
   })();
 
   IN_FLIGHT_DATA.set(normPage, fetchPromise);
