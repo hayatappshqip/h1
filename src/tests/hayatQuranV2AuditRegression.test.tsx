@@ -35,7 +35,7 @@ describe('HAYAT Quran V2 - 10-Point Technical Audit Regression Suite', () => {
 
   // TEST 1: Navigation from Home ("Vazhdo Leximin" restores last reading position)
   it('1. Navigation from Home restores last reading position for cards or mushaf', () => {
-    // Save position on Surah 2, Ayah 17 in Cards mode
+    // Save position on Surah 2, Ayah 17 in Verse mode
     saveQuranPosition({
       surah: 2,
       ayah: 17,
@@ -43,14 +43,14 @@ describe('HAYAT Quran V2 - 10-Point Technical Audit Regression Suite', () => {
       page: 3,
       juz: 1,
       hizbQuarter: 1,
-      activeReadingMode: 'cards',
+      activeReadingMode: 'verse',
     });
 
     const posCards = loadCachedQuranPosition();
     expect(posCards).not.toBeNull();
     expect(posCards?.surah).toBe(2);
     expect(posCards?.ayah).toBe(17);
-    expect(posCards?.activeReadingMode).toBe('cards');
+    expect(posCards?.activeReadingMode).toBe('verse');
 
     // Save position in Mushaf mode on page 42
     saveQuranPosition({
