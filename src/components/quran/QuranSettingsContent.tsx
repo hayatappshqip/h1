@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { 
   Feather, Moon, Sun, Sparkles, Layers, BookOpen, Music, Play
 } from 'lucide-react';
+import type { QuranReadingSettings } from '../../types';
 import { 
-  QuranReadingSettings, 
   loadQuranReadingSettings, 
   saveQuranReadingSettings, 
   SETTINGS_CHANGED_EVENT, 

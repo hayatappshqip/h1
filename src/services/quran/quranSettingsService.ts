@@ -5,6 +5,7 @@
  */
 
 import { QuranReadingSettings, QuranReadingTheme, QuranScriptType } from '../../types';
+export type { QuranReadingSettings, QuranReadingTheme, QuranScriptType };
 
 export interface Reciter {
   key: string;
