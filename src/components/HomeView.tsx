@@ -11,6 +11,7 @@ import { ALL_SURAHS_META } from '../data/quranData';
 import { ActiveTab } from './Navbar';
 import { getLocalDateString } from '../utils/dateUtils';
 import { AyahOfTheDay } from './AyahOfTheDay';
+import { loadCachedQuranPosition } from '../services/quran/quranPersistenceService';
 
 interface HomeViewProps {
  prayerTimes: PrayerTimes | null;
@@ -21,7 +22,7 @@ interface HomeViewProps {
  postPrayerDhikrSessions: PostPrayerDhikrSession[];
  setActiveTab: (tab: ActiveTab) => void;
  onOpenMburojaChapter: (chapterId: number) => void;
- onOpenQuranSurah: (surahNum: number, ayahNum?: number) => void;
+ onOpenQuranSurah: (surahNum: number, ayahNum?: number, subTab?: 'surahs' | 'mushaf_qcf', pageNum?: number) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -252,7 +253,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
  <div
  id="card-kurani-shortcut"
  onClick={() => {
- onOpenQuranSurah(lastReadSurah, lastReadAyah);
+ const cachedPos = loadCachedQuranPosition();
+ if (cachedPos && cachedPos.activeReadingMode === 'mushaf') {
+ onOpenQuranSurah(cachedPos.surah, cachedPos.ayah, 'mushaf_qcf', cachedPos.page);
+ } else {
+ onOpenQuranSurah(lastReadSurah, lastReadAyah, 'surahs');
+ }
  setActiveTab('kurani');
  }}
  className="bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-700/50 p-4 rounded-xl cursor-pointer transition-all space-y-2 shadow-sm"

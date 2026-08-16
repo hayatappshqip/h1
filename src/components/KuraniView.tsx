@@ -206,7 +206,8 @@ export const ExpandableNoteText: React.FC<ExpandableNoteTextProps> = ({
 
 interface KuraniViewProps {
  initialSurahNumber?: number;
- initialSubTab?: 'surahs' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam';
+ initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam';
+ initialPageNumber?: number;
  readingState: QuranReadingState;
  bookmarks: QuranBookmark[];
  notes?: QuranNote[];
@@ -220,6 +221,7 @@ interface KuraniViewProps {
 export const KuraniView: React.FC<KuraniViewProps> = ({
  initialSurahNumber,
  initialSubTab,
+ initialPageNumber,
  readingState,
  bookmarks,
  notes = [],
@@ -231,6 +233,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
 }) => {
  const [selectedSurahNum, setSelectedSurahNum] = useState<number | null>(initialSurahNumber || null);
  const [mushafSurahNum, setMushafSurahNum] = useState<number | null>(initialSurahNumber || null);
+ const [mushafTargetPage, setMushafTargetPage] = useState<number | null>(initialPageNumber || null);
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
@@ -1478,7 +1481,8 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
           const cachedPos = loadCachedQuranPosition();
           if (cachedPos) {
             if (cachedPos.activeReadingMode === 'mushaf' || activeTab === 'mushaf_qcf') {
-              setMushafSurahNum(cachedPos.surah);
+              setMushafTargetPage(cachedPos.page);
+              setMushafSurahNum(null);
               setActiveTab('mushaf_qcf');
             } else {
               setSelectedSurahNum(cachedPos.surah);
@@ -1753,9 +1757,17 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  ) : activeTab === 'mushaf_qcf' ? (
  QURAN_V2_MUSHAF_ENABLED ? (
- <QuranPositionProvider initialSurah={mushafSurahNum || undefined}>
+ <QuranPositionProvider
+ key={`mushaf-provider-${mushafTargetPage ?? mushafSurahNum ?? 'cached'}`}
+ initialPage={mushafTargetPage ?? undefined}
+ initialSurah={mushafTargetPage ? undefined : (mushafSurahNum || undefined)}
+ >
  <MushafReader
- onBack={() => setActiveTab('surahs')}
+ onBack={() => {
+ setMushafTargetPage(null);
+ setMushafSurahNum(null);
+ setActiveTab('surahs');
+ }}
  onSwitchToVerseByVerse={(surahNum) => {
  setSelectedSurahNum(surahNum);
  setActiveTab('surahs');
@@ -1782,10 +1794,17 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  ) : activeTab === 'hifz' ? (
  <HifzModule />
   ) : activeTab === 'khatam' ? (
-    <KhatamTrackerView onSelectSurah={(surahNum) => {
-      setSelectedSurahNum(surahNum);
-      setActiveTab('surahs');
-    }} />
+    <KhatamTrackerView
+      onSelectSurah={(surahNum) => {
+        setSelectedSurahNum(surahNum);
+        setActiveTab('surahs');
+      }}
+      onNavigateToPage={(page) => {
+        setMushafTargetPage(page);
+        setMushafSurahNum(null);
+        setActiveTab('mushaf_qcf');
+      }}
+    />
  ) : activeTab === 'stats' ? (
  <QuranStatsChart
  readingState={readingState}
