@@ -175,6 +175,15 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   pageData.verses.forEach((verse) => {
     if (Array.isArray(verse.words)) {
       verse.words.forEach((word) => {
+        // Defensive page isolation guard
+        const wordPage =
+          typeof word.v2_page === 'number'
+            ? word.v2_page
+            : typeof word.page_number === 'number'
+              ? word.page_number
+              : pageNumber;
+        if (wordPage !== pageNumber) return;
+
         const lNum = word.line_number || 1;
         if (!linesMap[lNum]) linesMap[lNum] = [];
         linesMap[lNum].push({
@@ -279,10 +288,14 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
             return <div key={`empty-line-${lineNum}`} className={`flex-1 w-full min-h-[14px] ${orderClass}`} />;
           }
 
+          // Dynamic line density factor for long/dense Arabic lines to guarantee zero clipping
+          const wordCount = lineItems.length;
+          const lineDensityScale = wordCount > 8 ? Math.max(0.68, 8.5 / wordCount) : 1;
+
           return (
             <div
               key={`line-${lineNum}`}
-              className={`flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
+              className={`flex-1 w-full flex items-center justify-center flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
               dir="rtl"
             >
               {lineItems.map(({ word, verseKey }, wIdx) => {
@@ -309,7 +322,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                       } ${isEndOfAyah ? 'opacity-90 font-bold' : ''} ${theme.textColor} ${theme.hoverColor}`}
                       style={{
                         fontFamily: `'${fontFamily}'`,
-                        fontSize: `calc(${fontScale / 100} * clamp(13px, 5.2cqw, 32px))`,
+                        fontSize: `calc(${((fontScale / 100) * lineDensityScale).toFixed(4)} * clamp(9px, 4.85cqw, 32px))`,
                         lineHeight: 1,
                       }}
                       title={verseKey}
