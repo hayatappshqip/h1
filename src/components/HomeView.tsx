@@ -21,7 +21,7 @@ interface HomeViewProps {
  postPrayerDhikrSessions: PostPrayerDhikrSession[];
  setActiveTab: (tab: ActiveTab) => void;
  onOpenMburojaChapter: (chapterId: number) => void;
- onOpenQuranSurah: (surahNum: number) => void;
+ onOpenQuranSurah: (surahNum: number, ayahNum?: number) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -252,7 +252,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
  <div
  id="card-kurani-shortcut"
  onClick={() => {
- onOpenQuranSurah(lastReadSurah);
+ onOpenQuranSurah(lastReadSurah, lastReadAyah);
  setActiveTab('kurani');
  }}
  className="bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-700/50 p-4 rounded-xl cursor-pointer transition-all space-y-2 shadow-sm"

@@ -9,6 +9,9 @@ import {
   confirmPageRangeCompleted,
   confirmJuzCompleted,
   updateDirectPagePosition,
+  removePageCompleted,
+  removeJuzCompleted,
+  getMissingPagesInRange,
   calculateKhatamStats,
   archiveCurrentAndStartNewPlan,
   TOTAL_MUSHAF_PAGES,
@@ -66,6 +69,11 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const [directPageInput, setDirectPageInput] = useState<number | ''>(plan.nextPage);
   const [jumpPromptPage, setJumpPromptPage] = useState<number | null>(null);
 
+  // Removal Confirmation State
+  const [removalTarget, setRemovalTarget] = useState<
+    { type: 'page'; page: number } | { type: 'juz'; juz: number; startPage: number; endPage: number } | null
+  >(null);
+
   // New Plan Inputs
   const [newTitleInput, setNewTitleInput] = useState<string>('Hatme e Re');
   const [newDailyTargetInput, setNewDailyTargetInput] = useState<number>(20);
@@ -109,6 +117,7 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   // 2. Quick Confirmation Handlers
   const handleConfirmCurrentPage = () => {
     const targetPage = plan.nextPage;
+    if (plan.completedPages.includes(targetPage)) return;
     const updated = confirmPageCompleted(plan, targetPage);
     handlePersistPlan(updated, `Faqja ${targetPage} u konfirmua si e kryer!`);
     setShowUpdateModal(false);
@@ -127,24 +136,29 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
     const targetPage = typeof directPageInput === 'number' ? directPageInput : Number(directPageInput);
     if (isNaN(targetPage) || targetPage < 1 || targetPage > TOTAL_MUSHAF_PAGES) return;
 
-    const currentMax = plan.lastCompletedPage;
-    if (targetPage > currentMax + 20) {
-      // Large jump: prompt user for confirmation
+    if (plan.completedPages.includes(targetPage)) {
+      return;
+    }
+
+    const missing = getMissingPagesInRange(plan, plan.lastCompletedPage + 1, targetPage);
+    if (targetPage > plan.lastCompletedPage + 1 && missing.length > 0) {
       setJumpPromptPage(targetPage);
     } else {
-      const updated = updateDirectPagePosition(plan, targetPage, true);
-      handlePersistPlan(updated, `Progresi u përditësua te faqja ${targetPage}!`);
+      const updated = confirmPageCompleted(plan, targetPage);
+      handlePersistPlan(updated, `Faqja ${targetPage} u shënua e kryer!`);
       setShowUpdateModal(false);
     }
   };
 
   const handleConfirmJumpWithPrior = (markPrior: boolean) => {
     if (!jumpPromptPage) return;
-    const updated = updateDirectPagePosition(plan, jumpPromptPage, markPrior);
+    const updated = markPrior
+      ? confirmPageRangeCompleted(plan, plan.lastCompletedPage + 1, jumpPromptPage)
+      : confirmPageCompleted(plan, jumpPromptPage);
     handlePersistPlan(
       updated,
       markPrior
-        ? `Faqet 1–${jumpPromptPage} u konfirmuan si të kryera!`
+        ? `Faqet ${plan.lastCompletedPage + 1}–${jumpPromptPage} u konfirmuan si të kryera!`
         : `Faqja ${jumpPromptPage} u shënua e kryer!`
     );
     setJumpPromptPage(null);
@@ -153,8 +167,25 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
 
   // 4. Juz Confirmation Handler
   const handleConfirmJuz = (juzNumber: number) => {
+    const juzMeta = ALL_JUZ_META[juzNumber - 1];
+    if (!juzMeta) return;
+    const missing = getMissingPagesInRange(plan, juzMeta.startPage, juzMeta.endPage);
+    if (missing.length === 0) return;
     const updated = confirmJuzCompleted(plan, juzNumber);
     handlePersistPlan(updated, `Xhuzi ${juzNumber} u konfirmua i përfunduar!`);
+  };
+
+  // 5. Removal Handler
+  const handleRemoveConfirm = () => {
+    if (!removalTarget) return;
+    if (removalTarget.type === 'page') {
+      const updated = removePageCompleted(plan, removalTarget.page);
+      handlePersistPlan(updated, `Faqja ${removalTarget.page} u hoq nga progresi.`);
+    } else if (removalTarget.type === 'juz') {
+      const updated = removeJuzCompleted(plan, removalTarget.juz);
+      handlePersistPlan(updated, `Xhuzi ${removalTarget.juz} (faqet ${removalTarget.startPage}–${removalTarget.endPage}) u hoq nga progresi.`);
+    }
+    setRemovalTarget(null);
   };
 
   // 5. New / Reset Plan Handler
@@ -390,7 +421,9 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
               (_, i) => juz.startPage + i
             );
             const doneCount = pagesInJuz.filter((p) => plan.completedPages.includes(p)).length;
-            const isFullyCompleted = doneCount === pagesInJuz.length;
+            const totalCount = pagesInJuz.length;
+            const isFullyCompleted = doneCount === totalCount;
+            const isPartial = doneCount > 0 && !isFullyCompleted;
 
             return (
               <div
@@ -398,15 +431,21 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
                 className={`p-3 rounded-xl border text-xs transition-all relative flex flex-col justify-between space-y-2 ${
                   isFullyCompleted
                     ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
-                    : doneCount > 0
-                    ? 'bg-slate-800/80 border-slate-700 text-slate-200'
+                    : isPartial
+                    ? 'bg-amber-950/30 border-amber-500/40 text-amber-200'
                     : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:border-slate-700'
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <span className="font-bold text-slate-200">Xhuzi {juz.number}</span>
                   {isFullyCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                      I kryer
+                    </span>
+                  ) : isPartial ? (
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                      Në progres
+                    </span>
                   ) : (
                     <span className="text-[10px] font-mono text-slate-400">
                       {juz.startPage}-{juz.endPage}
@@ -418,16 +457,44 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
                   {juz.nameAr}
                 </div>
 
-                <div className="pt-1 flex justify-between items-center text-[10px] border-t border-slate-800/60">
-                  <span className="font-mono text-slate-400">
-                    {doneCount} / {juz.totalPages} faqe
-                  </span>
-                  <button
-                    onClick={() => handleConfirmJuz(juz.number)}
-                    className="text-emerald-400 hover:underline font-semibold"
-                  >
-                    {isFullyCompleted ? 'Rikonfirmo' : 'Shëno Kryer'}
-                  </button>
+                <div className="pt-1 flex flex-col space-y-1.5 border-t border-slate-800/60 text-[10px]">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-slate-400">
+                      {doneCount} / {totalCount} faqe
+                    </span>
+                    {isPartial && (
+                      <span className="text-[9px] font-mono text-amber-400">
+                        {totalCount - doneCount} mbetur
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center space-x-1.5">
+                    {!isFullyCompleted && (
+                      <button
+                        onClick={() => handleConfirmJuz(juz.number)}
+                        className="flex-1 py-1 px-1.5 rounded bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 font-semibold text-center text-[10px] transition-colors"
+                      >
+                        {isPartial ? 'Plotëso' : 'Konfirmo'}
+                      </button>
+                    )}
+                    {doneCount > 0 && (
+                      <button
+                        onClick={() =>
+                          setRemovalTarget({
+                            type: 'juz',
+                            juz: juz.number,
+                            startPage: juz.startPage,
+                            endPage: juz.endPage,
+                          })
+                        }
+                        className="py-1 px-1.5 rounded bg-red-950/40 hover:bg-red-900/60 text-red-300 font-semibold text-center text-[10px] border border-red-800/40 transition-colors"
+                        title="Hiq Xhuzin nga progresi"
+                      >
+                        Hiq
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );
@@ -475,7 +542,7 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
                   updateTab === 'direct' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Numër Faqe
+                Sipas Faqes
               </button>
               <button
                 onClick={() => setUpdateTab('juz')}
@@ -493,15 +560,26 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
                 <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-center space-y-2">
                   <span className="text-xs text-slate-400">Faqja tjetër e pritur</span>
                   <div className="text-3xl font-bold text-emerald-400 font-mono">Faqja {plan.nextPage}</div>
-                  <p className="text-[11px] text-slate-400">
-                    A e përfundove leximin e faqes {plan.nextPage}?
-                  </p>
+                  {plan.completedPages.includes(plan.nextPage) ? (
+                    <p className="text-xs text-amber-400 font-medium">
+                      Faqja {plan.nextPage} është tashmë e shënuar si e përfunduar.
+                    </p>
+                  ) : (
+                    <p className="text-[11px] text-slate-400">
+                      A e përfundove leximin e faqes {plan.nextPage}?
+                    </p>
+                  )}
                   <button
                     onClick={handleConfirmCurrentPage}
-                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg mt-2 flex items-center justify-center space-x-2"
+                    disabled={plan.completedPages.includes(plan.nextPage)}
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-lg mt-2 flex items-center justify-center space-x-2 transition-colors"
                   >
                     <Check className="w-4 h-4" />
-                    <span>Po, konfirmo Faqen {plan.nextPage}</span>
+                    <span>
+                      {plan.completedPages.includes(plan.nextPage)
+                        ? `Faqja ${plan.nextPage} është tashmë e shënuar`
+                        : `Po, konfirmo Faqen ${plan.nextPage}`}
+                    </span>
                   </button>
                 </div>
 
@@ -523,53 +601,113 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
               </div>
             )}
 
-            {/* TAB 2: Direct Page Entry */}
-            {updateTab === 'direct' && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-slate-300">Jam te faqja / Arrita te faqja:</label>
-                  <input
-                    type="number"
-                    min={1}
-                    max={TOTAL_MUSHAF_PAGES}
-                    value={directPageInput}
-                    onChange={(e) => setDirectPageInput(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-lg focus:outline-none focus:border-emerald-500"
-                    placeholder="shqip: e.g. 120"
-                  />
-                  <p className="text-[11px] text-slate-400">
-                    Vendos faqen ekzakte që dëshiron të regjistrosh (1–604).
-                  </p>
-                </div>
+            {/* TAB 2: Direct Page Entry ("Sipas faqes") */}
+            {updateTab === 'direct' && (() => {
+              const selectedPageNum = typeof directPageInput === 'number' ? directPageInput : Number(directPageInput);
+              const isPageDone = !isNaN(selectedPageNum) && plan.completedPages.includes(selectedPageNum);
 
-                <button
-                  onClick={handleDirectPageSubmit}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg flex items-center justify-center space-x-2"
-                >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Ruaj Progresin</span>
-                </button>
-              </div>
-            )}
+              return (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-300">Jam te faqja / Arrita te faqja:</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={TOTAL_MUSHAF_PAGES}
+                      value={directPageInput}
+                      onChange={(e) => setDirectPageInput(e.target.value === '' ? '' : Number(e.target.value))}
+                      className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-lg focus:outline-none focus:border-emerald-500"
+                      placeholder="e.g. 120"
+                    />
+                    {isPageDone ? (
+                      <p className="text-xs text-amber-400 font-medium">
+                        Faqja {selectedPageNum} është tashmë e shënuar si e përfunduar.
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-slate-400">
+                        Vendos faqen ekzakte ku ke arritur (1–604).
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Quick increment buttons for direct tab */}
+                  <div className="flex items-center space-x-2">
+                    {[1, 5, 10].map((step) => (
+                      <button
+                        key={step}
+                        type="button"
+                        onClick={() => {
+                          const base = typeof directPageInput === 'number' ? directPageInput : plan.lastCompletedPage;
+                          setDirectPageInput(Math.min(TOTAL_MUSHAF_PAGES, base + step));
+                        }}
+                        className="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs rounded-lg border border-slate-700"
+                      >
+                        +{step}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={handleDirectPageSubmit}
+                    disabled={isPageDone || !directPageInput}
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-lg flex items-center justify-center space-x-2 transition-colors"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>
+                      {isPageDone ? `Faqja ${selectedPageNum} është e shënuar` : 'Ruaj Progresin'}
+                    </span>
+                  </button>
+                </div>
+              );
+            })()}
 
             {/* TAB 3: Juz Selector inside modal */}
             {updateTab === 'juz' && (
               <div className="space-y-3">
-                <p className="text-xs text-slate-400">Përzgjidhni xhuzin që keni përfunduar sot:</p>
-                <div className="grid grid-cols-3 gap-2 max-h-56 overflow-y-auto pr-1">
-                  {ALL_JUZ_META.map((juz) => (
-                    <button
-                      key={juz.number}
-                      onClick={() => {
-                        handleConfirmJuz(juz.number);
-                        setShowUpdateModal(false);
-                      }}
-                      className="p-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-xs text-left transition-all"
-                    >
-                      <div className="font-bold text-slate-200">Xhuzi {juz.number}</div>
-                      <div className="text-[10px] text-slate-400 font-mono">Fq. {juz.startPage}-{juz.endPage}</div>
-                    </button>
-                  ))}
+                <p className="text-xs text-slate-400">Përzgjidhni xhuzin për të shënuar ose plotësuar:</p>
+                <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                  {ALL_JUZ_META.map((juz) => {
+                    const pagesInJuz = Array.from(
+                      { length: juz.endPage - juz.startPage + 1 },
+                      (_, i) => juz.startPage + i
+                    );
+                    const doneCount = pagesInJuz.filter((p) => plan.completedPages.includes(p)).length;
+                    const isFullyDone = doneCount === pagesInJuz.length;
+
+                    return (
+                      <button
+                        key={juz.number}
+                        onClick={() => {
+                          if (!isFullyDone) {
+                            handleConfirmJuz(juz.number);
+                            setShowUpdateModal(false);
+                          }
+                        }}
+                        disabled={isFullyDone}
+                        className={`p-2.5 rounded-xl text-xs text-left transition-all border flex flex-col justify-between ${
+                          isFullyDone
+                            ? 'bg-slate-950 border-slate-800/80 text-slate-500 cursor-not-allowed'
+                            : doneCount > 0
+                            ? 'bg-amber-950/30 border-amber-500/40 text-amber-200 hover:bg-amber-900/40'
+                            : 'bg-slate-950 hover:bg-slate-800 border-slate-800 text-slate-200'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold">Xhuzi {juz.number}</span>
+                          <span className="text-[10px] font-mono">
+                            {doneCount}/{pagesInJuz.length}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          {isFullyDone
+                            ? 'Xhuzi është i përfunduar'
+                            : doneCount > 0
+                            ? `Plotëso ${pagesInJuz.length - doneCount} faqe`
+                            : `Fq. ${juz.startPage}–${juz.endPage}`}
+                        </p>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -603,6 +741,38 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
                 className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-xl border border-slate-700"
               >
                 Jo, vetëm faqen {jumpPromptPage}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 1C: Removal Confirmation Dialog */}
+      {removalTarget && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border border-red-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center space-x-3 text-red-400">
+              <AlertCircle className="w-6 h-6 shrink-0" />
+              <h3 className="text-base font-bold text-slate-100">Je i sigurt?</h3>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              {removalTarget.type === 'page'
+                ? `Po heq faqen ${removalTarget.page} nga progresi i Hatmes.`
+                : `Po heq faqet ${removalTarget.startPage}–${removalTarget.endPage} nga progresi.`}
+            </p>
+
+            <div className="flex items-center space-x-3 pt-2">
+              <button
+                onClick={() => setRemovalTarget(null)}
+                className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl transition-colors"
+              >
+                Anulo
+              </button>
+              <button
+                onClick={handleRemoveConfirm}
+                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors"
+              >
+                Po, hiqe
               </button>
             </div>
           </div>

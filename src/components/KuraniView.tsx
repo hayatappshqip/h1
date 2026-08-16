@@ -142,6 +142,7 @@ import {
   saveQuranReadingSettings,
   SETTINGS_CHANGED_EVENT,
 } from '../services/quran/quranSettingsService';
+import { loadCachedQuranPosition } from '../services/quran/quranPersistenceService';
 
 export type { Reciter };
 export { QURAN_RECITERS };
@@ -1474,10 +1475,24 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
       {/* 1. Continuation Box / Last Read Hero Banner */}
       <div
         onClick={() => {
-          if (readingState.lastReadSurah) {
+          const cachedPos = loadCachedQuranPosition();
+          if (cachedPos) {
+            if (cachedPos.activeReadingMode === 'mushaf' || activeTab === 'mushaf_qcf') {
+              setMushafSurahNum(cachedPos.surah);
+              setActiveTab('mushaf_qcf');
+            } else {
+              setSelectedSurahNum(cachedPos.surah);
+              setTargetAyahToScroll(cachedPos.ayah);
+              setActiveTab('surahs');
+            }
+          } else if (readingState.lastReadSurah) {
             setSelectedSurahNum(readingState.lastReadSurah);
+            setTargetAyahToScroll(readingState.lastReadAyah || 1);
+            setActiveTab('surahs');
           } else {
             setSelectedSurahNum(1);
+            setTargetAyahToScroll(1);
+            setActiveTab('surahs');
           }
         }}
         className="bg-gradient-to-r from-emerald-950/90 via-slate-900 to-amber-950/50 border border-emerald-500/40 hover:border-emerald-400/80 p-4 rounded-2xl cursor-pointer transition-all shadow-lg hover:shadow-emerald-900/20 flex items-center justify-between group"
@@ -1738,7 +1753,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  ) : activeTab === 'mushaf_qcf' ? (
  QURAN_V2_MUSHAF_ENABLED ? (
- <QuranPositionProvider initialSurah={mushafSurahNum || 1}>
+ <QuranPositionProvider initialSurah={mushafSurahNum || undefined}>
  <MushafReader
  onBack={() => setActiveTab('surahs')}
  onSwitchToVerseByVerse={(surahNum) => {

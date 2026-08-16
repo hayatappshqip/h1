@@ -366,6 +366,87 @@ export function updateDirectPagePosition(
 }
 
 /**
+ * Removes a single completed page from the Khatam plan.
+ */
+export function removePageCompleted(
+  plan: ManualKhatamPlan,
+  pageNumber: number
+): ManualKhatamPlan {
+  const currentPlan = normalizeKhatamPlan(plan);
+  const existingSet = new Set(currentPlan.completedPages);
+
+  if (!existingSet.has(pageNumber)) {
+    return currentPlan;
+  }
+
+  existingSet.delete(pageNumber);
+  const updatedPages = Array.from(existingSet).sort((a, b) => a - b);
+  const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+
+  return normalizeKhatamPlan({
+    ...currentPlan,
+    completedPages: updatedPages,
+    lastCompletedPage,
+    nextPage,
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    updatedAt: Date.now(),
+  });
+}
+
+/**
+ * Removes all pages belonging to a specified Juz from the Khatam plan.
+ */
+export function removeJuzCompleted(
+  plan: ManualKhatamPlan,
+  juzNumber: number
+): ManualKhatamPlan {
+  if (juzNumber < 1 || juzNumber > 30) return normalizeKhatamPlan(plan);
+  const juzMeta = ALL_JUZ_META[juzNumber - 1];
+  if (!juzMeta) return normalizeKhatamPlan(plan);
+
+  const startPage = juzMeta.startPage;
+  const endPage = juzMeta.endPage;
+
+  const currentPlan = normalizeKhatamPlan(plan);
+  const updatedPages = currentPlan.completedPages.filter(p => p < startPage || p > endPage);
+
+  const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+
+  return normalizeKhatamPlan({
+    ...currentPlan,
+    completedPages: updatedPages,
+    lastCompletedPage,
+    nextPage,
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    updatedAt: Date.now(),
+  });
+}
+
+/**
+ * Returns an array of uncompleted page numbers within a given range.
+ */
+export function getMissingPagesInRange(
+  plan: ManualKhatamPlan,
+  startPage: number,
+  endPage: number
+): number[] {
+  const currentPlan = normalizeKhatamPlan(plan);
+  const completedSet = new Set(currentPlan.completedPages);
+  const from = Math.max(1, Math.min(startPage, endPage));
+  const to = Math.min(TOTAL_MUSHAF_PAGES, Math.max(startPage, endPage));
+
+  const missing: number[] = [];
+  for (let p = from; p <= to; p++) {
+    if (!completedSet.has(p)) {
+      missing.push(p);
+    }
+  }
+  return missing;
+}
+
+/**
  * Archives current active plan and initializes a new active plan safely.
  */
 export async function archiveCurrentAndStartNewPlan(
