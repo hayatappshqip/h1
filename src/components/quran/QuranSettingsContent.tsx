@@ -134,50 +134,19 @@ export const QuranSettingsContent: React.FC = () => {
         </div>
       </div>
 
-      {/* Display Mode & Translation Toggle */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="text-[11px] font-semibold text-slate-400 block uppercase tracking-wider">Mënyra e Paraqitjes</label>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => updateSettings({ layoutMode: 'cards' })}
-              className={`flex-1 py-2 px-2 rounded-xl border text-[11px] font-medium flex items-center justify-center space-x-2 ${
-                readingSettings.layoutMode === 'cards'
-                  ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
-                  : 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              <span>Lista / Ajete</span>
-            </button>
-
-            <button
-              onClick={() => updateSettings({ layoutMode: 'mushaf' })}
-              className={`flex-1 py-2 px-2 rounded-xl border text-[11px] font-medium flex items-center justify-center space-x-2 ${
-                readingSettings.layoutMode === 'mushaf'
-                  ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
-                  : 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Mushaf / Libër</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-[11px] font-semibold text-slate-400 block uppercase tracking-wider">Përkthimi Shqip</label>
-          <button
-            onClick={() => updateSettings({ showTranslation: !readingSettings.showTranslation })}
-            className={`w-full py-2.5 px-3 rounded-xl border text-xs font-medium flex items-center justify-center space-x-2 ${
-              readingSettings.showTranslation
-                ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
-                : 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700'
-            }`}
-          >
-            <span>{readingSettings.showTranslation ? 'Po, trego përkthimin' : 'Jo, vetëm arabisht'}</span>
-          </button>
-        </div>
+      {/* Translation & Tajweed Settings */}
+      <div className="space-y-2">
+        <label className="text-[11px] font-semibold text-slate-400 block uppercase tracking-wider">Përkthimi Shqip</label>
+        <button
+          onClick={() => updateSettings({ showTranslation: !readingSettings.showTranslation })}
+          className={`w-full py-2.5 px-3 rounded-xl border text-xs font-medium flex items-center justify-center space-x-2 ${
+            readingSettings.showTranslation
+              ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
+              : 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <span>{readingSettings.showTranslation ? 'Po, trego përkthimin' : 'Jo, vetëm arabisht'}</span>
+        </button>
       </div>
 
       {/* Font Script Picker: Shkrimi i Kuranit */}

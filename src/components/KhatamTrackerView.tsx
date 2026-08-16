@@ -78,13 +78,17 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const [newTitleInput, setNewTitleInput] = useState<string>('Hatme e Re');
   const [newDailyTargetInput, setNewDailyTargetInput] = useState<number>(20);
 
-  // Toast feedback
+  // Toast feedback & Undo
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [undoCallback, setUndoCallback] = useState<(() => void) | null>(null);
 
   // Auto-hide toast
   useEffect(() => {
     if (toastMessage) {
-      const timer = setTimeout(() => setToastMessage(null), 3500);
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+        setUndoCallback(null);
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [toastMessage]);
@@ -93,11 +97,12 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const stats = calculateKhatamStats(plan);
 
   // Persistence helper
-  const handlePersistPlan = (updatedPlan: ManualKhatamPlan, successMsg?: string) => {
+  const handlePersistPlan = (updatedPlan: ManualKhatamPlan, successMsg?: string, onUndo?: () => void) => {
     setPlan(updatedPlan);
     saveDurableKhatamPlan(updatedPlan);
     if (successMsg) {
       setToastMessage(successMsg);
+      setUndoCallback(onUndo ? () => onUndo : null);
     }
   };
 
@@ -117,7 +122,11 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   // 2. Quick Confirmation Handlers
   const handleConfirmCurrentPage = () => {
     const targetPage = plan.nextPage;
-    if (plan.completedPages.includes(targetPage)) return;
+    if (plan.completedPages.includes(targetPage)) {
+      setToastMessage(`Faqja ${targetPage} është tashmë e regjistruar si e lexuar.`);
+      setShowUpdateModal(false);
+      return;
+    }
     const updated = confirmPageCompleted(plan, targetPage);
     handlePersistPlan(updated, `Faqja ${targetPage} u konfirmua si e kryer!`);
     setShowUpdateModal(false);
@@ -137,6 +146,8 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
     if (isNaN(targetPage) || targetPage < 1 || targetPage > TOTAL_MUSHAF_PAGES) return;
 
     if (plan.completedPages.includes(targetPage)) {
+      setToastMessage(`Faqja ${targetPage} është tashmë e regjistruar si e lexuar.`);
+      setShowUpdateModal(false);
       return;
     }
 
@@ -170,20 +181,30 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
     const juzMeta = ALL_JUZ_META[juzNumber - 1];
     if (!juzMeta) return;
     const missing = getMissingPagesInRange(plan, juzMeta.startPage, juzMeta.endPage);
-    if (missing.length === 0) return;
+    if (missing.length === 0) {
+      setToastMessage(`Xhuzi ${juzNumber} është tashmë i regjistruar si i përfunduar.`);
+      return;
+    }
     const updated = confirmJuzCompleted(plan, juzNumber);
     handlePersistPlan(updated, `Xhuzi ${juzNumber} u konfirmua i përfunduar!`);
   };
 
-  // 5. Removal Handler
+  // 5. Removal Handler with Undo
   const handleRemoveConfirm = () => {
     if (!removalTarget) return;
+    const previousPlan = plan;
     if (removalTarget.type === 'page') {
-      const updated = removePageCompleted(plan, removalTarget.page);
-      handlePersistPlan(updated, `Faqja ${removalTarget.page} u hoq nga progresi.`);
+      const pageToRem = removalTarget.page;
+      const updated = removePageCompleted(plan, pageToRem);
+      handlePersistPlan(updated, `Faqja ${pageToRem} u hoq nga progresi.`, () => {
+        handlePersistPlan(previousPlan, `Faqja ${pageToRem} u rikthye në progres.`);
+      });
     } else if (removalTarget.type === 'juz') {
-      const updated = removeJuzCompleted(plan, removalTarget.juz);
-      handlePersistPlan(updated, `Xhuzi ${removalTarget.juz} (faqet ${removalTarget.startPage}–${removalTarget.endPage}) u hoq nga progresi.`);
+      const juzToRem = removalTarget.juz;
+      const updated = removeJuzCompleted(plan, juzToRem);
+      handlePersistPlan(updated, `Xhuzi ${juzToRem} u hoq nga progresi.`, () => {
+        handlePersistPlan(previousPlan, `Xhuzi ${juzToRem} u rikthye në progres.`);
+      });
     }
     setRemovalTarget(null);
   };
@@ -206,10 +227,21 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
       {toastMessage && (
         <div
           id="khatam-toast"
-          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-medium flex items-center space-x-2 animate-fadeIn backdrop-blur-md"
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-medium flex items-center space-x-3 animate-fadeIn backdrop-blur-md"
         >
-          <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-200 shrink-0" />
           <span>{toastMessage}</span>
+          {undoCallback && (
+            <button
+              onClick={() => {
+                undoCallback();
+                setUndoCallback(null);
+              }}
+              className="ml-2 px-2 py-0.5 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold rounded-md underline cursor-pointer"
+            >
+              Zhbëj
+            </button>
+          )}
         </div>
       )}
 
@@ -715,37 +747,52 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
         </div>
       )}
 
-      {/* MODAL 1B: Jump Confirmation Dialog for jumps > 20 pages */}
-      {jumpPromptPage !== null && (
-        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-slate-900 border border-amber-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
-            <div className="flex items-center space-x-3 text-amber-400">
-              <AlertCircle className="w-6 h-6 shrink-0" />
-              <h3 className="text-base font-bold text-slate-100">Konfirmim i Kërcimit të Faqeve</h3>
-            </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Keni bërë një kërcim nga faqja <strong className="text-white">{plan.lastCompletedPage}</strong> te faqja{' '}
-              <strong className="text-emerald-400">{jumpPromptPage}</strong> ({jumpPromptPage - plan.lastCompletedPage} faqe).
-              A dëshironi t'i shënoni të gjitha faqet e mëparshme si të përfunduara?
-            </p>
+      {/* MODAL 1B: Gap Confirmation Dialog */}
+      {jumpPromptPage !== null && (() => {
+        const fromP = plan.lastCompletedPage + 1;
+        const toP = jumpPromptPage;
+        const gapText = fromP === toP ? `Faqja ${toP}` : `Faqet ${fromP}–${toP}`;
+        return (
+          <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+            <div className="bg-slate-900 border border-amber-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+              <div className="flex items-center space-x-3 text-amber-400">
+                <AlertCircle className="w-6 h-6 shrink-0" />
+                <h3 className="text-base font-bold text-slate-100">Konfirmim i Progresit</h3>
+              </div>
+              <div className="space-y-1 text-xs text-slate-300">
+                <p>{gapText} nuk janë regjistruar.</p>
+                <p className="font-semibold text-slate-100">Dëshiron t'i shënosh {gapText.toLowerCase()} si të përfunduara?</p>
+              </div>
 
-            <div className="space-y-2 pt-2">
-              <button
-                onClick={() => handleConfirmJumpWithPrior(true)}
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md"
-              >
-                Po, shëno të gjitha faqet 1–{jumpPromptPage} si të kryera
-              </button>
-              <button
-                onClick={() => handleConfirmJumpWithPrior(false)}
-                className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-xl border border-slate-700"
-              >
-                Jo, vetëm faqen {jumpPromptPage}
-              </button>
+              <div className="space-y-2 pt-2">
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => {
+                      setJumpPromptPage(null);
+                      setShowUpdateModal(false);
+                    }}
+                    className="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl border border-slate-700 transition-colors cursor-pointer"
+                  >
+                    Anulo
+                  </button>
+                  <button
+                    onClick={() => handleConfirmJumpWithPrior(true)}
+                    className="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
+                  >
+                    Po, shënoji
+                  </button>
+                </div>
+                <button
+                  onClick={() => handleConfirmJumpWithPrior(false)}
+                  className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-[11px] rounded-lg transition-colors border border-slate-800 cursor-pointer"
+                >
+                  Jo, shëno vetëm faqen {jumpPromptPage}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* MODAL 1C: Removal Confirmation Dialog */}
       {removalTarget && (
@@ -753,24 +800,24 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
           <div className="bg-slate-900 border border-red-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center space-x-3 text-red-400">
               <AlertCircle className="w-6 h-6 shrink-0" />
-              <h3 className="text-base font-bold text-slate-100">Je i sigurt?</h3>
+              <h3 className="text-base font-bold text-slate-100">Konfirmo Heqjen</h3>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
               {removalTarget.type === 'page'
-                ? `Po heq faqen ${removalTarget.page} nga progresi i Hatmes.`
-                : `Po heq faqet ${removalTarget.startPage}–${removalTarget.endPage} nga progresi.`}
+                ? `Je i sigurt që dëshiron ta heqësh këtë faqe (${removalTarget.page}) nga progresi i Hatmes?`
+                : `Je i sigurt që dëshiron ta heqësh Xhuzin ${removalTarget.juz} nga progresi i Hatmes?`}
             </p>
 
-            <div className="flex items-center space-x-3 pt-2">
+            <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 onClick={() => setRemovalTarget(null)}
-                className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl transition-colors"
+                className="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl transition-colors cursor-pointer"
               >
                 Anulo
               </button>
               <button
                 onClick={handleRemoveConfirm}
-                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors"
+                className="py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
               >
                 Po, hiqe
               </button>

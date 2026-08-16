@@ -206,6 +206,7 @@ export const ExpandableNoteText: React.FC<ExpandableNoteTextProps> = ({
 
 interface KuraniViewProps {
  initialSurahNumber?: number;
+ initialAyahNumber?: number;
  initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam';
  initialPageNumber?: number;
  readingState: QuranReadingState;
@@ -220,6 +221,7 @@ interface KuraniViewProps {
 
 export const KuraniView: React.FC<KuraniViewProps> = ({
  initialSurahNumber,
+ initialAyahNumber,
  initialSubTab,
  initialPageNumber,
  readingState,
@@ -238,7 +240,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
  const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
- const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(null);
+ const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(initialAyahNumber || null);
 
  // Reading Settings state (Canonical unified settings)
  const [readingSettings, setReadingSettings] = useState<QuranReadingSettings>(() => loadQuranReadingSettings());
@@ -436,6 +438,12 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  setSelectedSurahNum(initialSurahNumber);
  }
  }, [initialSurahNumber]);
+
+ useEffect(() => {
+ if (initialAyahNumber) {
+ setTargetAyahToScroll(initialAyahNumber);
+ }
+ }, [initialAyahNumber]);
 
  useEffect(() => {
  if (selectedSurahNum) {
@@ -857,64 +865,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  </div>
  ) : surahData ? (
  <div className="space-y-4 mt-3">
- {/* Continuous Mushaf View vs Card View */}
- {readingSettings.layoutMode === 'mushaf' ? (
- /* Continuous Mushaf Flow Mode */
- <div className={`p-6 rounded-2xl border space-y-6 ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
- <div
- className="font-arabic text-right select-text transition-all leading-[2.6]"
- style={{
- fontSize: `${readingSettings.arabicFontSize}px`,
- lineHeight: readingSettings.lineSpacing
- }}
- dir="rtl"
- >
- {surahData.ayahs.map(ayah => (
- <span
- key={ayah.numberInSurah}
- id={`ayah-${ayah.numberInSurah}`}
- className="ayah-container-trackable inline cursor-pointer hover:opacity-90 transition-opacity"
- data-ayah-num={ayah.numberInSurah}
- data-surah-num={selectedSurahNum}
- onClick={() => openNoteEditor(ayah.numberInSurah)}
- title={`Ajeti ${ayah.numberInSurah} - Kliko për të shtuar shënim`}
- >
- <QuranVerseRenderer
- textAr={ayah.textAr}
- surahNumber={selectedSurahNum}
- numberInSurah={ayah.numberInSurah}
- showTajweed={readingSettings.showTajweed}
- className={currentTheme.arabicText}
- />
- {' '}
- </span>
- ))}
- </div>
-
- {/* Translations below Mushaf text if enabled */}
- {readingSettings.showTranslation && (
- <div className="pt-6 border-t border-current/10 space-y-3">
- <h4 className="text-xs font-bold uppercase tracking-wider opacity-70">Përkthimi i Ajeteve (Hasan Nahi)</h4>
- <div className="space-y-3">
- {surahData.ayahs.map(ayah => (
- <div key={ayah.numberInSurah} className="text-xs space-y-1">
- <span className={`font-mono font-bold mr-1.5 ${currentTheme.accent}`}>
- [{ayah.numberInSurah}]
- </span>
- <span
- className={`${currentTheme.sqText}`}
- style={{ fontSize: `${readingSettings.albanianFontSize}px` }}
- >
- {ayah.textSq}
- </span>
- </div>
- ))}
- </div>
- </div>
- )}
- </div>
- ) : (
- /* Cards Mode (Verse-by-Verse with generous spacing) */
+ {/* Cards Mode (Verse-by-Verse with generous spacing) */}
  <div className="space-y-6 sm:space-y-8 my-5">
  {surahData.ayahs.map(ayah => {
  const isLastRead =
@@ -1083,7 +1034,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  );
  })}
  </div>
- )}
 
  {/* Prev/Next Surah Navigation Footer */}
  <div className="flex justify-between items-center pt-5 border-t border-current/10">
@@ -1679,7 +1629,10 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between"
  >
  <div
- onClick={() => setSelectedSurahNum(bkm.surahNumber)}
+ onClick={() => {
+ setSelectedSurahNum(bkm.surahNumber);
+ setTargetAyahToScroll(bkm.ayahNumber);
+ }}
  className="cursor-pointer space-y-0.5 flex-1"
  >
  <h4 className="text-xs font-bold text-slate-100">
@@ -1716,7 +1669,10 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  >
  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
  <div
- onClick={() => setSelectedSurahNum(note.surahNumber)}
+ onClick={() => {
+ setSelectedSurahNum(note.surahNumber);
+ setTargetAyahToScroll(note.ayahNumber);
+ }}
  className="cursor-pointer flex items-center space-x-2 text-xs font-bold text-emerald-400 hover:underline"
  >
  <BookOpen className="w-3.5 h-3.5" />
@@ -1744,7 +1700,10 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  <div className="flex justify-between items-center pt-1 text-[10px] text-slate-400 font-mono">
  <span>Përditësuar më {new Date(note.updatedAt).toLocaleDateString()}</span>
  <button
- onClick={() => setSelectedSurahNum(note.surahNumber)}
+ onClick={() => {
+ setSelectedSurahNum(note.surahNumber);
+ setTargetAyahToScroll(note.ayahNumber);
+ }}
  className="text-emerald-400 flex items-center space-x-1 hover:underline"
  >
  <span>Hap Ajetin</span>
@@ -1768,8 +1727,11 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  setMushafSurahNum(null);
  setActiveTab('surahs');
  }}
- onSwitchToVerseByVerse={(surahNum) => {
+ onSwitchToVerseByVerse={(surahNum, ayahNum) => {
  setSelectedSurahNum(surahNum);
+ if (ayahNum) {
+ setTargetAyahToScroll(ayahNum);
+ }
  setActiveTab('surahs');
  }}
  onPlayAyahAudio={(verseKey) => {

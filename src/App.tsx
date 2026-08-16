@@ -75,6 +75,7 @@ export default function App() {
  // Jump Target Props for cross-module navigation from Home
  const [targetMburojaChapterId, setTargetMburojaChapterId] = useState<number | null>(null);
  const [targetQuranSurahNum, setTargetQuranSurahNum] = useState<number | undefined>(undefined);
+ const [targetQuranAyahNum, setTargetQuranAyahNum] = useState<number | undefined>(undefined);
  const [targetQuranSubTab, setTargetQuranSubTab] = useState<'surahs' | 'mushaf_qcf' | undefined>(undefined);
  const [targetQuranPage, setTargetQuranPage] = useState<number | undefined>(undefined);
 
@@ -444,8 +445,9 @@ export default function App() {
  onOpenMburojaChapter={(chId) => {
  setTargetMburojaChapterId(chId);
  }}
- onOpenQuranSurah={(surahNum, _ayahNum, subTab, pageNum) => {
+ onOpenQuranSurah={(surahNum, ayahNum, subTab, pageNum) => {
  setTargetQuranSurahNum(surahNum);
+ setTargetQuranAyahNum(ayahNum);
  setTargetQuranSubTab(subTab);
  setTargetQuranPage(pageNum);
  }}
@@ -469,6 +471,7 @@ export default function App() {
  {activeTab === 'kurani' && (
  <KuraniView
  initialSurahNumber={targetQuranSurahNum}
+ initialAyahNumber={targetQuranAyahNum}
  initialSubTab={targetQuranSubTab}
  initialPageNumber={targetQuranPage}
  readingState={quranReadingState}

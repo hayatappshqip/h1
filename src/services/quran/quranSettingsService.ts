@@ -206,6 +206,7 @@ export function loadQuranReadingSettings(): QuranReadingSettings {
       return {
         ...DEFAULT_READING_SETTINGS,
         ...parsed,
+        layoutMode: 'cards',
         scriptType,
         lineSpacing,
       };

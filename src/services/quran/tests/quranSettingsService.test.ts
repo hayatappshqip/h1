@@ -43,7 +43,7 @@ describe('quranSettingsService', () => {
     expect(settings.theme).toBe('midnight');
     expect(settings.arabicFontSize).toBe(34);
     expect(settings.lineSpacing).toBe(1.8);
-    expect(settings.layoutMode).toBe('mushaf');
+    expect(settings.layoutMode).toBe('cards');
     expect(settings.selectedReciterKey).toBe('minshawi');
     expect(settings.scriptType).toBe('uthmani_hafs_unicode');
     expect(settings.dailyAyahGoal).toBe(20);

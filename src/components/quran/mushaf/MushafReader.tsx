@@ -60,7 +60,7 @@ import { QuranSettingsContent } from '../QuranSettingsContent';
 
 interface MushafReaderProps {
   onBack?: () => void;
-  onSwitchToVerseByVerse?: (surahNum: number) => void;
+  onSwitchToVerseByVerse?: (surahNum: number, ayahNum?: number) => void;
   onPlayAyahAudio?: (verseKey: string) => void;
   bookmarks?: QuranBookmark[];
   onAddBookmark?: (bookmark: Omit<QuranBookmark, 'id' | 'createdAt'>) => void;
@@ -606,8 +606,10 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    const surahNum = parseInt(activeVerseKey.split(':')[0], 10);
-                    onSwitchToVerseByVerse(surahNum);
+                    const parts = activeVerseKey.split(':');
+                    const surahNum = parseInt(parts[0], 10);
+                    const ayahNum = parseInt(parts[1], 10);
+                    onSwitchToVerseByVerse(surahNum, isNaN(ayahNum) ? undefined : ayahNum);
                     setShowAyahModal(false);
                   }}
                   className="p-3 min-h-[44px] rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center space-x-2 transition-colors cursor-pointer"
