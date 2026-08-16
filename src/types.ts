@@ -102,6 +102,37 @@ export interface QuranReadingState {
  lastReadAyah: number;
  updatedAt: number;
  dailyProgress?: { [date: string]: number }; // date (YYYY-MM-DD) -> number of ayahs read
+ readVerseKeys?: string[]; // Unique verse keys marked as read ("surah:ayah")
+ currentStreak?: number;
+ longestStreak?: number;
+ totalReadingEvents?: number;
+ lastReadDate?: string;
+}
+
+export interface QuranProgressState {
+ readVerseKeys: string[];
+ dailyProgress: Record<string, number>;
+ currentStreak: number;
+ longestStreak: number;
+ totalReadingEvents: number;
+ lastReadDate?: string;
+ updatedAt: number;
+}
+
+export interface ManualKhatamPlan {
+  id: string;
+  title: string;
+  status: 'active' | 'completed' | 'paused';
+  createdAt: number;
+  startDate: string;
+  targetDate?: string;
+  dailyTargetPages: number;
+  completedPages: number[];
+  lastCompletedPage: number;
+  nextPage: number;
+  history: { date: string; pagesCount: number }[];
+  notes?: string;
+  updatedAt: number;
 }
 
 export interface QuranBookmark {

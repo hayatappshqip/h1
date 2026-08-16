@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ALL_JUZ_META, JuzMeta, KHATAM_DUA } from '../data/juzData';
+import { ALL_JUZ_META, KHATAM_DUA } from '../data/juzData';
+import { ManualKhatamPlan } from '../types';
+import {
+  loadCachedKhatamPlan,
+  loadDurableKhatamPlan,
+  saveDurableKhatamPlan,
+  confirmPageCompleted,
+  confirmPageRangeCompleted,
+  confirmJuzCompleted,
+  updateDirectPagePosition,
+  calculateKhatamStats,
+  archiveCurrentAndStartNewPlan,
+  TOTAL_MUSHAF_PAGES,
+} from '../services/quran/manualKhatmahService';
+import { CANONICAL_MUSHAF_PAGES_DATA } from '../data/canonicalMushafManifest';
 import {
   BookOpen,
   Calendar,
@@ -7,7 +21,6 @@ import {
   Clock,
   Sparkles,
   Plus,
-  Minus,
   RotateCcw,
   ChevronRight,
   TrendingUp,
@@ -16,530 +29,405 @@ import {
   X,
   Book,
   Heart,
-  Share2
+  Share2,
+  Check,
+  ArrowRight,
+  SlidersHorizontal,
 } from 'lucide-react';
-
-export interface KhatamPlan {
-  id: string;
-  title: string;
-  targetDays: number;
-  startDate: string; // YYYY-MM-DD
-  endDate: string; // YYYY-MM-DD
-  planType: 'pages_per_day' | 'juz_per_day' | 'after_prayers';
-  dailyTargetPages: number;
-  pagesRead: number;
-  logs: { date: string; pages: number }[];
-  completedJuz: number[]; // Array of Juz numbers (1-30) that are done
-  inProgressJuz?: number[];
-  createdAt: number;
-}
 
 interface KhatamTrackerViewProps {
   onSelectSurah?: (surahNumber: number) => void;
+  onNavigateToPage?: (pageNumber: number) => void;
 }
 
-const DEFAULT_PLAN: KhatamPlan = {
-  id: 'default_plan',
-  title: 'Khatmi i Kuranit (30 Ditë)',
-  targetDays: 30,
-  startDate: new Date().toISOString().split('T')[0],
-  endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  planType: 'pages_per_day',
-  dailyTargetPages: 20,
-  pagesRead: 0,
-  logs: [],
-  completedJuz: [],
-  inProgressJuz: [],
-  createdAt: Date.now()
-};
+export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
+  onSelectSurah,
+  onNavigateToPage,
+}) => {
+  const [plan, setPlan] = useState<ManualKhatamPlan>(() => loadCachedKhatamPlan());
 
-const TOTAL_PAGES = 604;
-const TOTAL_JUZ = 30;
+  // Rehydrate durable plan asynchronously
+  useEffect(() => {
+    loadDurableKhatamPlan().then((durable) => {
+      if (durable && durable.updatedAt >= plan.updatedAt) {
+        setPlan(durable);
+      }
+    });
+  }, []);
 
-export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({ onSelectSurah }) => {
-  const [plan, setPlan] = useState<KhatamPlan>(() => {
-    try {
-      const saved = localStorage.getItem('hayat_khatam_active_plan');
-      if (saved) return JSON.parse(saved);
-    } catch (e) {
-      console.warn('Error reading khatam plan:', e);
-    }
-    return DEFAULT_PLAN;
-  });
-
+  // Modal States
+  const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
+  const [updateTab, setUpdateTab] = useState<'quick' | 'direct' | 'juz'>('quick');
   const [showPlanModal, setShowPlanModal] = useState<boolean>(false);
   const [showDuaModal, setShowDuaModal] = useState<boolean>(false);
-  const [juzFilter, setJuzFilter] = useState<'all' | 'completed' | 'in_progress' | 'unread'>('all');
+  const [juzFilter, setJuzFilter] = useState<'all' | 'completed' | 'unread'>('all');
 
-  // Form State for creating/editing plan
-  const [targetDaysInput, setTargetDaysInput] = useState<number>(plan.targetDays || 30);
-  const [planTypeInput, setPlanTypeInput] = useState<'pages_per_day' | 'juz_per_day' | 'after_prayers'>(plan.planType || 'pages_per_day');
-  const [pagesPerPrayerInput, setPagesPerPrayerInput] = useState<number>(4); // Default 4 pages after 5 prayers = 20 pages/day
+  // Direct Page Jump State
+  const [directPageInput, setDirectPageInput] = useState<number | ''>(plan.nextPage);
+  const [jumpPromptPage, setJumpPromptPage] = useState<number | null>(null);
 
-  // Quick log pages state
-  const [quickAddPages, setQuickAddPages] = useState<number>(1);
-  const [showSuccessToast, setShowSuccessToast] = useState<string | null>(null);
+  // New Plan Inputs
+  const [newTitleInput, setNewTitleInput] = useState<string>('Hatme e Re');
+  const [newDailyTargetInput, setNewDailyTargetInput] = useState<number>(20);
 
-  // Save plan to localStorage on edit
+  // Toast feedback
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Auto-hide toast
   useEffect(() => {
-    try {
-      localStorage.setItem('hayat_khatam_active_plan', JSON.stringify(plan));
-    } catch (e) {
-      console.warn('Failed to save khatam plan:', e);
-    }
-  }, [plan]);
-
-  // Toast auto-hide
-  useEffect(() => {
-    if (showSuccessToast) {
-      const timer = setTimeout(() => setShowSuccessToast(null), 3000);
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 3500);
       return () => clearTimeout(timer);
     }
-  }, [showSuccessToast]);
+  }, [toastMessage]);
 
-  // Derived Calculations
-  const todayStr = new Date().toISOString().split('T')[0];
-  const totalPagesRead = Math.min(TOTAL_PAGES, Math.max(0, plan.pagesRead));
-  const overallPercentage = Math.round((totalPagesRead / TOTAL_PAGES) * 100);
+  // Derived Stats
+  const stats = calculateKhatamStats(plan);
 
-  // Calculate days elapsed and remaining
-  const startDateObj = new Date(plan.startDate);
-  const endDateObj = new Date(plan.endDate);
-  const nowObj = new Date();
-  
-  const totalDurationDays = Math.max(1, Math.ceil((endDateObj.getTime() - startDateObj.getTime()) / (1000 * 3600 * 24)));
-  const daysPassed = Math.max(0, Math.floor((nowObj.getTime() - startDateObj.getTime()) / (1000 * 3600 * 24)));
-  const daysRemaining = Math.max(0, Math.ceil((endDateObj.getTime() - nowObj.getTime()) / (1000 * 3600 * 24)));
-
-  // Target progress vs actual
-  const expectedPagesToDate = Math.min(TOTAL_PAGES, Math.round(daysPassed * plan.dailyTargetPages));
-  const pageDiff = totalPagesRead - expectedPagesToDate;
-
-  let paceStatus: 'ahead' | 'on_track' | 'behind' = 'on_track';
-  if (pageDiff >= 10) paceStatus = 'ahead';
-  else if (pageDiff < -10) paceStatus = 'behind';
-
-  // Recommended catch-up daily rate
-  const neededDailyPages = daysRemaining > 0 
-    ? Math.ceil((TOTAL_PAGES - totalPagesRead) / daysRemaining) 
-    : (TOTAL_PAGES - totalPagesRead);
-
-  // Log for today
-  const todayLog = plan.logs.find(l => l.date === todayStr);
-  const todayPagesRead = todayLog ? todayLog.pages : 0;
-
-  // Handlers
-  const handleSavePlan = () => {
-    let dailyTarget = 20;
-    if (planTypeInput === 'pages_per_day') {
-      dailyTarget = Math.ceil(TOTAL_PAGES / targetDaysInput);
-    } else if (planTypeInput === 'juz_per_day') {
-      dailyTarget = Math.ceil(TOTAL_PAGES / targetDaysInput);
-    } else if (planTypeInput === 'after_prayers') {
-      dailyTarget = pagesPerPrayerInput * 5;
+  // Persistence helper
+  const handlePersistPlan = (updatedPlan: ManualKhatamPlan, successMsg?: string) => {
+    setPlan(updatedPlan);
+    saveDurableKhatamPlan(updatedPlan);
+    if (successMsg) {
+      setToastMessage(successMsg);
     }
-
-    const start = new Date();
-    const end = new Date(start.getTime() + targetDaysInput * 24 * 60 * 60 * 1000);
-
-    const updated: KhatamPlan = {
-      ...plan,
-      targetDays: targetDaysInput,
-      startDate: start.toISOString().split('T')[0],
-      endDate: end.toISOString().split('T')[0],
-      planType: planTypeInput,
-      dailyTargetPages: dailyTarget
-    };
-
-    setPlan(updated);
-    setShowPlanModal(false);
-    setShowSuccessToast('Plani i ri i Khatmit u ruajt me sukses!');
   };
 
-  const handleLogPages = (amount: number) => {
-    if (amount <= 0 && todayPagesRead + amount < 0) return;
-
-    const existingIndex = plan.logs.findIndex(l => l.date === todayStr);
-    let updatedLogs = [...plan.logs];
-    
-    if (existingIndex >= 0) {
-      const current = updatedLogs[existingIndex].pages;
-      const newPages = Math.max(0, current + amount);
-      if (newPages === 0) {
-        updatedLogs = updatedLogs.filter(l => l.date !== todayStr);
-      } else {
-        updatedLogs[existingIndex] = { date: todayStr, pages: newPages };
+  // 1. Primary CTA: "Vazhdo hatmen" (Does NOT mark page as completed)
+  const handleContinueKhatam = () => {
+    const targetPage = plan.nextPage || 1;
+    if (onNavigateToPage) {
+      onNavigateToPage(targetPage);
+    } else if (onSelectSurah) {
+      const pageMeta = CANONICAL_MUSHAF_PAGES_DATA[targetPage - 1];
+      if (pageMeta) {
+        onSelectSurah(pageMeta[1]);
       }
-    } else if (amount > 0) {
-      updatedLogs.push({ date: todayStr, pages: amount });
     }
-
-    const newTotalPages = Math.min(TOTAL_PAGES, Math.max(0, plan.pagesRead + amount));
-
-    // Auto update completed Juz based on pages read if appropriate
-    let newCompletedJuz = [...plan.completedJuz];
-    ALL_JUZ_META.forEach(juz => {
-      if (newTotalPages >= juz.endPage && !newCompletedJuz.includes(juz.number)) {
-        newCompletedJuz.push(juz.number);
-      }
-    });
-
-    setPlan({
-      ...plan,
-      pagesRead: newTotalPages,
-      logs: updatedLogs,
-      completedJuz: newCompletedJuz
-    });
-
-    setShowSuccessToast(`U regjistruan ${amount > 0 ? '+' : ''}${amount} faqe!`);
   };
 
-  const toggleJuzStatus = (juzNumber: number) => {
-    const isCompleted = plan.completedJuz.includes(juzNumber);
-    let newCompleted = [...plan.completedJuz];
-    
-    if (isCompleted) {
-      newCompleted = newCompleted.filter(n => n !== juzNumber);
+  // 2. Quick Confirmation Handlers
+  const handleConfirmCurrentPage = () => {
+    const targetPage = plan.nextPage;
+    const updated = confirmPageCompleted(plan, targetPage);
+    handlePersistPlan(updated, `Faqja ${targetPage} u konfirmua si e kryer!`);
+    setShowUpdateModal(false);
+  };
+
+  const handleConfirmPageAmount = (amount: number) => {
+    const start = plan.lastCompletedPage + 1;
+    const end = Math.min(TOTAL_MUSHAF_PAGES, plan.lastCompletedPage + amount);
+    const updated = confirmPageRangeCompleted(plan, start, end);
+    handlePersistPlan(updated, `U regjistruan +${amount} faqe të kryera!`);
+    setShowUpdateModal(false);
+  };
+
+  // 3. Direct Page Jump Handler
+  const handleDirectPageSubmit = () => {
+    const targetPage = typeof directPageInput === 'number' ? directPageInput : Number(directPageInput);
+    if (isNaN(targetPage) || targetPage < 1 || targetPage > TOTAL_MUSHAF_PAGES) return;
+
+    const currentMax = plan.lastCompletedPage;
+    if (targetPage > currentMax + 20) {
+      // Large jump: prompt user for confirmation
+      setJumpPromptPage(targetPage);
     } else {
-      newCompleted.push(juzNumber);
+      const updated = updateDirectPagePosition(plan, targetPage, true);
+      handlePersistPlan(updated, `Progresi u përditësua te faqja ${targetPage}!`);
+      setShowUpdateModal(false);
     }
+  };
 
-    // Estimate total pages from completed juz
-    const estimatedPages = Math.min(TOTAL_PAGES, newCompleted.length * 20);
-
-    setPlan({
-      ...plan,
-      completedJuz: newCompleted,
-      pagesRead: Math.max(plan.pagesRead, estimatedPages)
-    });
-
-    setShowSuccessToast(
-      isCompleted 
-        ? `Xhuzi ${juzNumber} u hoq nga të përfunduarat.` 
-        : `Mashallah! Xhuzi ${juzNumber} u markua si i përfunduar!`
+  const handleConfirmJumpWithPrior = (markPrior: boolean) => {
+    if (!jumpPromptPage) return;
+    const updated = updateDirectPagePosition(plan, jumpPromptPage, markPrior);
+    handlePersistPlan(
+      updated,
+      markPrior
+        ? `Faqet 1–${jumpPromptPage} u konfirmuan si të kryera!`
+        : `Faqja ${jumpPromptPage} u shënua e kryer!`
     );
+    setJumpPromptPage(null);
+    setShowUpdateModal(false);
   };
 
-  const handleResetPlan = () => {
-    if (window.confirm('A jeni të sigurt që dëshironi të rivendosni progresin e këtij Khatmi?')) {
-      setPlan({
-        ...DEFAULT_PLAN,
-        startDate: new Date().toISOString().split('T')[0],
-        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-      });
-      setShowSuccessToast('Progresi i Khatmit u rivendos.');
-    }
+  // 4. Juz Confirmation Handler
+  const handleConfirmJuz = (juzNumber: number) => {
+    const updated = confirmJuzCompleted(plan, juzNumber);
+    handlePersistPlan(updated, `Xhuzi ${juzNumber} u konfirmua i përfunduar!`);
   };
 
-  // Filter Juz cards
-  const filteredJuzList = ALL_JUZ_META.filter(juz => {
-    const isCompleted = plan.completedJuz.includes(juz.number);
-    const isInProgress = !isCompleted && totalPagesRead >= juz.startPage && totalPagesRead < juz.endPage;
-    
-    if (juzFilter === 'completed') return isCompleted;
-    if (juzFilter === 'in_progress') return isInProgress;
-    if (juzFilter === 'unread') return !isCompleted && !isInProgress;
-    return true;
-  });
+  // 5. New / Reset Plan Handler
+  const handleCreateNewPlan = async () => {
+    const { newPlan } = await archiveCurrentAndStartNewPlan(
+      plan,
+      newTitleInput || 'Hatme e Re',
+      newDailyTargetInput > 0 ? newDailyTargetInput : 20
+    );
+    setPlan(newPlan);
+    setShowPlanModal(false);
+    setToastMessage('Plani i ri i Khatmit u krijua me sukses!');
+  };
 
   return (
-    <div className="space-y-5 pb-8 animate-fadeIn">
-      {/* Toast notification */}
-      {showSuccessToast && (
-        <div className="fixed top-16 right-4 z-50 bg-emerald-600 text-slate-950 px-4 py-2.5 rounded-xl shadow-xl font-medium text-xs flex items-center space-x-2 border border-emerald-400/50 animate-bounce">
-          <Sparkles className="w-4 h-4 text-slate-950 fill-current" />
-          <span>{showSuccessToast}</span>
+    <div id="khatam-tracker-view" className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      {/* Toast Banner */}
+      {toastMessage && (
+        <div
+          id="khatam-toast"
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-medium flex items-center space-x-2 animate-fadeIn backdrop-blur-md"
+        >
+          <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+          <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Header Title Banner */}
-      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-800/60 p-5 rounded-2xl relative overflow-hidden shadow-lg">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono text-[11px] font-semibold uppercase tracking-wider">
-                Planifikuesi i Kuranit
-              </span>
-              <span className="text-xs text-slate-400">• Hatme / Khatam Tracker</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-100 font-serif mt-1">
-              {plan.title}
-            </h2>
-            <p className="text-xs text-slate-300 mt-1">
-              Data e përfundimit: <span className="font-semibold text-emerald-300">{plan.endDate}</span> ({daysRemaining} ditë të mbetura)
-            </p>
-          </div>
+      {/* Main Hero Card */}
+      <div id="khatam-hero-card" className="bg-slate-900/90 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md relative overflow-hidden">
+        {/* Background Subtle Gradient */}
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="flex items-center space-x-2 w-full sm:w-auto">
-            <button
-              onClick={() => setShowDuaModal(true)}
-              className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all shadow-sm"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Dua Khatm</span>
-            </button>
-
-            <button
-              onClick={() => setShowPlanModal(true)}
-              className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-md"
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Ndrysho Planin</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Stats Overview Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-        {/* Progress Card */}
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3 flex flex-col justify-between shadow-sm">
-          <div className="flex justify-between items-start">
+        <div className="relative z-10 space-y-6">
+          {/* Top Bar: Title & Stats Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-[11px] text-slate-400 uppercase font-mono tracking-wider font-semibold">
-                Progresi i Përgjithshëm
-              </span>
-              <h3 className="text-2xl font-extrabold text-slate-100 font-mono mt-0.5">
-                {overallPercentage}% <span className="text-xs font-normal text-slate-400">({totalPagesRead} / {TOTAL_PAGES} Faqe)</span>
-              </h3>
+              <div className="flex items-center space-x-2">
+                <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[11px] font-semibold tracking-wide">
+                  {stats.isCompleted ? 'Khatmi i Kryer 🎉' : 'Në Progres'}
+                </span>
+                <span className="text-xs text-slate-400 font-mono">ID: {plan.id.slice(-6)}</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mt-2 font-serif">{plan.title}</h2>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800/60 flex items-center justify-center text-emerald-400 font-bold">
-              <BookOpen className="w-5 h-5" />
+
+            <div className="flex items-center space-x-2">
+              <button
+                id="btn-new-plan"
+                onClick={() => setShowPlanModal(true)}
+                className="px-3.5 py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/60 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>Rregullo Planin</span>
+              </button>
+
+              {stats.isCompleted && (
+                <button
+                  id="btn-dua-khatm"
+                  onClick={() => setShowDuaModal(true)}
+                  className="px-3.5 py-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-colors animate-pulse"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Dua Khatm al-Quran</span>
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
+          {/* Progress Bar & Percentage */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-baseline text-xs sm:text-sm">
+              <span className="text-slate-300 font-medium">Progresi i Përgjithshëm</span>
+              <span className="font-mono text-emerald-400 font-bold text-base sm:text-lg">
+                {stats.completedPagesCount} / {TOTAL_MUSHAF_PAGES} faqe ({stats.percentage}%)
+              </span>
+            </div>
+            <div className="w-full bg-slate-800/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
               <div
-                className="h-full bg-gradient-to-r from-emerald-600 to-teal-400 rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${overallPercentage}%` }}
+                className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${Math.min(100, stats.percentage)}%` }}
               />
             </div>
-
-            <div className="flex justify-between items-center text-[11px] text-slate-400">
-              <span>{plan.completedJuz.length} nga 30 Xhuze</span>
-              <span>{TOTAL_PAGES - totalPagesRead} Faqe mbetur</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Pace & Rhythm Card */}
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3 flex flex-col justify-between shadow-sm">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-[11px] text-slate-400 uppercase font-mono tracking-wider font-semibold">
-                Ritmi i Leximit
-              </span>
-              <div className="flex items-center space-x-2 mt-1">
-                {paceStatus === 'ahead' && (
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center space-x-1">
-                    <Award className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Para Planit!</span>
-                  </span>
-                )}
-                {paceStatus === 'on_track' && (
-                  <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-xs font-bold flex items-center space-x-1">
-                    <TrendingUp className="w-3.5 h-3.5 text-blue-400" />
-                    <span>Në Orar</span>
-                  </span>
-                )}
-                {paceStatus === 'behind' && (
-                  <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center space-x-1">
-                    <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Prapa Planit</span>
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-amber-400 font-bold">
-              <Clock className="w-5 h-5" />
-            </div>
           </div>
 
-          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/80 text-xs space-y-1">
-            <div className="flex justify-between text-slate-300">
-              <span className="opacity-80">Synimi ditor:</span>
-              <span className="font-bold text-emerald-400">{plan.dailyTargetPages} faqe/ditë</span>
-            </div>
-            <div className="flex justify-between text-slate-300">
-              <span className="opacity-80">Doza rekomanduar:</span>
-              <span className="font-bold text-amber-300">{neededDailyPages} faqe/ditë</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Daily Quick Logger Card */}
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3 flex flex-col justify-between shadow-sm">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-[11px] text-slate-400 uppercase font-mono tracking-wider font-semibold">
-                Leximi Sot
-              </span>
-              <h3 className="text-2xl font-extrabold text-emerald-400 font-mono mt-0.5">
-                {todayPagesRead} <span className="text-xs font-normal text-slate-400">/ {plan.dailyTargetPages} Faqe</span>
-              </h3>
-            </div>
-
-            <div className="flex items-center space-x-1">
-              <button
-                onClick={() => handleLogPages(-1)}
-                className="w-8 h-8 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 flex items-center justify-center transition-colors"
-                title="Zbrit 1 faqe"
-              >
-                <Minus className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => handleLogPages(1)}
-                className="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold flex items-center justify-center transition-colors shadow"
-                title="Shto 1 faqe"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
+          {/* Primary Action Buttons Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            {/* Primary CTA: "Vazhdo hatmen" */}
             <button
-              onClick={() => handleLogPages(5)}
-              className="flex-1 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 font-medium transition-colors"
+              id="btn-vazhdo-hatmen"
+              onClick={handleContinueKhatam}
+              className="w-full py-3.5 px-5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg shadow-emerald-950/50 flex items-center justify-center space-x-2.5 transition-all transform active:scale-[0.99]"
             >
-              +5 Faqe
+              <BookOpen className="w-5 h-5" />
+              <span>Vazhdo hatmen (Faqja {plan.nextPage})</span>
+              <ArrowRight className="w-4 h-4 text-emerald-200" />
             </button>
+
+            {/* Secondary CTA: "Përditëso progresin" */}
             <button
-              onClick={() => handleLogPages(10)}
-              className="flex-1 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 font-medium transition-colors"
+              id="btn-perditso-progresin"
+              onClick={() => {
+                setDirectPageInput(plan.nextPage);
+                setShowUpdateModal(true);
+              }}
+              className="w-full py-3.5 px-5 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold text-sm sm:text-base border border-emerald-500/40 rounded-2xl shadow-md flex items-center justify-center space-x-2.5 transition-all"
             >
-              +10 Faqe
-            </button>
-            <button
-              onClick={() => handleLogPages(plan.dailyTargetPages)}
-              className="flex-1 py-1.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900/80 border border-emerald-800/60 text-[11px] text-emerald-300 font-bold transition-colors"
-            >
-              Doza Plote
+              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              <span>Përditëso progresin</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 30 Juz Tracker Section */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-md">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+      {/* Metrics & Daily Stats Grid */}
+      <div id="khatam-metrics-grid" className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Card 1: Today's Confirmed Progress */}
+        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Konfirmuar Sot</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+              <Calendar className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-slate-100 font-mono">
+              {stats.confirmedTodayCount} <span className="text-xs font-normal text-slate-400">/ {plan.dailyTargetPages} faqe</span>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              {stats.isDailyGoalReached ? (
+                <span className="text-emerald-400 font-semibold flex items-center space-x-1">
+                  <Check className="w-3.5 h-3.5" /> <span>Synimi ditor u arrit!</span>
+                </span>
+              ) : (
+                <span>Edhe {Math.max(0, plan.dailyTargetPages - stats.confirmedTodayCount)} faqe për synimin ditor</span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Card 2: Pace & Recommended Rate */}
+        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ritmi Ditor</span>
+            <div className="w-8 h-8 rounded-xl bg-teal-500/10 border border-teal-500/30 text-teal-400 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-slate-100 font-mono">
+              ~{stats.avgPagesPerDay} <span className="text-xs font-normal text-slate-400">faqe / ditë</span>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              Mbeten edhe {stats.remainingPagesCount} faqe për të përfunduar Kuranin.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 3: Projected Completion */}
+        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Përfundimi i Parashikuar</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center">
+              <Clock className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <div className="text-lg font-bold text-amber-300 font-mono">
+              {stats.isCompleted ? 'Përfunduar' : stats.projectedCompletionDate}
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              {stats.isCompleted ? 'Urime për leximin e Kuranit!' : `Me ritmin aktual prej ${stats.avgPagesPerDay} faqe/ditë`}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 30 Juz Explorer & Manual Confirmation Section */}
+      <div id="khatam-juz-section" className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
           <div>
             <h3 className="text-base font-bold text-slate-100 flex items-center space-x-2">
               <Book className="w-4 h-4 text-emerald-400" />
-              <span>30 Xhuzet e Kuranit (Juz Tracker)</span>
+              <span>Progresi sipas Xhuzeve (1–30)</span>
             </h3>
-            <p className="text-xs text-slate-400">
-              Kliko mbi xhuzin për ta shënuar si të përfunduar ose për të naviguar direkt tek teksti
+            <p className="text-xs text-slate-400 mt-0.5">
+              Klikoni një xhuz për ta konfirmuar si të lexuar plotësisht.
             </p>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs overflow-x-auto">
+          <div className="flex items-center space-x-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
             <button
               onClick={() => setJuzFilter('all')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                juzFilter === 'all'
-                  ? 'bg-emerald-600 text-slate-950 font-bold shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+              className={`px-2.5 py-1 rounded-lg transition-colors ${
+                juzFilter === 'all' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Të Gjitha (30)
+              Të gjitha (30)
             </button>
             <button
               onClick={() => setJuzFilter('completed')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                juzFilter === 'completed'
-                  ? 'bg-emerald-600 text-slate-950 font-bold shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+              className={`px-2.5 py-1 rounded-lg transition-colors ${
+                juzFilter === 'completed' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Kryer ({plan.completedJuz.length})
+              Të kryera
             </button>
             <button
               onClick={() => setJuzFilter('unread')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${
-                juzFilter === 'unread'
-                  ? 'bg-emerald-600 text-slate-950 font-bold shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+              className={`px-2.5 py-1 rounded-lg transition-colors ${
+                juzFilter === 'unread' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Pa Lexuar ({30 - plan.completedJuz.length})
+              Paparashikuara
             </button>
           </div>
         </div>
 
-        {/* Grid of 30 Juz Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filteredJuzList.map(juz => {
-            const isCompleted = plan.completedJuz.includes(juz.number);
+        {/* Juz Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+          {ALL_JUZ_META.filter((juz) => {
+            const pagesInJuz = Array.from(
+              { length: juz.endPage - juz.startPage + 1 },
+              (_, i) => juz.startPage + i
+            );
+            const isDone = pagesInJuz.every((p) => plan.completedPages.includes(p));
+            if (juzFilter === 'completed') return isDone;
+            if (juzFilter === 'unread') return !isDone;
+            return true;
+          }).map((juz) => {
+            const pagesInJuz = Array.from(
+              { length: juz.endPage - juz.startPage + 1 },
+              (_, i) => juz.startPage + i
+            );
+            const doneCount = pagesInJuz.filter((p) => plan.completedPages.includes(p)).length;
+            const isFullyCompleted = doneCount === pagesInJuz.length;
 
             return (
               <div
                 key={juz.number}
-                className={`border p-3.5 rounded-xl transition-all flex flex-col justify-between space-y-3 ${
-                  isCompleted
-                    ? 'bg-emerald-950/30 border-emerald-800/60 shadow-inner'
-                    : 'bg-slate-950/60 hover:bg-slate-950 border-slate-800'
+                className={`p-3 rounded-xl border text-xs transition-all relative flex flex-col justify-between space-y-2 ${
+                  isFullyCompleted
+                    ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
+                    : doneCount > 0
+                    ? 'bg-slate-800/80 border-slate-700 text-slate-200'
+                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-2.5">
-                    <span
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-xs font-bold border ${
-                        isCompleted
-                          ? 'bg-emerald-600 text-slate-950 border-emerald-400'
-                          : 'bg-slate-900 text-slate-300 border-slate-800'
-                      }`}
-                    >
-                      {juz.number}
+                <div className="flex justify-between items-start">
+                  <span className="font-bold text-slate-200">Xhuzi {juz.number}</span>
+                  {isFullyCompleted ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  ) : (
+                    <span className="text-[10px] font-mono text-slate-400">
+                      {juz.startPage}-{juz.endPage}
                     </span>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-100">
-                        Xhuzi {juz.number} • {juz.transliteration}
-                      </h4>
-                      <p className="text-[11px] text-slate-400">
-                        Faqet {juz.startPage} - {juz.endPage} ({juz.totalPages} faqe)
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="font-arabic text-base text-emerald-400/90 font-medium" dir="rtl">
-                    {juz.nameAr}
-                  </span>
-                </div>
-
-                <div className="text-[11px] bg-slate-900/80 p-2 rounded-lg border border-slate-800/80 text-slate-300">
-                  <span className="font-semibold text-slate-200">{juz.startSurahName} ({juz.startAyah})</span>
-                  {' ➔ '}
-                  <span className="font-semibold text-slate-200">{juz.endSurahName} ({juz.endAyah})</span>
-                </div>
-
-                <div className="flex items-center space-x-2 pt-1 border-t border-slate-800/60">
-                  <button
-                    onClick={() => toggleJuzStatus(juz.number)}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all ${
-                      isCompleted
-                        ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-700/60'
-                        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'
-                    }`}
-                  >
-                    <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-400' : 'text-slate-500'}`} />
-                    <span>{isCompleted ? 'E Përfunduar' : 'Marko të kryer'}</span>
-                  </button>
-
-                  {onSelectSurah && (
-                    <button
-                      onClick={() => onSelectSurah(juz.startSurah)}
-                      className="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-800 rounded-lg text-xs font-medium flex items-center space-x-1 transition-colors"
-                      title="Lexo këtë xhuz ne Kuran"
-                    >
-                      <span>Lexo</span>
-                      <ChevronRight className="w-3 h-3" />
-                    </button>
                   )}
+                </div>
+
+                <div className="text-[11px] font-arabic text-emerald-400 truncate dir-rtl" dir="rtl">
+                  {juz.nameAr}
+                </div>
+
+                <div className="pt-1 flex justify-between items-center text-[10px] border-t border-slate-800/60">
+                  <span className="font-mono text-slate-400">
+                    {doneCount} / {juz.totalPages} faqe
+                  </span>
+                  <button
+                    onClick={() => handleConfirmJuz(juz.number)}
+                    className="text-emerald-400 hover:underline font-semibold"
+                  >
+                    {isFullyCompleted ? 'Rikonfirmo' : 'Shëno Kryer'}
+                  </button>
                 </div>
               </div>
             );
@@ -547,202 +435,266 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({ onSelectSu
         </div>
       </div>
 
-      {/* Plan Settings Modal */}
-      {showPlanModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl animate-scaleIn">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-slate-100 flex items-center space-x-2">
-                <Calendar className="w-4 h-4 text-emerald-400" />
-                <span>Ndrysho Planin e Khatmit</span>
+      {/* MODAL 1: "Përditëso progresin" */}
+      {showUpdateModal && (
+        <div
+          id="modal-update-progress"
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setShowUpdateModal(false)}
+        >
+          <div
+            className="bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-lg font-bold text-slate-100 flex items-center space-x-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <span>Regjistro progresin e leximit</span>
               </h3>
               <button
-                onClick={() => setShowPlanModal(false)}
-                className="text-slate-400 hover:text-slate-200"
+                onClick={() => setShowUpdateModal(false)}
+                className="text-slate-400 hover:text-slate-200 p-1"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3.5 text-xs">
-              <div>
-                <label className="text-slate-300 font-semibold block mb-1">
-                  Kohëzgjatja e Synuar (Ditë):
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { days: 30, label: '30 Ditë (1 Muaj)' },
-                    { days: 60, label: '60 Ditë (2 Muaj)' },
-                    { days: 90, label: '90 Ditë (3 Muaj)' },
-                    { days: 180, label: '180 Ditë (6 Muaj)' },
-                    { days: 365, label: '365 Ditë (1 Vit)' }
-                  ].map(opt => (
+            {/* Modal Sub-Tabs */}
+            <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs text-center font-medium">
+              <button
+                onClick={() => setUpdateTab('quick')}
+                className={`py-2 rounded-lg transition-colors ${
+                  updateTab === 'quick' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Shpejtë
+              </button>
+              <button
+                onClick={() => setUpdateTab('direct')}
+                className={`py-2 rounded-lg transition-colors ${
+                  updateTab === 'direct' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Numër Faqe
+              </button>
+              <button
+                onClick={() => setUpdateTab('juz')}
+                className={`py-2 rounded-lg transition-colors ${
+                  updateTab === 'juz' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Sipas Xhuzit
+              </button>
+            </div>
+
+            {/* TAB 1: Quick Confirm */}
+            {updateTab === 'quick' && (
+              <div className="space-y-4">
+                <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-center space-y-2">
+                  <span className="text-xs text-slate-400">Faqja tjetër e pritur</span>
+                  <div className="text-3xl font-bold text-emerald-400 font-mono">Faqja {plan.nextPage}</div>
+                  <p className="text-[11px] text-slate-400">
+                    A e përfundove leximin e faqes {plan.nextPage}?
+                  </p>
+                  <button
+                    onClick={handleConfirmCurrentPage}
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg mt-2 flex items-center justify-center space-x-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Po, konfirmo Faqen {plan.nextPage}</span>
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="text-xs font-semibold text-slate-300">Ose shto me faqe sot:</span>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[1, 2, 5, 10].map((amt) => (
+                      <button
+                        key={amt}
+                        onClick={() => handleConfirmPageAmount(amt)}
+                        className="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 rounded-xl text-xs flex items-center justify-center space-x-1"
+                      >
+                        <Plus className="w-3 h-3 text-emerald-400" />
+                        <span>+{amt} faqe</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: Direct Page Entry */}
+            {updateTab === 'direct' && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">Jam te faqja / Arrita te faqja:</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={TOTAL_MUSHAF_PAGES}
+                    value={directPageInput}
+                    onChange={(e) => setDirectPageInput(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-lg focus:outline-none focus:border-emerald-500"
+                    placeholder="shqip: e.g. 120"
+                  />
+                  <p className="text-[11px] text-slate-400">
+                    Vendos faqen ekzakte që dëshiron të regjistrosh (1–604).
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleDirectPageSubmit}
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg flex items-center justify-center space-x-2"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Ruaj Progresin</span>
+                </button>
+              </div>
+            )}
+
+            {/* TAB 3: Juz Selector inside modal */}
+            {updateTab === 'juz' && (
+              <div className="space-y-3">
+                <p className="text-xs text-slate-400">Përzgjidhni xhuzin që keni përfunduar sot:</p>
+                <div className="grid grid-cols-3 gap-2 max-h-56 overflow-y-auto pr-1">
+                  {ALL_JUZ_META.map((juz) => (
                     <button
-                      key={opt.days}
-                      type="button"
-                      onClick={() => setTargetDaysInput(opt.days)}
-                      className={`p-2 rounded-xl border text-[11px] font-semibold transition-all ${
-                        targetDaysInput === opt.days
-                          ? 'bg-emerald-600 text-slate-950 border-emerald-400 font-bold shadow'
-                          : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'
-                      }`}
+                      key={juz.number}
+                      onClick={() => {
+                        handleConfirmJuz(juz.number);
+                        setShowUpdateModal(false);
+                      }}
+                      className="p-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-xs text-left transition-all"
                     >
-                      {opt.label}
+                      <div className="font-bold text-slate-200">Xhuzi {juz.number}</div>
+                      <div className="text-[10px] text-slate-400 font-mono">Fq. {juz.startPage}-{juz.endPage}</div>
                     </button>
                   ))}
                 </div>
               </div>
+            )}
+          </div>
+        </div>
+      )}
 
-              <div>
-                <label className="text-slate-300 font-semibold block mb-1">
-                  Mënyra e Shpërndarjes Ditore:
-                </label>
-                <div className="space-y-2">
-                  <button
-                    type="button"
-                    onClick={() => setPlanTypeInput('pages_per_day')}
-                    className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
-                      planTypeInput === 'pages_per_day'
-                        ? 'bg-emerald-950/80 border-emerald-600 text-emerald-200 font-semibold'
-                        : 'bg-slate-950 border-slate-800 text-slate-300'
-                    }`}
-                  >
-                    <div>
-                      <div className="font-bold">Faqe të barabarta në ditë</div>
-                      <div className="text-[10px] opacity-75">
-                        ~{Math.ceil(TOTAL_PAGES / targetDaysInput)} faqe çdo ditë për {targetDaysInput} ditë
-                      </div>
-                    </div>
-                    {planTypeInput === 'pages_per_day' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setPlanTypeInput('after_prayers')}
-                    className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
-                      planTypeInput === 'after_prayers'
-                        ? 'bg-emerald-950/80 border-emerald-600 text-emerald-200 font-semibold'
-                        : 'bg-slate-950 border-slate-800 text-slate-300'
-                    }`}
-                  >
-                    <div>
-                      <div className="font-bold">Sipas 5 Namazeve Ditore (Farz)</div>
-                      <div className="text-[10px] opacity-75">
-                        Lexo një numër fletësh pas çdo namazi farz (Fejr, Dhuhr, Asr, Maghrib, Isha)
-                      </div>
-                    </div>
-                    {planTypeInput === 'after_prayers' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-                  </button>
-                </div>
-              </div>
-
-              {planTypeInput === 'after_prayers' && (
-                <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
-                  <label className="text-slate-300 font-semibold block">
-                    Faqe pas çdo namazi farz:
-                  </label>
-                  <div className="flex items-center space-x-2">
-                    {[2, 4, 6, 8, 10].map(cnt => (
-                      <button
-                        key={cnt}
-                        type="button"
-                        onClick={() => setPagesPerPrayerInput(cnt)}
-                        className={`flex-1 py-1.5 rounded-lg border text-xs font-bold transition-all ${
-                          pagesPerPrayerInput === cnt
-                            ? 'bg-emerald-600 text-slate-950 border-emerald-400'
-                            : 'bg-slate-900 border-slate-800 text-slate-300'
-                        }`}
-                      >
-                        {cnt} Faqe
-                      </button>
-                    ))}
-                  </div>
-                  <p className="text-[10px] text-emerald-400">
-                    Gjithsejt ditor: {pagesPerPrayerInput * 5} faqe/ditë (Khatmi mbaron për ~{Math.ceil(TOTAL_PAGES / (pagesPerPrayerInput * 5))} ditë)
-                  </p>
-                </div>
-              )}
+      {/* MODAL 1B: Jump Confirmation Dialog for jumps > 20 pages */}
+      {jumpPromptPage !== null && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border border-amber-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center space-x-3 text-amber-400">
+              <AlertCircle className="w-6 h-6 shrink-0" />
+              <h3 className="text-base font-bold text-slate-100">Konfirmim i Kërcimit të Faqeve</h3>
             </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Keni bërë një kërcim nga faqja <strong className="text-white">{plan.lastCompletedPage}</strong> te faqja{' '}
+              <strong className="text-emerald-400">{jumpPromptPage}</strong> ({jumpPromptPage - plan.lastCompletedPage} faqe).
+              A dëshironi t'i shënoni të gjitha faqet e mëparshme si të përfunduara?
+            </p>
 
-            <div className="flex items-center space-x-2 pt-3 border-t border-slate-800">
+            <div className="space-y-2 pt-2">
               <button
-                onClick={handleResetPlan}
-                className="px-3 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 text-xs font-semibold flex items-center space-x-1"
-                title="Pastro Progresin"
+                onClick={() => handleConfirmJumpWithPrior(true)}
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset</span>
+                Po, shëno të gjitha faqet 1–{jumpPromptPage} si të kryera
               </button>
-
               <button
-                onClick={handleSavePlan}
-                className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs shadow-md transition-colors"
+                onClick={() => handleConfirmJumpWithPrior(false)}
+                className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-xl border border-slate-700"
               >
-                Ruaj Planin
+                Jo, vetëm faqen {jumpPromptPage}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Dua Khatm al-Quran Modal */}
-      {showDuaModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl max-h-[90vh] rounded-2xl p-5 space-y-4 shadow-2xl flex flex-col animate-scaleIn">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center space-x-2">
-                <Sparkles className="w-5 h-5 text-amber-400" />
-                <div>
-                  <h3 className="text-base font-bold text-slate-100 font-serif">
-                    {KHATAM_DUA.titleSq}
-                  </h3>
-                  <p className="text-[11px] text-amber-400 font-arabic" dir="rtl">
-                    {KHATAM_DUA.titleAr}
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setShowDuaModal(false)}
-                className="text-slate-400 hover:text-slate-200"
-              >
+      {/* MODAL 2: Create / Rebuild Plan */}
+      {showPlanModal && (
+        <div
+          id="modal-plan-config"
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setShowPlanModal(false)}
+        >
+          <div
+            className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-lg font-bold text-slate-100 flex items-center space-x-2">
+                <SlidersHorizontal className="w-5 h-5 text-emerald-400" />
+                <span>Rregullo ose Krijo Plan të Ri</span>
+              </h3>
+              <button onClick={() => setShowPlanModal(false)} className="text-slate-400 hover:text-slate-200">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="overflow-y-auto space-y-4 pr-1 scrollbar-thin">
-              {/* Arabic Text */}
-              <div className="bg-slate-950 border border-slate-800/80 p-4 rounded-xl space-y-2">
-                <span className="text-[10px] text-emerald-400 uppercase font-mono tracking-wider">Teksti Arabisht</span>
-                <p className="font-arabic text-xl sm:text-2xl text-slate-100 text-right leading-[2.2] select-text" dir="rtl">
-                  {KHATAM_DUA.textAr}
-                </p>
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Titulli i Planit</label>
+                <input
+                  type="text"
+                  value={newTitleInput}
+                  onChange={(e) => setNewTitleInput(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+                />
               </div>
 
-              {/* Transliteration */}
-              <div className="bg-slate-950 border border-slate-800/80 p-4 rounded-xl space-y-1.5">
-                <span className="text-[10px] text-amber-400 uppercase font-mono tracking-wider">Transkriptimi (Shqipëzim)</span>
-                <p className="text-xs text-slate-300 leading-relaxed italic whitespace-pre-line font-serif">
-                  {KHATAM_DUA.transliteration}
-                </p>
-              </div>
-
-              {/* Translation */}
-              <div className="bg-slate-950 border border-slate-800/80 p-4 rounded-xl space-y-1.5">
-                <span className="text-[10px] text-blue-400 uppercase font-mono tracking-wider">Përkthimi në Shqip</span>
-                <p className="text-xs text-slate-200 leading-relaxed whitespace-pre-line">
-                  {KHATAM_DUA.translationSq}
-                </p>
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Synimi Ditor (Faqe në ditë)</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={604}
+                  value={newDailyTargetInput}
+                  onChange={(e) => setNewDailyTargetInput(Number(e.target.value))}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500"
+                />
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-800 flex justify-end">
+            <div className="pt-2 flex justify-end space-x-2">
               <button
-                onClick={() => setShowDuaModal(false)}
-                className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs rounded-xl shadow transition-colors"
+                onClick={() => setShowPlanModal(false)}
+                className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-medium text-xs"
               >
-                Mbyll
+                Anulo
               </button>
+              <button
+                onClick={handleCreateNewPlan}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs"
+              >
+                Krijo Planin
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: Dua Khatm al-Quran Modal */}
+      {showDuaModal && (
+        <div
+          id="modal-dua-khatm"
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setShowDuaModal(false)}
+        >
+          <div
+            className="bg-slate-900 border border-amber-500/40 rounded-3xl p-6 sm:p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-5 h-5 text-amber-400" />
+                <h3 className="text-lg font-bold text-amber-300">{KHATAM_DUA.titleSq}</h3>
+              </div>
+              <button onClick={() => setShowDuaModal(false)} className="text-slate-400 hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="text-right font-arabic text-xl sm:text-2xl text-amber-100 leading-loose tracking-wide bg-slate-950/60 p-6 rounded-2xl border border-amber-500/20" dir="rtl">
+              {KHATAM_DUA.textAr}
             </div>
           </div>
         </div>
