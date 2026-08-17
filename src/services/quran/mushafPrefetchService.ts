@@ -37,45 +37,31 @@ export interface QuranPageData {
  * Normalizes raw API verse objects to canonical CleanVerse format.
  */
 function normalizeRawVerses(rawVerses: any[], pageNum: number): CleanVerse[] {
-  return rawVerses
-    .map((verse: any) => {
-      const chapterId = verse.chapter_id || parseInt(String(verse.verse_key || '1:1').split(':')[0], 10) || 1;
-      const words: CleanWord[] = Array.isArray(verse.words)
-        ? verse.words
-            .filter((w: any) => {
-              const wordPage =
-                typeof w.v2_page === 'number'
-                  ? w.v2_page
-                  : typeof w.page_number === 'number'
-                    ? w.page_number
-                    : pageNum;
-              return wordPage === pageNum;
-            })
-            .map((w: any) => ({
-              position: typeof w.position === 'number' ? w.position : 0,
-              char_type_name: String(w.char_type_name || ''),
-              code_v2: String(w.code_v2 || ''),
-              v2_page: typeof w.v2_page === 'number' ? w.v2_page : pageNum,
-              line_number: typeof w.line_number === 'number' ? w.line_number : 1,
-              page_number: typeof w.page_number === 'number' ? w.page_number : pageNum,
-            }))
-        : [];
+  return rawVerses.map((verse: any) => {
+    const chapterId = verse.chapter_id || parseInt(String(verse.verse_key || '1:1').split(':')[0], 10) || 1;
+    const words: CleanWord[] = Array.isArray(verse.words)
+      ? verse.words.map((w: any) => ({
+          position: typeof w.position === 'number' ? w.position : 0,
+          char_type_name: String(w.char_type_name || ''),
+          code_v2: String(w.code_v2 || ''),
+          v2_page: typeof w.v2_page === 'number' ? w.v2_page : pageNum,
+          line_number: typeof w.line_number === 'number' ? w.line_number : 1,
+          page_number: typeof w.page_number === 'number' ? w.page_number : pageNum,
+        }))
+      : [];
 
-      return {
-        page_number: typeof verse.page_number === 'number' ? verse.page_number : pageNum,
-        juz_number: typeof verse.juz_number === 'number' ? verse.juz_number : 1,
-        hizb_number: typeof verse.hizb_number === 'number' ? verse.hizb_number : 1,
-        rub_el_hizb_number: typeof verse.rub_el_hizb_number === 'number' ? verse.rub_el_hizb_number : (verse.rub_number || 1),
-        chapter_id: chapterId,
-        verse_number: typeof verse.verse_number === 'number' ? verse.verse_number : 1,
-        verse_key: String(verse.verse_key || ''),
-        words,
-      };
-    })
-    .filter((verse: CleanVerse) => verse.words.length > 0);
+    return {
+      page_number: typeof verse.page_number === 'number' ? verse.page_number : pageNum,
+      juz_number: typeof verse.juz_number === 'number' ? verse.juz_number : 1,
+      hizb_number: typeof verse.hizb_number === 'number' ? verse.hizb_number : 1,
+      rub_el_hizb_number: typeof verse.rub_el_hizb_number === 'number' ? verse.rub_el_hizb_number : (verse.rub_number || 1),
+      chapter_id: chapterId,
+      verse_number: typeof verse.verse_number === 'number' ? verse.verse_number : 1,
+      verse_key: String(verse.verse_key || ''),
+      words,
+    };
+  });
 }
-
-export const normalizeRawVersesForTesting = normalizeRawVerses;
 
 /**
  * Clears page data cache, optionally for a specific page or all pages.
