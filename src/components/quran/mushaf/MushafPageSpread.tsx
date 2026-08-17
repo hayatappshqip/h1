@@ -49,7 +49,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
   // Single page mode (portrait or mobile)
   if (!isTwoPageSpread || leftPageNum === null) {
     return (
-      <div className="w-full h-full max-w-[min(100%,calc((100dvh-7.5rem)/1.42))] max-h-[calc(100dvh-7.5rem)] aspect-[1/1.42] mx-auto flex items-center justify-center">
+      <div className="w-[min(100%,calc(var(--mushaf-avail-h)/1.42))] h-auto aspect-[1/1.42] mx-auto flex items-center justify-center">
         <MushafPageRenderer
           pageNumber={currentPage}
           pageData={pageData1}
@@ -72,9 +72,9 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
   // Two-page spread mode (desktop / landscape tablet)
   // Right page is rightPageNum, Left page is leftPageNum
   return (
-    <div className="w-full h-full max-w-5xl max-h-[calc(100dvh-7.5rem)] mx-auto flex items-center justify-center gap-1 sm:gap-2">
+    <div className="w-full h-full max-w-5xl max-h-[var(--mushaf-avail-h)] mx-auto flex items-center justify-center gap-1 sm:gap-2">
       {/* Left Page of the open book */}
-      <div className="flex-1 h-full max-w-[min(50%,calc((100dvh-7.5rem)/1.42))] aspect-[1/1.42] flex items-center justify-center hidden sm:flex">
+      <div className="w-[min(50%,calc(var(--mushaf-avail-h)/1.42))] h-auto aspect-[1/1.42] flex items-center justify-center hidden sm:flex">
         <MushafPageRenderer
           pageNumber={leftPageNum}
           pageData={pageData2}
@@ -98,7 +98,7 @@ export const MushafPageSpread: React.FC<MushafPageSpreadProps> = ({
       />
 
       {/* Right Page of the open book */}
-      <div className="flex-1 h-full max-w-[min(50%,calc((100dvh-7.5rem)/1.42))] aspect-[1/1.42] flex items-center justify-center">
+      <div className="w-[min(50%,calc(var(--mushaf-avail-h)/1.42))] h-auto aspect-[1/1.42] flex items-center justify-center">
         <MushafPageRenderer
           pageNumber={rightPageNum}
           pageData={pageData1}

@@ -91,7 +91,7 @@ export const MushafPageFrame: React.FC<MushafPageFrameProps> = ({
   return (
     <div
       id={`mushaf-page-frame-${pageNumber}`}
-      className={`@container relative w-full h-full aspect-[1/1.42] max-h-[calc(100dvh-7.5rem)] flex flex-col justify-between p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-2xl overflow-hidden select-none transition-colors duration-300 ${theme.paperBg} ${theme.paperBorder} ${
+      className={`@container relative w-full h-auto aspect-[1/1.42] flex flex-col justify-between p-[2.5%] sm:p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-2xl overflow-hidden select-none transition-colors duration-300 ${theme.paperBg} ${theme.paperBorder} ${
         side === 'right' ? 'sm:rounded-l-none' : side === 'left' ? 'sm:rounded-r-none' : ''
       }`}
     >

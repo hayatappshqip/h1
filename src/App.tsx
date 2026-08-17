@@ -432,7 +432,7 @@ export default function App() {
  >
  <Navbar activeTab={activeTab} setActiveTab={setActiveTab} isOffline={isOffline} />
 
- <main className="max-w-md mx-auto sm:max-w-2xl lg:max-w-4xl px-4 pt-4">
+        <main className="safe-main max-w-md mx-auto sm:max-w-2xl lg:max-w-4xl px-4 pt-4">
  {activeTab === 'home' && (
  <HomeView
  prayerTimes={prayerTimes}

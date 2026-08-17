@@ -461,7 +461,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
     return (
       <div
-        className={`@container w-full h-full aspect-[1/1.42] max-h-[calc(100dvh-7.5rem)] flex flex-col justify-between p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-xl relative overflow-hidden select-none transition-colors duration-300 ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
+        className={`@container w-full h-full aspect-[1/1.42] max-h-[var(--mushaf-avail-h)] flex flex-col justify-between p-[3.5%] rounded-2xl sm:rounded-3xl border shadow-xl relative overflow-hidden select-none transition-colors duration-300 ${activeTheme.paperBg} ${activeTheme.paperBorder}`}
       >
         <div className={`absolute inset-2 border rounded-xl pointer-events-none opacity-40 ${activeTheme.paperBorder}`} />
 
@@ -566,7 +566,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed top-2 left-2 right-2 sm:top-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-3xl z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-2xl p-2 sm:px-4 sm:py-2.5 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
+          className="safe-reader-chrome fixed top-2 left-2 right-2 sm:top-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-3xl z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-2xl p-2 sm:px-4 sm:py-2.5 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Back Button */}
           <button
@@ -621,7 +621,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
 
       {/* ----------------- MAIN READING CANVAS ----------------- */}
       <div
-        className="flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all cursor-pointer select-none"
+        className="safe-reading-canvas flex-1 w-full max-w-5xl mx-auto flex items-center justify-center p-2 sm:p-6 md:p-8 transition-all cursor-pointer select-none"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onClick={handleCanvasClick}
@@ -645,16 +645,16 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
             </button>
           </div>
         ) : (
-          <div className="w-full h-full max-w-5xl max-h-[calc(100dvh-7.5rem)] flex items-center justify-center gap-1 sm:gap-2">
+          <div className="w-full h-full max-w-5xl max-h-[var(--mushaf-avail-h)] flex items-center justify-center gap-1 sm:gap-2">
             {/* 2-page spread */}
             {isSpread && secondPageData && (
-              <div className="flex-1 h-full max-w-[min(50%,calc((100dvh-7.5rem)/1.42))] aspect-[1/1.42] flex items-center justify-center hidden sm:flex">
+              <div className="flex-1 h-full max-w-[min(50%,calc(var(--mushaf-avail-h)/1.42))] aspect-[1/1.42] flex items-center justify-center hidden sm:flex">
                 {renderPageLines(secondPageData, secondFontFamily, currentPage + 1)}
               </div>
             )}
 
             {/* Primary Page */}
-            <div className={`flex-1 h-full ${isSpread ? 'max-w-[min(50%,calc((100dvh-7.5rem)/1.42))]' : 'max-w-[min(100%,calc((100dvh-7.5rem)/1.42))]'} aspect-[1/1.42] flex items-center justify-center`}>
+            <div className={`flex-1 h-full ${isSpread ? 'max-w-[min(50%,calc(var(--mushaf-avail-h)/1.42))]' : 'max-w-[min(100%,calc(var(--mushaf-avail-h)/1.42))]'} aspect-[1/1.42] flex items-center justify-center`}>
               {renderPageLines(pageData, fontFamily, currentPage)}
             </div>
           </div>
@@ -665,7 +665,7 @@ export const QcfMushafReader: React.FC<QcfMushafReaderProps> = ({
       {showControls && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
+          className="safe-reader-chrome fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all duration-200 animate-fadeIn flex items-center justify-between text-xs"
         >
           {/* Previous Page Button */}
           <button

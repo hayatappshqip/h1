@@ -2,7 +2,12 @@
 <html lang="sq">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover: lejon aplikacionin te mbuloje gjithe ekranin e
+         pajisjeve me prerje (notch / Dynamic Island / home indicator).
+         KUJDES: kjo NUK guxon te dergohet vetem - pa mbushjen me
+         env(safe-area-inset-*) permbajtja do te futej nen prerje.
+         Shih --safe-* dhe --mushaf-avail-h ne src/index.css. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="manifest" href="./manifest.json" />
     <title>Hayat - Jeta Islame</title>

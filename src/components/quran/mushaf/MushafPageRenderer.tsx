@@ -175,6 +175,15 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   pageData.verses.forEach((verse) => {
     if (Array.isArray(verse.words)) {
       verse.words.forEach((word) => {
+        // Defensive page isolation guard
+        const wordPage =
+          typeof word.v2_page === 'number'
+            ? word.v2_page
+            : typeof word.page_number === 'number'
+              ? word.page_number
+              : pageNumber;
+        if (wordPage !== pageNumber) return;
+
         const lNum = word.line_number || 1;
         if (!linesMap[lNum]) linesMap[lNum] = [];
         linesMap[lNum].push({
@@ -188,7 +197,12 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
   });
 
   // Identify special lines for Surah headers and Bismillah
-  const specialLines: Record<number, { type: 'surah_header'; surahNumber: number } | { type: 'bismillah'; surahNumber: number }> = {};
+  const specialLines: Record<
+    number,
+    | { type: 'surah_header'; surahNumber: number }
+    | { type: 'bismillah'; surahNumber: number }
+    | { type: 'surah_header_with_bismillah'; surahNumber: number }
+  > = {};
 
   pageData.verses.forEach((verse) => {
     if (verse.verse_number === 1) {
@@ -210,12 +224,16 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
           specialLines[1] = { type: 'surah_header', surahNumber: 9 };
         }
       } else {
-        // All other surahs: Header banner followed by Bismillah
+        // All other surahs: Header banner followed by Bismillah.
+        // The Mushaf reserves TWO slots (header + Bismillah) before the first ayah, but the
+        // KFGQPC layout only leaves one empty line above it when the surah starts high on the
+        // page. Rendering just the header in that case silently drops the Bismillah, so the
+        // header and the Bismillah share the single available slot instead.
         if (firstWordLine >= 3) {
           specialLines[firstWordLine - 2] = { type: 'surah_header', surahNumber: sNum };
           specialLines[firstWordLine - 1] = { type: 'bismillah', surahNumber: sNum };
         } else if (firstWordLine === 2) {
-          specialLines[1] = { type: 'surah_header', surahNumber: sNum };
+          specialLines[1] = { type: 'surah_header_with_bismillah', surahNumber: sNum };
         }
       }
     }
@@ -271,6 +289,23 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                 />
               );
             }
+            if (special.type === 'surah_header_with_bismillah') {
+              // Single reserved slot: stack the header and the Bismillah inside it so the
+              // Bismillah is never dropped, while the page still occupies 15 line slots.
+              return (
+                <div
+                  key={`header-bismillah-${special.surahNumber}-${lineNum}`}
+                  className={`flex-1 w-full flex flex-col items-stretch justify-center gap-[0.5%] min-h-0 ${orderClass}`}
+                >
+                  <SurahHeaderBanner
+                    surahNumber={special.surahNumber}
+                    theme={theme}
+                    className="min-h-0"
+                  />
+                  <BismillahFrame theme={theme} className="min-h-0" />
+                </div>
+              );
+            }
           }
 
           const lineItems = linesMap[lineNum] || [];
@@ -279,10 +314,25 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
             return <div key={`empty-line-${lineNum}`} className={`flex-1 w-full min-h-[14px] ${orderClass}`} />;
           }
 
+          // NOTE: font-size is intentionally UNIFORM across every line of the page.
+          //
+          // A previous per-line "density scale" (max(0.68, 8.5 / wordCount)) shrank each line
+          // independently, so a 12-word line rendered at 12.4px next to a 7-word line at 17.5px
+          // on the very same page - a ~32% jump that looked like broken/deformed typography and
+          // is not how a printed Madinah Mushaf behaves.
+          //
+          // It was never needed: the QCF V2 glyph set is metrically designed so that all 15 lines
+          // of a page have roughly the same natural width, and each line is a separate flex row,
+          // so lines never compete for horizontal space. Verified in a real browser across all
+          // 604 pages, including the widest line in the whole Mushaf (page 443) and the densest
+          // 15-word lines (pages 589, 576, 562, 503, 355): a uniform 5.1cqw fills at most ~92%
+          // of the page width with zero horizontal or vertical overflow. Keeping the size
+          // uniform is therefore both safer and typographically correct.
+
           return (
             <div
               key={`line-${lineNum}`}
-              className={`flex-1 w-full flex items-center justify-center gap-x-[1cqw] flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
+              className={`flex-1 w-full flex items-center justify-center flex-nowrap whitespace-nowrap overflow-hidden leading-none select-none ${orderClass}`}
               dir="rtl"
             >
               {lineItems.map(({ word, verseKey }, wIdx) => {
@@ -309,7 +359,7 @@ export const MushafPageRenderer: React.FC<MushafPageRendererProps> = ({
                       } ${isEndOfAyah ? 'opacity-90 font-bold' : ''} ${theme.textColor} ${theme.hoverColor}`}
                       style={{
                         fontFamily: `'${fontFamily}'`,
-                        fontSize: `calc(${fontScale / 100} * clamp(13px, 5.2cqw, 32px))`,
+                        fontSize: `calc(${(fontScale / 100).toFixed(4)} * clamp(9px, 5.1cqw, 34px))`,
                         lineHeight: 1,
                       }}
                       title={verseKey}

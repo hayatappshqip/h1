@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, isOffli
  return (
  <>
  {/* Top Header */}
- <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-emerald-900/40 text-slate-100 px-4 py-3 flex items-center justify-between shadow-md">
+        <header className="safe-app-header sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-emerald-900/40 text-slate-100 px-4 py-3 flex items-center justify-between shadow-md">
  <div className="flex items-center space-x-3">
  <button
  onClick={() => setActiveTab('home')}
@@ -97,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, isOffli
  </header>
 
  {/* Mobile Bottom Navigation Bar (5 Items) */}
- <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/98 border-t border-slate-800 backdrop-blur-md px-1 py-1 text-slate-400 shadow-2xl">
+        <nav className="safe-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/98 border-t border-slate-800 backdrop-blur-md px-1 py-1 text-slate-400 shadow-2xl">
  <div className="flex justify-around items-center max-w-md mx-auto">
  {navItems.map((item) => {
  const isActive = activeTab === item.id || (item.id === 'kurani' && activeTab === 'hifz');

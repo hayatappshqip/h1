@@ -26,6 +26,69 @@
   font-display: swap;
 }
 
+/* ============================================================
+ * ZONA E SIGURT (SAFE AREA) - iPhone me prerje / Dynamic Island
+ * ------------------------------------------------------------
+ * index.html perdor `viewport-fit=cover`, prandaj faqja shtrihet
+ * nen shiritin e statusit dhe nen treguesin e Home-it. Cdo element
+ * "fixed"/"sticky" dhe lartesia e disponueshme e Mus'hafit duhet ta
+ * zbresin kete zone, perndryshe permbajtja futet nen prerje.
+ *
+ * Vlerat rezerve (0px) e bejne sjelljen identike ne desktop dhe ne
+ * pajisje pa prerje - pra pa asnje regresion ne Chrome/Android.
+ * ============================================================ */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Kontrollet e lexuesit (koka + shiriti i poshtem) zene ~7.5rem.
+   * Lartesia reale e perdorshme per faqen e Mus'hafit eshte ajo qe
+   * mbetet PASI zbriten edhe prerjet e pajisjes. Raporti 1/1.42
+   * llogaritet gjithmone mbi kete vlere. */
+  --mushaf-chrome-h: 7.5rem;
+  --mushaf-avail-h: calc(100dvh - var(--mushaf-chrome-h) - var(--safe-top) - var(--safe-bottom));
+}
+
+/* Koka "sticky" e aplikacionit: zbret nen shiritin e statusit. */
+.safe-app-header {
+  padding-top: calc(0.75rem + var(--safe-top));
+  padding-left: calc(1rem + var(--safe-left));
+  padding-right: calc(1rem + var(--safe-right));
+}
+
+/* Navigimi i poshtem (mobile): ngrihet mbi treguesin e Home-it. */
+.safe-bottom-nav {
+  padding-bottom: calc(0.25rem + var(--safe-bottom));
+  padding-left: calc(0.25rem + var(--safe-left));
+  padding-right: calc(0.25rem + var(--safe-right));
+}
+
+/* Permbajtja kryesore: hapesire poshte per navigimin + prerjen. */
+.safe-main {
+  padding-left: calc(1rem + var(--safe-left));
+  padding-right: calc(1rem + var(--safe-right));
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Kontrollet pluskuese te lexuesit (koka lart, pilula poshte).
+ * Margjina - jo mbushja - qe te mos prishen klasat top-2/bottom-3. */
+.safe-reader-chrome {
+  margin-top: var(--safe-top);
+  margin-bottom: var(--safe-bottom);
+  margin-left: var(--safe-left);
+  margin-right: var(--safe-right);
+}
+
+/* Kanavaca e leximit: e mban faqen larg prerjeve edhe ne peizazh. */
+.safe-reading-canvas {
+  margin-top: var(--safe-top);
+  margin-bottom: var(--safe-bottom);
+  margin-left: var(--safe-left);
+  margin-right: var(--safe-right);
+}
+
 @theme {
   --font-arabic: 'KFGQPC Uthmanic Script', 'Uthmani Hafs Unicode', 'UthmanicHafs', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Segoe UI', system-ui, sans-serif;
 }

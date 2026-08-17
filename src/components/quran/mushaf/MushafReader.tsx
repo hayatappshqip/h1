@@ -379,7 +379,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           onClick={(e) => e.stopPropagation()}
           
           
-          className="fixed top-2 left-2 right-2 sm:top-4 sm:left-6 sm:right-6 z-50 flex items-center justify-between p-2 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 shadow-2xl transition-all"
+          className="safe-reader-chrome fixed top-2 left-2 right-2 sm:top-4 sm:left-6 sm:right-6 z-50 flex items-center justify-between p-2 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 shadow-2xl transition-all"
         >
           {/* Back Button */}
           <button
@@ -457,7 +457,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           e.stopPropagation();
           setShowControls((prev) => !prev);
         }}
-        className="flex-1 w-full max-w-6xl mx-auto flex items-center justify-center p-1 sm:p-3 md:p-4 transition-all cursor-pointer select-none overflow-hidden"
+        className="safe-reading-canvas flex-1 w-full max-w-6xl mx-auto flex items-center justify-center p-1 sm:p-3 md:p-4 transition-all cursor-pointer select-none overflow-hidden"
       >
         <MushafPageSpread
           currentPage={currentPage}
@@ -486,7 +486,7 @@ export const MushafReader: React.FC<MushafReaderProps> = ({
           onClick={(e) => e.stopPropagation()}
           
           
-          className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all flex items-center justify-between text-xs"
+          className="safe-reader-chrome fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-md z-50 bg-slate-950/95 backdrop-blur-xl border border-slate-800/90 text-slate-100 rounded-full px-4 py-2 shadow-2xl transition-all flex items-center justify-between text-xs"
         >
           {/* Previous Page */}
           <button
