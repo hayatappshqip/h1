@@ -1,0 +1,426 @@
+{
+  "surah": 51,
+  "verseCount": 60,
+  "verses": [
+    {
+      "surah": 51,
+      "ayah": 1,
+      "verseKey": "51:1",
+      "arabic": " وَٱلذَّٰرِيَـٰتِ ذَرْوًا",
+      "translationSq": "Betohem në erërat që çojnë (pluhurin)"
+    },
+    {
+      "surah": 51,
+      "ayah": 2,
+      "verseKey": "51:2",
+      "arabic": "فَٱلْحَـٰمِلَـٰتِ وِقْرًا",
+      "translationSq": "dhe në retë e ngarkuara rëndë"
+    },
+    {
+      "surah": 51,
+      "ayah": 3,
+      "verseKey": "51:3",
+      "arabic": "فَٱلْجَـٰرِيَـٰتِ يُسْرًا",
+      "translationSq": "dhe në ato që lundrojnë lehtë"
+    },
+    {
+      "surah": 51,
+      "ayah": 4,
+      "verseKey": "51:4",
+      "arabic": "فَٱلْمُقَسِّمَـٰتِ أَمْرًا",
+      "translationSq": "dhe në engjëjt që shpërndajnë urdhrat"
+    },
+    {
+      "surah": 51,
+      "ayah": 5,
+      "verseKey": "51:5",
+      "arabic": "إِنَّمَا تُوعَدُونَ لَصَادِقٌ",
+      "translationSq": "se, me të vërtetë, është e sigurt ajo që ju premtohet"
+    },
+    {
+      "surah": 51,
+      "ayah": 6,
+      "verseKey": "51:6",
+      "arabic": "وَإِنَّ ٱلدِّينَ لَوَٰقِعٌ",
+      "translationSq": "dhe çdo shpërblim e dënim do të ndodhë!"
+    },
+    {
+      "surah": 51,
+      "ayah": 7,
+      "verseKey": "51:7",
+      "arabic": "وَٱلسَّمَآءِ ذَاتِ ٱلْحُبُكِ",
+      "translationSq": "Për qiellin e stolisur me yje!"
+    },
+    {
+      "surah": 51,
+      "ayah": 8,
+      "verseKey": "51:8",
+      "arabic": "إِنَّكُمْ لَفِى قَوْلٍ مُّخْتَلِفٍ",
+      "translationSq": "Ju keni gjithfarë mendimesh,"
+    },
+    {
+      "surah": 51,
+      "ayah": 9,
+      "verseKey": "51:9",
+      "arabic": "يُؤْفَكُ عَنْهُ مَنْ أُفِكَ",
+      "translationSq": "Prej tij (Kuranit) shmanget ai që nuk beson."
+    },
+    {
+      "surah": 51,
+      "ayah": 10,
+      "verseKey": "51:10",
+      "arabic": "قُتِلَ ٱلْخَرَّٰصُونَ",
+      "translationSq": "Qofshin mallkuar gënjeshtarët,"
+    },
+    {
+      "surah": 51,
+      "ayah": 11,
+      "verseKey": "51:11",
+      "arabic": "ٱلَّذِينَ هُمْ فِى غَمْرَةٍ سَاهُونَ",
+      "translationSq": "të cilët janë të zhytur në padije dhe të shkujdesur (ndaj Ditës së Gjykimit)!"
+    },
+    {
+      "surah": 51,
+      "ayah": 12,
+      "verseKey": "51:12",
+      "arabic": "يَسْـَٔلُونَ أَيَّانَ يَوْمُ ٱلدِّينِ",
+      "translationSq": "Ata pyesin: “Kur do të jetë Dita e Gjykimit?”"
+    },
+    {
+      "surah": 51,
+      "ayah": 13,
+      "verseKey": "51:13",
+      "arabic": "يَوْمَ هُمْ عَلَى ٱلنَّارِ يُفْتَنُونَ",
+      "translationSq": "Atë Ditë ata do të përcëllohen në zjarr!"
+    },
+    {
+      "surah": 51,
+      "ayah": 14,
+      "verseKey": "51:14",
+      "arabic": "ذُوقُوا۟ فِتْنَتَكُمْ هَـٰذَا ٱلَّذِى كُنتُم بِهِۦ تَسْتَعْجِلُونَ",
+      "translationSq": "(Do t’u thuhet): “Shijoni dënimin tuaj! Këtë kërkuat t’ju shpejtohet!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 15,
+      "verseKey": "51:15",
+      "arabic": "إِنَّ ٱلْمُتَّقِينَ فِى جَنَّـٰتٍ وَعُيُونٍ",
+      "translationSq": "Pa dyshim, ata që i frikësohen Allahut do të jenë në kopshte dhe burime,"
+    },
+    {
+      "surah": 51,
+      "ayah": 16,
+      "verseKey": "51:16",
+      "arabic": "ءَاخِذِينَ مَآ ءَاتَىٰهُمْ رَبُّهُمْ ۚ إِنَّهُمْ كَانُوا۟ قَبْلَ ذَٰلِكَ مُحْسِنِينَ",
+      "translationSq": "duke marrë atë që ua ka dhuruar Zoti i tyre, meqë më parë kanë qenë punëmbarë."
+    },
+    {
+      "surah": 51,
+      "ayah": 17,
+      "verseKey": "51:17",
+      "arabic": "كَانُوا۟ قَلِيلًا مِّنَ ٱلَّيْلِ مَا يَهْجَعُونَ",
+      "translationSq": "Ata flinin pak natën,"
+    },
+    {
+      "surah": 51,
+      "ayah": 18,
+      "verseKey": "51:18",
+      "arabic": "وَبِٱلْأَسْحَارِ هُمْ يَسْتَغْفِرُونَ",
+      "translationSq": "ndërsa në agim kërkonin falje (nga Allahu)."
+    },
+    {
+      "surah": 51,
+      "ayah": 19,
+      "verseKey": "51:19",
+      "arabic": "وَفِىٓ أَمْوَٰلِهِمْ حَقٌّ لِّلسَّآئِلِ وَٱلْمَحْرُومِ",
+      "translationSq": "Në pasuritë e tyre ka pasur pjesë për lypësit dhe nevojtarët."
+    },
+    {
+      "surah": 51,
+      "ayah": 20,
+      "verseKey": "51:20",
+      "arabic": "وَفِى ٱلْأَرْضِ ءَايَـٰتٌ لِّلْمُوقِنِينَ",
+      "translationSq": "Në Tokë ka shenja për ata që besojnë me bindje,"
+    },
+    {
+      "surah": 51,
+      "ayah": 21,
+      "verseKey": "51:21",
+      "arabic": "وَفِىٓ أَنفُسِكُمْ ۚ أَفَلَا تُبْصِرُونَ",
+      "translationSq": "po edhe në vetet tuaja - a nuk e shihni vallë?"
+    },
+    {
+      "surah": 51,
+      "ayah": 22,
+      "verseKey": "51:22",
+      "arabic": "وَفِى ٱلسَّمَآءِ رِزْقُكُمْ وَمَا تُوعَدُونَ",
+      "translationSq": "Në qiell është furnizimi juaj dhe gjithçka që ju është premtuar."
+    },
+    {
+      "surah": 51,
+      "ayah": 23,
+      "verseKey": "51:23",
+      "arabic": "فَوَرَبِّ ٱلسَّمَآءِ وَٱلْأَرْضِ إِنَّهُۥ لَحَقٌّ مِّثْلَ مَآ أَنَّكُمْ تَنطِقُونَ",
+      "translationSq": "Betohem për Zotin e qiellit dhe të Tokës, se kjo (që ju premtohet) është e vërtetë, ashtu siç është të folurit tuaj."
+    },
+    {
+      "surah": 51,
+      "ayah": 24,
+      "verseKey": "51:24",
+      "arabic": "هَلْ أَتَىٰكَ حَدِيثُ ضَيْفِ إِبْرَٰهِيمَ ٱلْمُكْرَمِينَ",
+      "translationSq": "A e ke dëgjuar historinë e mysafirëve të nderuar të Ibrahimit?"
+    },
+    {
+      "surah": 51,
+      "ayah": 25,
+      "verseKey": "51:25",
+      "arabic": "إِذْ دَخَلُوا۟ عَلَيْهِ فَقَالُوا۟ سَلَـٰمًا ۖ قَالَ سَلَـٰمٌ قَوْمٌ مُّنكَرُونَ",
+      "translationSq": "Ata hynë tek ai e i thanë: “Paqe!” - dhe ai u tha: “Paqe, o njerëz të panjohur!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 26,
+      "verseKey": "51:26",
+      "arabic": "فَرَاغَ إِلَىٰٓ أَهْلِهِۦ فَجَآءَ بِعِجْلٍ سَمِينٍ",
+      "translationSq": "E pa u vënë re, ai shkoi te njerëzit e shtëpisë dhe solli një viç të majmë."
+    },
+    {
+      "surah": 51,
+      "ayah": 27,
+      "verseKey": "51:27",
+      "arabic": "فَقَرَّبَهُۥٓ إِلَيْهِمْ قَالَ أَلَا تَأْكُلُونَ",
+      "translationSq": "Pastaj ua afroi atyre e u tha: “A nuk po hani?”"
+    },
+    {
+      "surah": 51,
+      "ayah": 28,
+      "verseKey": "51:28",
+      "arabic": "فَأَوْجَسَ مِنْهُمْ خِيفَةً ۖ قَالُوا۟ لَا تَخَفْ ۖ وَبَشَّرُوهُ بِغُلَـٰمٍ عَلِيمٍ",
+      "translationSq": "Dhe ndjeu frikë prej tyre, por ata i thanë: “Mos u frikëso!” dhe i dhanë lajmin e mirë për një djalë të dijshëm."
+    },
+    {
+      "surah": 51,
+      "ayah": 29,
+      "verseKey": "51:29",
+      "arabic": "فَأَقْبَلَتِ ٱمْرَأَتُهُۥ فِى صَرَّةٍ فَصَكَّتْ وَجْهَهَا وَقَالَتْ عَجُوزٌ عَقِيمٌ",
+      "translationSq": "Atëherë erdhi gruaja e tij, që, duke thërritur dhe rrahur fytyrën, tha: “Vallë, a mundem (të lind) unë, plaka shterpë?”"
+    },
+    {
+      "surah": 51,
+      "ayah": 30,
+      "verseKey": "51:30",
+      "arabic": "قَالُوا۟ كَذَٰلِكِ قَالَ رَبُّكِ ۖ إِنَّهُۥ هُوَ ٱلْحَكِيمُ ٱلْعَلِيمُ",
+      "translationSq": "Ata thanë: “Kështu ka qenë vullneti i Zotit tënd. Ai është vërtet i Urtë dhe i Gjithëdijshëm.”"
+    },
+    {
+      "surah": 51,
+      "ayah": 31,
+      "verseKey": "51:31",
+      "arabic": "۞ قَالَ فَمَا خَطْبُكُمْ أَيُّهَا ٱلْمُرْسَلُونَ",
+      "translationSq": "Ai i pyeti: “Cili është qëllimi juaj, o të dërguar?”"
+    },
+    {
+      "surah": 51,
+      "ayah": 32,
+      "verseKey": "51:32",
+      "arabic": "قَالُوٓا۟ إِنَّآ أُرْسِلْنَآ إِلَىٰ قَوْمٍ مُّجْرِمِينَ",
+      "translationSq": "Ata thanë: “Ne jemi dërguar te një popull keqbërës,"
+    },
+    {
+      "surah": 51,
+      "ayah": 33,
+      "verseKey": "51:33",
+      "arabic": "لِنُرْسِلَ عَلَيْهِمْ حِجَارَةً مِّن طِينٍ",
+      "translationSq": "për të hedhur mbi ta gurë prej balte të pjekur,"
+    },
+    {
+      "surah": 51,
+      "ayah": 34,
+      "verseKey": "51:34",
+      "arabic": "مُّسَوَّمَةً عِندَ رَبِّكَ لِلْمُسْرِفِينَ",
+      "translationSq": "të shënuar te Zoti yt, për ata që e kalojnë kufirin (në të këqija)”."
+    },
+    {
+      "surah": 51,
+      "ayah": 35,
+      "verseKey": "51:35",
+      "arabic": "فَأَخْرَجْنَا مَن كَانَ فِيهَا مِنَ ٱلْمُؤْمِنِينَ",
+      "translationSq": "Ne i nxorëm të gjithë besimtarët që ishin në atë qytet"
+    },
+    {
+      "surah": 51,
+      "ayah": 36,
+      "verseKey": "51:36",
+      "arabic": "فَمَا وَجَدْنَا فِيهَا غَيْرَ بَيْتٍ مِّنَ ٱلْمُسْلِمِينَ",
+      "translationSq": "ndonëse aty gjetëm vetëm një shtëpi myslimane"
+    },
+    {
+      "surah": 51,
+      "ayah": 37,
+      "verseKey": "51:37",
+      "arabic": "وَتَرَكْنَا فِيهَآ ءَايَةً لِّلَّذِينَ يَخَافُونَ ٱلْعَذَابَ ٱلْأَلِيمَ",
+      "translationSq": "dhe në të lamë shenjë për ata që i frikësohen dënimit të dhembshëm."
+    },
+    {
+      "surah": 51,
+      "ayah": 38,
+      "verseKey": "51:38",
+      "arabic": "وَفِى مُوسَىٰٓ إِذْ أَرْسَلْنَـٰهُ إِلَىٰ فِرْعَوْنَ بِسُلْطَـٰنٍ مُّبِينٍ",
+      "translationSq": "Edhe në historinë e Musait (ka mësim), kur ia dërguam Faraonit, me provë të qartë."
+    },
+    {
+      "surah": 51,
+      "ayah": 39,
+      "verseKey": "51:39",
+      "arabic": "فَتَوَلَّىٰ بِرُكْنِهِۦ وَقَالَ سَـٰحِرٌ أَوْ مَجْنُونٌ",
+      "translationSq": "Ai (Faraoni) u shmang (nga besimi), së bashku me komandantët e vet dhe tha: “Musai është magjistar ose i çmendur!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 40,
+      "verseKey": "51:40",
+      "arabic": "فَأَخَذْنَـٰهُ وَجُنُودَهُۥ فَنَبَذْنَـٰهُمْ فِى ٱلْيَمِّ وَهُوَ مُلِيمٌ",
+      "translationSq": "Ne e kapëm atë me ushtrinë e tij dhe e hodhëm në det; ai e meritoi."
+    },
+    {
+      "surah": 51,
+      "ayah": 41,
+      "verseKey": "51:41",
+      "arabic": "وَفِى عَادٍ إِذْ أَرْسَلْنَا عَلَيْهِمُ ٱلرِّيحَ ٱلْعَقِيمَ",
+      "translationSq": "(Mësim ka edhe në historinë) e fisit Ad, kur i dërguam erën shkatërruese,"
+    },
+    {
+      "surah": 51,
+      "ayah": 42,
+      "verseKey": "51:42",
+      "arabic": "مَا تَذَرُ مِن شَىْءٍ أَتَتْ عَلَيْهِ إِلَّا جَعَلَتْهُ كَٱلرَّمِيمِ",
+      "translationSq": "e cila, ngado që kaloi, nuk kurseu asgjë, duke i kthyer në kalbësira."
+    },
+    {
+      "surah": 51,
+      "ayah": 43,
+      "verseKey": "51:43",
+      "arabic": "وَفِى ثَمُودَ إِذْ قِيلَ لَهُمْ تَمَتَّعُوا۟ حَتَّىٰ حِينٍ",
+      "translationSq": "Edhe te fisi Themud (ka mësim), kur iu tha anëtarëve të tij: “Kënaquni njëfarë kohe!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 44,
+      "verseKey": "51:44",
+      "arabic": "فَعَتَوْا۟ عَنْ أَمْرِ رَبِّهِمْ فَأَخَذَتْهُمُ ٱلصَّـٰعِقَةُ وَهُمْ يَنظُرُونَ",
+      "translationSq": "Ata u treguan mendjemëdhenj ndaj urdhrave të Allahut, pastaj i goditi rrufeja, ndërsa e shihnin,"
+    },
+    {
+      "surah": 51,
+      "ayah": 45,
+      "verseKey": "51:45",
+      "arabic": "فَمَا ٱسْتَطَـٰعُوا۟ مِن قِيَامٍ وَمَا كَانُوا۟ مُنتَصِرِينَ",
+      "translationSq": "por nuk mundën as të ngriheshin, as të mbroheshin prej dënimit."
+    },
+    {
+      "surah": 51,
+      "ayah": 46,
+      "verseKey": "51:46",
+      "arabic": "وَقَوْمَ نُوحٍ مِّن قَبْلُ ۖ إِنَّهُمْ كَانُوا۟ قَوْمًا فَـٰسِقِينَ",
+      "translationSq": "(Mësim ka) edhe te populli i Nuhut, (që e shkatërruam) shumë kohë më parë. Me të vërtetë, ai ishte popull i pabindur!"
+    },
+    {
+      "surah": 51,
+      "ayah": 47,
+      "verseKey": "51:47",
+      "arabic": "وَٱلسَّمَآءَ بَنَيْنَـٰهَا بِأَيْي۟دٍ وَإِنَّا لَمُوسِعُونَ",
+      "translationSq": "Ne e kemi ndërtuar qiellin me fuqinë Tonë dhe Ne e zgjerojmë atë."
+    },
+    {
+      "surah": 51,
+      "ayah": 48,
+      "verseKey": "51:48",
+      "arabic": "وَٱلْأَرْضَ فَرَشْنَـٰهَا فَنِعْمَ ٱلْمَـٰهِدُونَ",
+      "translationSq": "Edhe Tokën e kemi shtruar! Sa shtrues të mrekullueshëm që jemi!"
+    },
+    {
+      "surah": 51,
+      "ayah": 49,
+      "verseKey": "51:49",
+      "arabic": "وَمِن كُلِّ شَىْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ",
+      "translationSq": "Dhe nga çdo gjë, Ne kemi krijuar dy palë, në mënyrë që ju të vini veshin!"
+    },
+    {
+      "surah": 51,
+      "ayah": 50,
+      "verseKey": "51:50",
+      "arabic": "فَفِرُّوٓا۟ إِلَى ٱللَّهِ ۖ إِنِّى لَكُم مِّنْهُ نَذِيرٌ مُّبِينٌ",
+      "translationSq": "“Andaj, ikni (prej dënimit) drejt (shpërblimit të) Allahut, se unë vërtet që jam dërguar te ju prej Tij, si paralajmërues i qartë!"
+    },
+    {
+      "surah": 51,
+      "ayah": 51,
+      "verseKey": "51:51",
+      "arabic": "وَلَا تَجْعَلُوا۟ مَعَ ٱللَّهِ إِلَـٰهًا ءَاخَرَ ۖ إِنِّى لَكُم مِّنْهُ نَذِيرٌ مُّبِينٌ",
+      "translationSq": "Dhe mos adhuroni zot tjetër krahas Allahut, se unë vërtet që jam dërguar te ju prej Tij, si paralajmërues i qartë!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 52,
+      "verseKey": "51:52",
+      "arabic": "كَذَٰلِكَ مَآ أَتَى ٱلَّذِينَ مِن قَبْلِهِم مِّن رَّسُولٍ إِلَّا قَالُوا۟ سَاحِرٌ أَوْ مَجْنُونٌ",
+      "translationSq": "Kështu, sa herë që një i dërguar vinte te popujt para tyre (mekasve), ata thoshin: “Është magjistar” ose “Është i çmendur!”"
+    },
+    {
+      "surah": 51,
+      "ayah": 53,
+      "verseKey": "51:53",
+      "arabic": "أَتَوَاصَوْا۟ بِهِۦ ۚ بَلْ هُمْ قَوْمٌ طَاغُونَ",
+      "translationSq": "Vallë, a mos ia kanë pasuar këtë njëri-tjetrit? Jo, por ata vetë janë popull që e kanë tepruar!"
+    },
+    {
+      "surah": 51,
+      "ayah": 54,
+      "verseKey": "51:54",
+      "arabic": "فَتَوَلَّ عَنْهُمْ فَمَآ أَنتَ بِمَلُومٍ",
+      "translationSq": "Prandaj shmangu prej atyre; ti nuk do të qortohesh për këtë!"
+    },
+    {
+      "surah": 51,
+      "ayah": 55,
+      "verseKey": "51:55",
+      "arabic": "وَذَكِّرْ فَإِنَّ ٱلذِّكْرَىٰ تَنفَعُ ٱلْمُؤْمِنِينَ",
+      "translationSq": "Por këshillo, se vërtet këshilla u bën dobi besimtarëve."
+    },
+    {
+      "surah": 51,
+      "ayah": 56,
+      "verseKey": "51:56",
+      "arabic": "وَمَا خَلَقْتُ ٱلْجِنَّ وَٱلْإِنسَ إِلَّا لِيَعْبُدُونِ",
+      "translationSq": "Xhindet dhe njerëzit i kam krijuar vetëm që të Më adhurojnë."
+    },
+    {
+      "surah": 51,
+      "ayah": 57,
+      "verseKey": "51:57",
+      "arabic": "مَآ أُرِيدُ مِنْهُم مِّن رِّزْقٍ وَمَآ أُرِيدُ أَن يُطْعِمُونِ",
+      "translationSq": "Unë nuk kërkoj prej tyre risk, as nuk dëshiroj që të Më ushqejnë."
+    },
+    {
+      "surah": 51,
+      "ayah": 58,
+      "verseKey": "51:58",
+      "arabic": "إِنَّ ٱللَّهَ هُوَ ٱلرَّزَّاقُ ذُو ٱلْقُوَّةِ ٱلْمَتِينُ",
+      "translationSq": "Vërtet, Allahu është Furnizuesi i vetëm, i Fuqishmi, i Plotpushtetshmi."
+    },
+    {
+      "surah": 51,
+      "ayah": 59,
+      "verseKey": "51:59",
+      "arabic": "فَإِنَّ لِلَّذِينَ ظَلَمُوا۟ ذَنُوبًا مِّثْلَ ذَنُوبِ أَصْحَـٰبِهِمْ فَلَا يَسْتَعْجِلُونِ",
+      "translationSq": "Pa dyshim, ata që kanë bërë të këqija, do të kenë pjesën e tyre të dënimit, të ngjashme me pjesën e shokëve të tyre (të mëparshëm) që kanë qenë si ata. Prandaj të mos Më sfidojnë që ta shpejtoj atë."
+    },
+    {
+      "surah": 51,
+      "ayah": 60,
+      "verseKey": "51:60",
+      "arabic": "فَوَيْلٌ لِّلَّذِينَ كَفَرُوا۟ مِن يَوْمِهِمُ ٱلَّذِى يُوعَدُونَ",
+      "translationSq": "Kështu, mjerë mohuesit prej Ditës që u është premtuar!"
+    }
+  ]
+}
