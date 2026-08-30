@@ -393,7 +393,13 @@ export function removePageCompleted(
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
-    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
+    // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES
+      ? 'completed'
+      : currentPlan.status === 'paused'
+        ? 'paused'
+        : 'active',
     updatedAt: Date.now(),
   });
 }
@@ -423,7 +429,13 @@ export function removeJuzCompleted(
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
-    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
+    // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES
+      ? 'completed'
+      : currentPlan.status === 'paused'
+        ? 'paused'
+        : 'active',
     updatedAt: Date.now(),
   });
 }

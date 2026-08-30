@@ -92,3 +92,48 @@ describe('K1 — përfundimi kërkon të 604 faqet, jo faqen 604', () => {
   });
 });
 
+describe('K4 — statusi "paused" ruhet gjatë korrigjimeve', () => {
+  it('removePageCompleted e ruan "paused"', () => {
+    const plan = planWithPages([1, 2, 3, 4, 5], 'paused');
+    const updated = removePageCompleted(plan, 3);
+
+    expect(updated.completedPages).toEqual([1, 2, 4, 5]);
+    expect(updated.status).toBe('paused');
+  });
+
+  it('removeJuzCompleted e ruan "paused"', () => {
+    const juz1 = Array.from({ length: 21 }, (_, i) => i + 1);
+    const plan = planWithPages(juz1, 'paused');
+    const updated = removeJuzCompleted(plan, 1);
+
+    expect(updated.completedPages).toHaveLength(0);
+    expect(updated.status).toBe('paused');
+  });
+
+  it('një hatme e përfunduar që humb një faqe kthehet në "active"', () => {
+    // Guard: rregullimi i K4 nuk duhet ta mbajë "completed" një plan me 603 faqe.
+    const plan = planWithPages(allPages(), 'completed');
+    expect(plan.status).toBe('completed');
+
+    const updated = removePageCompleted(plan, 300);
+    expect(updated.completedPages).toHaveLength(TOTAL_MUSHAF_PAGES - 1);
+    expect(updated.status).toBe('active');
+  });
+
+  it('një hatme e përfunduar që humb një xhuz kthehet në "active"', () => {
+    const plan = planWithPages(allPages(), 'completed');
+    const updated = removeJuzCompleted(plan, 2);
+
+    expect(updated.completedPages.length).toBeLessThan(TOTAL_MUSHAF_PAGES);
+    expect(updated.status).toBe('active');
+  });
+
+  it('"paused" ruhet edhe nga confirm* (sjellja ekzistuese, si guard)', () => {
+    const plan = planWithPages([1, 2, 3], 'paused');
+
+    expect(confirmPageCompleted(plan, 4).status).toBe('paused');
+    expect(confirmPageRangeCompleted(plan, 5, 6).status).toBe('paused');
+    expect(confirmJuzCompleted(plan, 1).status).toBe('paused');
+  });
+});
+
