@@ -137,3 +137,50 @@ describe('K4 — statusi "paused" ruhet gjatë korrigjimeve', () => {
   });
 });
 
+describe('K6 — completedPages përmban vetëm numra të plotë 1..604', () => {
+  it('confirmPageCompleted refuzon faqet thyesore', () => {
+    const plan = confirmPageCompleted(createDefaultKhatamPlan(), 3.7);
+
+    expect(plan.completedPages).not.toContain(3.7);
+    expect(plan.completedPages.every(Number.isInteger)).toBe(true);
+  });
+
+  it('normalizeKhatamPlan filtron faqet thyesore', () => {
+    const plan = normalizeKhatamPlan({ completedPages: [3.7, 12.25, 5] });
+
+    expect(plan.completedPages).toEqual([5]);
+  });
+
+  it('normalizeKhatamPlan nuk e kthen "true" në faqen 1', () => {
+    const plan = normalizeKhatamPlan({ completedPages: [true, '8', null, undefined] });
+
+    expect(plan.completedPages).toEqual([8]);
+    expect(plan.completedPages).not.toContain(1);
+  });
+
+  it('confirmPageRangeCompleted me kufij thyesorë kthen vetëm faqe të plota', () => {
+    // Para rregullimit: range(3.7, 6) → [3.7, 4.7, 5.7] — thyesore DHE humb 4, 5, 6.
+    const plan = confirmPageRangeCompleted(createDefaultKhatamPlan(), 3.7, 6);
+
+    expect(plan.completedPages).toEqual([4, 5, 6]);
+    expect(plan.completedPages.every(Number.isInteger)).toBe(true);
+  });
+
+  it('confirmPageRangeCompleted rrumbullakos të dy kufijtë brenda intervalit', () => {
+    const plan = confirmPageRangeCompleted(createDefaultKhatamPlan(), 2.5, 5.5);
+
+    expect(plan.completedPages).toEqual([3, 4, 5]);
+  });
+
+  it('confirmPageRangeCompleted me numra të plotë mbetet i pandryshuar (guard)', () => {
+    const plan = confirmPageRangeCompleted(createDefaultKhatamPlan(), 1, 10);
+
+    expect(plan.completedPages).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  });
+
+  it('kufijtë 1 dhe 604 vazhdojnë të respektohen', () => {
+    expect(confirmPageCompleted(createDefaultKhatamPlan(), 0).completedPages).toEqual([]);
+    expect(confirmPageCompleted(createDefaultKhatamPlan(), 605).completedPages).toEqual([]);
+    expect(normalizeKhatamPlan({ completedPages: [1e3, -5, 0] }).completedPages).toEqual([]);
+  });
+});

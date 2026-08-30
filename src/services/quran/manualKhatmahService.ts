@@ -61,8 +61,12 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
   let completedPages: number[] = [];
   if (Array.isArray(raw.completedPages)) {
     completedPages = raw.completedPages
+      // K6: vlerat jo-numerike refuzohen PARA koercionit. Number(true) === 1 dhe
+      // Number(null) === 0 — të dyja do të kalonin si faqe të vlefshme.
+      .filter((p: any) => typeof p === 'number' || (typeof p === 'string' && p.trim() !== ''))
       .map((p: any) => Number(p))
-      .filter((p: number) => !isNaN(p) && p >= 1 && p <= TOTAL_MUSHAF_PAGES);
+      // K6: vetëm numra të plotë brenda 1..604.
+      .filter((p: number) => Number.isInteger(p) && p >= 1 && p <= TOTAL_MUSHAF_PAGES);
   } else if (typeof raw.pagesRead === 'number' && raw.pagesRead > 0) {
     const count = Math.min(TOTAL_MUSHAF_PAGES, raw.pagesRead);
     for (let p = 1; p <= count; p++) {
@@ -232,7 +236,8 @@ export function confirmPageCompleted(
   pageNumber: number,
   dateInput?: string | Date
 ): ManualKhatamPlan {
-  if (pageNumber < 1 || pageNumber > TOTAL_MUSHAF_PAGES) {
+  // K6: refuzohen faqet thyesore dhe ato jashtë 1..604.
+  if (!Number.isInteger(pageNumber) || pageNumber < 1 || pageNumber > TOTAL_MUSHAF_PAGES) {
     return normalizeKhatamPlan(plan);
   }
 
@@ -286,8 +291,10 @@ export function confirmPageRangeCompleted(
   endPage: number,
   dateInput?: string | Date
 ): ManualKhatamPlan {
-  const fromPage = Math.max(1, Math.min(startPage, endPage));
-  const toPage = Math.min(TOTAL_MUSHAF_PAGES, Math.max(startPage, endPage));
+  // K6: kufijtë rrumbullakosen brenda intervalit. Pa këtë, range(3.7, 6)
+  // prodhonte [3.7, 4.7, 5.7] — thyesore DHE humbiste faqet 4, 5, 6.
+  const fromPage = Math.ceil(Math.max(1, Math.min(startPage, endPage)));
+  const toPage = Math.floor(Math.min(TOTAL_MUSHAF_PAGES, Math.max(startPage, endPage)));
 
   const currentPlan = normalizeKhatamPlan(plan);
   const todayStr = getLocalDateString(dateInput || new Date());
