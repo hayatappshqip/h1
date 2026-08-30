@@ -90,7 +90,9 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
 
   // 3. Status determination
   let status: 'active' | 'completed' | 'paused' = raw.status === 'completed' || raw.status === 'paused' ? raw.status : 'active';
-  if (completedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES) {
+  // K1: hatmja është e përfunduar VETËM kur të 604 faqet janë të përfunduara.
+  // `lastCompletedPage >= 604` nuk mjafton — përdoruesi mund të ketë lexuar vetëm faqen 604.
+  if (completedPages.length >= TOTAL_MUSHAF_PAGES) {
     status = 'completed';
     nextPage = TOTAL_MUSHAF_PAGES;
   }
@@ -260,7 +262,8 @@ export function confirmPageCompleted(
   }
 
   const lastCompletedPage = Math.max(...updatedPages);
-  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES;
+  // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
+  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
   const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
 
   return normalizeKhatamPlan({
@@ -316,7 +319,8 @@ export function confirmPageRangeCompleted(
   }
 
   const lastCompletedPage = Math.max(...updatedPages);
-  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES;
+  // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
+  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
   const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
 
   return normalizeKhatamPlan({
