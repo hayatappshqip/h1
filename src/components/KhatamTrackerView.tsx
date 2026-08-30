@@ -8,7 +8,6 @@ import {
   confirmPageCompleted,
   confirmPageRangeCompleted,
   confirmJuzCompleted,
-  updateDirectPagePosition,
   removePageCompleted,
   removeJuzCompleted,
   getMissingPagesInRange,
