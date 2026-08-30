@@ -1,0 +1,73 @@
+HAYAT — INVENTAR I VERIFIKUAR (i gjeneruar nga scripts/spec-inventory.mjs)
+========================================================================
+Gjeneruar: 2026-08-30T18:20:26.925Z
+
+MADHËSIA E KODIT
+  totalFiles           253
+  sourceFiles          81
+  testFiles            19
+  sourceLines          28060
+  testLines            3764
+  components           26
+  componentsWired      26
+  componentsOrphan     0
+
+KOMPONENTË TË PALIDHUR (orphan)
+  (asnjë — të gjithë të lidhur)
+
+HOSTE TË JASHTME TË REFERENCUARA
+   14x  everyayah.com
+    8x  api.quran.com
+    3x  api.alquran.cloud
+    3x  verses.quran.foundation
+    3x  server7.mp3quran.net
+    2x  cdn.islamic.network
+    2x  server8.mp3quran.net
+    2x  server10.mp3quran.net
+    2x  server11.mp3quran.net
+    2x  server6.mp3quran.net
+    1x  auth.quran.foundation
+    1x  apis.quran.foundation
+    1x  cdn.jsdelivr.net
+    1x  raw.githubusercontent.com
+    1x  www.hisnmuslim.com
+    1x  verses.quran.com
+    1x  api.aladhan.com
+    1x  server13.mp3quran.net
+    1x  server12.mp3quran.net
+    1x  server9.mp3quran.net
+    1x  quranenc.com
+
+KORPUSI I KURANIT (bundled në repo)
+  provider                 Quran.com API (Translation ID 88 - Hasan Nahi)
+  translationName          Hasan Nahi
+  declaredSurahs           114
+  declaredVerses           6236
+  surahFilesOnDisk         114
+  versesCountedOnDisk      6236
+  bytesOnDisk              3038864
+  manifestSha256_001       2d69e23fa1f5b833
+  recomputedSha256_001     2d69e23fa1f5b833
+
+MBUROJA E MUSLIMANIT
+  categories               11
+  chapters                 133
+  duas                     294
+  missingArabic            28
+  missingAlbanian          1
+  missingTransliteration   29
+  missingReference         5
+  duplicateChapterIds      
+
+DRIFT / PAKONSISTENCA
+  service-worker.js CACHE_VERSION = v44
+  src/App.tsx komenti             = v45
+  manifestë të dyfishtë: manifest.json (545B, sha c4b8b121f60f) | public/manifest.json (545B, sha c4b8b121f60f) | public/manifest.webmanifest (480B, sha 2f67b7e58b49)
+  dependenci runtime të papërdorura: @google/genai, dotenv, motion, page-flip, pdfjs-dist
+
+RUAJTJA E TË DHËNAVE
+  Dexie/IndexedDB: true   localStorage: true
+  çelësa localStorage: hayat_fav_chapters, hayat_mushaf_theme, hayat_quran_reading_state
+
+AUTENTIKIM / LLOGARI
+  librari auth: false   referencat signIn/signUp: 0
