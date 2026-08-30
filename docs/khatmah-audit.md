@@ -277,3 +277,74 @@ Thuaj hapur, që të mos merret si e bërë:
 | 🟢 | Idempotency, kufijtë 1–604, 30 xhuza | **të verifikuara me ekzekutim** |
 
 **Pritet autorizimi për të filluar me K1.**
+
+---
+
+# 10. Statusi i implementimit — FAZA 1 (e përfunduar)
+
+E autorizuar nga përdoruesi. Një commit për secilin problem, secili i gjelbër.
+
+| Fix | Commit | Skedari | Teste të reja | Suite pas commit-it |
+|---|---|---|---|---|
+| K1 | `f4a6e6f` | `manualKhatmahService.ts` | 6 | 20 files / 186 tests |
+| K4 | `4bc84a5` | `manualKhatmahService.ts` | 5 | 20 files / 191 tests |
+| K6 | `9dd7c47` | `manualKhatmahService.ts` | 7 | 20 files / 198 tests |
+| K9 | `2d45988` | `KhatamTrackerView.tsx` | 0 (fshirje e pastër) | 20 files / 198 tests |
+
+Baseline: `3829ed8` (180 teste). Testet e reja janë në `src/tests/khatmahFaza1.test.ts`.
+
+## Çfarë ndryshoi konkretisht
+
+**K1** — u hoq `|| lastCompletedPage >= TOTAL_MUSHAF_PAGES` nga tri vende
+(`normalizeKhatamPlan`, `confirmPageCompleted`, `confirmPageRangeCompleted`).
+Kushti i vetëm mbetet `completedPages.length >= 604`.
+
+**K4** — `removePageCompleted` dhe `removeJuzCompleted` nuk e hardkodojnë më
+`'active'`. Rregulli: 604 faqe ende të plota → `completed`; përndryshe nëse
+ishte `paused` → mbetet `paused`; përndryshe → `active`.
+
+**K6** — katër ndryshime:
+1. `normalizeKhatamPlan` filtron sipas **tipit para koercionit**, sepse
+   `Number(true) === 1` dhe `Number(null) === 0` do të kalonin si faqe.
+   Stringjet numerike ruhen për përputhshmëri me të dhëna të vjetra.
+2. Më pas `Number.isInteger` + brenda 1..604.
+3. `confirmPageRangeCompleted` rrumbullakos kufijtë me `Math.ceil`/`Math.floor`.
+4. `confirmPageCompleted` refuzon hyrjen thyesore.
+
+**K9** — u hoq importi `updateDirectPagePosition` nga `KhatamTrackerView.tsx`.
+Funksioni mbetet në service (përdoret nga `manualKhatmah.test.ts:140`).
+
+## Verifikimi i regresionit
+
+Çdo commit u kontrollua veçmas me `npx vitest run`:
+
+```
+8102beb  docs: specifikat                    19 files / 180 tests
+b6dfe95  docs: raporti i auditimit           19 files / 180 tests
+f4a6e6f  K1                                  20 files / 186 tests
+4bc84a5  K4                                  20 files / 191 tests
+9dd7c47  K6                                  20 files / 198 tests
+2d45988  K9                                  20 files / 198 tests
+```
+
+- `npm run lint` (`tsc --noEmit`): i pastër.
+- `npm run build` (`vite build`): kalon.
+- **Asnjë test ekzistues nuk u ndryshua.** 47 testet e Khatmah-ut që ishin
+  para Faza 1 kalojnë të pandryshuara — kjo ishte parashikuar nga analiza e
+  shtrirjes në seksionin 5.
+
+## Një gabim i imi gjatë implementimit (për transparencë)
+
+Në përpjekjen e parë për K6 shtova `Number.isInteger` **pas** koercionit
+`Number(p)`. Testi dështoi: `[true, '8', null, undefined]` jepte ende `[1, 8]`,
+sepse `Number(true) === 1` është numër i plotë. Filtri duhet të refuzojë tipet
+jo-numerike **para** koercionit. U korrigjua dhe tani kalon.
+
+Gjithashtu: sandbox-i e ktheu degën në `3829ed8` midis dy seancave, prandaj
+commit-i i parë i K1 përmbante edhe dokumentet. Historiku u nda sërish në
+6 commit-e të ndara dhe u verifikua që tree hash-i përfundimtar është
+**identik** (`2fabf50`) — asgjë nuk humbi.
+
+## Çfarë mbetet (nuk u prek, sipas autorizimit)
+
+K2, K3 (Faza 2) · K7, K8 (Faza 3) · K5 (Faza 4) · Arkivi (Faza 5) · K11 (Faza 6).
