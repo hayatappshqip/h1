@@ -348,3 +348,78 @@ commit-i i parë i K1 përmbante edhe dokumentet. Historiku u nda sërish në
 ## Çfarë mbetet (nuk u prek, sipas autorizimit)
 
 K2, K3 (Faza 2) · K7, K8 (Faza 3) · K5 (Faza 4) · Arkivi (Faza 5) · K11 (Faza 6).
+
+---
+
+# 11. Statusi i implementimit — FAZA 3 (e përfunduar)
+
+Commit `d3335e8`. Ndryshohen **2 skedarë**, 62 rreshta.
+
+## Prova para rregullimit (të ekzekutuara, deterministe)
+
+Në auditim K7 ishte "provuar logjikisht, jo në React" dhe K8 "vetëm duke lexuar
+kodin". Të dyja tani janë **provuar me ekzekutim** në `src/tests/khatmahFaza3.test.tsx`:
+
+| Testi | Para rregullimit | Humbja |
+|---|---|---|
+| 1 | `expected [] to equal [20]` | 20 faqe |
+| 2 | `expected +0 to be 37` | 37 faqe |
+| 5 | `expected [1..10] to equal [30]` | 20 faqe |
+| 10 | `expected <span> to be null` | faqja fshihet nga ekrani |
+| 11 | LS përfundon me `[2]` | faqja 1 humbet **përgjithmonë** |
+| 12 | butoni thotë "Faqen 4" | 10 → 3 faqe (K8 në React) |
+
+6 dështonin, 6 kalonin (sjelljet për t'u ruajtur). Pas rregullimit: **18/18**.
+
+## Shkaqet rrënjësore
+
+**K8** — `loadDurableKhatamPlan()` e kthente planin e IndexedDB sapo ai
+ekzistonte, pa e krahasuar kurrë me localStorage.
+
+**K7** — `useEffect` te `KhatamTrackerView.tsx:52-57` e kapte `plan` nga
+renderimi i parë, pra `durable.updatedAt >= plan.updatedAt` krahasohej me një
+vlerë të vjetëruar. Meqë LS dhe IDB shkruhen në të njëjtën thirrje me të
+njëjtën vulë kohore, kushti ishte praktikisht **gjithmonë i vërtetë** — dritarja
+e garës ishte e hapur në çdo hapje të ekranit.
+
+## Rregullimi
+
+`resolveKhatamPlanConflict(cached, durable)` — funksion i pastër, i testueshëm:
+1. Plane me `id` të ndryshme → fiton ai i krijuar më vonë (plani aktual).
+2. I njëjti plan → fiton ai me **më shumë faqe**.
+3. Numër i barabartë → fiton vula kohore më e re.
+4. Barazim i plotë → fiton localStorage.
+
+`loadDurableKhatamPlan` lexon të dyja kopjet dhe e zbaton rregullin.
+`useEffect`-i përdor `setPlan(current => resolveKhatamPlanConflict(current, durable))`,
+pra krahason me gjendjen **aktuale** dhe progresi nuk ulet kurrë.
+
+**Rregulli iu delegua agjentit** (pyetja u anashkalua). Zgjedhja: "fiton ai me
+më shumë faqe", sepse Definition of Done kërkon *no silent data loss*.
+
+**Skaji i njohur** (i dokumentuar në kod): nëse një shkrim IDB ka dështuar dhe
+përdoruesi ka fshirë faqe, kopja e vjetëruar me më shumë faqe mund t'i ringjallë
+ato. Është e dukshme dhe e përsëritshme — ndryshe nga humbja e heshtur që
+zëvendësohet. Lidhet me K11 (Faza 6), ku dështimet e IDB-së do të bëhen të
+dukshme në UI.
+
+## Çfarë NUK u bë (qëllimisht)
+
+- **Nuk u ristrukturuan handler-at** e `KhatamTrackerView`. Auditimi përmendte
+  `setPlan` jo-funksional te `handlePersistPlan`, por gara e provuar ishte vetëm
+  ajo e `useEffect`-it. React 18 i flushed ngjarjet diskrete (kliket) në mënyrë
+  sinkrone, pra dy klika nuk ndërthuren. Ta "rregulloja" pa provë do të ishte
+  ndryshim i paautorizuar me rrezik regresioni.
+- **`navigationFix.test.tsx` testi 3 është i luhatshëm** — 2 kalime / 1 dështim
+  në 3 ekzekutime identike, dhe dështon edhe në `3829ed8` të pastër. Nuk është
+  shkaktuar nga ky ndryshim. Është zonë Mushaf, prandaj **nuk u prek**.
+  Kërkon autorizim të veçantë.
+
+## Verifikimi
+
+```
+d4fe233  para Fazës 3      20 files / 198 tests
+d3335e8  pas Fazës 3       21 files / 216 tests   (2 ekzekutime, të dyja të gjelbra)
+tsc --noEmit               i pastër
+vite build                 kalon
+```
