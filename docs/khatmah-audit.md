@@ -423,3 +423,72 @@ d3335e8  pas Fazës 3       21 files / 216 tests   (2 ekzekutime, të dyja të g
 tsc --noEmit               i pastër
 vite build                 kalon
 ```
+
+---
+
+# 12. Statusi i implementimit — FAZA 5 (e përfunduar)
+
+Commit `a1b0cf9`. Ndryshohet **1 skedar**, 68 rreshta.
+
+## Prova para rregullimit (të ekzekutuara)
+
+13 teste në `src/tests/khatmahFaza5.test.ts`; **10 dështonin**:
+
+| Problemi | Prova | Rezultati |
+|---|---|---|
+| **A1** | `typeof loadDurableCompletedKhatamPlans` | `'undefined'` — lexuesi nuk ekzistonte |
+| **A2** | IDB = 3 hatme, LS = bosh, arkivo 1 të re | `expected length 4 but got 1` — **3 hatme të shkatërruara** |
+| **A3** | 5 herë modal "Hatme e Re" me plan bosh | `expected length 0 but got 5` |
+
+3 kalonin (sjelljet për t'u ruajtur). Pas rregullimit: **13/13**.
+
+## Shkaqet rrënjësore
+
+- **A1** — `saveDurableCompletedKhatamPlans` shkruan në IDB që në fillim, por
+  nuk është shkruar **kurrë** një lexues i qëndrueshëm. Të dhënat ekzistonin,
+  ishin thjesht të paarritshme.
+- **A2** — `archiveCurrentAndStartNewPlan` lexonte `loadCachedCompletedKhatamPlans()`
+  (vetëm LS) dhe pastaj e mbishkruante IDB-në. Pas pastrimit të LS, ky është
+  **shkatërrim i përhershëm**, jo vetëm paarritshmëri.
+- **A3** — `completedList.unshift(normalizedCurrent)` pa asnjë kusht.
+
+## Rregullimi
+
+- `mergeKhatamPlanLists(cached, durable)` — bashkim sipas `id`; për të njëjtën
+  hatme mbetet kopja me më shumë faqe. I njëjti parim si `resolveKhatamPlanConflict`.
+- `loadDurableCompletedKhatamPlans()` — lexon të dyja depot dhe i bashkon.
+  **Nuk shkruan gjë**: bashkimi ruhet në shkrimin tjetër të arkivit.
+- `archiveCurrentAndStartNewPlan` lexon në mënyrë të qëndrueshme dhe arkivon
+  vetëm plane me të paktën një faqe.
+
+## Gjetje që NUK u prek (kërkon autorizim)
+
+**Arkivi nuk shfaqet askund në UI.** `KhatamTrackerView` e thërret
+`archiveCurrentAndStartNewPlan` por nuk e lexon kurrë listën — nuk ka asnjë
+element `.tsx` që i referohet `completedPlans`. Pra arkivi tani ruhet dhe
+rikthehet siç duhet, por përdoruesi nuk e sheh. Shtimi i një shfaqjeje është
+vendim dizajni, jo rregullim të dhënash.
+
+**Plane me status `paused` ruhen në listën `completed_plans`.** Kjo është e
+qëllimshme (lista është në fakt një arkiv i hatmeve të mbyllura, jo vetëm të
+përfunduara), prandaj nuk u ndryshua.
+
+## Verifikimi
+
+```
+a6452de  para Fazës 5   21 files / 216 tests
+a1b0cf9  pas Fazës 5    22 files / 229 tests   (2 ekzekutime, të dyja të gjelbra)
+tsc --noEmit            i pastër
+vite build              kalon
+```
+
+## Gjendja e fazave
+
+| Faza | Përmbajtja | Statusi |
+|---|---|---|
+| 1 | K1, K4, K6, K9 | ✅ `f4a6e6f` `4bc84a5` `9dd7c47` `2d45988` |
+| 3 | K7, K8 | ✅ `d3335e8` |
+| 5 | Arkivi (A1, A2, A3) | ✅ `a1b0cf9` |
+| 2 | K2, K3 | ⏳ K3 kërkon vendim produkti + thyen 5 teste ekzistuese |
+| 4 | K5 | ⏳ kërkon vendim semantik (ndikon `avgPagesPerDay`) |
+| 6 | K11 | ⏳ kërkon vendim dizajni për sinjalin në UI |
