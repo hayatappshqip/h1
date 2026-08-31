@@ -492,3 +492,75 @@ vite build              kalon
 | 2 | K2, K3 | ⏳ K3 kërkon vendim produkti + thyen 5 teste ekzistuese |
 | 4 | K5 | ⏳ kërkon vendim semantik (ndikon `avgPagesPerDay`) |
 | 6 | K11 | ⏳ kërkon vendim dizajni për sinjalin në UI |
+
+---
+
+# 13. Statusi i implementimit — FAZA 6 (e përfunduar)
+
+Commit `4238fa1`. Ndryshohen **2 skedarë**, 64 rreshta.
+
+## Prova para rregullimit (e ekzekutuar)
+
+10 teste në `src/tests/khatmahFaza6.test.tsx`; **7 dështonin**:
+
+| Testi | Rezultati |
+|---|---|
+| 1–4, 6 | `expected undefined to be defined` — funksionet e ruajtjes nuk kthenin asgjë |
+| 7 | ekrani tregonte `"Faqja 1 u konfirmua si e kryer!"` ndërsa IndexedDB kishte dështuar |
+| 9 | e njëjta edhe kur vetë localStorage kishte dështuar |
+
+3 kalonin (sjelljet për t'u ruajtur). Pas rregullimit: **10/10**.
+
+## Shkaku rrënjësor
+
+`saveDurableKhatamPlan` kthente `Promise<void>` — thirrësi **nuk kishte asnjë
+mënyrë** ta dinte nëse ruajtja kishte funksionuar. Dhe `KhatamTrackerView:116`
+e thirrte pa e pritur (`saveDurableKhatamPlan(updatedPlan);`), pra edhe po të
+kishte kthyer diçka, do të shpërfilljej.
+
+## Rregullimi
+
+- `KhatamPersistResult { localStorage, indexedDB, ok }` — kthehet nga të dyja
+  funksionet e ruajtjes.
+- `handlePersistPlan` e pret rezultatin dhe zëvendëson mesazhin e suksesit me
+  paralajmërim kur ruajtja dështon. Dallohen dy rastet:
+  - vetëm kopja rezervë dështoi → *"Ruajtja rezervë dështoi — progresi është vetëm në këtë pajisje."*
+  - vetë localStorage dështoi → *"Paralajmërim: progresi nuk u ruajt — mund të humbasë nëse mbyll aplikacionin."*
+- Përdoret toast-i ekzistues (`#khatam-toast`). **Nuk shtohet element i ri në UI.**
+
+Dështimi i IndexedDB vazhdon ta lëjë shkrimin në localStorage të papenguar —
+një kopje e pjesshme është më mirë se asnjë. Kjo sjellje ruhet dhe testohet.
+
+Nuk u tha asnjë `console.warn` — ato mbeten për diagnostikim; ndryshimi është
+që tani ka edhe një sinjal për përdoruesin.
+
+## Verifikimi
+
+```
+43e1fc6  para Fazës 6   22 files / 229 tests
+4238fa1  pas Fazës 6    23 files / 239 tests   (2 ekzekutime, të dyja të gjelbra)
+tsc --noEmit            i pastër
+vite build              kalon
+```
+
+Të 17 skedarët e zonave të mbrojtura (Mushaf, Mburoja, Namazi) u verifikuan
+të pandryshuar nga baseline `3829ed8`.
+
+## Gjendja e fazave
+
+| Faza | Përmbajtja | Statusi |
+|---|---|---|
+| 1 | K1, K4, K6, K9 | ✅ |
+| 3 | K7, K8 | ✅ |
+| 5 | Arkivi (A1, A2, A3) | ✅ |
+| 6 | K11 — dështimet e ruajtjes të dukshme | ✅ `4238fa1` |
+| 2 | K2, K3 | ⏳ kërkon vendim produkti |
+| 4 | K5 | ⏳ kërkon vendim semantik |
+
+## Shënim mbi prioritetin
+
+Përdoruesi sqaroi se aplikacionin po e përdor vetëm për audit dhe eksperiment,
+pra humbja e të dhënave nuk është shqetësim i menjëhershëm. Faza 3 dhe 5 u
+renditën të para pikërisht për atë arsye, dhe ky ishte gjykim i agjentit — i
+regjistruar këtu për transparencë. Rregullimet janë teknikisht të sakta dhe
+do të duhen për publikim, por nuk ishin urgjente për përdorimin aktual.
