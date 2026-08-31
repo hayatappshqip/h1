@@ -150,18 +150,60 @@ export function loadCachedKhatamPlan(): ManualKhatamPlan {
 }
 
 /**
+ * K8: Zgjidh konfliktin midis kopjes së sinkronizuar (localStorage) dhe
+ * kopjes së qëndrueshme (IndexedDB).
+ *
+ * Rregulli, në rend:
+ *   1. Plane me id të ndryshme -> fiton ai i krijuar më vonë, sepse bëhet
+ *      fjalë për hatme të ndryshme dhe plani më i ri është plani aktual.
+ *   2. I njëjti plan -> fiton ai me MË SHUMË faqe të përfunduara. Kjo është
+ *      pika kyçe: asnjëherë nuk humbet progres në mënyrë të heshtur.
+ *   3. Numër i barabartë faqesh -> fiton vula kohore më e re.
+ *   4. Barazim i plotë -> fiton localStorage, burimi i sinkronizuar.
+ *
+ * Skaji i njohur: nëse një shkrim në IndexedDB ka dështuar dhe përdoruesi ka
+ * fshirë faqe, kopja e vjetëruar me më shumë faqe mund t'i ringjallë ato.
+ * Kjo është e DUKSHME (progresi rritet para syve) dhe e përsëritshme, ndryshe
+ * nga humbja e heshtur që ky rregull zëvendëson.
+ */
+export function resolveKhatamPlanConflict(
+  cached: ManualKhatamPlan,
+  durable: ManualKhatamPlan
+): ManualKhatamPlan {
+  if (cached.id && durable.id && cached.id !== durable.id) {
+    return durable.createdAt > cached.createdAt ? durable : cached;
+  }
+  if (durable.completedPages.length !== cached.completedPages.length) {
+    return durable.completedPages.length > cached.completedPages.length ? durable : cached;
+  }
+  return durable.updatedAt > cached.updatedAt ? durable : cached;
+}
+
+/**
  * Asynchronous durable loader from IndexedDB with fallback to localStorage.
+ *
+ * K8: më parë ky funksion e kthente planin e IndexedDB sapo ai ekzistonte,
+ * pa e krahasuar me localStorage. Një kopje IDB bosh ose e vjetëruar e
+ * fshinte progresin real — humbje e heshtur të dhënash. Tani të dyja kopjet
+ * lexohen dhe konflikti zgjidhet me resolveKhatamPlanConflict.
  */
 export async function loadDurableKhatamPlan(): Promise<ManualKhatamPlan> {
+  const cached = loadCachedKhatamPlan();
+
+  let durable: ManualKhatamPlan | null = null;
   try {
     const meta = await getMeta(INDEXEDDB_ACTIVE_KHATAM_KEY);
     if (meta) {
-      return normalizeKhatamPlan(meta);
+      durable = normalizeKhatamPlan(meta);
     }
   } catch (err) {
     console.warn('Failed to load durable Khatam plan from IndexedDB:', err);
   }
-  return loadCachedKhatamPlan();
+
+  if (!durable) {
+    return cached;
+  }
+  return resolveKhatamPlanConflict(cached, durable);
 }
 
 /**

@@ -5,6 +5,7 @@ import {
   loadCachedKhatamPlan,
   loadDurableKhatamPlan,
   saveDurableKhatamPlan,
+  resolveKhatamPlanConflict,
   confirmPageCompleted,
   confirmPageRangeCompleted,
   confirmJuzCompleted,
@@ -49,12 +50,26 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const [plan, setPlan] = useState<ManualKhatamPlan>(() => loadCachedKhatamPlan());
 
   // Rehydrate durable plan asynchronously
+  //
+  // K7: më parë ky efekt krahason `durable.updatedAt` me `plan.updatedAt` të
+  // kapur nga renderimi i PARË, dhe bënte `setPlan(durable)` pa kusht. Meqë
+  // localStorage dhe IndexedDB shkruhen bashkë me të njëjtën vulë kohore,
+  // kushti `>=` ishte praktikisht gjithmonë i vërtetë — pra nëse përdoruesi
+  // konfirmonte një faqe para se leximi IDB të kthehej, ajo faqe fshihej nga
+  // ekrani dhe veprimi tjetër e ruante atë gjendje të zbrazur në localStorage.
+  //
+  // Tani përditësimi bëhet me `setPlan(current => ...)` që krahason me
+  // gjendjen AKTUALE, dhe zëvendësimi ndodh vetëm nëpërmjet të njëjtit rregull
+  // zgjidhjeje konflikti si te service-i — kështu progresi nuk ulet kurrë.
   useEffect(() => {
+    let cancelled = false;
     loadDurableKhatamPlan().then((durable) => {
-      if (durable && durable.updatedAt >= plan.updatedAt) {
-        setPlan(durable);
-      }
+      if (cancelled || !durable) return;
+      setPlan((current) => resolveKhatamPlanConflict(current, durable));
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Modal States
