@@ -131,6 +131,23 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
 }
 
 /**
+ * K11: çfarë ndodhi realisht gjatë ruajtjes.
+ *
+ * Më parë funksionet e ruajtjes kthenin Promise<void> dhe e gëlltisnin çdo
+ * gabim me një console.warn. Thirrësi nuk kishte asnjë mënyrë ta dinte nëse
+ * progresi ishte ruajtur, prandaj një dështim i kuotës ose i depos dukej
+ * saktësisht si sukses.
+ */
+export interface KhatamPersistResult {
+  /** A u shkrua me sukses në localStorage (kopja e shpejtë, e paqëndrueshme). */
+  localStorage: boolean;
+  /** A u shkrua me sukses në IndexedDB (kopja e qëndrueshme). */
+  indexedDB: boolean;
+  /** E vërtetë vetëm kur u shkrua në të dyja. */
+  ok: boolean;
+}
+
+/**
  * Fast synchronous loader from localStorage.
  */
 export function loadCachedKhatamPlan(): ManualKhatamPlan {
@@ -209,22 +226,34 @@ export async function loadDurableKhatamPlan(): Promise<ManualKhatamPlan> {
 /**
  * Saves Khatam plan synchronously to localStorage and durably to IndexedDB.
  */
-export async function saveDurableKhatamPlan(plan: ManualKhatamPlan): Promise<void> {
+export async function saveDurableKhatamPlan(plan: ManualKhatamPlan): Promise<KhatamPersistResult> {
   const normalized = normalizeKhatamPlan(plan);
 
+  let wroteLocalStorage = false;
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
       localStorage.setItem(LOCAL_STORAGE_ACTIVE_KHATAM_KEY, JSON.stringify(normalized));
+      wroteLocalStorage = true;
     } catch (err) {
       console.warn('Failed to save Khatam plan to localStorage:', err);
     }
   }
 
+  // K11: dështimi i IndexedDB nuk e ndalon shkrimin në localStorage. Kjo është
+  // e qëllimshme — një kopje e pjesshme është më mirë se asnjë.
+  let wroteIndexedDB = false;
   try {
     await saveMeta(INDEXEDDB_ACTIVE_KHATAM_KEY, normalized);
+    wroteIndexedDB = true;
   } catch (err) {
     console.warn('Failed to save durable Khatam plan to IndexedDB:', err);
   }
+
+  return {
+    localStorage: wroteLocalStorage,
+    indexedDB: wroteIndexedDB,
+    ok: wroteLocalStorage && wroteIndexedDB,
+  };
 }
 
 /**
@@ -251,22 +280,34 @@ export function loadCachedCompletedKhatamPlans(): ManualKhatamPlan[] {
 /**
  * Saves completed/archived Khatam plans.
  */
-export async function saveDurableCompletedKhatamPlans(plans: ManualKhatamPlan[]): Promise<void> {
+export async function saveDurableCompletedKhatamPlans(
+  plans: ManualKhatamPlan[]
+): Promise<KhatamPersistResult> {
   const normalizedList = plans.map(normalizeKhatamPlan);
 
+  let wroteLocalStorage = false;
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
       localStorage.setItem(LOCAL_STORAGE_COMPLETED_KHATAM_KEY, JSON.stringify(normalizedList));
+      wroteLocalStorage = true;
     } catch (err) {
       console.warn('Failed to save completed Khatam plans to localStorage:', err);
     }
   }
 
+  let wroteIndexedDB = false;
   try {
     await saveMeta(INDEXEDDB_COMPLETED_KHATAM_KEY, normalizedList);
+    wroteIndexedDB = true;
   } catch (err) {
     console.warn('Failed to save completed Khatam plans to IndexedDB:', err);
   }
+
+  return {
+    localStorage: wroteLocalStorage,
+    indexedDB: wroteIndexedDB,
+    ok: wroteLocalStorage && wroteIndexedDB,
+  };
 }
 
 /**

@@ -111,13 +111,32 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const stats = calculateKhatamStats(plan);
 
   // Persistence helper
-  const handlePersistPlan = (updatedPlan: ManualKhatamPlan, successMsg?: string, onUndo?: () => void) => {
+  //
+  // K11: më parë saveDurableKhatamPlan thirrej pa u pritur dhe kthente void,
+  // pra një dështim i ruajtjes dukej saktësisht si sukses — përdoruesi shihte
+  // "Faqja N u konfirmua" edhe kur asnjë depo nuk e kishte marrë. Tani rezultati
+  // pritet dhe paralajmërimi zëvendëson mesazhin e suksesit. Përdoret toast-i
+  // ekzistues; nuk shtohet element i ri në UI.
+  const handlePersistPlan = async (
+    updatedPlan: ManualKhatamPlan,
+    successMsg?: string,
+    onUndo?: () => void
+  ) => {
     setPlan(updatedPlan);
-    saveDurableKhatamPlan(updatedPlan);
     if (successMsg) {
       setToastMessage(successMsg);
       setUndoCallback(onUndo ? () => onUndo : null);
     }
+
+    const result = await saveDurableKhatamPlan(updatedPlan);
+    if (result.ok) return;
+
+    setUndoCallback(null);
+    setToastMessage(
+      result.localStorage
+        ? 'Ruajtja rezervë dështoi — progresi është vetëm në këtë pajisje.'
+        : 'Paralajmërim: progresi nuk u ruajt — mund të humbasë nëse mbyll aplikacionin.'
+    );
   };
 
   // 1. Primary CTA: "Vazhdo hatmen" (Does NOT mark page as completed)
