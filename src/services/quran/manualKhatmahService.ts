@@ -270,6 +270,61 @@ export async function saveDurableCompletedKhatamPlans(plans: ManualKhatamPlan[])
 }
 
 /**
+ * Faza 5: bashkon dy lista arkivi pa humbur asnjë hatme.
+ *
+ * Bashkimi bëhet sipas `id`. Për të njëjtën hatme mbetet kopja me më shumë
+ * faqe të përfunduara, në pozicionin ku u shfaq e para. Kjo pasqyron të
+ * njëjtin parim si resolveKhatamPlanConflict: asnjë humbje e heshtur.
+ */
+export function mergeKhatamPlanLists(
+  cached: ManualKhatamPlan[],
+  durable: ManualKhatamPlan[]
+): ManualKhatamPlan[] {
+  const merged: ManualKhatamPlan[] = [];
+  const indexById = new Map<string, number>();
+
+  for (const plan of [...cached, ...durable]) {
+    const at = plan.id ? indexById.get(plan.id) : undefined;
+    if (at === undefined) {
+      if (plan.id) {
+        indexById.set(plan.id, merged.length);
+      }
+      merged.push(plan);
+    } else if (plan.completedPages.length > merged[at].completedPages.length) {
+      merged[at] = plan;
+    }
+  }
+
+  return merged;
+}
+
+/**
+ * Faza 5 (A1): lexues i qëndrueshëm për arkivin.
+ *
+ * saveDurableCompletedKhatamPlans e ka shkruar gjithmonë arkivin edhe në
+ * IndexedDB, por nuk ekzistonte asnjë funksion që ta lexonte. Pas pastrimit
+ * të localStorage, hatmet e përfunduara ishin të paarritshme edhe pse të
+ * dhënat ishin ende në IDB. Tani lexohen të dyja depot dhe bashkohen.
+ *
+ * Funksioni nuk shkruan gjë — bashkimi ruhet në shkrimin tjetër të arkivit.
+ */
+export async function loadDurableCompletedKhatamPlans(): Promise<ManualKhatamPlan[]> {
+  const cached = loadCachedCompletedKhatamPlans();
+
+  let durable: ManualKhatamPlan[] = [];
+  try {
+    const meta = await getMeta(INDEXEDDB_COMPLETED_KHATAM_KEY);
+    if (Array.isArray(meta)) {
+      durable = meta.map(normalizeKhatamPlan);
+    }
+  } catch (err) {
+    console.warn('Failed to load completed Khatam plans from IndexedDB:', err);
+  }
+
+  return mergeKhatamPlanLists(cached, durable);
+}
+
+/**
  * Explicitly marks a single page as completed in a Khatam plan.
  * Pure immutable function returning updated plan.
  */
@@ -523,9 +578,19 @@ export async function archiveCurrentAndStartNewPlan(
   const normalizedCurrent = normalizeKhatamPlan(currentPlan);
   normalizedCurrent.status = normalizedCurrent.completedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'paused';
 
-  const completedList = loadCachedCompletedKhatamPlans();
-  completedList.unshift(normalizedCurrent);
-  await saveDurableCompletedKhatamPlans(completedList);
+  // Faza 5 (A2): lista lexohet nga të DYJA depot. Më parë lexohej vetëm
+  // localStorage dhe pastaj IDB-ja mbishkruhej me të. Nëse LS ishte pastruar,
+  // arkivimi i një hatmeje të re e kthente arkivin në një listë prej një
+  // elementi dhe shkatërronte përgjithmonë hatmet e mëparshme.
+  let completedList = await loadDurableCompletedKhatamPlans();
+
+  // Faza 5 (A3): një plan pa asnjë faqe të përfunduar nuk ka çfarë të
+  // arkivohet. Pa këtë kusht, çdo hapje e modalit "Hatme e Re" grumbullonte
+  // një plan bosh në arkiv.
+  if (normalizedCurrent.completedPages.length > 0) {
+    completedList = [normalizedCurrent, ...completedList];
+    await saveDurableCompletedKhatamPlans(completedList);
+  }
 
   const newPlan = createDefaultKhatamPlan(newTitle, newDailyTarget, newTargetDate);
   await saveDurableKhatamPlan(newPlan);
