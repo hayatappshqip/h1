@@ -651,3 +651,111 @@ Të 17 skedarët e zonave të mbrojtura u verifikuan të pandryshuar.
 | 5 | Arkivi (A1, A2, A3) | ✅ |
 | 6 | K11 — dështimet e ruajtjes të dukshme | ✅ |
 | 2 | K2, K3 — sjellja e `nextPage` | ⏳ **kërkon vendim produkti; nuk preket pa autorizim** |
+
+---
+
+# 15. Statusi i implementimit — FAZA 2 (e përfunduar)
+
+Commit `f05e17f`. Ndryshohen **3 skedarë**, 96 rreshta.
+
+**Të dyja vendimet u morën nga përdoruesi**, jo nga agjenti — siç kërkon §22.
+
+## K2 — një hatme e përfunduar nuk ka faqe tjetër
+
+### Prova para rregullimit (e ekzekutuar)
+
+```
+completedPages.length : 604
+status                : completed
+nextPage              : 604
+a është 604 e shënuar?: true
+→ butoni kryesor      : "Vazhdo hatmen (Faqja 604)"     <- përgjithmonë
+→ butoni i konfirmimit: I ÇAKTUAR, "Faqja 604 është tashmë e shënuar"
+```
+
+Modali ishte rrugë qorre — asnjë veprim i mundshëm.
+
+### Rregullimi
+
+`nextPage = 0` kur të 604 faqet janë të plota. U ndryshua në **6 vende**:
+`normalizeKhatamPlan` (2), `confirmPageCompleted`, `confirmPageRangeCompleted`,
+`removePageCompleted`, `removeJuzCompleted`.
+
+Butoni kryesor tani thotë *"Hatmja u përfundua — Fillo hatme të re"* dhe hap
+modalin e hatmes së re.
+
+### Një bug i ri që u parandalua gjatë rregullimit
+
+Kushti i vjetër në `normalizeKhatamPlan` përdorte `lastCompletedPage >= 604`,
+jo numrin e faqeve. Po të kalohej thjesht në `nextPage = 0`, një plan me **vetëm
+faqen 604** të lexuar do jepte `nextPage = 605` — jashtë intervalit 1..604.
+U shtua `Math.min(TOTAL_MUSHAF_PAGES, ...)` si mbrojtje.
+
+## K3 — OPSIONI C: boshllëqet bëhen të dukshme
+
+### Prova para rregullimit (e ekzekutuar)
+
+```
+completedPages        : [2, 10, 37]
+nextPage              : 38
+faqe të palexuara     : 601     (e para që mungon: 1)
+→ butoni kryesor      : "Vazhdo hatmen (Faqja 38)"
+
+kërcen te faqja 300   -> nextPage=301, faqe të palexuara=603
+```
+
+### Vendimi dhe pse
+
+| Opsioni | Vendimi |
+|---|---|
+| A — mbaj 38 | jo |
+| B — e para që mungon (1) | jo — do thyente 5 teste ekzistuese |
+| **C — mbaj 38 + listë e faqeve të mbetura** | ✅ **u zgjodh** |
+
+Opsioni C u zgjodh pikërisht sepse **nuk ndryshon logjikën e `nextPage`** dhe
+rrjedhimisht nuk thyen asnjë test. Kjo ishte e vetmja rrugë që respektonte
+rregullin "mos ndrysho teste ekzistuese pa autorizim".
+
+### Rregullimi
+
+- `getMissingPageRanges(plan)` — kthen boshllëqet si intervale të vazhdueshme.
+  `[2,10,37]` → `[{1,1}, {3,9}, {11,36}, {38,604}]`
+- Seksion i ri "Faqet e mbetura" në UI, me numrin total dhe grupe të prekshme
+  që kërcejnë te faqja e parë e grupit. Shfaqet vetëm kur ka boshllëqe.
+
+## Ndryshimi i vetëm në një test ekzistues
+
+```
+src/tests/manualKhatmah.test.ts:115
+  expect(plan.nextPage).toBe(604)  ->  toBe(0)
+```
+
+**Me autorizim të shprehur të përdoruesit.** Ky është i vetmi rresht testi
+ekzistues që u prek gjatë gjithë punës mbi Khatmah-un. Testi është për
+përfundimin e hatmes; të pestë pohimet e tjera të tij mbeten të vlefshme.
+
+## Verifikimi
+
+```
+3539df5  para Fazës 2   24 files / 250 tests
+f05e17f  pas Fazës 2    25 files / 265 tests   (2 ekzekutime, të dyja të gjelbra)
+tsc --noEmit            i pastër
+vite build              kalon
+```
+
+Zonat e mbrojtura — Mushaf (9 skedarë të §19), Mburoja, Namazi — të verifikuara
+të pandryshuara.
+
+## Gjendja përfundimtare e fazave të Khatmah-ut
+
+| Faza | Përmbajtja | Statusi |
+|---|---|---|
+| 1 | K1, K4, K6, K9 | ✅ |
+| 2 | K2, K3-C | ✅ `f05e17f` |
+| 3 | K7, K8 | ✅ |
+| 4 | K5 | ✅ |
+| 5 | Arkivi (A1, A2, A3) | ✅ |
+| 6 | K11 | ✅ |
+
+**Të gjitha fazat e Khatmah-ut janë të mbyllura.** Mbetet vetëm testi manual në
+iPhone, që kërkon pajisje.
