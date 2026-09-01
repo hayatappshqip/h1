@@ -564,3 +564,90 @@ pra humbja e të dhënave nuk është shqetësim i menjëhershëm. Faza 3 dhe 5 
 renditën të para pikërisht për atë arsye, dhe ky ishte gjykim i agjentit — i
 regjistruar këtu për transparencë. Rregullimet janë teknikisht të sakta dhe
 do të duhen për publikim, por nuk ishin urgjente për përdorimin aktual.
+
+---
+
+# 14. Statusi i implementimit — FAZA 4 (e përfunduar)
+
+Commit `5b0caa6`. Ndryshohet **1 skedar**, 56 rreshta.
+
+## Prova para rregullimit (e ekzekutuar)
+
+11 teste në `src/tests/khatmahFaza4.test.ts`; **6 dështonin**:
+
+| Testi | Rezultati |
+|---|---|
+| 1 | `expected 5 to be 4` — faqja e hequr vazhdonte të numërohej |
+| 2 | `expected 6 to be 5` — hiq/shëno e numëronte dy herë |
+| 3 | `expected 15 to be 5` — **10 cikle hiq/shëno → fryrje 3×** |
+| 4 | `expected 1 to be +0` |
+| 5 | `expected 21 to be +0` — heqja e një xhuzi linte 21 faqe në historik |
+| 6 | `expected 21 to be 20` — `avgPagesPerDay` i fryrë |
+
+5 kalonin (sjelljet për t'u ruajtur). Pas rregullimit: **11/11**.
+
+## Shkaku rrënjësor
+
+`confirmPageCompleted` e rrit numëruesin ditor të `history`, por
+`removePageCompleted` **nuk e prek fare** — nuk kishte asnjë rresht kod për
+historikun. Pra `history` ishte një numërues që vetëm rritej.
+
+Kjo frynte `avgPagesPerDay` (që llogaritet si totali i historikut / numri i
+ditëve) dhe rrjedhimisht `projectedCompletionDate` — të dyja shfaqen në ekran.
+
+## Rregullimi
+
+- `decrementHistoryForDay()` — ndihmës i përbashkët. Zbret vetëm ditën e
+  kërkuar, vetëm nëse ajo ditë ka aktivitet, me dysheme 0.
+- `removePageCompleted(plan, page, dateInput?)` — zbret 1.
+- `removeJuzCompleted(plan, juz, dateInput?)` — zbret aq faqe sa u hoqën
+  realisht nga ai xhuz (jo gjithmonë 20 ose 21).
+- `dateInput` është opsional dhe i njëjtë si te funksionet `confirm`, pra
+  nënshkrimi i vjetër pa datë vazhdon të funksionojë.
+
+## Vendimi semantik (marrë nga agjenti)
+
+**Zbritja i atribuohet ditës së sotme.** Alternativat ishin:
+
+| Opsioni | Çfarë bën | Pse nuk u zgjodh |
+|---|---|---|
+| Dita e sotme | ✅ u zgjodh | E thjeshtë, e parashikueshme, nuk rishkruan ditë të paprekura |
+| Dita kur faqja u lexua | e saktë idealisht | **E paarritshme** — `completedPages` është `number[]`, nuk mban data |
+| Dita më e fundit jo-zero | e ngjashme | Ecën mbrapsht nga e sotmja, pra jep të njëjtin rezultat |
+
+**Kufizimi i njohur:** nëse faqja e hequr ishte kredituar një ditë të
+mëparshme, ajo ditë mbetet e fryrë. Kjo kërkonte ndryshimin e formës së
+`completedPages`, që handoff-i e ndalon shprehimisht (burimi i vetëm i së
+vërtetës). Sjellja në atë rast është e njëjtë me para rregullimit — **nuk ka
+regresion**. Dita e vjetër nuk rishkruhet kurrë, dhe totali i historikut
+mbetet i barabartë me `completedPages.length` në rastin e zakonshëm.
+
+## Një korrigjim i imi gjatë implementimit
+
+Testi 7 fillimisht kërkonte që zbritja t'i atribuohet ditës kur faqja ishte
+lexuar. Kjo është e paarritshme, pra **testi u korrigjua, jo kodi**. Arsyeja
+është e shënuar në vetë testin. Testi tani pohon atë që garantohet realisht:
+dita e vjetër nuk preket kurrë, dhe totali mbetet i saktë.
+
+## Verifikimi
+
+```
+ac87c43  para Fazës 4   23 files / 239 tests
+5b0caa6  pas Fazës 4    24 files / 250 tests   (2 ekzekutime, të dyja të gjelbra)
+tsc --noEmit            i pastër
+vite build              kalon
+```
+
+Të 17 skedarët e zonave të mbrojtura u verifikuan të pandryshuar.
+**`nextPage` nuk u prek** — Faza 2 mbetet e hapur si vendim produkti.
+
+## Gjendja e fazave
+
+| Faza | Përmbajtja | Statusi |
+|---|---|---|
+| 1 | K1, K4, K6, K9 | ✅ |
+| 3 | K7, K8 | ✅ |
+| 4 | K5 — historiku nuk fryhet | ✅ `5b0caa6` |
+| 5 | Arkivi (A1, A2, A3) | ✅ |
+| 6 | K11 — dështimet e ruajtjes të dukshme | ✅ |
+| 2 | K2, K3 — sjellja e `nextPage` | ⏳ **kërkon vendim produkti; nuk preket pa autorizim** |
