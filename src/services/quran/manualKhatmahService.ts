@@ -517,9 +517,43 @@ export function updateDirectPagePosition(
 /**
  * Removes a single completed page from the Khatam plan.
  */
+/**
+ * K5: zbret numëruesin e një dite në historik.
+ *
+ * Zbret VETËM ditën e kërkuar dhe vetëm nëse ajo ditë ka aktivitet. Nuk
+ * shpiket kurrë një hyrje negative dhe nuk rishkruhet kurrë një ditë që
+ * përdoruesi nuk e ka prekur.
+ *
+ * Kufizim i njohur: nëse faqja e hequr ishte kredituar në një ditë të
+ * mëparshme, ajo ditë mbetet e fryrë. Kjo nuk mund të rregullohet pa ndryshuar
+ * formën e `completedPages` (number[]), që sipas handoff-it është burimi i
+ * vetëm i së vërtetës dhe nuk duhet prekur. Sjellja në atë rast është e njëjtë
+ * me para këtij rregullimi, pra nuk ka regresion.
+ */
+function decrementHistoryForDay(
+  history: { date: string; pagesCount: number }[],
+  dateStr: string,
+  amount: number
+): { date: string; pagesCount: number }[] {
+  if (amount <= 0) {
+    return history;
+  }
+  const index = history.findIndex((h) => h.date === dateStr);
+  if (index < 0 || history[index].pagesCount <= 0) {
+    return history;
+  }
+  const updated = [...history];
+  updated[index] = {
+    ...updated[index],
+    pagesCount: Math.max(0, updated[index].pagesCount - amount),
+  };
+  return updated;
+}
+
 export function removePageCompleted(
   plan: ManualKhatamPlan,
-  pageNumber: number
+  pageNumber: number,
+  dateInput?: string | Date
 ): ManualKhatamPlan {
   const currentPlan = normalizeKhatamPlan(plan);
   const existingSet = new Set(currentPlan.completedPages);
@@ -531,6 +565,15 @@ export function removePageCompleted(
   existingSet.delete(pageNumber);
   const updatedPages = Array.from(existingSet).sort((a, b) => a - b);
   const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
+
+  // K5: faqja e hequr nuk duhet të vazhdojë të numërohet si e lexuar.
+  // Pa këtë, cikli hiq/shëno e frynte historikun dhe rrjedhimisht
+  // avgPagesPerDay dhe datën e projektuar të përfundimit.
+  const updatedHistory = decrementHistoryForDay(
+    currentPlan.history,
+    getLocalDateString(dateInput || new Date()),
+    1
+  );
   const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   return normalizeKhatamPlan({
@@ -538,6 +581,7 @@ export function removePageCompleted(
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
+    history: updatedHistory,
     // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
     // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
     status: updatedPages.length >= TOTAL_MUSHAF_PAGES
@@ -554,7 +598,8 @@ export function removePageCompleted(
  */
 export function removeJuzCompleted(
   plan: ManualKhatamPlan,
-  juzNumber: number
+  juzNumber: number,
+  dateInput?: string | Date
 ): ManualKhatamPlan {
   if (juzNumber < 1 || juzNumber > 30) return normalizeKhatamPlan(plan);
   const juzMeta = ALL_JUZ_META[juzNumber - 1];
@@ -566,6 +611,14 @@ export function removeJuzCompleted(
   const currentPlan = normalizeKhatamPlan(plan);
   const updatedPages = currentPlan.completedPages.filter(p => p < startPage || p > endPage);
 
+  // K5: zbret historikun me aq faqe sa u hoqën realisht nga ky xhuz.
+  const removedCount = currentPlan.completedPages.length - updatedPages.length;
+  const updatedHistory = decrementHistoryForDay(
+    currentPlan.history,
+    getLocalDateString(dateInput || new Date()),
+    removedCount
+  );
+
   const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
   const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
@@ -574,6 +627,7 @@ export function removeJuzCompleted(
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
+    history: updatedHistory,
     // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
     // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
     status: updatedPages.length >= TOTAL_MUSHAF_PAGES
