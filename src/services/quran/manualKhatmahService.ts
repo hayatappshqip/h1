@@ -90,7 +90,10 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
 
   // 2. Derive lastCompletedPage & nextPage
   const lastCompletedPage = completedPages.length > 0 ? Math.max(...completedPages) : 0;
-  let nextPage = lastCompletedPage >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : lastCompletedPage + 1);
+  // K2: kur të 604 faqet janë të plota, nextPage = 0 (nuk ka faqe tjetër).
+  // Math.min e pengon nextPage = 605 kur faqja e fundit e lexuar është 604
+  // por hatmja nuk është e plotë.
+  let nextPage = completedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   // 3. Status determination
   let status: 'active' | 'completed' | 'paused' = raw.status === 'completed' || raw.status === 'paused' ? raw.status : 'active';
@@ -98,7 +101,8 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
   // `lastCompletedPage >= 604` nuk mjafton — përdoruesi mund të ketë lexuar vetëm faqen 604.
   if (completedPages.length >= TOTAL_MUSHAF_PAGES) {
     status = 'completed';
-    nextPage = TOTAL_MUSHAF_PAGES;
+    // K2: nuk ka faqe tjetër.
+    nextPage = 0;
   }
 
   // 4. History normalization
@@ -407,7 +411,8 @@ export function confirmPageCompleted(
   const lastCompletedPage = Math.max(...updatedPages);
   // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
   const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
-  const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = isCompleted ? 0 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1);
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -466,7 +471,8 @@ export function confirmPageRangeCompleted(
   const lastCompletedPage = Math.max(...updatedPages);
   // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
   const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
-  const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = isCompleted ? 0 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1);
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -574,7 +580,8 @@ export function removePageCompleted(
     getLocalDateString(dateInput || new Date()),
     1
   );
-  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -620,7 +627,8 @@ export function removeJuzCompleted(
   );
 
   const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
-  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -659,6 +667,35 @@ export function getMissingPagesInRange(
     }
   }
   return missing;
+}
+
+/**
+ * K3 (opsioni C): kthen faqet e palexuara si intervale të vazhdueshme.
+ *
+ * Logjika e `nextPage` nuk ndryshon — ky funksion vetëm i bën boshllëqet
+ * të dukshme, në vend që t'i fshehë pas faqes së fundit të lexuar.
+ *
+ * Shembull: completedPages = [2, 10, 37]
+ *   -> [{1,1}, {3,9}, {11,36}, {38,604}]
+ */
+export function getMissingPageRanges(plan: ManualKhatamPlan): { start: number; end: number }[] {
+  const completed = new Set(normalizeKhatamPlan(plan).completedPages);
+  const ranges: { start: number; end: number }[] = [];
+  let start: number | null = null;
+
+  for (let p = 1; p <= TOTAL_MUSHAF_PAGES; p++) {
+    if (!completed.has(p)) {
+      if (start === null) start = p;
+    } else if (start !== null) {
+      ranges.push({ start, end: p - 1 });
+      start = null;
+    }
+  }
+  if (start !== null) {
+    ranges.push({ start, end: TOTAL_MUSHAF_PAGES });
+  }
+
+  return ranges;
 }
 
 /**
