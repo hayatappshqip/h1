@@ -141,12 +141,21 @@ bc7b22e  HEAD              24 files / 250 tests   ✅
 
 ## 4. ÇFARË MBETET
 
-### Faza 2 — sjellja e `nextPage` (e vetmja fazë e mbetur)
+### ✅ Faza 2 — U PËRFUNDUA (commit `f05e17f`)
 
-Kjo **nuk mund të bëhet pa vendim produkti**. Nuk është pengesë teknike.
+Vendimet u morën nga përdoruesi: **K2** = `nextPage` bëhet 0 kur hatmja
+përfundon, me UI që tregon përfundimin; **K3** = opsioni C, logjika e
+`nextPage` nuk ndryshon por shtohet një pasqyrë e faqeve të mbetura.
 
-`nextPage` nuk u prek kurrë gjatë gjithë kësaj pune — u verifikua me
-`git diff`: asnjë rresht me `nextPage` nuk ka ndryshuar.
+Opsioni C u zgjodh pikërisht sepse nuk thyen asnjë test ekzistues — opsioni B
+do të kishte thyer 5. I vetmi rresht testi ekzistues që u ndryshua ishte
+`manualKhatmah.test.ts:115` (604 → 0), me autorizim të shprehur.
+
+Detajet: `docs/khatmah-audit.md`, seksioni 15.
+
+**Të gjitha fazat e Khatmah-ut janë të mbyllura.** Moduli i radhës për auditim
+është **Namazi** — shih `docs/namazi-audit.md` (gjetjet N1–N8; N1 dhe N2 janë
+kritike dhe të provuara me ekzekutim).
 
 Vendet ku llogaritet sot:
 `manualKhatmahService.ts:93, :101, :410, :469, :577, :623`
@@ -258,14 +267,14 @@ butonit · fillon automatikisht hatmja e re. Çdo opsion prek
 | `completedPages` burimi i vetëm i së vërtetës | ✅ |
 | Zero duplikate / faqe të pavlefshme | ✅ (K6) |
 | `completed` vetëm në 604 | ✅ (K1) |
-| Sjellje e qartë e faqes tjetër | ❌ **Faza 2 — vendim produkti** |
+| Sjellje e qartë e faqes tjetër | ✅ (K2 + K3-C, vendim i përdoruesit) |
 | Jump / juz / remove / paused / history të sakta | ✅ (K4, K5) |
 | LS + IDB të sakta, me rezolutë konflikti dhe teste race | ✅ (K7, K8) |
 | Asnjë humbje e heshtur të dhënash | ✅ (K8, arkivi) |
 | Izolimi Mushaf ↔ Khatmah i ruajtur | ✅ 0/0/0 |
 | Arkivi mbijeton pastrimin e LS | ✅ |
 | Plane bosh nuk grumbullohen | ✅ |
-| Suite e testeve e gjelbër | ✅ 250/250 |
+| Suite e testeve e gjelbër | ✅ 265/265 |
 | Test manual në iPhone real | ❌ **nuk është bërë** |
 | Ri-auditim forensik read-only | ✅ `docs/khatmah-audit.md` |
 
