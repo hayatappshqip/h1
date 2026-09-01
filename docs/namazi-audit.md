@@ -188,3 +188,72 @@ duhet ta kalojë atë dhe të shtojë teste për rastet e reja.
 
 **Lajmi i mirë:** metoda 13 dhe rruga online janë të sakta brenda 1 minuti nga
 KMSH. Problemi është vetëm te rruga offline dhe te cache-i.
+
+---
+
+# 9. Zbatimi — N1 dhe N2 (të rregulluara)
+
+Autorizuar nga përdoruesi. Ndryshohen **2 skedarë burimi** + **1 skedar testesh i ri**.
+
+## Çfarë u bë
+
+**N1 — nuk shpiken më orë.** Funksioni `getFallbackPrayerTimes` u hoq plotësisht.
+Kur nuk ka internet (ose përgjigja është e pavlefshme), `getPrayerTimes` kthen
+`null` në vend të një liste orësh të shkruara përgjithmonë në kod.
+
+Nuk ishte e nevojshme të ndryshoheshin ekranet për këtë: `prayerTimes` ishte
+tashmë i tipit `PrayerTimes | null` në `App.tsx:49`, dhe të tre konsumatorët
+kishin tashmë degë për `null`:
+- `NamaziView.tsx:87,89` — `prayerTimes ? … : []`
+- `HomeView.tsx:42,43,100` — i ruajtur
+- `DitaImeView.tsx:68` — `if (!prayerTimes) return null`
+
+**N2 — vlerat e pasigurta nuk futen më në kujtesë.** Dy ndryshime:
+1. Rreshti që shkruante fallback-un në `localStorage` u hoq.
+2. Çelësi i kujtesës u ngrit në versionin **v2** (`prayer_times_v2_…`). Kjo është
+   riparimi për kujtesën tashmë të helmuar: hyrjet e vjetra, ku mund të ishte
+   ruajtur një vlerë e shpikur, nuk lexohen më kurrë.
+
+**Përgjigje e cunguar.** `data?.data?.timings` me një kontroll të qartë — një
+përgjigje pa `timings` tani trajtohet si dështim, jo si burim vlerash bosh.
+
+**UI.** NamaziView fitoi një mesazh të qartë kur oraret mungojnë, në vend të një
+liste bosh pa shpjegim: *"Kohët e namazit nuk janë të disponueshme"*.
+
+## Verifikimi
+
+```
+para   25 files / 265 tests
+pas    26 files / 279 tests   (+14 të reja, 0 të thyera)
+tsc --noEmit  i pastër        vite build  ✓ built in 6.25s
+```
+
+Forma e përgjigjes së AlAdhan u verifikua kundër API-së reale:
+`data.data.timings` përmban `Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha, Imsak,
+Midnight` — pra analiza në kod është e saktë.
+
+## Çfarë NUK u ndryshua, dhe pse
+
+**Imsaku (N3) mbetet `Fajr − 10`.** Kjo kërkon vendim fetar, jo teknik.
+
+⚠️ **Kujdes — dokumentet e vjetra të projektit janë kontradiktore për këtë pikë:**
+
+- `docs/04-rreziqet.md:19` dhe `docs/03-arkitektura.md:94` arsyetojnë nga metoda
+  e **BIK-ut për Kosovën** (temkin 1.5°, Sabahu 20 min pas Imsakut) dhe flasin
+  për një diferencë "të rendit 30 minuta".
+- Por `docs/06-burimet-e-te-dhenave.md:84,91` e identifikon saktë **KMSH-në** si
+  burim zyrtar për Shqipërinë, dhe aplikacioni ka të paracaktuar **Tiranën**.
+
+Sipas kalendarit zyrtar KMSH 2026 për Tiranën, kolona është e vetme dhe e
+përbashkët: **"AGIMI (IMSAKU)"** — pra KMSH nuk e ndan Imsakun nga Agimi.
+Dhe vetë AlAdhan kthen `Imsak = Fajr − 10`, njësoj si kodi.
+
+Pra për Tiranën, **diferenca praktike nuk është 30 minuta**. Numri 30 vjen nga
+metodologjia kosovare, e cila nuk është autoriteti i vendndodhjes së
+paracaktuar. `docs/prompts/faza-0.md` Detyra 0.2 dhe `docs/05-roadmap.md:27`
+bazohen në këtë arsyetim dhe duhen rishikuar para se të zbatohen.
+
+**N4, N5, N6, N7, N8 mbeten të hapura** — asnjëra nuk është kritike.
+
+Testi `specDocument.test.ts:167` numëron rastet e `fajr - 10` dhe kërkon ≤ 3.
+Pas heqjes së fallback-ut numri ra nga 3 në 2 — testi kalon.

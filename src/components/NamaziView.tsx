@@ -179,6 +179,32 @@ export const NamaziView: React.FC<NamaziViewProps> = ({
  </div>
  )}
 
+ {/*
+   Oraret nuk janë të disponueshme.
+   getPrayerTimes kthen null kur nuk ka internet dhe nuk ka vlerë të ruajtur —
+   shih prayerEngine.ts dhe docs/namazi-audit.md (N1, N2). Më parë ky rast
+   prodhonte një listë bosh pa asnjë shpjegim, ose më keq, orë të shpikura.
+  */}
+ {!prayerTimes && (
+ <div
+ id="oraret-nuk-jane-te-disponueshme"
+ role="status"
+ className="bg-amber-950/40 border border-amber-800/50 rounded-xl p-4 flex items-start space-x-3"
+ >
+ <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+ <div>
+ <p className="text-sm font-semibold text-amber-200">
+ Kohët e namazit nuk janë të disponueshme
+ </p>
+ <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+ Oraret merren nga interneti dhe nuk janë ruajtur ende në këtë pajisje për sot.
+ Kontrollo lidhjen dhe rihap aplikacionin. Nuk shfaqim orë të përafërta me
+ qëllim — një orë e gabuar mund të çojë në namaz të pavlefshëm.
+ </p>
+ </div>
+ </div>
+ )}
+
  {/* Prayer Timetable List */}
  <div className="space-y-2">
  {prayerItems.map(item => {
