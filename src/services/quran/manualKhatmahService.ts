@@ -61,8 +61,12 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
   let completedPages: number[] = [];
   if (Array.isArray(raw.completedPages)) {
     completedPages = raw.completedPages
+      // K6: vlerat jo-numerike refuzohen PARA koercionit. Number(true) === 1 dhe
+      // Number(null) === 0 — të dyja do të kalonin si faqe të vlefshme.
+      .filter((p: any) => typeof p === 'number' || (typeof p === 'string' && p.trim() !== ''))
       .map((p: any) => Number(p))
-      .filter((p: number) => !isNaN(p) && p >= 1 && p <= TOTAL_MUSHAF_PAGES);
+      // K6: vetëm numra të plotë brenda 1..604.
+      .filter((p: number) => Number.isInteger(p) && p >= 1 && p <= TOTAL_MUSHAF_PAGES);
   } else if (typeof raw.pagesRead === 'number' && raw.pagesRead > 0) {
     const count = Math.min(TOTAL_MUSHAF_PAGES, raw.pagesRead);
     for (let p = 1; p <= count; p++) {
@@ -86,13 +90,19 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
 
   // 2. Derive lastCompletedPage & nextPage
   const lastCompletedPage = completedPages.length > 0 ? Math.max(...completedPages) : 0;
-  let nextPage = lastCompletedPage >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : lastCompletedPage + 1);
+  // K2: kur të 604 faqet janë të plota, nextPage = 0 (nuk ka faqe tjetër).
+  // Math.min e pengon nextPage = 605 kur faqja e fundit e lexuar është 604
+  // por hatmja nuk është e plotë.
+  let nextPage = completedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   // 3. Status determination
   let status: 'active' | 'completed' | 'paused' = raw.status === 'completed' || raw.status === 'paused' ? raw.status : 'active';
-  if (completedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES) {
+  // K1: hatmja është e përfunduar VETËM kur të 604 faqet janë të përfunduara.
+  // `lastCompletedPage >= 604` nuk mjafton — përdoruesi mund të ketë lexuar vetëm faqen 604.
+  if (completedPages.length >= TOTAL_MUSHAF_PAGES) {
     status = 'completed';
-    nextPage = TOTAL_MUSHAF_PAGES;
+    // K2: nuk ka faqe tjetër.
+    nextPage = 0;
   }
 
   // 4. History normalization
@@ -125,6 +135,23 @@ export function normalizeKhatamPlan(raw: any): ManualKhatamPlan {
 }
 
 /**
+ * K11: çfarë ndodhi realisht gjatë ruajtjes.
+ *
+ * Më parë funksionet e ruajtjes kthenin Promise<void> dhe e gëlltisnin çdo
+ * gabim me një console.warn. Thirrësi nuk kishte asnjë mënyrë ta dinte nëse
+ * progresi ishte ruajtur, prandaj një dështim i kuotës ose i depos dukej
+ * saktësisht si sukses.
+ */
+export interface KhatamPersistResult {
+  /** A u shkrua me sukses në localStorage (kopja e shpejtë, e paqëndrueshme). */
+  localStorage: boolean;
+  /** A u shkrua me sukses në IndexedDB (kopja e qëndrueshme). */
+  indexedDB: boolean;
+  /** E vërtetë vetëm kur u shkrua në të dyja. */
+  ok: boolean;
+}
+
+/**
  * Fast synchronous loader from localStorage.
  */
 export function loadCachedKhatamPlan(): ManualKhatamPlan {
@@ -144,39 +171,93 @@ export function loadCachedKhatamPlan(): ManualKhatamPlan {
 }
 
 /**
+ * K8: Zgjidh konfliktin midis kopjes së sinkronizuar (localStorage) dhe
+ * kopjes së qëndrueshme (IndexedDB).
+ *
+ * Rregulli, në rend:
+ *   1. Plane me id të ndryshme -> fiton ai i krijuar më vonë, sepse bëhet
+ *      fjalë për hatme të ndryshme dhe plani më i ri është plani aktual.
+ *   2. I njëjti plan -> fiton ai me MË SHUMË faqe të përfunduara. Kjo është
+ *      pika kyçe: asnjëherë nuk humbet progres në mënyrë të heshtur.
+ *   3. Numër i barabartë faqesh -> fiton vula kohore më e re.
+ *   4. Barazim i plotë -> fiton localStorage, burimi i sinkronizuar.
+ *
+ * Skaji i njohur: nëse një shkrim në IndexedDB ka dështuar dhe përdoruesi ka
+ * fshirë faqe, kopja e vjetëruar me më shumë faqe mund t'i ringjallë ato.
+ * Kjo është e DUKSHME (progresi rritet para syve) dhe e përsëritshme, ndryshe
+ * nga humbja e heshtur që ky rregull zëvendëson.
+ */
+export function resolveKhatamPlanConflict(
+  cached: ManualKhatamPlan,
+  durable: ManualKhatamPlan
+): ManualKhatamPlan {
+  if (cached.id && durable.id && cached.id !== durable.id) {
+    return durable.createdAt > cached.createdAt ? durable : cached;
+  }
+  if (durable.completedPages.length !== cached.completedPages.length) {
+    return durable.completedPages.length > cached.completedPages.length ? durable : cached;
+  }
+  return durable.updatedAt > cached.updatedAt ? durable : cached;
+}
+
+/**
  * Asynchronous durable loader from IndexedDB with fallback to localStorage.
+ *
+ * K8: më parë ky funksion e kthente planin e IndexedDB sapo ai ekzistonte,
+ * pa e krahasuar me localStorage. Një kopje IDB bosh ose e vjetëruar e
+ * fshinte progresin real — humbje e heshtur të dhënash. Tani të dyja kopjet
+ * lexohen dhe konflikti zgjidhet me resolveKhatamPlanConflict.
  */
 export async function loadDurableKhatamPlan(): Promise<ManualKhatamPlan> {
+  const cached = loadCachedKhatamPlan();
+
+  let durable: ManualKhatamPlan | null = null;
   try {
     const meta = await getMeta(INDEXEDDB_ACTIVE_KHATAM_KEY);
     if (meta) {
-      return normalizeKhatamPlan(meta);
+      durable = normalizeKhatamPlan(meta);
     }
   } catch (err) {
     console.warn('Failed to load durable Khatam plan from IndexedDB:', err);
   }
-  return loadCachedKhatamPlan();
+
+  if (!durable) {
+    return cached;
+  }
+  return resolveKhatamPlanConflict(cached, durable);
 }
 
 /**
  * Saves Khatam plan synchronously to localStorage and durably to IndexedDB.
  */
-export async function saveDurableKhatamPlan(plan: ManualKhatamPlan): Promise<void> {
+export async function saveDurableKhatamPlan(plan: ManualKhatamPlan): Promise<KhatamPersistResult> {
   const normalized = normalizeKhatamPlan(plan);
 
+  let wroteLocalStorage = false;
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
       localStorage.setItem(LOCAL_STORAGE_ACTIVE_KHATAM_KEY, JSON.stringify(normalized));
+      wroteLocalStorage = true;
     } catch (err) {
       console.warn('Failed to save Khatam plan to localStorage:', err);
     }
   }
 
+  // K11: dështimi i IndexedDB nuk e ndalon shkrimin në localStorage. Kjo është
+  // e qëllimshme — një kopje e pjesshme është më mirë se asnjë.
+  let wroteIndexedDB = false;
   try {
     await saveMeta(INDEXEDDB_ACTIVE_KHATAM_KEY, normalized);
+    wroteIndexedDB = true;
   } catch (err) {
     console.warn('Failed to save durable Khatam plan to IndexedDB:', err);
   }
+
+  return {
+    localStorage: wroteLocalStorage,
+    indexedDB: wroteIndexedDB,
+    ok: wroteLocalStorage && wroteIndexedDB,
+  };
 }
 
 /**
@@ -203,22 +284,89 @@ export function loadCachedCompletedKhatamPlans(): ManualKhatamPlan[] {
 /**
  * Saves completed/archived Khatam plans.
  */
-export async function saveDurableCompletedKhatamPlans(plans: ManualKhatamPlan[]): Promise<void> {
+export async function saveDurableCompletedKhatamPlans(
+  plans: ManualKhatamPlan[]
+): Promise<KhatamPersistResult> {
   const normalizedList = plans.map(normalizeKhatamPlan);
 
+  let wroteLocalStorage = false;
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
       localStorage.setItem(LOCAL_STORAGE_COMPLETED_KHATAM_KEY, JSON.stringify(normalizedList));
+      wroteLocalStorage = true;
     } catch (err) {
       console.warn('Failed to save completed Khatam plans to localStorage:', err);
     }
   }
 
+  let wroteIndexedDB = false;
   try {
     await saveMeta(INDEXEDDB_COMPLETED_KHATAM_KEY, normalizedList);
+    wroteIndexedDB = true;
   } catch (err) {
     console.warn('Failed to save completed Khatam plans to IndexedDB:', err);
   }
+
+  return {
+    localStorage: wroteLocalStorage,
+    indexedDB: wroteIndexedDB,
+    ok: wroteLocalStorage && wroteIndexedDB,
+  };
+}
+
+/**
+ * Faza 5: bashkon dy lista arkivi pa humbur asnjë hatme.
+ *
+ * Bashkimi bëhet sipas `id`. Për të njëjtën hatme mbetet kopja me më shumë
+ * faqe të përfunduara, në pozicionin ku u shfaq e para. Kjo pasqyron të
+ * njëjtin parim si resolveKhatamPlanConflict: asnjë humbje e heshtur.
+ */
+export function mergeKhatamPlanLists(
+  cached: ManualKhatamPlan[],
+  durable: ManualKhatamPlan[]
+): ManualKhatamPlan[] {
+  const merged: ManualKhatamPlan[] = [];
+  const indexById = new Map<string, number>();
+
+  for (const plan of [...cached, ...durable]) {
+    const at = plan.id ? indexById.get(plan.id) : undefined;
+    if (at === undefined) {
+      if (plan.id) {
+        indexById.set(plan.id, merged.length);
+      }
+      merged.push(plan);
+    } else if (plan.completedPages.length > merged[at].completedPages.length) {
+      merged[at] = plan;
+    }
+  }
+
+  return merged;
+}
+
+/**
+ * Faza 5 (A1): lexues i qëndrueshëm për arkivin.
+ *
+ * saveDurableCompletedKhatamPlans e ka shkruar gjithmonë arkivin edhe në
+ * IndexedDB, por nuk ekzistonte asnjë funksion që ta lexonte. Pas pastrimit
+ * të localStorage, hatmet e përfunduara ishin të paarritshme edhe pse të
+ * dhënat ishin ende në IDB. Tani lexohen të dyja depot dhe bashkohen.
+ *
+ * Funksioni nuk shkruan gjë — bashkimi ruhet në shkrimin tjetër të arkivit.
+ */
+export async function loadDurableCompletedKhatamPlans(): Promise<ManualKhatamPlan[]> {
+  const cached = loadCachedCompletedKhatamPlans();
+
+  let durable: ManualKhatamPlan[] = [];
+  try {
+    const meta = await getMeta(INDEXEDDB_COMPLETED_KHATAM_KEY);
+    if (Array.isArray(meta)) {
+      durable = meta.map(normalizeKhatamPlan);
+    }
+  } catch (err) {
+    console.warn('Failed to load completed Khatam plans from IndexedDB:', err);
+  }
+
+  return mergeKhatamPlanLists(cached, durable);
 }
 
 /**
@@ -230,7 +378,8 @@ export function confirmPageCompleted(
   pageNumber: number,
   dateInput?: string | Date
 ): ManualKhatamPlan {
-  if (pageNumber < 1 || pageNumber > TOTAL_MUSHAF_PAGES) {
+  // K6: refuzohen faqet thyesore dhe ato jashtë 1..604.
+  if (!Number.isInteger(pageNumber) || pageNumber < 1 || pageNumber > TOTAL_MUSHAF_PAGES) {
     return normalizeKhatamPlan(plan);
   }
 
@@ -260,8 +409,10 @@ export function confirmPageCompleted(
   }
 
   const lastCompletedPage = Math.max(...updatedPages);
-  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES;
-  const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
+  // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
+  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = isCompleted ? 0 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1);
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -283,8 +434,10 @@ export function confirmPageRangeCompleted(
   endPage: number,
   dateInput?: string | Date
 ): ManualKhatamPlan {
-  const fromPage = Math.max(1, Math.min(startPage, endPage));
-  const toPage = Math.min(TOTAL_MUSHAF_PAGES, Math.max(startPage, endPage));
+  // K6: kufijtë rrumbullakosen brenda intervalit. Pa këtë, range(3.7, 6)
+  // prodhonte [3.7, 4.7, 5.7] — thyesore DHE humbiste faqet 4, 5, 6.
+  const fromPage = Math.ceil(Math.max(1, Math.min(startPage, endPage)));
+  const toPage = Math.floor(Math.min(TOTAL_MUSHAF_PAGES, Math.max(startPage, endPage)));
 
   const currentPlan = normalizeKhatamPlan(plan);
   const todayStr = getLocalDateString(dateInput || new Date());
@@ -316,8 +469,10 @@ export function confirmPageRangeCompleted(
   }
 
   const lastCompletedPage = Math.max(...updatedPages);
-  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES || lastCompletedPage >= TOTAL_MUSHAF_PAGES;
-  const nextPage = isCompleted ? TOTAL_MUSHAF_PAGES : lastCompletedPage + 1;
+  // K1: vetëm numri i faqeve vendos përfundimin, jo faqja e fundit e arritur.
+  const isCompleted = updatedPages.length >= TOTAL_MUSHAF_PAGES;
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = isCompleted ? 0 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1);
 
   return normalizeKhatamPlan({
     ...currentPlan,
@@ -368,9 +523,43 @@ export function updateDirectPagePosition(
 /**
  * Removes a single completed page from the Khatam plan.
  */
+/**
+ * K5: zbret numëruesin e një dite në historik.
+ *
+ * Zbret VETËM ditën e kërkuar dhe vetëm nëse ajo ditë ka aktivitet. Nuk
+ * shpiket kurrë një hyrje negative dhe nuk rishkruhet kurrë një ditë që
+ * përdoruesi nuk e ka prekur.
+ *
+ * Kufizim i njohur: nëse faqja e hequr ishte kredituar në një ditë të
+ * mëparshme, ajo ditë mbetet e fryrë. Kjo nuk mund të rregullohet pa ndryshuar
+ * formën e `completedPages` (number[]), që sipas handoff-it është burimi i
+ * vetëm i së vërtetës dhe nuk duhet prekur. Sjellja në atë rast është e njëjtë
+ * me para këtij rregullimi, pra nuk ka regresion.
+ */
+function decrementHistoryForDay(
+  history: { date: string; pagesCount: number }[],
+  dateStr: string,
+  amount: number
+): { date: string; pagesCount: number }[] {
+  if (amount <= 0) {
+    return history;
+  }
+  const index = history.findIndex((h) => h.date === dateStr);
+  if (index < 0 || history[index].pagesCount <= 0) {
+    return history;
+  }
+  const updated = [...history];
+  updated[index] = {
+    ...updated[index],
+    pagesCount: Math.max(0, updated[index].pagesCount - amount),
+  };
+  return updated;
+}
+
 export function removePageCompleted(
   plan: ManualKhatamPlan,
-  pageNumber: number
+  pageNumber: number,
+  dateInput?: string | Date
 ): ManualKhatamPlan {
   const currentPlan = normalizeKhatamPlan(plan);
   const existingSet = new Set(currentPlan.completedPages);
@@ -382,14 +571,31 @@ export function removePageCompleted(
   existingSet.delete(pageNumber);
   const updatedPages = Array.from(existingSet).sort((a, b) => a - b);
   const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
-  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+
+  // K5: faqja e hequr nuk duhet të vazhdojë të numërohet si e lexuar.
+  // Pa këtë, cikli hiq/shëno e frynte historikun dhe rrjedhimisht
+  // avgPagesPerDay dhe datën e projektuar të përfundimit.
+  const updatedHistory = decrementHistoryForDay(
+    currentPlan.history,
+    getLocalDateString(dateInput || new Date()),
+    1
+  );
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   return normalizeKhatamPlan({
     ...currentPlan,
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
-    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    history: updatedHistory,
+    // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
+    // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES
+      ? 'completed'
+      : currentPlan.status === 'paused'
+        ? 'paused'
+        : 'active',
     updatedAt: Date.now(),
   });
 }
@@ -399,7 +605,8 @@ export function removePageCompleted(
  */
 export function removeJuzCompleted(
   plan: ManualKhatamPlan,
-  juzNumber: number
+  juzNumber: number,
+  dateInput?: string | Date
 ): ManualKhatamPlan {
   if (juzNumber < 1 || juzNumber > 30) return normalizeKhatamPlan(plan);
   const juzMeta = ALL_JUZ_META[juzNumber - 1];
@@ -411,15 +618,31 @@ export function removeJuzCompleted(
   const currentPlan = normalizeKhatamPlan(plan);
   const updatedPages = currentPlan.completedPages.filter(p => p < startPage || p > endPage);
 
+  // K5: zbret historikun me aq faqe sa u hoqën realisht nga ky xhuz.
+  const removedCount = currentPlan.completedPages.length - updatedPages.length;
+  const updatedHistory = decrementHistoryForDay(
+    currentPlan.history,
+    getLocalDateString(dateInput || new Date()),
+    removedCount
+  );
+
   const lastCompletedPage = updatedPages.length > 0 ? Math.max(...updatedPages) : 0;
-  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? TOTAL_MUSHAF_PAGES : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
+  // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+  const nextPage = updatedPages.length >= TOTAL_MUSHAF_PAGES ? 0 : (lastCompletedPage === 0 ? 1 : Math.min(TOTAL_MUSHAF_PAGES, lastCompletedPage + 1));
 
   return normalizeKhatamPlan({
     ...currentPlan,
     completedPages: updatedPages,
     lastCompletedPage,
     nextPage,
-    status: updatedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'active',
+    history: updatedHistory,
+    // K4: një plan 'paused' nuk bëhet 'active' vetëm sepse u korrigjua një faqe.
+    // Një plan i përfunduar që bie nën 604 faqe kthehet në 'active'.
+    status: updatedPages.length >= TOTAL_MUSHAF_PAGES
+      ? 'completed'
+      : currentPlan.status === 'paused'
+        ? 'paused'
+        : 'active',
     updatedAt: Date.now(),
   });
 }
@@ -447,6 +670,35 @@ export function getMissingPagesInRange(
 }
 
 /**
+ * K3 (opsioni C): kthen faqet e palexuara si intervale të vazhdueshme.
+ *
+ * Logjika e `nextPage` nuk ndryshon — ky funksion vetëm i bën boshllëqet
+ * të dukshme, në vend që t'i fshehë pas faqes së fundit të lexuar.
+ *
+ * Shembull: completedPages = [2, 10, 37]
+ *   -> [{1,1}, {3,9}, {11,36}, {38,604}]
+ */
+export function getMissingPageRanges(plan: ManualKhatamPlan): { start: number; end: number }[] {
+  const completed = new Set(normalizeKhatamPlan(plan).completedPages);
+  const ranges: { start: number; end: number }[] = [];
+  let start: number | null = null;
+
+  for (let p = 1; p <= TOTAL_MUSHAF_PAGES; p++) {
+    if (!completed.has(p)) {
+      if (start === null) start = p;
+    } else if (start !== null) {
+      ranges.push({ start, end: p - 1 });
+      start = null;
+    }
+  }
+  if (start !== null) {
+    ranges.push({ start, end: TOTAL_MUSHAF_PAGES });
+  }
+
+  return ranges;
+}
+
+/**
  * Archives current active plan and initializes a new active plan safely.
  */
 export async function archiveCurrentAndStartNewPlan(
@@ -458,9 +710,19 @@ export async function archiveCurrentAndStartNewPlan(
   const normalizedCurrent = normalizeKhatamPlan(currentPlan);
   normalizedCurrent.status = normalizedCurrent.completedPages.length >= TOTAL_MUSHAF_PAGES ? 'completed' : 'paused';
 
-  const completedList = loadCachedCompletedKhatamPlans();
-  completedList.unshift(normalizedCurrent);
-  await saveDurableCompletedKhatamPlans(completedList);
+  // Faza 5 (A2): lista lexohet nga të DYJA depot. Më parë lexohej vetëm
+  // localStorage dhe pastaj IDB-ja mbishkruhej me të. Nëse LS ishte pastruar,
+  // arkivimi i një hatmeje të re e kthente arkivin në një listë prej një
+  // elementi dhe shkatërronte përgjithmonë hatmet e mëparshme.
+  let completedList = await loadDurableCompletedKhatamPlans();
+
+  // Faza 5 (A3): një plan pa asnjë faqe të përfunduar nuk ka çfarë të
+  // arkivohet. Pa këtë kusht, çdo hapje e modalit "Hatme e Re" grumbullonte
+  // një plan bosh në arkiv.
+  if (normalizedCurrent.completedPages.length > 0) {
+    completedList = [normalizedCurrent, ...completedList];
+    await saveDurableCompletedKhatamPlans(completedList);
+  }
 
   const newPlan = createDefaultKhatamPlan(newTitle, newDailyTarget, newTargetDate);
   await saveDurableKhatamPlan(newPlan);

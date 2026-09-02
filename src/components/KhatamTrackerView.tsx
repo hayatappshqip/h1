@@ -5,13 +5,14 @@ import {
   loadCachedKhatamPlan,
   loadDurableKhatamPlan,
   saveDurableKhatamPlan,
+  resolveKhatamPlanConflict,
   confirmPageCompleted,
   confirmPageRangeCompleted,
   confirmJuzCompleted,
-  updateDirectPagePosition,
   removePageCompleted,
   removeJuzCompleted,
   getMissingPagesInRange,
+  getMissingPageRanges,
   calculateKhatamStats,
   archiveCurrentAndStartNewPlan,
   TOTAL_MUSHAF_PAGES,
@@ -50,12 +51,26 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   const [plan, setPlan] = useState<ManualKhatamPlan>(() => loadCachedKhatamPlan());
 
   // Rehydrate durable plan asynchronously
+  //
+  // K7: më parë ky efekt krahason `durable.updatedAt` me `plan.updatedAt` të
+  // kapur nga renderimi i PARË, dhe bënte `setPlan(durable)` pa kusht. Meqë
+  // localStorage dhe IndexedDB shkruhen bashkë me të njëjtën vulë kohore,
+  // kushti `>=` ishte praktikisht gjithmonë i vërtetë — pra nëse përdoruesi
+  // konfirmonte një faqe para se leximi IDB të kthehej, ajo faqe fshihej nga
+  // ekrani dhe veprimi tjetër e ruante atë gjendje të zbrazur në localStorage.
+  //
+  // Tani përditësimi bëhet me `setPlan(current => ...)` që krahason me
+  // gjendjen AKTUALE, dhe zëvendësimi ndodh vetëm nëpërmjet të njëjtit rregull
+  // zgjidhjeje konflikti si te service-i — kështu progresi nuk ulet kurrë.
   useEffect(() => {
+    let cancelled = false;
     loadDurableKhatamPlan().then((durable) => {
-      if (durable && durable.updatedAt >= plan.updatedAt) {
-        setPlan(durable);
-      }
+      if (cancelled || !durable) return;
+      setPlan((current) => resolveKhatamPlanConflict(current, durable));
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Modal States
@@ -96,14 +111,38 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
   // Derived Stats
   const stats = calculateKhatamStats(plan);
 
+  // K3 (opsioni C): boshllëqet bëhen të dukshme në vend që të fshihen pas
+  // faqes së fundit të lexuar. Logjika e nextPage nuk ndryshon.
+  const missingRanges = getMissingPageRanges(plan);
+  const missingCount = missingRanges.reduce((acc, r) => acc + (r.end - r.start + 1), 0);
+
   // Persistence helper
-  const handlePersistPlan = (updatedPlan: ManualKhatamPlan, successMsg?: string, onUndo?: () => void) => {
+  //
+  // K11: më parë saveDurableKhatamPlan thirrej pa u pritur dhe kthente void,
+  // pra një dështim i ruajtjes dukej saktësisht si sukses — përdoruesi shihte
+  // "Faqja N u konfirmua" edhe kur asnjë depo nuk e kishte marrë. Tani rezultati
+  // pritet dhe paralajmërimi zëvendëson mesazhin e suksesit. Përdoret toast-i
+  // ekzistues; nuk shtohet element i ri në UI.
+  const handlePersistPlan = async (
+    updatedPlan: ManualKhatamPlan,
+    successMsg?: string,
+    onUndo?: () => void
+  ) => {
     setPlan(updatedPlan);
-    saveDurableKhatamPlan(updatedPlan);
     if (successMsg) {
       setToastMessage(successMsg);
       setUndoCallback(onUndo ? () => onUndo : null);
     }
+
+    const result = await saveDurableKhatamPlan(updatedPlan);
+    if (result.ok) return;
+
+    setUndoCallback(null);
+    setToastMessage(
+      result.localStorage
+        ? 'Ruajtja rezervë dështoi — progresi është vetëm në këtë pajisje.'
+        : 'Paralajmërim: progresi nuk u ruajt — mund të humbasë nëse mbyll aplikacionin.'
+    );
   };
 
   // 1. Primary CTA: "Vazhdo hatmen" (Does NOT mark page as completed)
@@ -304,14 +343,25 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
 
           {/* Primary Action Buttons Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            {/* Primary CTA: "Vazhdo hatmen" */}
+            {/* Primary CTA — K2: kur hatmja është e përfunduar nuk ka faqe
+                tjetër, prandaj butoni nuk thotë më "Faqja 604" përgjithmonë. */}
             <button
               id="btn-vazhdo-hatmen"
-              onClick={handleContinueKhatam}
+              onClick={() => {
+                if (stats.isCompleted) {
+                  setShowPlanModal(true);
+                  return;
+                }
+                handleContinueKhatam();
+              }}
               className="w-full py-3.5 px-5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg shadow-emerald-950/50 flex items-center justify-center space-x-2.5 transition-all transform active:scale-[0.99]"
             >
               <BookOpen className="w-5 h-5" />
-              <span>Vazhdo hatmen (Faqja {plan.nextPage})</span>
+              <span>
+                {stats.isCompleted
+                  ? 'Hatmja u përfundua — Fillo hatme të re'
+                  : `Vazhdo hatmen (Faqja ${plan.nextPage})`}
+              </span>
               <ArrowRight className="w-4 h-4 text-emerald-200" />
             </button>
 
@@ -328,6 +378,36 @@ export const KhatamTrackerView: React.FC<KhatamTrackerViewProps> = ({
               <span>Përditëso progresin</span>
             </button>
           </div>
+
+          {/* K3 (opsioni C): faqet e mbetura. Shfaqet vetëm kur ka boshllëqe
+              dhe hatmja nuk është e përfunduar. */}
+          {missingCount > 0 && !stats.isCompleted && (
+            <div className="mt-4 bg-slate-800/50 border border-slate-700/60 rounded-2xl p-4">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-xs font-semibold text-slate-300">Faqet e mbetura</span>
+                <span className="text-sm font-bold text-amber-400 font-mono">{missingCount}</span>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-1">
+                Këto faqe nuk janë shënuar si të lexuara. Prek një grup për ta hapur.
+              </p>
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {missingRanges.slice(0, 12).map((r) => (
+                  <button
+                    key={`${r.start}-${r.end}`}
+                    onClick={() => onNavigateToPage && onNavigateToPage(r.start)}
+                    className="px-2 py-1 bg-slate-900 hover:bg-slate-700 border border-slate-700 rounded-lg text-[11px] font-mono text-slate-200 transition-colors"
+                  >
+                    {r.start === r.end ? r.start : `${r.start}–${r.end}`}
+                  </button>
+                ))}
+                {missingRanges.length > 12 && (
+                  <span className="px-2 py-1 text-[11px] text-slate-500 font-mono">
+                    +{missingRanges.length - 12} grupe
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

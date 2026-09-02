@@ -9,7 +9,8 @@
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "inventory": "tsx scripts/spec-inventory.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

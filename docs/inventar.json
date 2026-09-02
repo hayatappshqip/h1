@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-08-30T18:20:27.465Z",
+  "counts": {
+    "totalFiles": 253,
+    "sourceFiles": 81,
+    "testFiles": 19,
+    "sourceLines": 28060,
+    "testLines": 3764,
+    "components": 26,
+    "componentsWired": 26,
+    "componentsOrphan": 0
+  },
+  "orphanComponents": [],
+  "externalHosts": [
+    {
+      "host": "everyayah.com",
+      "refs": 14
+    },
+    {
+      "host": "api.quran.com",
+      "refs": 8
+    },
+    {
+      "host": "api.alquran.cloud",
+      "refs": 3
+    },
+    {
+      "host": "verses.quran.foundation",
+      "refs": 3
+    },
+    {
+      "host": "server7.mp3quran.net",
+      "refs": 3
+    },
+    {
+      "host": "cdn.islamic.network",
+      "refs": 2
+    },
+    {
+      "host": "server8.mp3quran.net",
+      "refs": 2
+    },
+    {
+      "host": "server10.mp3quran.net",
+      "refs": 2
+    },
+    {
+      "host": "server11.mp3quran.net",
+      "refs": 2
+    },
+    {
+      "host": "server6.mp3quran.net",
+      "refs": 2
+    },
+    {
+      "host": "auth.quran.foundation",
+      "refs": 1
+    },
+    {
+      "host": "apis.quran.foundation",
+      "refs": 1
+    },
+    {
+      "host": "cdn.jsdelivr.net",
+      "refs": 1
+    },
+    {
+      "host": "raw.githubusercontent.com",
+      "refs": 1
+    },
+    {
+      "host": "www.hisnmuslim.com",
+      "refs": 1
+    },
+    {
+      "host": "verses.quran.com",
+      "refs": 1
+    },
+    {
+      "host": "api.aladhan.com",
+      "refs": 1
+    },
+    {
+      "host": "server13.mp3quran.net",
+      "refs": 1
+    },
+    {
+      "host": "server12.mp3quran.net",
+      "refs": 1
+    },
+    {
+      "host": "server9.mp3quran.net",
+      "refs": 1
+    },
+    {
+      "host": "quranenc.com",
+      "refs": 1
+    }
+  ],
+  "quranCorpus": {
+    "provider": "Quran.com API (Translation ID 88 - Hasan Nahi)",
+    "translationName": "Hasan Nahi",
+    "declaredSurahs": 114,
+    "declaredVerses": 6236,
+    "surahFilesOnDisk": 114,
+    "versesCountedOnDisk": 6236,
+    "bytesOnDisk": 3038864,
+    "manifestSha256_001": "2d69e23fa1f5b833",
+    "recomputedSha256_001": "2d69e23fa1f5b833"
+  },
+  "mburoja": {
+    "categories": 11,
+    "chapters": 133,
+    "duas": 294,
+    "missingArabic": 28,
+    "missingAlbanian": 1,
+    "missingTransliteration": 29,
+    "missingReference": 5,
+    "duplicateChapterIds": []
+  },
+  "drift": {
+    "serviceWorkerCacheVersion": "v44",
+    "appTSServiceWorkerComment": "v45",
+    "manifests": [
+      {
+        "file": "manifest.json",
+        "bytes": 545,
+        "sha256": "c4b8b121f60f"
+      },
+      {
+        "file": "public/manifest.json",
+        "bytes": 545,
+        "sha256": "c4b8b121f60f"
+      },
+      {
+        "file": "public/manifest.webmanifest",
+        "bytes": 480,
+        "sha256": "2f67b7e58b49"
+      }
+    ],
+    "unusedRuntimeDependencies": [
+      "@google/genai",
+      "dotenv",
+      "motion",
+      "page-flip",
+      "pdfjs-dist"
+    ]
+  },
+  "storage": {
+    "usesIndexedDBDexie": true,
+    "usesLocalStorage": true,
+    "localStorageKeys": [
+      "hayat_fav_chapters",
+      "hayat_mushaf_theme",
+      "hayat_quran_reading_state"
+    ]
+  },
+  "auth": {
+    "anyAuthLibrary": false,
+    "signInReferences": 0
+  }
+}

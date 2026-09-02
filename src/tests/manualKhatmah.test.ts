@@ -112,7 +112,9 @@ describe('HAYAT Quran V2 - Manual Khatmah & Reading Plan Tests', () => {
 
     expect(plan.completedPages).toHaveLength(604);
     expect(plan.lastCompletedPage).toBe(604);
-    expect(plan.nextPage).toBe(604);
+    // K2: një hatme e përfunduar nuk ka faqe tjetër, prandaj nextPage = 0.
+    // Ndryshuar me autorizim të shprehur të përdoruesit (më parë: 604).
+    expect(plan.nextPage).toBe(0);
     expect(plan.status).toBe('completed');
 
     const stats = calculateKhatamStats(plan);

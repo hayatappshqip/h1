@@ -70,36 +70,26 @@ export function minutesToTime(totalMins: number): string {
  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
 }
 
-// Fallback prayer calculation for Tirana / custom coords when offline
-function getFallbackPrayerTimes(dateStr: string, settings: PrayerSettings): PrayerTimes {
- // Approximate standard baseline for Tirana
- const fajrMins = 4 * 60 + 15;
- const imsakMins = fajrMins - 10; // Fallback Fajr - 10 min
- const sunriseMins = 5 * 60 + 45;
- const dhuhrMins = 12 * 60 + 45;
- const asrMins = settings.asrSchool === 'hanafi' ? 17 * 60 + 10 : 16 * 60 + 30;
- const maghribMins = 19 * 60 + 45;
- const ishaMins = 21 * 60 + 15;
- const midnightMins = 23 * 60 + 50;
-
- const adj = settings.manualAdjustments;
-
- return {
- date: dateStr,
- imsak: minutesToTime(imsakMins),
- fajr: minutesToTime(fajrMins + (adj.fajr || 0)),
- sunrise: minutesToTime(sunriseMins + (adj.sunrise || 0)),
- dhuhr: minutesToTime(dhuhrMins + (adj.dhuhr || 0)),
- asr: minutesToTime(asrMins + (adj.asr || 0)),
- maghrib: minutesToTime(maghribMins + (adj.maghrib || 0)),
- isha: minutesToTime(ishaMins + (adj.isha || 0)),
- midnight: minutesToTime(midnightMins)
- };
-}
-
-// Fetch or calculate prayer times for a given date YYYY-MM-DD
-export async function getPrayerTimes(dateStr: string, settings: PrayerSettings): Promise<PrayerTimes> {
- const cacheKey = `prayer_times_${dateStr}_${settings.latitude}_${settings.longitude}_${settings.method}_${settings.asrSchool}`;
+/**
+ * Merr oraret e namazit për një datë.
+ *
+ * Kthen `null` kur oraret nuk mund të merren nga një burim i besueshëm — pa
+ * internet, ose me përgjigje të pavlefshme. Të tre ekranet që i përdorin
+ * (NamaziView, HomeView, DitaImeView) kanë tashmë degë për këtë rast.
+ *
+ * KJO ËSHTË ME QËLLIM. Më parë ky funksion kthente një listë orësh të shkruara
+ * përgjithmonë në kod kur nuk kishte internet: të njëjta çdo ditë të vitit, me
+ * gabim deri 3 orë e 20 minuta në janar (Akshami 19:45 kur ishte 16:28). Dhe i
+ * ruante ato në localStorage me të njëjtin çelës si vlerat reale, pa asnjë
+ * shenjë dalluese — pra një ditë e vetme pa internet e prishiste atë ditë
+ * PËRGJITHMONË, edhe pas rikthimit të lidhjes.
+ * Shih docs/namazi-audit.md, gjetjet N1 dhe N2.
+ */
+export async function getPrayerTimes(dateStr: string, settings: PrayerSettings): Promise<PrayerTimes | null> {
+ // Çelësi mban versionin v2. Çelësi i vjetër (pa version) mund të përmbajë vlera
+ // të shpikura të ruajtura para rregullimit; duke e ndryshuar çelësin ato hyrje
+ // nuk lexohen më kurrë. Ky është riparimi për kujtesën tashmë të helmuar.
+ const cacheKey = `prayer_times_v2_${dateStr}_${settings.latitude}_${settings.longitude}_${settings.method}_${settings.asrSchool}`;
  const cached = localStorage.getItem(cacheKey);
  if (cached) {
  try {
@@ -120,7 +110,9 @@ export async function getPrayerTimes(dateStr: string, settings: PrayerSettings):
  const response = await fetch(url);
  if (response.ok) {
  const data = await response.json();
- const timings = data.data.timings;
+ const timings = data?.data?.timings;
+ // Përgjigje e cunguar: trajtoje si dështim, mos vazhdo me vlera bosh.
+ if (!timings) throw new Error('Përgjigja e AlAdhan nuk përmban timings');
 
  // AlAdhan returns "HH:mm"
  const fajr = timings.Fajr.split(' ')[0];
@@ -146,12 +138,13 @@ export async function getPrayerTimes(dateStr: string, settings: PrayerSettings):
  return result;
  }
  } catch (err) {
- console.warn('AlAdhan offline fallback used:', err);
+ console.warn('Oraret nuk u morën nga AlAdhan:', err);
  }
 
- const fallback = getFallbackPrayerTimes(dateStr, settings);
- localStorage.setItem(cacheKey, JSON.stringify(fallback));
- return fallback;
+ // Pa internet ose me përgjigje të pavlefshme: NUK shpikim orë dhe NUK shkruajmë
+ // asgjë në kujtesë. Më mirë boshllëk i ndershëm sesa numër i gabuar — veçanërisht
+ // për namazin, ku një orë e gabuar prodhon një namaz të pavlefshëm.
+ return null;
 }
 
 // Get current and next prayer info
