@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HifzLearnView } from './HifzLearnView';
 import { HifzReviewSession } from './HifzReviewSession';
 import { MutashabihatView } from './MutashabihatView';
@@ -25,19 +25,21 @@ export const HifzModule: React.FC = () => {
   const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [method, setMethod] = useState<HifzMethod>('B');
+  const didInitialLoad = useRef(false);
   const [tempSurah, setTempSurah] = useState(114);
   const [tempAyah, setTempAyah] = useState(1);
 
   const loadData = async () => {
     setLoading(true);
     const s = await hifzDb.settings.get(1);
-    if (s) { setSettings(s); if (s.preferredMethod) setMethod(s.preferredMethod); }
+    if (s) { setSettings(s); if (!didInitialLoad.current && s.preferredMethod) setMethod(s.preferredMethod); }
     const allRecords = await hifzDb.ayahRecords.toArray();
     const now = new Date();
     setOverdueCount(allRecords.filter(r => new Date(r.dueDate) < now).length);
     const queue = await getReviewQueue('ADAPTIVE');
     setReviewQueue(queue);
     setLoading(false);
+    didInitialLoad.current = true;
   };
 
   useEffect(() => { loadData(); }, [learningAyah, isReviewing]);
@@ -61,6 +63,7 @@ export const HifzModule: React.FC = () => {
 
   if (learningAyah) {
     return <HifzLearnView surahNumber={learningAyah.surah} ayahNumber={learningAyah.ayah}
+      method={method}
       onComplete={async () => setLearningAyah(null)}
       onClose={() => setLearningAyah(null)} />;
   }

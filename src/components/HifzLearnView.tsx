@@ -5,6 +5,7 @@ import { QuranSurahData, Ayah } from '../types';
 import { ALL_SURAHS_META } from '../data/quranData';
 import { Play, Pause, ChevronRight, Check, Eye, EyeOff, RotateCcw, Volume2, BookOpen, Mic } from 'lucide-react';
 import { hifzDb, HifzSettings, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+import type { HifzMethod } from '../services/hifzDb';
 import { processReviewResult } from '../services/hifzScheduler';
 import { QURAN_RECITERS } from './KuraniView';
 import { HifzSelfRecorder } from './HifzSelfRecorder';
@@ -24,11 +25,12 @@ type Stage = 'LISTEN' | 'UNDERSTAND' | 'READ_ALONG' | 'RECITE_VISIBLE' | 'RECITE
 interface Props {
  surahNumber: number;
  ayahNumber: number;
+ method: HifzMethod;
  onComplete: (result: 'KNEW' | 'STRUGGLED' | 'FORGOT', stumblePoints: number[]) => void;
  onClose: () => void;
 }
 
-export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, onComplete, onClose }) => {
+export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method, onComplete, onClose }) => {
  const [stage, setStage] = useState<Stage>('LISTEN');
  const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
@@ -95,7 +97,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, onComp
  setListenCount(0);
  
  switch (stage) {
- case 'LISTEN': setStage(settings.showWordByWord ? 'UNDERSTAND' : 'READ_ALONG'); break;
+ case 'LISTEN': setStage(method === 'B' ? 'UNDERSTAND' : 'READ_ALONG'); break;
  case 'UNDERSTAND': setStage('READ_ALONG'); break;
  case 'READ_ALONG': setStage('RECITE_VISIBLE'); break;
  case 'RECITE_VISIBLE': setStage('RECITE_HIDDEN'); break;
@@ -172,7 +174,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, onComp
  <div className="flex items-center justify-center p-3 border-b border-slate-800 bg-slate-900">
  <div className="flex space-x-1 sm:space-x-2">
  {['LISTEN', 'UNDERSTAND', 'READ_ALONG', 'RECITE_VISIBLE', 'RECITE_HIDDEN', 'CONNECT', 'ASSESS'].map((s, idx) => {
- if (s === 'UNDERSTAND' && !settings.showWordByWord) return null;
+ if (s === 'UNDERSTAND' && method !== 'B') return null;
  const stages = ['LISTEN', 'UNDERSTAND', 'READ_ALONG', 'RECITE_VISIBLE', 'RECITE_HIDDEN', 'CONNECT', 'ASSESS'];
  const currentIndex = stages.indexOf(stage);
  const isPast = stages.indexOf(s) < currentIndex;
