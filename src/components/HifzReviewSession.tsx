@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AyahMemorizationRecord } from '../services/hifzDb';
 import { getSurahData } from '../services/quranApi';
 import { processReviewResult } from '../services/hifzScheduler';
@@ -7,7 +7,8 @@ import { Check, Eye, EyeOff, RotateCcw, ChevronRight } from 'lucide-react';
 import { HifzSelfRecorder } from './HifzSelfRecorder';
 import { MutashabihatBanner } from './MutashabihatBanner';
 import { QURAN_RECITERS } from './KuraniView';
-import { hifzDb, HifzSettings, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+import { hifzDb, HifzSettings, DEFAULT_HIFZ_SETTINGS, newSessionId } from '../services/hifzDb';
+import type { ReviewResult } from '../services/hifzDb';
 
 interface Props {
  queue: AyahMemorizationRecord[];
@@ -22,6 +23,9 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
  const [isRevealed, setIsRevealed] = useState(false);
  const [loading, setLoading] = useState(true);
  const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
+ // H1: rezultatet e sesionit mblidhen në ref për SessionRecord-in REVIEW.
+ const reviewStartedAt = useRef<number>(Date.now());
+ const sessionResults = useRef<{ ayahKey: string; result: ReviewResult }[]>([]);
 
  const currentRecord = queue[currentIndex];
 
@@ -56,10 +60,22 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
 
  const handleResult = async (result: 'KNEW' | 'STRUGGLED' | 'FORGOT') => {
  await processReviewResult(currentRecord.ayahKey, result, []);
+ sessionResults.current.push({ ayahKey: currentRecord.ayahKey, result });
  
  if (currentIndex < queue.length - 1) {
  setCurrentIndex(prev => prev + 1);
  } else {
+ // Në përfundim shkruhet NJË SessionRecord REVIEW me gjithë rezultatet.
+ const endedAt = Date.now();
+ await hifzDb.sessions.add({
+ id: newSessionId(),
+ startedAt: reviewStartedAt.current,
+ endedAt,
+ type: 'REVIEW',
+ ayahsCovered: sessionResults.current.map(r => r.ayahKey),
+ results: [...sessionResults.current],
+ durationSeconds: Math.max(0, Math.round((endedAt - reviewStartedAt.current) / 1000)),
+ });
  onComplete();
  }
  };

@@ -32,6 +32,17 @@ export interface SessionRecord {
   durationSeconds: number;
 }
 
+/**
+ * ID unike për SessionRecord, e gjeneruar në klient.
+ * Tabela sessions nuk ka PK auto-inkrementale (schema v1/v2), prandaj ID-ja
+ * jepet eksplicite — pa ndryshuar skemën, pa migrim.
+ */
+export function newSessionId(): string {
+  const c = globalThis.crypto as { randomUUID?: () => string } | undefined;
+  if (c && typeof c.randomUUID === 'function') return c.randomUUID();
+  return `${Date.now()}-${Math.floor(Math.random() * 1e9)}`;
+}
+
 // Regjistri i ajeve te mesuara manualisht ("Hifzi Im").
 // Izoluar nga scheduler-i (ayahRecords) qe te mos bien ne rrezik logjika e SM-2.
 export interface MemorizedAyah {

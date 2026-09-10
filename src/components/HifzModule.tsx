@@ -6,7 +6,8 @@ import { MyHifzView } from './MyHifzView';
 import { BookOpen, Play, Sparkles, ChevronLeft } from 'lucide-react';
 import { hifzDb, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
 import type { HifzSettings, HifzMethod } from '../services/hifzDb';
-import { getReviewQueue } from '../services/hifzScheduler';
+import { setMemorized, newSessionId } from '../services/hifzDb';
+import { getReviewQueue, processReviewResult } from '../services/hifzScheduler';
 import { QURAN_RECITERS } from './KuraniView';
 
 const METHODS: { id: HifzMethod; title: string; desc: string; soon?: boolean }[] = [
@@ -28,6 +29,8 @@ export const HifzModule: React.FC = () => {
   const didInitialLoad = useRef(false);
   const [tempSurah, setTempSurah] = useState(114);
   const [tempAyah, setTempAyah] = useState(1);
+  // Fillimi i mësimit mbahet në ref (jo state) që të mos shkaktojë re-render.
+  const learnStartedAt = useRef<number>(0);
 
   const loadData = async () => {
     setLoading(true);
@@ -61,10 +64,43 @@ export const HifzModule: React.FC = () => {
     if (s) { s.reciterId = id; await hifzDb.settings.put(s); setSettings(s); }
   };
 
+  // H1: rezultati i mësimit RUHET — SM-2 + regjistri + sesioni.
+  const startLearning = (surah: number, ayah: number) => {
+    learnStartedAt.current = Date.now();
+    setLearningAyah({ surah, ayah });
+  };
+
+  const handleLearnComplete = async (
+    result: 'KNEW' | 'STRUGGLED' | 'FORGOT',
+    stumblePoints: number[],
+  ) => {
+    if (!learningAyah) {
+      setLearningAyah(null);
+      return;
+    }
+    const ayahKey = `${learningAyah.surah}:${learningAyah.ayah}`;
+    // 1) Motori SM-2 (thirret, nuk ndryshohet).
+    await processReviewResult(ayahKey, result, stumblePoints);
+    // 2) Regjistri "Hifzi Im" rritet bashkë me mësimin.
+    await setMemorized(learningAyah.surah, learningAyah.ayah, true);
+    // 3) Sesioni LEARN ruhet për statistika.
+    const endedAt = Date.now();
+    await hifzDb.sessions.add({
+      id: newSessionId(),
+      startedAt: learnStartedAt.current,
+      endedAt,
+      type: 'LEARN',
+      ayahsCovered: [ayahKey],
+      results: [{ ayahKey, result }],
+      durationSeconds: Math.max(0, Math.round((endedAt - learnStartedAt.current) / 1000)),
+    });
+    setLearningAyah(null);
+  };
+
   if (learningAyah) {
     return <HifzLearnView surahNumber={learningAyah.surah} ayahNumber={learningAyah.ayah}
       method={method}
-      onComplete={async () => setLearningAyah(null)}
+      onComplete={handleLearnComplete}
       onClose={() => setLearningAyah(null)} />;
   }
   if (isReviewing && reviewQueue.length > 0) {
@@ -124,7 +160,7 @@ export const HifzModule: React.FC = () => {
               className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500" />
           </div>
         </div>
-        <button onClick={() => setLearningAyah({ surah: tempSurah, ayah: tempAyah })}
+        <button onClick={() => startLearning(tempSurah, tempAyah)}
           className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium transition-colors">
           Filloj Mësimin
         </button>
