@@ -85,9 +85,9 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
  {/* Header */}
  <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950/50">
  <div className="flex flex-col">
- <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Review Session</span>
+ <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Sesion Rishikimi</span>
  <h2 className="text-lg font-semibold text-slate-100">
- {surahMeta?.transliteration} • Ayah {ayahNum}
+ {surahMeta?.transliteration} • Ajeti {ayahNum}
  </h2>
  </div>
  <div className="flex items-center space-x-4">
@@ -106,7 +106,7 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
  <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
  ) : (
  <div className="w-full max-w-2xl text-center space-y-8">
- <h3 className="text-xl font-medium text-slate-300">Recite from Memory</h3>
+ <h3 className="text-xl font-medium text-slate-300">Recito nga memorja</h3>
  
  {!isRevealed ? (
  <button 
@@ -114,7 +114,7 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
  className="w-full py-16 bg-slate-800/50 hover:bg-slate-800 border border-slate-700 border-dashed rounded-2xl transition-colors flex flex-col items-center justify-center space-y-4"
  >
  <Eye className="w-10 h-10 text-slate-500" />
- <span className="text-slate-400 font-medium">Tap to reveal Ayah</span>
+ <span className="text-slate-400 font-medium">Preke për ta zbuluar ajetin</span>
  </button>
  ) : (
  <div className="space-y-6 animate-in fade-in zoom-in duration-300">
@@ -135,31 +135,31 @@ export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete 
 
  {isRevealed && (
  <div className="pt-8 border-t border-slate-800/50 animate-in slide-in-from-bottom-4 duration-500">
- <h4 className="text-lg font-semibold text-slate-200 mb-6">How did you do?</h4>
+ <h4 className="text-lg font-semibold text-slate-200 mb-6">Si të shkoi?</h4>
  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
  <button 
  onClick={() => handleResult('FORGOT')}
  className="p-4 bg-red-950/30 text-red-400 hover:bg-red-900/40 border border-red-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
  >
  <EyeOff className="w-6 h-6" />
- <span className="font-medium">I Forgot</span>
- <span className="text-xs opacity-70">&lt; 1d</span>
+ <span className="font-medium">E harrova</span>
+ <span className="text-xs opacity-70">&lt; 1 ditë</span>
  </button>
  <button 
  onClick={() => handleResult('STRUGGLED')}
  className="p-4 bg-amber-950/30 text-amber-400 hover:bg-amber-900/40 border border-amber-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
  >
  <RotateCcw className="w-6 h-6" />
- <span className="font-medium">I Struggled</span>
- <span className="text-xs opacity-70">Hard</span>
+ <span className="font-medium">Kam pasur vështirësi</span>
+ <span className="text-xs opacity-70">Vështirë</span>
  </button>
  <button 
  onClick={() => handleResult('KNEW')}
  className="p-4 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/40 border border-emerald-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
  >
  <Check className="w-6 h-6" />
- <span className="font-medium">I Knew It</span>
- <span className="text-xs opacity-70">Good</span>
+ <span className="font-medium">E dija</span>
+ <span className="text-xs opacity-70">Mirë</span>
  </button>
  </div>
  </div>

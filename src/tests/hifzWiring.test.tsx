@@ -262,12 +262,12 @@ describe('FA1.1 (H1): përfundimi i mësimit ruan progresin', () => {
     render(<HifzReviewSession queue={queue as any} onClose={() => {}} onComplete={onComplete} />);
 
     // Ajeti 1: zbulo → "I Knew It".
-    fireEvent.click(await screen.findByText('Tap to reveal Ayah'));
-    fireEvent.click(await screen.findByText('I Knew It'));
+    fireEvent.click(await screen.findByText('Preke për ta zbuluar ajetin'));
+    fireEvent.click(await screen.findByText('E dija'));
 
     // Ajeti 2: zbulo → "I Struggled".
-    fireEvent.click(await screen.findByText('Tap to reveal Ayah'));
-    fireEvent.click(await screen.findByText('I Struggled'));
+    fireEvent.click(await screen.findByText('Preke për ta zbuluar ajetin'));
+    fireEvent.click(await screen.findByText('Kam pasur vështirësi'));
 
     // Sesioni u mbyll dhe u shkrua NJË shënim i vetëm REVIEW me të dy rezultatet.
     await waitFor(() => expect(onComplete).toHaveBeenCalledTimes(1));

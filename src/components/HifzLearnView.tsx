@@ -162,8 +162,8 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  {/* Header */}
  <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950/50">
  <div className="flex flex-col">
- <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Hifz Module</span>
- <h2 className="text-lg font-semibold text-slate-100">{surahMeta?.transliteration} • Ayah {ayahNumber}</h2>
+ <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Moduli Hifz</span>
+ <h2 className="text-lg font-semibold text-slate-100">{surahMeta?.transliteration} • Ajeti {ayahNumber}</h2>
  </div>
  <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-200 bg-slate-800/50 rounded-full transition-colors">
  <ChevronRight className="w-5 h-5" />
@@ -197,7 +197,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  <div className="inline-flex items-center justify-center p-4 bg-emerald-950/30 rounded-full text-emerald-400 mb-2">
  <Volume2 className="w-8 h-8" />
  </div>
- <h3 className="text-xl font-medium text-slate-300">Listen Carefully</h3>
+ <h3 className="text-xl font-medium text-slate-300">Dëgjo me kujdes</h3>
  <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
  {ayahData.textAr}
  </p>
@@ -209,7 +209,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  
  {stage === 'UNDERSTAND' && (
  <div className="w-full max-w-2xl space-y-8">
- <h3 className="text-xl font-medium text-slate-300 text-center mb-6">Understand Word by Word</h3>
+ <h3 className="text-xl font-medium text-slate-300 text-center mb-6">Kupto fjalë për fjalë</h3>
  <div className="flex flex-wrap justify-end gap-x-6 gap-y-8 dir-rtl" dir="rtl">
  {words.map((w, idx) => (
  <div key={idx} className="flex flex-col items-center">
@@ -230,7 +230,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  <div className="inline-flex items-center justify-center p-4 bg-blue-950/30 rounded-full text-blue-400 mb-2">
  <BookOpen className="w-8 h-8" />
  </div>
- <h3 className="text-xl font-medium text-slate-300">Read Along with Audio</h3>
+ <h3 className="text-xl font-medium text-slate-300">Lexo së bashku me audion</h3>
  <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
  {ayahData.textAr}
  </p>
@@ -245,7 +245,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  <div className="inline-flex items-center justify-center p-4 bg-amber-950/30 rounded-full text-amber-400 mb-2">
  <Mic className="w-8 h-8" />
  </div>
- <h3 className="text-xl font-medium text-slate-300">Recite Aloud (Text Visible)</h3>
+ <h3 className="text-xl font-medium text-slate-300">Recito me zë (teksti i dukshëm)</h3>
  <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
  {ayahData.textAr}
  </p>
@@ -257,7 +257,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  onClick={() => setListenCount(p => p + 1)}
  className="px-6 py-2 bg-amber-600/20 text-amber-400 rounded-full hover:bg-amber-600/30 transition-colors border border-amber-500/30"
  >
- I recited it
+ E recitova
  </button>
  </div>
  
@@ -276,8 +276,8 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  <div className="inline-flex items-center justify-center p-4 bg-purple-950/30 rounded-full text-purple-400 mb-2">
  <EyeOff className="w-8 h-8" />
  </div>
- <h3 className="text-xl font-medium text-slate-300">Recite from Memory</h3>
- <p className="text-sm text-slate-400">Tap any blurred word if you forget it</p>
+ <h3 className="text-xl font-medium text-slate-300">Recito nga memorja</h3>
+ <p className="text-sm text-slate-400">Prek çdo fjalë të turbullt nëse e harron</p>
  
  <div className="flex flex-wrap justify-end gap-x-2 gap-y-6 dir-rtl mt-6" dir="rtl">
  {words.map((w, idx) => (
@@ -305,7 +305,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  }}
  className="px-6 py-2 bg-purple-600/20 text-purple-400 rounded-full hover:bg-purple-600/30 transition-colors border border-purple-500/30"
  >
- I recited it
+ E recitova
  </button>
  </div>
 
@@ -321,8 +321,8 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  
  {stage === 'CONNECT' && (
  <div className="w-full max-w-2xl text-center space-y-8">
- <h3 className="text-xl font-medium text-slate-300">Connect with Previous</h3>
- <p className="text-sm text-slate-400 mb-6">Recite from the beginning of the Surah (or previous 3 ayahs) up to this one to build the transition.</p>
+ <h3 className="text-xl font-medium text-slate-300">Lidhje me të mëparshmen</h3>
+ <p className="text-sm text-slate-400 mb-6">Recito nga fillimi i sures (ose 3 ajetet e mëparshme) deri te ky, për ta ndërtuar kalimin.</p>
  <div className="flex flex-col space-y-2 opacity-70">
  {surahData && surahData.ayahs
  .filter(a => a.numberInSurah >= Math.max(1, ayahNumber - 3) && a.numberInSurah < ayahNumber)
@@ -342,15 +342,15 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  onClick={handleNextStage}
  className="mt-8 px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition-colors font-medium shadow-lg shadow-emerald-900/50"
  >
- Ready for Assessment
+ Gati për vlerësim
  </button>
  </div>
  )}
  
  {stage === 'ASSESS' && (
  <div className="w-full max-w-2xl text-center space-y-8">
- <h3 className="text-2xl font-semibold text-slate-100">How well do you know it?</h3>
- <p className="text-slate-400">Be honest. This schedules your next review.</p>
+ <h3 className="text-2xl font-semibold text-slate-100">Sa e di mirë?</h3>
+ <p className="text-slate-400">Ji i sinqertë. Kjo cakton rishikimin tënd të radhës.</p>
  
  <div className="flex flex-col space-y-4 max-w-xs mx-auto pt-6">
  <button 
@@ -358,21 +358,21 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  className="px-6 py-4 bg-emerald-600/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
  >
  <Check className="w-5 h-5" />
- <span>I Knew It</span>
+ <span>E dija</span>
  </button>
  <button 
  onClick={() => onComplete('STRUGGLED', Array.from(allStumblePoints))}
  className="px-6 py-4 bg-amber-600/10 text-amber-400 border border-amber-500/30 hover:bg-amber-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
  >
  <RotateCcw className="w-5 h-5" />
- <span>I Struggled</span>
+ <span>Kam pasur vështirësi</span>
  </button>
  <button 
  onClick={() => onComplete('FORGOT', Array.from(allStumblePoints))}
  className="px-6 py-4 bg-red-600/10 text-red-400 border border-red-500/30 hover:bg-red-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
  >
  <EyeOff className="w-5 h-5" />
- <span>I Forgot</span>
+ <span>E harrova</span>
  </button>
  </div>
  </div>
@@ -395,7 +395,7 @@ export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method
  onClick={handleNextStage}
  className="px-6 py-2 bg-slate-100 text-slate-900 rounded-full font-medium hover:bg-white transition-colors flex items-center space-x-2"
  >
- <span>Next Stage</span>
+ <span>Faza tjetër</span>
  <ChevronRight className="w-4 h-4" />
  </button>
  </div>

@@ -32,7 +32,7 @@ interface HifzStats {
 
 const METHODS: { id: HifzMethod; title: string; desc: string; soon?: boolean }[] = [
   { id: 'A', title: 'Dëgjo & Përsërit', desc: 'Metoda audio për jo-arabishtfolës' },
-  { id: 'B', title: 'Fjalë pas fjalë', desc: 'Kuptimi i ajetit (word-by-word)' },
+  { id: 'B', title: 'Fjalë pas fjalë', desc: 'Kuptimi i ajetit (fjalë për fjalë)' },
   { id: 'C', title: 'Metoda Osmane', desc: 'Faqe/xhuz me rrotullim', soon: true }
 ];
 
@@ -243,13 +243,13 @@ export const HifzModule: React.FC = () => {
         <h3 className="text-sm font-medium text-slate-200">Mëso ajet të ri</h3>
         <div className="flex space-x-3">
           <div className="flex-1">
-            <label className="text-[11px] text-slate-400 mb-1 block">Surah (1-114)</label>
+            <label className="text-[11px] text-slate-400 mb-1 block">Sureja (1-114)</label>
             <input type="number" min={1} max={114} value={tempSurah}
               onChange={e => setTempSurah(Number(e.target.value))}
               className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500" />
           </div>
           <div className="flex-1">
-            <label className="text-[11px] text-slate-400 mb-1 block">Ayah (1-286)</label>
+            <label className="text-[11px] text-slate-400 mb-1 block">Ajeti (1-286)</label>
             <input type="number" min={1} max={286} value={tempAyah}
               onChange={e => setTempAyah(Number(e.target.value))}
               className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500" />
