@@ -6,7 +6,7 @@ import { MyHifzView } from './MyHifzView';
 import { BookOpen, Play, Sparkles, ChevronLeft } from 'lucide-react';
 import { hifzDb, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
 import type { HifzSettings, HifzMethod } from '../services/hifzDb';
-import { setMemorized, newSessionId } from '../services/hifzDb';
+import { setMemorizedUnified, newSessionId } from '../services/hifzDb';
 import { getReviewQueue, processReviewResult } from '../services/hifzScheduler';
 import { QURAN_RECITERS } from './KuraniView';
 
@@ -81,8 +81,8 @@ export const HifzModule: React.FC = () => {
     const ayahKey = `${learningAyah.surah}:${learningAyah.ayah}`;
     // 1) Motori SM-2 (thirret, nuk ndryshohet).
     await processReviewResult(ayahKey, result, stumblePoints);
-    // 2) Regjistri "Hifzi Im" rritet bashkë me mësimin.
-    await setMemorized(learningAyah.surah, learningAyah.ayah, true);
+    // 2) Regjistri "Hifzi Im" rritet bashkë me mësimin (porta e unifikuar H2).
+    await setMemorizedUnified(learningAyah.surah, learningAyah.ayah, true);
     // 3) Sesioni LEARN ruhet për statistika.
     const endedAt = Date.now();
     await hifzDb.sessions.add({

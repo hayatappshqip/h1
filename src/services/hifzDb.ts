@@ -128,6 +128,44 @@ export async function setMemorized(surah: number, ayah: number, value: boolean):
   }
 }
 
+/**
+ * H2 — NJË regjistër, dy porta hyrjeje.
+ * Bashkon shënimin manual ("Hifzi Im") me motorin SM-2 (ayahRecords):
+ * - value=true: shënon te memorized + krijon rekord rishikimi NEW (due që
+ *   tani) VETËM nëse nuk ekziston. Progresi ekzistues nuk resetohet kurrë.
+ * - value=false: heq shënimin manual + fshin rekordin SM-2 VETËM nëse është
+ *   pa progres (repetitions===0 && lapses===0). Progresi i fituar ruhet.
+ */
+export async function setMemorizedUnified(surah: number, ayah: number, value: boolean): Promise < void > {
+  const key = `${surah}:${ayah}`;
+  if (value) {
+    await hifzDb.memorized.put({ ayahKey: key, surah, ayah, memorizedAt: Date.now() });
+    const existing = await hifzDb.ayahRecords.get(key);
+    if (!existing) {
+      const now = Date.now();
+      await hifzDb.ayahRecords.put({
+        ayahKey: key,
+        status: 'NEW',
+        strength: 0,
+        easeFactor: 2.5,
+        intervalDays: 1,
+        dueDate: now,
+        repetitions: 0,
+        lapses: 0,
+        totalListens: 0,
+        stumblePoints: [],
+        createdAt: now,
+      });
+    }
+  } else {
+    await hifzDb.memorized.delete(key);
+    const rec = await hifzDb.ayahRecords.get(key);
+    if (rec && rec.repetitions === 0 && rec.lapses === 0) {
+      await hifzDb.ayahRecords.delete(key);
+    }
+  }
+}
+
 export async function isMemorized(surah: number, ayah: number): Promise < boolean > {
   return !!(await hifzDb.memorized.get(`${surah}:${ayah}`));
 }

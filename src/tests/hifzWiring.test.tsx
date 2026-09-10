@@ -63,11 +63,14 @@ vi.mock('../services/quranApi', async () => {
 
 import { HifzModule } from '../components/HifzModule';
 import { HifzReviewSession } from '../components/HifzReviewSession';
+import { MyHifzView } from '../components/MyHifzView';
 import {
   hifzDb,
   DEFAULT_HIFZ_SETTINGS,
   getAllMemorized,
+  setMemorizedUnified,
 } from '../services/hifzDb';
+import { getReviewQueue } from '../services/hifzScheduler';
 
 // --- Prapavija në memorie për tabelat Dexie -------------------------------
 
@@ -281,5 +284,112 @@ describe('FA1.1 (H1): përfundimi i mësimit ruan progresin', () => {
     // Çdo ajet u përpunua edhe nga SM-2 (sjellja ekzistuese u ruajt).
     expect(recStore.get('114:1').repetitions).toBe(1);
     expect(recStore.get('114:2').repetitions).toBe(0);
+  });
+});
+
+// =====================================================================
+// FA1.2 — H2: NJË regjistër, dy porta hyrjeje
+// =====================================================================
+describe('FA1.2 (H2): regjistri i unifikuar "Hifzi Im" <-> SM-2', () => {
+  it('shënimi manual krijon rekord rishikimi që hyn në radhë menjëherë', async () => {
+    await setMemorizedUnified(2, 255, true);
+
+    // Regjistri manual u shënua…
+    expect(memStore.get('2:255')).toBeDefined();
+    // …dhe motori SM-2 mori rekord NEW, due që tani.
+    const rec = recStore.get('2:255');
+    expect(rec).toBeDefined();
+    expect(rec.status).toBe('NEW');
+    expect(rec.dueDate).toBeLessThanOrEqual(Date.now());
+    expect(rec.repetitions).toBe(0);
+    expect(rec.lapses).toBe(0);
+
+    // Radha adaptive e përfshin menjëherë (burimi i "Rishiko (1)").
+    const q = await getReviewQueue('ADAPTIVE');
+    expect(q.map(r => r.ayahKey)).toContain('2:255');
+  });
+
+  it('shënimi manual i dytë nuk e reseton progresin SM-2', async () => {
+    recStore.set('2:255', {
+      ayahKey: '2:255',
+      status: 'REVIEWING',
+      strength: 50,
+      easeFactor: 2.5,
+      intervalDays: 10,
+      dueDate: Date.now() + DAY,
+      repetitions: 3,
+      lapses: 0,
+      totalListens: 0,
+      stumblePoints: [],
+      createdAt: Date.now() - 10 * DAY,
+    });
+
+    await setMemorizedUnified(2, 255, true);
+
+    // Vetëm regjistri manual u shënua; progresi SM-2 nuk u prek.
+    expect(memStore.get('2:255')).toBeDefined();
+    const rec = recStore.get('2:255');
+    expect(rec.repetitions).toBe(3);
+    expect(rec.status).toBe('REVIEWING');
+    expect(rec.intervalDays).toBe(10);
+  });
+
+  it('heqja manuale e një ajeti PA progres e fshin plotësisht', async () => {
+    await setMemorizedUnified(2, 255, true);
+    expect(memStore.get('2:255')).toBeDefined();
+    expect(recStore.get('2:255')).toBeDefined();
+
+    await setMemorizedUnified(2, 255, false);
+
+    expect(memStore.get('2:255')).toBeUndefined();
+    expect(recStore.get('2:255')).toBeUndefined();
+    expect(await getAllMemorized()).toHaveLength(0);
+  });
+
+  it('heqja manuale e një ajeti ME progres (repetitions>0) e ruan rekordin SM-2', async () => {
+    memStore.set('2:255', { ayahKey: '2:255', surah: 2, ayah: 255, memorizedAt: Date.now() - DAY });
+    recStore.set('2:255', {
+      ayahKey: '2:255',
+      status: 'REVIEWING',
+      strength: 50,
+      easeFactor: 2.5,
+      intervalDays: 10,
+      dueDate: Date.now() + DAY,
+      repetitions: 4,
+      lapses: 0,
+      totalListens: 0,
+      stumblePoints: [],
+      createdAt: Date.now() - 10 * DAY,
+    });
+
+    await setMemorizedUnified(2, 255, false);
+
+    // Vetëm shënimi manual u hoq — progresi i fituar nuk shkatërrohet.
+    expect(memStore.get('2:255')).toBeUndefined();
+    const rec = recStore.get('2:255');
+    expect(rec).toBeDefined();
+    expect(rec.repetitions).toBe(4);
+  });
+
+  it('MyHifzView: shënimi nga UI krijon rekord rishikimi (porta e dytë)', async () => {
+    const { container } = render(<MyHifzView onClose={() => {}} />);
+    await screen.findByText('Hifzi Im');
+
+    // Zgjero suren 2 (Al-Baqarah) dhe shëno ajetin 255.
+    const surah2Btn = screen.getByText('Al-Baqarah').closest('button');
+    expect(surah2Btn).not.toBeNull();
+    fireEvent.click(surah2Btn!);
+    const grid = container.querySelector('div.grid.grid-cols-6');
+    expect(grid).not.toBeNull();
+    const ayahBtns = grid!.querySelectorAll('button');
+    expect(ayahBtns.length).toBe(286);
+    fireEvent.click(ayahBtns[254]); // ajeti 255
+
+    // Numëruesi u rrit dhe rekordi SM-2 u krijua (jo vetëm shënimi manual).
+    await screen.findByText('1 / 6236 ajete të mësuar');
+    expect(memStore.get('2:255')).toBeDefined();
+    const rec = recStore.get('2:255');
+    expect(rec).toBeDefined();
+    expect(rec.status).toBe('NEW');
   });
 });
