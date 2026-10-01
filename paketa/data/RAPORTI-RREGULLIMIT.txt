@@ -1,0 +1,253 @@
+ch1
+   normalizim karakteresh
+ch2
+ch3
+   faqja 14 → 15 (nga tabela e përmbajtjes)
+ch4
+ch5
+   faqja 15 → 16 (nga tabela e përmbajtjes)
+ch6
+ch7
+ch8
+ch9
+ch10
+   normalizim karakteresh
+ch11
+   faqja 18 → 19 (nga tabela e përmbajtjes)
+ch12
+ch13
+   normalizim karakteresh
+ch14
+   faqja 21 → 22 (nga tabela e përmbajtjes)
+ch15
+   #1 fushat u rindanë (shqip↔transkriptim)
+   normalizim karakteresh
+ch16
+   normalizim karakteresh
+ch17
+   #1 shënim i nxjerrë: count=3 koha=None
+ch18
+ch19
+   #1 shënim i nxjerrë: count=3 koha=None
+ch20
+ch21
+ch22
+   normalizim karakteresh
+ch23
+ch24
+ch25
+   #1 shënim i nxjerrë: count=3 koha=None
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   #6 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+ch26
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   #1 korrigjim i dorës: transkriptimi ishte cunguar; rikthyer i plotë nga libri
+ch27
+   normalizim karakteresh
+   normalizim karakteresh
+   #4 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+   #8 shënim i nxjerrë: count=4 koha=None
+   #10 shënim i nxjerrë: count=3 koha=None
+   #11 shënim i nxjerrë: count=7 koha=None
+   normalizim karakteresh
+   #14 shënim i nxjerrë: count=3 koha=None
+   normalizim karakteresh
+   #15 shënim i nxjerrë: count=3 koha=None
+   normalizim karakteresh
+   normalizim karakteresh
+   #19 shënim i nxjerrë: count=100 koha=None
+   #21 fushat u rindanë (shqip↔transkriptim)
+   #22 shënim i nxjerrë: count=None koha=gdhihemi
+   #23 fushat u rindanë (shqip↔transkriptim)
+   #24 fushat u rindanë (shqip↔transkriptim)
+   #25 shënim i nxjerrë: count=10 koha=None
+   + variant mbrëmjeje pas #5 (shqipja e cunguar në libër)
+   + variant mbrëmjeje pas #5
+   + variant mbrëmjeje pas #6 (shqipja e cunguar në libër)
+   + variant mbrëmjeje pas #8 (shqipja e cunguar në libër)
+   + variant mbrëmjeje pas #9 (shqipja e cunguar në libër)
+   + variant mbrëmjeje pas #17 (shqipja e cunguar në libër)
+   + variant mbrëmjeje pas #18
+ch28
+   normalizim karakteresh
+   normalizim karakteresh
+   #1 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+   #8 fushat u rindanë (shqip↔transkriptim)
+   normalizim karakteresh
+   normalizim karakteresh
+ch29
+ch30
+   faqja 76 → 77 (nga tabela e përmbajtjes)
+ch31
+   #1 fushat u rindanë (shqip↔transkriptim)
+ch32
+   faqja 77 → 78 (nga tabela e përmbajtjes)
+ch33
+   faqja 79 → 80 (nga tabela e përmbajtjes)
+ch34
+ch35
+ch36
+ch37
+ch38
+ch39
+ch40
+ch41
+   normalizim karakteresh
+ch42
+   normalizim karakteresh
+ch43
+ch44
+ch45
+ch46
+ch47
+ch48
+ch49
+   #2 shënim i nxjerrë: count=7 koha=None
+   #2 fushat u rindanë (shqip↔transkriptim)
+ch50
+ch51
+ch52
+   #1 fushat u rindanë (shqip↔transkriptim)
+ch53
+ch54
+ch55
+ch56
+   faqja 97 → 98 (nga tabela e përmbajtjes)
+   normalizim karakteresh
+ch57
+   normalizim karakteresh
+ch58
+ch59
+ch60
+ch61
+   normalizim karakteresh
+ch62
+ch63
+ch64
+ch65
+ch66
+ch67
+ch68
+   normalizim karakteresh
+   normalizim karakteresh
+ch69
+ch70
+ch71
+ch72
+ch73
+ch74
+ch75
+ch76
+ch77
+   #2 fushat u rindanë (shqip↔transkriptim)
+ch78
+   normalizim karakteresh
+   #1 korrigjim i dorës: citimi brenda rrëfimit ishte bashkuar me transkriptimin
+ch79
+ch80
+ch81
+ch82
+ch83
+ch84
+   normalizim karakteresh
+ch85
+   normalizim karakteresh
+ch86
+   normalizim karakteresh
+   #1 korrigjim i dorës: dy frazat e përziera u ndanë: shkaku te lead, përgjigja si lutje
+ch87
+ch88
+ch89
+ch90
+ch91
+ch92
+ch93
+ch94
+   normalizim karakteresh
+   normalizim karakteresh
+   normalizim karakteresh
+ch95
+   normalizim karakteresh
+ch96
+   normalizim karakteresh
+ch97
+ch98
+ch99
+ch100
+ch101
+ch102
+   normalizim karakteresh
+   normalizim karakteresh
+   #1 u nda në 2 hyrje (e verifikuar nga libri)
+ch103
+ch104
+ch105
+ch106
+ch107
+ch108
+   normalizim karakteresh
+   normalizim karakteresh
+ch109
+ch110
+   #1 fushat u rindanë (shqip↔transkriptim)
+   #2 korrigjim i dorës: fjalia shqipe ishte ngjitur pas transkriptimit
+ch111
+ch112
+ch113
+   #1 korrigjim i dorës: transkriptimi ishte hedhur te albanian
+ch114
+ch115
+   normalizim karakteresh
+ch116
+   #1 fushat u rindanë (shqip↔transkriptim)
+ch117
+ch118
+ch119
+ch120
+   #1 korrigjim i dorës: rrëfimi shqip ishte te transliteration dhe anasjelltas
+ch121
+ch122
+ch123
+ch124
+   #1 shënim i nxjerrë: count=3 koha=None
+ch125
+   normalizim karakteresh
+   #1 korrigjim i dorës: lutja ishte e mbështjellë brenda rrëfimit
+ch126
+ch127
+ch128
+ch129
+ch130
+   titulli u plotësua nga koka e kapitullit: 'MIRËSIA QË KEMI KUR THEMI:' → 'MIRËSIA QË KEMI KUR THEMI: Subḥãnall-llãh, El hamdu lil-lãh, Lã ilãhe il-lall-llãh dhe All-llãhu Ekber.'
+   #1 u hoq (nuk është njësi në libër): rreshti i dytë i titullit shkoi te titulli; “Pejgamberi ﷺ ka thënë: Kush thotë:” është lead i hyrjes #2
+   #2 korrigjim i dorës: transkriptimi ishte ngjitur me kuptimin shqip në një rresht; numërimi “dhjetë herë” i takon hyrjes pasuese, jo kësaj
+   #3 korrigjim i dorës: lead-i dhe numërimi ishin hedhur te hyrja e mëparshme
+   #4 fushat u rindanë (shqip↔transkriptim)
+   #5 fushat u rindanë (shqip↔transkriptim)
+   #8 u nda në 3 hyrje (e verifikuar nga libri)
+ch131
+   normalizim karakteresh
+ch132
+   #1 fushat u rindanë (shqip↔transkriptim)
+ch25#5 audio u hoq (nuk ekziston as në repo): audios/025_04.mp3
+ch25#6 audio u hoq (nuk ekziston as në repo): audios/025_07.mp3
+ch25#7 audio u hoq (nuk ekziston as në repo): audios/025_08.mp3
+ch26#1 audio u hoq (nuk ekziston as në repo): audios/026_01.mp3
+ch27#3 audio u hoq (nuk ekziston as në repo): audios/027_02.mp3
+ch27#4 audio u hoq (nuk ekziston as në repo): audios/027_03.mp3
+ch27#5 audio u hoq (nuk ekziston as në repo): audios/027_04.mp3
+ch28#1 audio u hoq (nuk ekziston as në repo): audios/028_01.mp3
+ch28#2 audio u hoq (nuk ekziston as në repo): audios/028_02.mp3
+ch28#3 audio u hoq (nuk ekziston as në repo): audios/028_03.mp3
+ch28#8 audio u hoq (nuk ekziston as në repo): audios/028_09.mp3
