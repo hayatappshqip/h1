@@ -102,10 +102,10 @@ export const MutashabihatView: React.FC<Props> = ({ onClose }) => {
  <div>
  <div className="flex items-center space-x-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-1">
  <Sparkles className="w-4 h-4" />
- <span>Mutashabihat Module</span>
+ <span>Moduli Mutashabihat</span>
  </div>
- <h2 className="text-xl font-semibold text-slate-100">Similar Verses (Ajete të ngjashme)</h2>
- <p className="text-xs text-slate-400">Master verses that resemble each other to prevent recitation errors</p>
+ <h2 className="text-xl font-semibold text-slate-100">Ajete të ngjashme</h2>
+ <p className="text-xs text-slate-400">Përvetëso ajetet që i ngjajnë njëri-tjetrit, për të shmangur gabimet në recitim</p>
  </div>
 
  {/* Navigation Tabs */}
@@ -117,7 +117,7 @@ export const MutashabihatView: React.FC<Props> = ({ onClose }) => {
  }`}
  >
  <Layers className="w-3.5 h-3.5" />
- <span>Comparison</span>
+ <span>Krahasimi</span>
  </button>
  <button
  onClick={() => setActiveTab('DRILL')}
@@ -126,7 +126,7 @@ export const MutashabihatView: React.FC<Props> = ({ onClose }) => {
  }`}
  >
  <HelpCircle className="w-3.5 h-3.5" />
- <span>Drill Quiz</span>
+ <span>Kuizi stërvitor</span>
  </button>
  </div>
  </div>

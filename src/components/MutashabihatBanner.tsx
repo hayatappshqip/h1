@@ -27,7 +27,7 @@ export const MutashabihatBanner: React.FC<Props> = ({ surahNumber, ayahNumber })
  <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
  <div>
  <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider block">
- Mutashabihat Alert (Ajet i ngjashëm)
+ Ajet i ngjashëm (Mutashabihat)
  </span>
  <span className="text-xs text-slate-300 font-medium">
  {group.title}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ALL_SURAHS_META } from '../data/quranData';
 import { ChevronLeft, ChevronDown, BookOpen } from 'lucide-react';
-import { getAllMemorized, setMemorized } from '../services/hifzDb';
+import { getAllMemorized, setMemorizedUnified } from '../services/hifzDb';
 
 export const MyHifzView: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [memSet, setMemSet] = useState<Set<string>>(new Set());
@@ -18,7 +18,7 @@ export const MyHifzView: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const toggle = async (surah: number, ayah: number) => {
     const key = `${surah}:${ayah}`;
     const val = !memSet.has(key);
-    await setMemorized(surah, ayah, val);
+    await setMemorizedUnified(surah, ayah, val);
     const next = new Set(memSet);
     if (val) next.add(key); else next.delete(key);
     setMemSet(next);

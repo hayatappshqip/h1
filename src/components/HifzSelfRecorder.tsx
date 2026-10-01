@@ -94,7 +94,7 @@ export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }
  if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || err.message?.includes('Permission denied')) {
  setMicError('Qasja në mikrofon u refuzua. Ju lutem lejoni përdorimin e mikrofonit në cilësimet e shfletuesit tuaj.');
  } else {
- setMicError('Microphone access is required to record your recitation.');
+ setMicError('Qasja në mikrofon nevojitet për ta regjistruar recitimin tënd.');
  }
  }
  };
@@ -173,7 +173,7 @@ export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }
  <div className="flex items-center justify-between">
  <h4 className="text-sm font-medium text-slate-300 flex items-center space-x-2">
  <Mic className="w-4 h-4 text-emerald-500" />
- <span>Self-Recording (Local Only)</span>
+ <span>Vetë-regjistrim (vetëm lokal)</span>
  </h4>
  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
  Private
@@ -199,7 +199,7 @@ export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }
  className="flex-1 py-3 bg-red-500/20 text-red-500 border border-red-500/50 rounded-xl flex items-center justify-center space-x-2 animate-pulse"
  >
  <Square className="w-5 h-5 fill-current" />
- <span className="font-medium">Stop Recording</span>
+ <span className="font-medium">Ndale regjistrimin</span>
  </button>
  ) : (
  <button 
@@ -207,7 +207,7 @@ export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }
  className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl flex items-center justify-center space-x-2 transition-colors"
  >
  <Mic className="w-5 h-5" />
- <span className="font-medium">Record Recitation</span>
+ <span className="font-medium">Regjistro recitimin</span>
  </button>
  )}
  
@@ -220,13 +220,13 @@ export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }
  }`}
  >
  {referencePlaying ? <Square className="w-5 h-5 fill-current" /> : <Headphones className="w-5 h-5" />}
- <span className="font-medium text-sm whitespace-nowrap">Reciter</span>
+ <span className="font-medium text-sm whitespace-nowrap">Recituesi</span>
  </button>
  </div>
 
  {recordings.length > 0 && (
  <div className="space-y-2 mt-4">
- <p className="text-xs text-slate-500 mb-2">Recent Recordings (Max 3)</p>
+ <p className="text-xs text-slate-500 mb-2">Regjistrimet e fundit (maks. 3)</p>
  {recordings.map((rec, i) => {
  const isPlaying = playingId === rec.id;
  return (
