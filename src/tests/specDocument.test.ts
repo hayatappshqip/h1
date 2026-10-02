@@ -24,13 +24,11 @@ const BASELINE = {
   quranSurahs: 114,
   quranVerses: 6236,
   mburojaCategories: 11,
-  mburojaChapters: 133,
-  mburojaDuas: 294,
+  mburojaChapters: 132,
+  mburojaDuas: 278,
   // Pragjet e sipërme: boshllëqet mund të pakësohen, jo të rriten.
-  maxMissingArabic: 28,
-  maxMissingAlbanian: 1,
-  maxMissingTransliteration: 29,
-  maxMissingReference: 5,
+  mburojaDuaItems: 261,
+  mburojaRrefimItems: 17,
 };
 
 const REQUIRED_DOCS = [
@@ -121,31 +119,27 @@ describe('Dokumenti i specifikave — pohimet përmbajtjesore', () => {
     expect(actual).toBe(declared);
   });
 
-  it('Mburoja ka 11 kategori, 133 kapituj dhe 294 dua', async () => {
+  it('Mburoja e certifikuar ka 11 kategori, 132 kapituj dhe 278 hyrje', async () => {
     const { MBUROJA_CHAPTERS, MBUROJA_CATEGORIES } = await import('../data/mburojaData');
     expect(MBUROJA_CATEGORIES).toHaveLength(BASELINE.mburojaCategories);
     expect(MBUROJA_CHAPTERS).toHaveLength(BASELINE.mburojaChapters);
     expect(MBUROJA_CHAPTERS.flatMap((c) => c.duas)).toHaveLength(BASELINE.mburojaDuas);
   });
 
-  it('boshllëqet e Mburojës nuk janë rritur mbi pragun e dokumentuar', async () => {
+  it('fushat e paketës Mburoja respektojnë tipin dua/rrefim', async () => {
     const { MBUROJA_CHAPTERS } = await import('../data/mburojaData');
-    const duas = MBUROJA_CHAPTERS.flatMap((c) => c.duas);
+    const items = MBUROJA_CHAPTERS.flatMap((chapter) => chapter.duas);
+    const duas = items.filter((item) => item.type === 'dua');
+    const rrefime = items.filter((item) => item.type === 'rrefim');
 
-    const missingArabic = duas.filter((d) => !d.ar?.trim()).length;
-    const missingAlbanian = duas.filter((d) => !d.sq?.trim()).length;
-    const missingTransliteration = duas.filter((d) => !d.transliteration?.trim()).length;
-    const missingReference = duas.filter((d) => !d.reference?.trim()).length;
-
-    // Këto pohime janë të shkruara në docs/01-gjendja-aktuale.md dhe
-    // docs/06-burimet-e-te-dhenave.md. Nëse rriten, dokumenti gënjen.
-    expect(
-      missingArabic,
-      `Duatë pa tekst arabik u rritën në ${missingArabic} (pragu ${BASELINE.maxMissingArabic}). Përditëso docs/ ose plotëso përmbajtjen.`,
-    ).toBeLessThanOrEqual(BASELINE.maxMissingArabic);
-    expect(missingAlbanian).toBeLessThanOrEqual(BASELINE.maxMissingAlbanian);
-    expect(missingTransliteration).toBeLessThanOrEqual(BASELINE.maxMissingTransliteration);
-    expect(missingReference).toBeLessThanOrEqual(BASELINE.maxMissingReference);
+    expect(duas).toHaveLength(BASELINE.mburojaDuaItems);
+    expect(rrefime).toHaveLength(BASELINE.mburojaRrefimItems);
+    const duaWithArabic = duas.filter((item) => item.ar.trim());
+    const duaWithAlbanian = duas.filter((item) => item.sq.trim());
+    expect(duaWithArabic).toHaveLength(261);
+    expect(duaWithAlbanian.length).toBeGreaterThanOrEqual(257);
+    expect(rrefime.every((item) => item.lead?.trim() || item.sq.trim())).toBe(true);
+    expect(new Set(items.map((item) => item.key)).size).toBe(items.length);
   });
 
   it('numri i manifestëve PWA nuk rritet mbi gjendjen e dokumentuar', () => {

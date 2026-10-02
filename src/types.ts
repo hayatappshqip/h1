@@ -182,32 +182,49 @@ export interface MburojaCategory {
  chapterIds: number[];
 }
 
+export type MburojaItemKey = `mburoja:${number}:${number}`;
+
+export interface MburojaNote {
+ nr: number | null;
+ tekst: string;
+}
+
 export interface DuaItem {
- id: number;
+ id: number; // ID lokale brenda kapitullit; mos përdoret vetëm si storage key
+ key: MburojaItemKey;
+ type: 'dua' | 'rrefim';
+ lead?: string;
  ar: string;
  sq: string;
  transliteration?: string;
  count: number;
- reference?: string;
- note?: string;
+ notes: MburojaNote[];
+ audio: string | null;
+  audioParts: string[] | null;
+  time?: string;
+  /** Përputhshmëri UI; përmbajtja ndërtohet vetëm nga notes e paketës. */
+  reference?: string;
 }
 
 export interface MburojaChapter {
  id: number;
  categoryId: string;
  title: string;
- titleAr?: string;
+ page: number;
  duas: DuaItem[];
- isRoutine?: 'mengjesi' | 'mbremjes' | 'gjumi';
+ isRoutine?: 'mengjesi-mbremja' | 'gjumi';
 }
 
 export interface MburojaState {
- favChapters: number[]; // Chapter IDs
- savedDuas: number[]; // Dua IDs
- completedByDate: { [date: string]: number[] }; // date -> array of chapter IDs completed today
- dailyCountsByDate: { [date: string]: { [duaId: number]: number } }; // date -> (duaId -> count)
- situationalCounts: { [duaId: number]: number };
- duaGoals?: { [duaId: number]: number }; // duaId -> daily goal
+ schemaVersion: 2;
+ favChapters: number[];
+ savedDuas: MburojaItemKey[];
+ completedByDate: Record<string, number[]>;
+ dailyCountsByDate: Record<string, Record<MburojaItemKey, number>>;
+ situationalCounts: Record<MburojaItemKey, number>;
+ duaGoals?: Record<MburojaItemKey, number>;
+ /** Numeric v1 IDs retained safely because they cannot be mapped without guessing. */
+ unresolvedLegacyDuaIds?: number[];
 }
 
 // Dita Ime (My Day Task & Agenda Manager) Types

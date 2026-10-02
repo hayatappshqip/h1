@@ -40,7 +40,7 @@ export const NamaziView: React.FC<NamaziViewProps> = ({
  prayerSettings,
  prayerLogs,
  postPrayerDhikrSessions = [],
- mburojaState = { favChapters: [], savedDuas: [], completedByDate: {}, dailyCountsByDate: {}, situationalCounts: {} },
+ mburojaState = { schemaVersion: 2, favChapters: [], savedDuas: [], completedByDate: {}, dailyCountsByDate: {}, situationalCounts: {} },
  onTogglePrayerLog,
  onUpdatePrayerLogDetails,
  onSavePostPrayerDhikr,

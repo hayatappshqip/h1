@@ -229,7 +229,7 @@ export function getActiveSuggestions(
  id: 'mbremjes',
  title: 'Dhikri i Mbrëmjes',
  subtitle: 'Koha e rekomanduar: Pas ikindisë / akshamit deri në mesnatë',
- chapterId: 28,
+ chapterId: 27,
  isRoutine: true
  });
  }
@@ -240,7 +240,7 @@ export function getActiveSuggestions(
  id: 'gjumi',
  title: 'Dhikri para Gjumit',
  subtitle: 'Lutjet e verifikuara para se të biem në gjumë',
- chapterId: 29,
+ chapterId: 28,
  isRoutine: true
  });
 

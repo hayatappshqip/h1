@@ -5,7 +5,7 @@
  */
 import React, { useState } from 'react';
 import { MBUROJA_CATEGORIES, MBUROJA_CHAPTERS } from '../data/mburojaData';
-import { MburojaChapter, MburojaState, DuaItem } from '../types';
+import { MburojaChapter, MburojaState, DuaItem, MburojaItemKey } from '../types';
 import { Search, Star, Bookmark, Copy, Check, ChevronLeft, ShieldCheck, CheckCircle2, RotateCcw, Volume2, Play, Pause, SkipForward, SkipBack } from 'lucide-react';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { getLocalDateString } from '../utils/dateUtils';
@@ -20,7 +20,7 @@ interface MburojaViewProps {
   hapticEnabled?: boolean;
   soundEnabled?: boolean;
   onToggleFavChapter: (chapterId: number) => void;
-  onToggleSaveDua: (duaId: number) => void;
+  onToggleSaveDua: (duaId: MburojaItemKey) => void;
   onToggleChapterCompletedToday: (chapterId: number) => void;
   onUpdateDuaCount: (duaId: number, count: number) => void;
   onUpdateDuaGoal?: (duaId: number, goal: number | null) => void;
@@ -184,7 +184,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  const [searchQuery, setSearchQuery] = useState<string>('');
  const [showOnlyFavs, setShowOnlyFavs] = useState<boolean>(false);
  const [activeTab, setActiveTab] = useState<'chapters' | 'savedDuas'>('chapters');
- const [copiedDuaId, setCopiedDuaId] = useState<number | null>(null);
+ const [copiedDuaId, setCopiedDuaId] = useState<MburojaItemKey | null>(null);
 
  const todayStr = getLocalDateString();
  const completedToday = mburojaState.completedByDate[todayStr] || [];
@@ -205,12 +205,12 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  document.execCommand('copy');
  document.body.removeChild(textarea);
  }
- setCopiedDuaId(dua.id);
+ setCopiedDuaId(dua.key);
  setTimeout(() => setCopiedDuaId(null), 2000);
  } catch (err) {
  console.warn('Clipboard write error:', err);
  // Fallback fallback
- setCopiedDuaId(dua.id);
+ setCopiedDuaId(dua.key);
  setTimeout(() => setCopiedDuaId(null), 2000);
  }
  };
@@ -271,16 +271,16 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  {/* Duas List */}
  <div className="space-y-4">
  {activeChapter.duas.map((dua, idx) => {
- const isSaved = mburojaState.savedDuas.includes(dua.id);
- const targetGoal = mburojaState.duaGoals?.[dua.id] ?? dua.count;
- const currentCount = dailyCounts[dua.id] || 0;
+ const isSaved = mburojaState.savedDuas.includes(dua.key);
+ const targetGoal = mburojaState.duaGoals?.[dua.key] ?? dua.count;
+ const currentCount = dailyCounts[dua.key] || 0;
  const isDuaFinished = currentCount >= targetGoal;
  const progressPercent = targetGoal > 0 ? Math.min(100, Math.round((currentCount / targetGoal) * 100)) : 100;
 
  return (
  <div
- key={dua.id}
- id={`dua-card-${dua.id}`}
+ key={dua.key}
+ id={`dua-card-${dua.key}`}
  className={`p-4 rounded-xl border transition-all space-y-3 ${
  isDuaFinished
  ? 'bg-emerald-950/20 border-emerald-800/40'
@@ -297,11 +297,11 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  onClick={() => handleCopyDua(dua)}
  className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-xs flex items-center space-x-1"
  >
- {copiedDuaId === dua.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+ {copiedDuaId === dua.key ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
  </button>
 
  <button
- onClick={() => onToggleSaveDua(dua.id)}
+ onClick={() => onToggleSaveDua(dua.key)}
  className={`p-1.5 rounded-lg border ${
  isSaved ? 'bg-amber-950 border-amber-700 text-amber-300' : 'bg-slate-800 border-slate-700 text-slate-400'
  }`}
@@ -311,8 +311,11 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </div>
  </div>
 
+ {dua.lead && (
+ <p className="text-sm leading-relaxed text-slate-200 bg-slate-950/50 border border-slate-800 rounded-lg p-3">{dua.lead}</p>
+ )}
  {/* Arabic Text */}
- {renderFormattedArabic(dua.ar, fontScale)}
+ {dua.ar && renderFormattedArabic(dua.ar, fontScale)}
 
  {/* Transliteration */}
  {renderFormattedTransliteration(dua.transliteration || '', fontScale)}
@@ -328,14 +331,11 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  )}
 
  {/* Note / Reference */}
- {dua.note && (
- <p className="text-[11px] text-amber-400/90 bg-amber-950/30 p-2 rounded border border-amber-900/40 italic">
- 💡 {dua.note}
+ {dua.notes.map(note => (
+ <p key={`${dua.key}:note:${note.nr ?? note.tekst}`} className="text-[11px] text-amber-200/90 bg-amber-950/20 p-2 rounded border border-amber-900/30">
+ {note.nr ? `[${note.nr}] ` : ''}{note.tekst}
  </p>
- )}
- {dua.reference && (
- <p className="text-[10px] text-slate-400 font-mono text-right">{dua.reference}</p>
- )}
+ ))}
 
  {/* Counter Control */}
  <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60">
@@ -356,33 +356,33 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Caku Ditor</span>
  <div className="flex items-center bg-slate-950 rounded-lg p-0.5 border border-slate-800/60">
  <button
- onClick={() => onUpdateDuaGoal(dua.id, null)}
+ onClick={() => onUpdateDuaGoal(dua.key, null)}
  className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
- !mburojaState.duaGoals?.[dua.id] ? 'bg-slate-800 text-slate-200' : 'text-slate-500 hover:text-slate-300'
+ !mburojaState.duaGoals?.[dua.key] ? 'bg-slate-800 text-slate-200' : 'text-slate-500 hover:text-slate-300'
  }`}
  >
  {dua.count}
  </button>
  <button
- onClick={() => onUpdateDuaGoal(dua.id, 10)}
+ onClick={() => onUpdateDuaGoal(dua.key, 10)}
  className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
- mburojaState.duaGoals?.[dua.id] === 10 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
+ mburojaState.duaGoals?.[dua.key] === 10 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
  }`}
  >
  10
  </button>
  <button
- onClick={() => onUpdateDuaGoal(dua.id, 33)}
+ onClick={() => onUpdateDuaGoal(dua.key, 33)}
  className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
- mburojaState.duaGoals?.[dua.id] === 33 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
+ mburojaState.duaGoals?.[dua.key] === 33 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
  }`}
  >
  33
  </button>
  <button
- onClick={() => onUpdateDuaGoal(dua.id, 100)}
+ onClick={() => onUpdateDuaGoal(dua.key, 100)}
  className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
- mburojaState.duaGoals?.[dua.id] === 100 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
+ mburojaState.duaGoals?.[dua.key] === 100 ? 'bg-emerald-900/60 text-emerald-300 font-medium' : 'text-slate-500 hover:text-slate-300'
  }`}
  >
  100
@@ -398,7 +398,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
 
  <div className="flex items-center space-x-2 shrink-0">
  <button
- onClick={() => onUpdateDuaCount(dua.id, 0)}
+ onClick={() => onUpdateDuaCount(dua.key, 0)}
  className="p-1.5 text-slate-500 hover:text-slate-300"
  title="Ristartoni numëruesin"
  >
@@ -406,10 +406,10 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  </button>
 
  <button
- id={`btn-increment-dua-${dua.id}`}
+ id={`btn-increment-dua-${dua.key}`}
  onClick={() => {
  triggerDhikrFeedback(hapticEnabled, soundEnabled);
- onUpdateDuaCount(dua.id, currentCount + 1);
+ onUpdateDuaCount(dua.key, currentCount + 1);
  }}
  className={`px-4 py-2 rounded-xl text-xs font-mono font-bold border transition-all active:scale-95 ${
  isDuaFinished
@@ -520,7 +520,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  (() => {
  const savedList = MBUROJA_CHAPTERS.flatMap(ch =>
  ch.duas
- .filter(d => mburojaState.savedDuas.includes(d.id))
+ .filter(d => mburojaState.savedDuas.includes(d.key))
  .map(d => ({ dua: d, chapterTitle: ch.title, chapterId: ch.id }))
  ).filter(item =>
  item.chapterTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -557,7 +557,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
 
  {savedList.map(({ dua, chapterTitle, chapterId }) => (
  <div
- key={dua.id}
+ key={dua.key}
  className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3 shadow-sm"
  >
  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
@@ -569,7 +569,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  <span>{chapterTitle}</span>
  </button>
  <button
- onClick={() => onToggleSaveDua(dua.id)}
+ onClick={() => onToggleSaveDua(dua.key)}
  className="text-xs text-amber-300 bg-amber-950/60 border border-amber-800 px-2 py-0.5 rounded-lg flex items-center space-x-1"
  >
  <Bookmark className="w-3 h-3 fill-current" />

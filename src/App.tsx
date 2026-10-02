@@ -30,6 +30,7 @@ import { checkPrayerNotifications } from './services/notificationEngine';
 import { getLocalDateString } from './utils/dateUtils';
 import { useDhikrFontSize } from './utils/useFontSize';
 import { initQuranCorpus } from './services/quranCorpusStore';
+import { EMPTY_MBUROJA_STATE, migrateMburojaState } from './data/mburojaData';
 import {
  getAllFromStore,
  putInStore,
@@ -49,13 +50,7 @@ export default function App() {
  const [prayerLogs, setPrayerLogs] = useState<PrayerLog[]>([]);
  const [postPrayerDhikrSessions, setPostPrayerDhikrSessions] = useState<PostPrayerDhikrSession[]>([]);
 
- const [mburojaState, setMburojaState] = useState<MburojaState>({
- favChapters: [27, 28, 29],
- savedDuas: [],
- completedByDate: {},
- dailyCountsByDate: {},
- situationalCounts: {}
- });
+ const [mburojaState, setMburojaState] = useState<MburojaState>(EMPTY_MBUROJA_STATE);
 
  const [quranReadingState, setQuranReadingState] = useState<QuranReadingState>({
  lastReadSurah: 1,
@@ -138,13 +133,15 @@ export default function App() {
 
  const mState = await getMeta('mburojaState');
  if (mState) {
- setMburojaState(mState);
+ const migrated = migrateMburojaState(mState);
+ setMburojaState(migrated);
+ if (migrated.schemaVersion !== (mState as MburojaState).schemaVersion) await saveMeta('mburojaState', migrated);
  } else {
  // Migration from localStorage if present
  const localFavs = localStorage.getItem('hayat_fav_chapters');
  if (localFavs) {
  try {
- setMburojaState(prev => ({ ...prev, favChapters: JSON.parse(localFavs) }));
+ setMburojaState(prev => migrateMburojaState({ ...prev, favChapters: JSON.parse(localFavs) }));
  } catch (e) {}
  }
  }
@@ -256,7 +253,7 @@ export default function App() {
  await saveMeta('mburojaState', updatedState);
  };
 
- const handleToggleSaveDua = async (duaId: number) => {
+ const handleToggleSaveDua = async (duaId: import('./types').MburojaItemKey) => {
  const isSaved = mburojaState.savedDuas.includes(duaId);
  const updatedSaved = isSaved
  ? mburojaState.savedDuas.filter(id => id !== duaId)
@@ -286,7 +283,7 @@ export default function App() {
  await saveMeta('mburojaState', updatedState);
  };
 
- const handleUpdateDuaCount = async (duaId: number, count: number) => {
+ const handleUpdateDuaCount = async (duaId: import('./types').MburojaItemKey, count: number) => {
  const todayCounts = mburojaState.dailyCountsByDate[todayStr] || {};
  const updatedTodayCounts = { ...todayCounts, [duaId]: count };
 
@@ -301,7 +298,7 @@ export default function App() {
  await saveMeta('mburojaState', updatedState);
  };
 
- const handleUpdateDuaGoal = async (duaId: number, goal: number | null) => {
+ const handleUpdateDuaGoal = async (duaId: import('./types').MburojaItemKey, goal: number | null) => {
  const updatedGoals = { ...mburojaState.duaGoals };
  if (goal === null || goal <= 0) {
  delete updatedGoals[duaId];

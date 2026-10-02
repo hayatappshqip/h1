@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Volume2, Square, Repeat, Gauge, Loader2, VolumeX } from 'lucide-react';
 import { DuaItem } from '../types';
-import rawAudioMap from '../data/audioMap.json';
-
-interface AudioMapEntry {
-  file: string;
-  url: string;
-  score: number;
-}
-
-const audioMap = rawAudioMap as Record<string, Record<string, AudioMapEntry | null>>;
+import { resolveMburojaAudioUrls } from '../data/mburojaData';
 
 interface DuaAudioPlayerProps {
   dua: DuaItem;
@@ -25,7 +17,6 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
   const [urlIndex, setUrlIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isSpeechFallback, setIsSpeechFallback] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isRepeatingRef = useRef(isRepeating);
@@ -34,26 +25,10 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
     isRepeatingRef.current = isRepeating;
   }, [isRepeating]);
 
-  const effectiveChapterId = chapterId || (dua.id > 0 ? dua.id : 27);
-  
-  // Lookup audio file mapping for this specific dua in this chapter
-  const audioEntry = useMemo(() => {
-    const chapterKey = String(effectiveChapterId);
-    const duaKey = String(dua.id);
-    return audioMap[chapterKey]?.[duaKey] || null;
-  }, [effectiveChapterId, dua.id]);
+  const effectiveChapterId = chapterId || 0;
 
-  // Candidate audio URLs for this specific dua file
-  const candidateAudioUrls = useMemo(() => {
-    if (!audioEntry || !audioEntry.file) return [];
-    const file = audioEntry.file.startsWith('/') ? audioEntry.file : `/${audioEntry.file}`;
-    const filenameOnly = file.replace(/^\/audios\//, '');
-    return [
-      `https://cdn.jsdelivr.net/gh/BetimShala/mburoja-api@master${file}`,
-      `https://raw.githubusercontent.com/BetimShala/mburoja-api/master${file}`,
-      `https://www.hisnmuslim.com/audio/ar/${filenameOnly}`
-    ];
-  }, [audioEntry]);
+  // Audio paths come only from the certified package; no heuristic matching.
+  const candidateAudioUrls = useMemo(() => resolveMburojaAudioUrls(dua), [dua]);
 
   // Reset player when dua or chapter changes
   useEffect(() => {
@@ -63,7 +38,6 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
     setUrlIndex(0);
     setCurrentTime(0);
     setDuration(0);
-    setIsSpeechFallback(false);
   }, [dua.id, effectiveChapterId]);
 
   // Clean up on unmount
@@ -78,56 +52,12 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
       audioRef.current.pause();
       audioRef.current = null;
     }
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
-  };
-
-  const playSpeechSynthesis = (rate = playbackRate) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      setIsLoading(false);
-      setIsPlaying(false);
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(dua.ar);
-    utterance.lang = 'ar-SA';
-    utterance.rate = rate;
-
-    const voices = window.speechSynthesis.getVoices();
-    const arabicVoice = voices.find(v => v.lang.startsWith('ar'));
-    if (arabicVoice) {
-      utterance.voice = arabicVoice;
-    }
-
-    utterance.onstart = () => {
-      setIsLoading(false);
-      setIsPlaying(true);
-      setIsSpeechFallback(true);
-    };
-
-    utterance.onend = () => {
-      if (isRepeatingRef.current) {
-        setTimeout(() => playSpeechSynthesis(rate), 400);
-      } else {
-        setIsPlaying(false);
-      }
-    };
-
-    utterance.onerror = () => {
-      setIsPlaying(false);
-      setIsLoading(false);
-    };
-
-    window.speechSynthesis.speak(utterance);
   };
 
   const playFromCandidateIndex = async (index: number) => {
     if (index >= candidateAudioUrls.length) {
-      // All candidate URLs exhausted -> fallback to SpeechSynthesis
-      playSpeechSynthesis(playbackRate);
+      setIsLoading(false);
+      setIsPlaying(false);
       return;
     }
 
@@ -169,8 +99,7 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
       audio.onplay = () => {
         setIsLoading(false);
         setIsPlaying(true);
-        setIsSpeechFallback(false);
-      };
+          };
 
       audio.onpause = () => {
         setIsPlaying(false);
@@ -205,16 +134,7 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
   };
 
   const togglePlay = () => {
-    if (!candidateAudioUrls || candidateAudioUrls.length === 0) {
-      // If no audio match exists for this dua, optionally play speech synthesis or do nothing
-      if (isPlaying) {
-        stopAllAudio();
-        setIsPlaying(false);
-      } else {
-        playSpeechSynthesis();
-      }
-      return;
-    }
+    if (candidateAudioUrls.length === 0) return;
 
     if (isPlaying) {
       stopAllAudio();
@@ -237,9 +157,6 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
     if (audioRef.current) {
       audioRef.current.playbackRate = newRate;
     }
-    if (isSpeechFallback && isPlaying) {
-      playSpeechSynthesis(newRate);
-    }
   };
 
   const toggleRepeat = () => {
@@ -257,8 +174,8 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  // If no audio file match exists in audioMap
-  if (!audioEntry) {
+  // No audited audio exists for this item.
+  if (candidateAudioUrls.length === 0) {
     if (compact) {
       return (
         <span className="text-[11px] text-slate-500 italic flex items-center space-x-1">
@@ -274,13 +191,7 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
           <VolumeX className="w-4 h-4 text-slate-500 flex-shrink-0" />
           <span className="font-medium text-slate-400">Nuk ka audio për këtë dua</span>
         </div>
-        <button
-          onClick={togglePlay}
-          className="text-[10px] text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800 px-2 py-1 rounded transition-colors"
-          title="Lexo me zë nga shfletuesi"
-        >
-          {isPlaying ? 'Ndal me zë' : 'Lexo me zë'}
-        </button>
+
       </div>
     );
   }
@@ -393,7 +304,7 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
         </div>
 
         {/* Time counter */}
-        {duration > 0 && !isSpeechFallback && (
+        {duration > 0 && !false && (
           <span className="text-[10px] font-mono text-slate-400">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
@@ -404,7 +315,7 @@ export const DuaAudioPlayer: React.FC<DuaAudioPlayerProps> = ({ dua, chapterId, 
       {isPlaying && (
         <div className="flex items-center space-x-1 py-1 px-2 bg-emerald-950/40 border border-emerald-900/40 rounded-lg">
           <span className="text-[10px] text-emerald-400 font-mono font-medium mr-2">
-            {isSpeechFallback ? 'Lexim zëri...' : `Dëgjimi i recitimit real (${audioEntry.file}.mp3)...`}
+            {`Dëgjimi i recitimit (${dua.audio ?? 'audio'})...`}
           </span>
           <div className="flex items-center space-x-1 h-3">
             <span className="w-1 bg-emerald-400 rounded-full animate-bounce h-3"></span>
