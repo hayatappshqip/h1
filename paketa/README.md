@@ -1,6 +1,6 @@
 # Mburoja e Muslimanit — të dhëna për webaplikacion
 
-Një skedar JSON i vetëm me **132 kapituj dhe 278 hyrje**, plus **71 incizim MP3**
+Një skedar JSON i vetëm me **132 kapituj dhe 278 hyrje**, plus **69 incizime MP3**
 për kapitujt 15–29. I ndërtuar nga botimi zyrtar shqip dhe i pastruar nga të gjitha
 defektet e gjetura gjatë auditimit të `mburoja-api`.
 
@@ -12,13 +12,13 @@ sajuar) dhe që **asnjë rresht i librit nuk mungon** (asgjë e humbur). Shih
 ```
 paketa/
 ├── data/
-│   ├── mburoja.json          ← SKEDARI QË TË DUHET (375 KB · 87 KB gzip)
+│   ├── mburoja.json          ← SKEDARI QË TË DUHET (386 KB · 90 KB gzip)
 │   ├── libri.json            burimi kanonik i nxjerrë nga libri (pa audio)
 │   ├── poshteshenimet.json   330 poshtëshënimet e librit, të indeksuara
 │   ├── toc.json              tabela e përmbajtjes së librit (tituj + faqe)
 │   ├── mburoja_v1_backup.json  versioni 1.0.0, për krahasim
 │   └── RAPORTI-RREGULLIMIT.txt  çdo ndryshim i bërë nga rregullo.py
-├── audios/                   71 MP3 (14.6 MB) — kapitujt 15–29
+├── audios/                   69 MP3 — kapitujt 15–29
 ├── shembull/index.html       aplikacion shembull që funksionon menjëherë
 ├── scripts/
 │   ├── parsim_libri.py       DOCX → libri.json
@@ -76,7 +76,7 @@ rishërbente të njëjtat 258 KB nga disku në çdo kërkesë, dhe që sot nuk e
 
 ## Përdorimi në aplikacionin tënd
 
-Ngarko skedarin një herë dhe mbaje në memorie — është vetëm 375 KB (87 KB me gzip)
+Ngarko skedarin një herë dhe mbaje në memorie — është vetëm 386 KB (90 KB me gzip)
 (~60 KB i kompresuar me gzip), pra nuk ka nevojë për API në server.
 
 ```js
@@ -169,7 +169,7 @@ i veçantë për t'i ruajtur, por një font naskh e bën shfaqjen shumë më të
 |---|---|
 | Kapituj | **132** (të plotë, pa vrima; titujt dhe faqet nga tabela e përmbajtjes) |
 | Hyrje | **278** (261 `dua` + 17 `rrefim`) |
-| Me incizim | **70** hyrje / **71** skedar MP3 (14.6 MB) |
+| Me incizim | **68** hyrje / **69** skedar MP3 |
 | Kapituj me audio | 15–29: ezani, namazi, dhikri pas namazit, istihare, mëngjes/mbrëmje, gjumi |
 | Poshtëshënime | **311** të lidhura, **309** me numrin e tyre në libër (1–330, renditje e njëpasnjëshme) |
 | Faqja e librit | për të 132 kapitujt (`page`, 11–142) — lejon verifikim në letër |
@@ -178,7 +178,7 @@ i veçantë për t'i ruajtur, por një font naskh e bën shfaqjen shumë më të
 | Variante mbrëmjeje | **7**, të nxjerra nga poshtëshënimet e kapitullit 27 |
 | Tri suret | të ndara në **9** hyrje (Iḫlãs / Feleḳ / Nãs) në kapitujt 25, 27, 28 |
 | Përkthim alternativ | 197 hyrje kanë edhe `albanian_alt` |
-| Madhësia e JSON | 375 KB (87 KB me gzip) |
+| Madhësia e JSON | 386 KB (90 KB me gzip) |
 
 ## Ndërtimi nga burimi
 
@@ -210,7 +210,7 @@ dhe dosjet `../book/ih_mburoja.docx` e `../repo/`.
       arabic             261 fusha · 261 të gjendura  (100.0%)          ✅
       transliteration    259 fusha · 259 të gjendura  (100.0%)          ✅
       albanian           259 fusha · 259 të gjendura  (100.0%)          ✅
-[4] audio                71 rrugë, 0 që mungojnë                        ✅
+[4] audio                69 rrugë, 0 që mungojnë                        ✅
 [5] tituj / faqe         132/132 tituj, 132/132 faqe                    ✅
 [6] mbulimi i fushave    arabic=261 · translit=259 · albanian=259 · lead=65
 [7] plotësia             0 vargje të humbura (arabe, transkriptim, shqip) ✅
@@ -226,7 +226,7 @@ tjetra ndalon tekstin e humbur.
 
 | Problemi | Sa | Si u rregullua |
 |---|---|---|
-| **Rrugë audio të vdekura** — dataset-i referonte 13 skedarë që nuk ishin në disk | 13 | 2 u kopjuan nga repo-ja; **11 u bënë `null`** sepse nuk ekzistojnë askund (shih `audio_mungon_arsye`) |
+| **Rrugë audio të vdekura** — dataset-i referonte 13 skedarë që nuk ishin në disk | 13 | **13 u bënë `null`** sepse nuk ekzistojnë në paketën publike (shih `audio_mungon_arsye`) |
 | **Transkriptimi i hedhur te `lead`** — klasifikuesi i quante "tri" dhe "herë" fjalë shqipe, ndaj `(tri herë)` e tërhiqte tërë rreshtin te `lead` | 3 | hapi i numërimit u zhvendos **para** klasifikimit; tani kontrolli [2] e ndalon këtë përgjithmonë |
 | **Titulli i ch130 i prerë** — libri e shkruan në dy rreshta, tabela e përmbajtjes kap vetëm të parin | 1 | plotësuar nga koka e kapitullit në trupin e librit |
 | **Hyrje e sajuar** — koka e ch130 ishte ndarë në një hyrje më vete, me titullin e bashkuar brenda një citimi që nuk ekziston në libër | 1 | u hoq; përmbajtja shkoi te titulli dhe te `lead` i hyrjes pasuese |
@@ -249,9 +249,9 @@ dhe te vetë libri**, jo te skema:
 
 | Kufizimi | Shtrirja | Pse |
 |---|---|---|
-| **Origjina e incizimeve e pavërtetuar** | të 71 MP3-të | repo-ja burimore nuk jep atributim; 3 skedarë mbajnë tag-un `TALB=Kalamullah.com`. Është çështje licence — lexo `LICENCA.md` para shpërndarjes publike. |
+| **Origjina e incizimeve e pavërtetuar** | të 69 MP3-të | repo-ja burimore nuk jep atributim; 3 skedarë mbajnë tag-un `TALB=Kalamullah.com`. Është çështje licence — lexo `LICENCA.md` para shpërndarjes publike. |
 | **Audio vetëm për kapitujt 15–29** | 118 kapituj pa audio | kështu u kërkua në detyrë; repo-ja nuk ka incizime për të tjerët |
-| **11 hyrje brenda 15–29 pa audio** | ch25 ×3, ch26 ×1, ch27 ×3, ch28 ×4 | `invocations.json` i repo-s i referon këta skedarë, por ata **nuk ekzistojnë** në repo. Nuk ka burim tjetër. Të shënuara me `audio_mungon_arsye`. |
+| **13 hyrje brenda 15–29 pa audio** | ch25 ×3, ch26 ×1, ch27 ×3, ch28 ×4 | `invocations.json` i repo-s i referon këta skedarë, por ata **nuk ekzistojnë** në repo. Nuk ka burim tjetër. Të shënuara me `audio_mungon_arsye`. |
 | **1 hyrje pa `count`** | ch130 #2 | libri nuk e jep numërimin në këtë vend; `count: null` + `count_mungon_arsye`. Mos e zëvendëso me 1. |
 | **4 hyrje pa `albanian`** | ch102 ×2, ch110 ×2, ch113 | libri nuk jep përkthim të veçantë aty; arsyeja është në `albanian_mungon_arsye` |
 | **Shqipja e 5 nga 7 variantet e mbrëmjes është e cunguar në vetë librin** | ch27, `varianti: "mbrëmje"` | burimi i tyre janë poshtëshënimet; të shënuara me `i_cunguar_ne_liber: true` |

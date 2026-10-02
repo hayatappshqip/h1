@@ -1,6 +1,6 @@
 # Referenca e skemës — `data/mburoja.json`
 
-Versioni 1.0.0 · gjeneruar 2026-09-30
+Versioni 2.0.0 · gjeneruar 2026-10-01
 
 ## Struktura e përgjithshme
 
@@ -71,7 +71,7 @@ Versioni 1.0.0 · gjeneruar 2026-09-30
 | `count` | int \| null | **po** | sa herë përsëritet; `1` nëse libri nuk thotë ndryshe. `null` **vetëm** kur libri nuk e jep fare numërimin — atëherë shoqërohet me `count_mungon_arsye`. Mos e zëvendëso me 1. |
 | `notes` | string[] | jo | poshtëshënimet e librit (burimet dhe shpjegimet); mund të jetë `[]` |
 | `audio` | string | **po** | rruga relative, p.sh. `"audios/027_19.mp3"`, ose `null` |
-| `audio_parts` | string[] | jo | të gjitha MP3-të kur libri bashkon një bllok që repo-ja e kishte ndarë |
+| `audio_parts` | string[] | **po** | të gjitha MP3-të kur libri bashkon një bllok që repo-ja e kishte ndarë |
 | `has_audio` | bool | jo | shkurt për `audio !== null` |
 
 ### Rregullat e vlefshmërisë

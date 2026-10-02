@@ -48,9 +48,9 @@
   "counts": {
    "chapters": 132,
    "items": 278,
-   "items_with_audio": 70,
-   "audio_files": 71,
-   "audio_rrefim_i_hoqur": 11,
+   "items_with_audio": 68,
+   "audio_files": 69,
+   "audio_rrefim_i_hoqur": 13,
    "audio_rifreskuar": 0,
    "footnotes": 311,
    "poshteshenime_ne_liber": 330,
@@ -58,7 +58,7 @@
    "poshteshenime_pa_numer": 2,
    "poshteshenime_te_lidhura_qarte": 177,
    "poshteshenime_te_zgjidhura_me_renditje": 132,
-   "duke_perdorur_audio": 70
+   "duke_perdorur_audio": 68
   },
   "schema": {
    "type": "'dua' = ka tekst arabik për t'u lexuar · 'rrefim' = hadith/udhëzim, shfaq fushën lead",
@@ -725,7 +725,7 @@
    "title": "KUR THIRRET EZANI",
    "page": 22,
    "item_count": 3,
-   "audio_count": 3,
+   "audio_count": 2,
    "items": [
     {
      "n": 1,
@@ -788,11 +788,12 @@
        "tekst": "Ebu Davudi, Tirmidhiu dhe Ahmedi (Irvaul Galil)."
       }
      ],
-     "audio": "audios/015_03.mp3",
+     "audio": null,
      "audio_parts": null,
-     "has_audio": true,
+     "has_audio": false,
      "time": null,
-     "id": 3
+     "id": 3,
+     "audio_mungon_arsye": "repo-ja burimore e referon “audios/015_03.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
     }
    ]
   },
@@ -1424,7 +1425,7 @@
    "title": "SALAVATET PËR PROFETIN ﷺ PAS TEHIJATIT",
    "page": 38,
    "item_count": 2,
-   "audio_count": 2,
+   "audio_count": 1,
    "items": [
     {
      "n": 1,
@@ -1445,11 +1446,12 @@
        "tekst": "80Buhariu."
       }
      ],
-     "audio": "audios/023_01.mp3",
+     "audio": null,
      "audio_parts": null,
-     "has_audio": true,
+     "has_audio": false,
      "time": null,
-     "id": 1
+     "id": 1,
+     "audio_mungon_arsye": "repo-ja burimore e referon “audios/023_01.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
     },
     {
      "n": 2,
@@ -2532,7 +2534,7 @@
      "lead": "Kur ngrysemi, themi:",
      "arabic": "أمْسَيْنَا وأمْسَى الـمُلْكُ للَّهِ رَبِّ العَالَمينَ اللَّهُمَّ إنِّي أسْألُكَ خَيْرَ هَذِهِ اللَّيْلَةِ، فَتْحَهَا، ونَصْرَهَا ونُوْرَهَا، وبَرَكَتهَا، وَهُدَاهَا، وأعُوْذُ بِكَ مِنْ شَرِّ مَا فيْهَا وَشَرِّ مَا بَعْدَهَا.",
      "transliteration": "Emsejnã ue emsel mulku lil-lãhi rabbil ‘ãlemîn. All-llãhumme innî es’eluke ḣajra hãdhihil-lejleti: fet’ḥahã we naṣrahã we nûrahã we beraketehã we hudãhã, we e’ũdhu bike min sherri mã fîhã we sherri mã ba’ëdehã.",
-     "albanian": "U ngrysëm… O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë…",
+     "albanian": "U ngrysëm...O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë…",
      "albanian_alt": null,
      "count": 1,
      "notes": [],

@@ -415,7 +415,7 @@ MBREMJA = [
      'count': 1},
     {'pas': 17, 'arabic': 'أمْسَيْنَا وأمْسَى الـمُلْكُ للَّهِ رَبِّ العَالَمينَ اللَّهُمَّ إنِّي أسْألُكَ خَيْرَ هَذِهِ اللَّيْلَةِ، فَتْحَهَا، ونَصْرَهَا ونُوْرَهَا، وبَرَكَتهَا، وَهُدَاهَا، وأعُوْذُ بِكَ مِنْ شَرِّ مَا فيْهَا وَشَرِّ مَا بَعْدَهَا.',
      'transliteration': 'Emsejnã ue emsel mulku lil-lãhi rabbil ‘ãlemîn. All-llãhumme innî es’eluke ḣajra hãdhihil-lejleti: fet’ḥahã we naṣrahã we nûrahã we beraketehã we hudãhã, we e’ũdhu bike min sherri mã fîhã we sherri mã ba’ëdehã.',
-     'albanian': 'U ngrysëm… O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë…',
+     'albanian': 'U ngrysëm...O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë…',
      'i_cunguar': True, 'count': 1},
     {'pas': 18, 'arabic': 'أمْسَيْنَا عَلَى فِطْرَةِ الإسْلام.',
      'transliteration': 'Emsejnã ‘alã fitratil islãm.',
@@ -529,8 +529,14 @@ def siguro_audio(d):
 def main():
     global RAPORT
     RAPORT = []
+    # Always rebuild from the immutable v1 extraction. Running the normalizer on
+    # an already-normalized v2 file would split multi-part entries and append the
+    # evening variants a second time, so the build must be idempotent by design.
+    source_p = os.path.join(DATA, 'mburoja_v1_backup.json')
     p = os.path.join(DATA, 'mburoja.json')
-    d = json.load(open(p, encoding='utf-8'))
+    if not os.path.exists(source_p):
+        raise FileNotFoundError(f'Mungon burimi i pandryshueshëm: {source_p}')
+    d = json.load(open(source_p, encoding='utf-8'))
     toc = {}
     tp = os.path.join(DATA, 'toc.json')
     if os.path.exists(tp):

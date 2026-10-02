@@ -18,8 +18,15 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCX = ROOT.parent / "book" / "ih_mburoja.docx"
+DOCX_CANDIDATES = [
+    ROOT.parent / "book" / "ih_mburoja.docx",
+    ROOT.parent / "book" / "ih_mburoja_muslimanit.docx",
+    ROOT / "book" / "ih_mburoja.docx",
+    ROOT / "book" / "ih_mburoja_muslimanit.docx",
+]
+DOCX = next((p for p in DOCX_CANDIDATES if p.exists()), DOCX_CANDIDATES[0])
 OUT = ROOT / "data" / "libri.json"
+FULL_TEXT_OUT = ROOT.parent / "book" / "ih_full.txt"
 
 # Përfshin edhe formatet paraqitëse arabe: ﷺ (U+FDFA), ﷽, lidhëzat FE70-FEFF.
 ARABIC = re.compile(r"[\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]")
@@ -173,6 +180,14 @@ def main():
     zf = zipfile.ZipFile(DOCX)
     lines = para_lines(zf)
     notes = footnotes(zf)
+
+    # Dump-i i plotë përdoret nga valido_strikt.py si burim i pavarur për
+    # krahasimin fjalë-për-fjalë. Gjenerohet në çdo parse që certifikimi të jetë
+    # i riprodhueshëm edhe pa ruajtur DOCX-në binare në Git.
+    FULL_TEXT_OUT.parent.mkdir(parents=True, exist_ok=True)
+    full_text = "\n".join(t for t, _ in lines if t.strip())
+    full_text += "\n\n" + "\n".join(notes[k] for k in sorted(notes)) + "\n"
+    FULL_TEXT_OUT.write_text(full_text, encoding="utf-8")
 
     toc = [i for i, (t, _) in enumerate(lines) if t == "PËRMBAJTJA"]
     body = lines[: toc[-1]] if toc else lines

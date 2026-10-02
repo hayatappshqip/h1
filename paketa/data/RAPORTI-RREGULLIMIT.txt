@@ -240,6 +240,8 @@ ch131
    normalizim karakteresh
 ch132
    #1 fushat u rindanë (shqip↔transkriptim)
+ch15#3 audio u hoq (nuk ekziston as në repo): audios/015_03.mp3
+ch23#1 audio u hoq (nuk ekziston as në repo): audios/023_01.mp3
 ch25#5 audio u hoq (nuk ekziston as në repo): audios/025_04.mp3
 ch25#6 audio u hoq (nuk ekziston as në repo): audios/025_07.mp3
 ch25#7 audio u hoq (nuk ekziston as në repo): audios/025_08.mp3
