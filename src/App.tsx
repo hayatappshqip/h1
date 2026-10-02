@@ -7,7 +7,6 @@ import { ActiveTab, Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView';
 import { NamaziView } from './components/NamaziView';
 import { KuraniView } from './components/KuraniView';
-import { HifzModule } from './components/HifzModule';
 import { MburojaView } from './components/MburojaView';
 import { DitaImeView } from './components/DitaImeView';
 import { SettingsView } from './components/SettingsView';
@@ -483,9 +482,6 @@ export default function App() {
  onSaveNote={handleSaveQuranNote}
  onDeleteNote={handleDeleteQuranNote}
  />
- )}
- {activeTab === 'hifz' && (
- <HifzModule />
  )}
 
  {activeTab === 'mburoja' && (

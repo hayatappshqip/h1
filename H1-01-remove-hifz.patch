@@ -1,0 +1,3650 @@
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/App.tsx /home/user/h1-next/src/App.tsx
+--- a/src/App.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/App.tsx	2026-10-02 08:16:16.698287241 +0000
+@@ -7,7 +7,6 @@
+ import { HomeView } from './components/HomeView';
+ import { NamaziView } from './components/NamaziView';
+ import { KuraniView } from './components/KuraniView';
+-import { HifzModule } from './components/HifzModule';
+ import { MburojaView } from './components/MburojaView';
+ import { DitaImeView } from './components/DitaImeView';
+ import { SettingsView } from './components/SettingsView';
+@@ -484,9 +483,6 @@
+  onDeleteNote={handleDeleteQuranNote}
+  />
+  )}
+- {activeTab === 'hifz' && (
+- <HifzModule />
+- )}
+ 
+  {activeTab === 'mburoja' && (
+  <MburojaView
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/HifzLearnView.tsx /home/user/h1-next/src/components/HifzLearnView.tsx
+--- a/src/components/HifzLearnView.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/HifzLearnView.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,405 +0,0 @@
+-import React, { useState, useEffect, useRef } from 'react';
+-import { getSurahData } from '../services/quranApi';
+-import { sanitizeArabicText } from '../utils/arabicUtils';
+-import { QuranSurahData, Ayah } from '../types';
+-import { ALL_SURAHS_META } from '../data/quranData';
+-import { Play, Pause, ChevronRight, Check, Eye, EyeOff, RotateCcw, Volume2, BookOpen, Mic } from 'lucide-react';
+-import { hifzDb, HifzSettings, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+-import type { HifzMethod } from '../services/hifzDb';
+-import { processReviewResult } from '../services/hifzScheduler';
+-import { QURAN_RECITERS } from './KuraniView';
+-import { HifzSelfRecorder } from './HifzSelfRecorder';
+-import { MutashabihatBanner } from './MutashabihatBanner';
+-
+-interface WordByWord {
+- id: number;
+- position: number;
+- textUthmani: string;
+- translation: string;
+- transliteration: string;
+- audioUrl: string | null;
+-}
+-
+-type Stage = 'LISTEN' | 'UNDERSTAND' | 'READ_ALONG' | 'RECITE_VISIBLE' | 'RECITE_HIDDEN' | 'CONNECT' | 'ASSESS';
+-
+-interface Props {
+- surahNumber: number;
+- ayahNumber: number;
+- method: HifzMethod;
+- onComplete: (result: 'KNEW' | 'STRUGGLED' | 'FORGOT', stumblePoints: number[]) => void;
+- onClose: () => void;
+-}
+-
+-export const HifzLearnView: React.FC<Props> = ({ surahNumber, ayahNumber, method, onComplete, onClose }) => {
+- const [stage, setStage] = useState<Stage>('LISTEN');
+- const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
+- const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
+- const [ayahData, setAyahData] = useState<Ayah | null>(null);
+- const [words, setWords] = useState<WordByWord[]>([]);
+- const [loading, setLoading] = useState(true);
+- 
+- // Audio state
+- const audioRef = useRef<HTMLAudioElement | null>(null);
+- const [isPlaying, setIsPlaying] = useState(false);
+- const [listenCount, setListenCount] = useState(0);
+- 
+- // Hidden state
+- const [revealedWords, setRevealedWords] = useState<Set<number>>(new Set());
+- const [allStumblePoints, setAllStumblePoints] = useState<Set<number>>(new Set());
+- 
+- const currentReciter = QURAN_RECITERS.find(r => r.key === settings.reciterId) || QURAN_RECITERS[0];
+- 
+- useEffect(() => {
+- // Load settings
+- hifzDb.settings.get(1).then(s => {
+- if (s) setSettings(s);
+- });
+- 
+- // Load ayah data
+- getSurahData(surahNumber).then(data => {
+- setSurahData(data);
+- const a = data.ayahs.find(x => x.numberInSurah === ayahNumber);
+- if (a) setAyahData(a);
+- });
+- 
+- // Load word by word
+- fetch(`https://api.quran.com/api/v4/verses/by_key/${surahNumber}:${ayahNumber}?language=${settings.uiLanguage}&words=true&word_fields=text_uthmani,translation`)
+- .then(res => res.json())
+- .then(json => {
+- if (json.verse && json.verse.words) {
+- const w = json.verse.words.filter((x: any) => x.char_type_name === 'word').map((x: any) => ({
+- id: x.id,
+- position: x.position,
+- textUthmani: sanitizeArabicText(x.text_uthmani),
+- translation: x.translation?.text || '',
+- transliteration: x.transliteration?.text || '',
+- audioUrl: x.audio_url ? `https://verses.quran.com/${x.audio_url}` : null
+- }));
+- setWords(w);
+- }
+- setLoading(false);
+- })
+- .catch(() => setLoading(false));
+- 
+- return () => {
+- if (audioRef.current) {
+- audioRef.current.pause();
+- }
+- };
+- }, [surahNumber, ayahNumber]);
+- 
+- // Stage logic
+- const handleNextStage = () => {
+- if (audioRef.current) {
+- audioRef.current.pause();
+- setIsPlaying(false);
+- }
+- setListenCount(0);
+- 
+- switch (stage) {
+- case 'LISTEN': setStage(method === 'B' ? 'UNDERSTAND' : 'READ_ALONG'); break;
+- case 'UNDERSTAND': setStage('READ_ALONG'); break;
+- case 'READ_ALONG': setStage('RECITE_VISIBLE'); break;
+- case 'RECITE_VISIBLE': setStage('RECITE_HIDDEN'); break;
+- case 'RECITE_HIDDEN': setStage('CONNECT'); break;
+- case 'CONNECT': setStage('ASSESS'); break;
+- default: break;
+- }
+- };
+- 
+- // Play audio
+- const toggleAudio = () => {
+- if (!audioRef.current) {
+- const url = currentReciter.getAyahAudioUrl(surahNumber, ayahNumber);
+- audioRef.current = new Audio(url);
+- audioRef.current.onended = () => {
+- setListenCount(prev => prev + 1);
+- setIsPlaying(false);
+- // Auto replay if in LISTEN or READ_ALONG and not reached target
+- const target = stage === 'LISTEN' ? settings.listenRepeats : settings.readAlongRepeats;
+- if (listenCount + 1 < target) {
+- setTimeout(() => {
+- audioRef.current?.play().catch(() => {});
+- setIsPlaying(true);
+- }, 500);
+- }
+- };
+- }
+- 
+- if (isPlaying) {
+- audioRef.current.pause();
+- setIsPlaying(false);
+- } else {
+- audioRef.current.play().catch(e => console.error(e));
+- setIsPlaying(true);
+- }
+- };
+- 
+- // Auto play when entering LISTEN or READ_ALONG
+- useEffect(() => {
+- if (stage === 'LISTEN' || stage === 'READ_ALONG') {
+- if (audioRef.current) {
+- audioRef.current.pause();
+- audioRef.current = null;
+- }
+- setListenCount(0);
+- setTimeout(toggleAudio, 300);
+- }
+- }, [stage]);
+-
+- if (loading || !ayahData) {
+- return (
+- <div className="flex items-center justify-center h-64">
+- <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+- </div>
+- );
+- }
+- 
+- const surahMeta = ALL_SURAHS_META.find(s => s.number === surahNumber);
+-
+- return (
+- <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col h-[85vh]">
+- {/* Header */}
+- <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950/50">
+- <div className="flex flex-col">
+- <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Moduli Hifz</span>
+- <h2 className="text-lg font-semibold text-slate-100">{surahMeta?.transliteration} • Ajeti {ayahNumber}</h2>
+- </div>
+- <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-200 bg-slate-800/50 rounded-full transition-colors">
+- <ChevronRight className="w-5 h-5" />
+- </button>
+- </div>
+- 
+- {/* Stage Indicator */}
+- <div className="flex items-center justify-center p-3 border-b border-slate-800 bg-slate-900">
+- <div className="flex space-x-1 sm:space-x-2">
+- {['LISTEN', 'UNDERSTAND', 'READ_ALONG', 'RECITE_VISIBLE', 'RECITE_HIDDEN', 'CONNECT', 'ASSESS'].map((s, idx) => {
+- if (s === 'UNDERSTAND' && method !== 'B') return null;
+- const stages = ['LISTEN', 'UNDERSTAND', 'READ_ALONG', 'RECITE_VISIBLE', 'RECITE_HIDDEN', 'CONNECT', 'ASSESS'];
+- const currentIndex = stages.indexOf(stage);
+- const isPast = stages.indexOf(s) < currentIndex;
+- const isCurrent = s === stage;
+- return (
+- <div key={s} className="flex items-center">
+- <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${isCurrent ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : isPast ? 'bg-emerald-700' : 'bg-slate-700'}`} />
+- {idx < stages.length - 1 && <div className={`h-px w-3 sm:w-6 ${isPast ? 'bg-emerald-700' : 'bg-slate-800'}`} />}
+- </div>
+- );
+- })}
+- </div>
+- </div>
+- 
+- {/* Content Area */}
+- <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col items-center justify-center relative">
+- 
+- {stage === 'LISTEN' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <div className="inline-flex items-center justify-center p-4 bg-emerald-950/30 rounded-full text-emerald-400 mb-2">
+- <Volume2 className="w-8 h-8" />
+- </div>
+- <h3 className="text-xl font-medium text-slate-300">Dëgjo me kujdes</h3>
+- <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
+- {ayahData.textAr}
+- </p>
+- <div className="font-mono text-emerald-400 text-lg">
+- {listenCount} / {settings.listenRepeats}
+- </div>
+- </div>
+- )}
+- 
+- {stage === 'UNDERSTAND' && (
+- <div className="w-full max-w-2xl space-y-8">
+- <h3 className="text-xl font-medium text-slate-300 text-center mb-6">Kupto fjalë për fjalë</h3>
+- <div className="flex flex-wrap justify-end gap-x-6 gap-y-8 dir-rtl" dir="rtl">
+- {words.map((w, idx) => (
+- <div key={idx} className="flex flex-col items-center">
+- <span className="text-[28px] text-emerald-300 font-arabic mb-2">{w.textUthmani}</span>
+- <span className="text-sm text-slate-400 font-mono mb-1">{w.transliteration}</span>
+- <span className="text-sm text-slate-200">{w.translation}</span>
+- </div>
+- ))}
+- </div>
+- <div className="mt-8 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+- <p className="text-slate-300 text-center">{ayahData.textSq}</p>
+- </div>
+- </div>
+- )}
+- 
+- {stage === 'READ_ALONG' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <div className="inline-flex items-center justify-center p-4 bg-blue-950/30 rounded-full text-blue-400 mb-2">
+- <BookOpen className="w-8 h-8" />
+- </div>
+- <h3 className="text-xl font-medium text-slate-300">Lexo së bashku me audion</h3>
+- <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
+- {ayahData.textAr}
+- </p>
+- <div className="font-mono text-blue-400 text-lg">
+- {listenCount} / {settings.readAlongRepeats}
+- </div>
+- </div>
+- )}
+- 
+- {stage === 'RECITE_VISIBLE' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <div className="inline-flex items-center justify-center p-4 bg-amber-950/30 rounded-full text-amber-400 mb-2">
+- <Mic className="w-8 h-8" />
+- </div>
+- <h3 className="text-xl font-medium text-slate-300">Recito me zë (teksti i dukshëm)</h3>
+- <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
+- {ayahData.textAr}
+- </p>
+- <div className="flex flex-col items-center justify-center space-y-4">
+- <div className="font-mono text-amber-400 text-lg">
+- {listenCount} / {settings.reciteVisibleRepeats}
+- </div>
+- <button 
+- onClick={() => setListenCount(p => p + 1)}
+- className="px-6 py-2 bg-amber-600/20 text-amber-400 rounded-full hover:bg-amber-600/30 transition-colors border border-amber-500/30"
+- >
+- E recitova
+- </button>
+- </div>
+- 
+- <div className="mt-8 pt-8 border-t border-slate-800/50 w-full space-y-4">
+- <MutashabihatBanner surahNumber={surahNumber} ayahNumber={ayahNumber} />
+- <HifzSelfRecorder 
+- ayahKey={`${surahNumber}:${ayahNumber}`}
+- referenceAudioUrl={currentReciter.getAyahAudioUrl(surahNumber, ayahNumber)}
+- />
+- </div>
+- </div>
+- )}
+- 
+- {stage === 'RECITE_HIDDEN' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <div className="inline-flex items-center justify-center p-4 bg-purple-950/30 rounded-full text-purple-400 mb-2">
+- <EyeOff className="w-8 h-8" />
+- </div>
+- <h3 className="text-xl font-medium text-slate-300">Recito nga memorja</h3>
+- <p className="text-sm text-slate-400">Prek çdo fjalë të turbullt nëse e harron</p>
+- 
+- <div className="flex flex-wrap justify-end gap-x-2 gap-y-6 dir-rtl mt-6" dir="rtl">
+- {words.map((w, idx) => (
+- <button 
+- key={idx} 
+- onClick={() => {
+- setRevealedWords(prev => new Set(prev).add(w.position));
+- setAllStumblePoints(prev => new Set(prev).add(w.position));
+- }}
+- className={`px-1 py-0.5 rounded transition-all duration-300 ${revealedWords.has(w.position) ? 'bg-transparent' : 'bg-slate-700/80 blur-sm hover:blur-none cursor-pointer'}`}
+- >
+- <span className="text-[32px] sm:text-[42px] text-slate-100 font-arabic">{w.textUthmani}</span>
+- </button>
+- ))}
+- </div>
+- 
+- <div className="flex flex-col items-center justify-center space-y-4 pt-8">
+- <div className="font-mono text-purple-400 text-lg">
+- {listenCount} / {settings.reciteHiddenRepeats}
+- </div>
+- <button 
+- onClick={() => {
+- setListenCount(p => p + 1);
+- setRevealedWords(new Set()); // re-hide
+- }}
+- className="px-6 py-2 bg-purple-600/20 text-purple-400 rounded-full hover:bg-purple-600/30 transition-colors border border-purple-500/30"
+- >
+- E recitova
+- </button>
+- </div>
+-
+- <div className="mt-8 pt-8 border-t border-slate-800/50 w-full space-y-4">
+- <MutashabihatBanner surahNumber={surahNumber} ayahNumber={ayahNumber} />
+- <HifzSelfRecorder 
+- ayahKey={`${surahNumber}:${ayahNumber}`}
+- referenceAudioUrl={currentReciter.getAyahAudioUrl(surahNumber, ayahNumber)}
+- />
+- </div>
+- </div>
+- )}
+- 
+- {stage === 'CONNECT' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <h3 className="text-xl font-medium text-slate-300">Lidhje me të mëparshmen</h3>
+- <p className="text-sm text-slate-400 mb-6">Recito nga fillimi i sures (ose 3 ajetet e mëparshme) deri te ky, për ta ndërtuar kalimin.</p>
+- <div className="flex flex-col space-y-2 opacity-70">
+- {surahData && surahData.ayahs
+- .filter(a => a.numberInSurah >= Math.max(1, ayahNumber - 3) && a.numberInSurah < ayahNumber)
+- .map(a => (
+- <p key={a.numberInSurah} className="text-[28px] leading-[1.8] text-slate-300 font-arabic text-right dir-rtl" dir="rtl">
+- {a.textAr} 
+- <span className="text-slate-500 text-sm ml-2 font-sans mr-2">({a.numberInSurah})</span>
+- </p>
+- ))}
+- </div>
+- <p className="text-[32px] leading-[1.8] text-emerald-300 font-arabic text-right dir-rtl mt-4 border-r-4 border-emerald-500 pr-4" dir="rtl">
+- {ayahData.textAr}
+- <span className="text-emerald-500 text-sm font-sans mr-2">({ayahNumber})</span>
+- </p>
+- 
+- <button 
+- onClick={handleNextStage}
+- className="mt-8 px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition-colors font-medium shadow-lg shadow-emerald-900/50"
+- >
+- Gati për vlerësim
+- </button>
+- </div>
+- )}
+- 
+- {stage === 'ASSESS' && (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <h3 className="text-2xl font-semibold text-slate-100">Sa e di mirë?</h3>
+- <p className="text-slate-400">Ji i sinqertë. Kjo cakton rishikimin tënd të radhës.</p>
+- 
+- <div className="flex flex-col space-y-4 max-w-xs mx-auto pt-6">
+- <button 
+- onClick={() => onComplete('KNEW', Array.from(allStumblePoints))}
+- className="px-6 py-4 bg-emerald-600/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
+- >
+- <Check className="w-5 h-5" />
+- <span>E dija</span>
+- </button>
+- <button 
+- onClick={() => onComplete('STRUGGLED', Array.from(allStumblePoints))}
+- className="px-6 py-4 bg-amber-600/10 text-amber-400 border border-amber-500/30 hover:bg-amber-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
+- >
+- <RotateCcw className="w-5 h-5" />
+- <span>Kam pasur vështirësi</span>
+- </button>
+- <button 
+- onClick={() => onComplete('FORGOT', Array.from(allStumblePoints))}
+- className="px-6 py-4 bg-red-600/10 text-red-400 border border-red-500/30 hover:bg-red-600/20 rounded-xl transition-all font-medium text-lg flex items-center justify-center space-x-2"
+- >
+- <EyeOff className="w-5 h-5" />
+- <span>E harrova</span>
+- </button>
+- </div>
+- </div>
+- )}
+- 
+- </div>
+- 
+- {/* Footer Controls */}
+- {stage !== 'ASSESS' && stage !== 'CONNECT' && (
+- <div className="p-4 border-t border-slate-800 bg-slate-900 flex items-center justify-between">
+- <button 
+- onClick={toggleAudio}
+- className={`p-3 rounded-full transition-colors ${isPlaying ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+- disabled={stage === 'RECITE_VISIBLE' || stage === 'RECITE_HIDDEN'}
+- >
+- {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+- </button>
+- 
+- <button 
+- onClick={handleNextStage}
+- className="px-6 py-2 bg-slate-100 text-slate-900 rounded-full font-medium hover:bg-white transition-colors flex items-center space-x-2"
+- >
+- <span>Faza tjetër</span>
+- <ChevronRight className="w-4 h-4" />
+- </button>
+- </div>
+- )}
+- </div>
+- );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/HifzModule.tsx /home/user/h1-next/src/components/HifzModule.tsx
+--- a/src/components/HifzModule.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/HifzModule.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,285 +0,0 @@
+-import React, { useState, useEffect, useRef } from 'react';
+-import { HifzLearnView } from './HifzLearnView';
+-import { HifzReviewSession } from './HifzReviewSession';
+-import { MutashabihatView } from './MutashabihatView';
+-import { MyHifzView } from './MyHifzView';
+-import { BookOpen, Play, Sparkles, ChevronLeft } from 'lucide-react';
+-import { hifzDb, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+-import type { HifzSettings, HifzMethod, AyahStatus } from '../services/hifzDb';
+-import { setMemorizedUnified, newSessionId } from '../services/hifzDb';
+-import { getReviewQueue, processReviewResult } from '../services/hifzScheduler';
+-import { QURAN_RECITERS } from './KuraniView';
+-
+-// S6: etiketat shqip të statuseve SM-2 (identifikuesit mbesin anglisht).
+-const STATUS_ETIKETAT: Record<AyahStatus, string> = {
+-  NEW: 'Të reja',
+-  LEARNING: 'Në mësim',
+-  REVIEWING: 'Në rishikim',
+-  CONSOLIDATED: 'Të forcuara',
+-};
+-
+-const DITET_SHKURTIM = ['Di', 'Hë', 'Ma', 'Më', 'En', 'Pr', 'Sh'];
+-const DAY_MS = 24 * 60 * 60 * 1000;
+-
+-interface HifzStats {
+-  total: number;
+-  byStatus: Record<AyahStatus, number>;
+-  dueToday: number;
+-  week: { label: string; count: number }[];
+-  weekTotal: number;
+-  weekMax: number;
+-}
+-
+-const METHODS: { id: HifzMethod; title: string; desc: string; soon?: boolean }[] = [
+-  { id: 'A', title: 'Dëgjo & Përsërit', desc: 'Metoda audio për jo-arabishtfolës' },
+-  { id: 'B', title: 'Fjalë pas fjalë', desc: 'Kuptimi i ajetit (fjalë për fjalë)' },
+-  { id: 'C', title: 'Metoda Osmane', desc: 'Faqe/xhuz me rrotullim', soon: true }
+-];
+-
+-export const HifzModule: React.FC = () => {
+-  const [learningAyah, setLearningAyah] = useState<{ surah: number; ayah: number } | null>(null);
+-  const [reviewQueue, setReviewQueue] = useState<any[]>([]);
+-  const [isReviewing, setIsReviewing] = useState(false);
+-  const [showMutashabihat, setShowMutashabihat] = useState(false);
+-  const [showMyHifz, setShowMyHifz] = useState(false);
+-  const [overdueCount, setOverdueCount] = useState(0);
+-  const [stats, setStats] = useState<HifzStats | null>(null);
+-  const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
+-  const [loading, setLoading] = useState(true);
+-  const [method, setMethod] = useState<HifzMethod>('B');
+-  const didInitialLoad = useRef(false);
+-  const [tempSurah, setTempSurah] = useState(114);
+-  const [tempAyah, setTempAyah] = useState(1);
+-  // Fillimi i mësimit mbahet në ref (jo state) që të mos shkaktojë re-render.
+-  const learnStartedAt = useRef<number>(0);
+-
+-  const loadData = async () => {
+-    setLoading(true);
+-    const s = await hifzDb.settings.get(1);
+-    if (s) { setSettings(s); if (!didInitialLoad.current && s.preferredMethod) setMethod(s.preferredMethod); }
+-    const allRecords = await hifzDb.ayahRecords.toArray();
+-    const now = new Date();
+-    setOverdueCount(allRecords.filter(r => new Date(r.dueDate) < now).length);
+-    const queue = await getReviewQueue('ADAPTIVE');
+-    setReviewQueue(queue);
+-    // S6: statistikat — gjithçka nga tabelat lokale (pa rrjet).
+-    // Dështimi këtu nuk e bllokon ekranin bazë (radha/metoda): kapet dhe
+-    // karta mbetet në gjendjen e ngarkimit.
+-    try {
+-    const total = await hifzDb.memorized.count();
+-    const byStatus: Record<AyahStatus, number> = { NEW: 0, LEARNING: 0, REVIEWING: 0, CONSOLIDATED: 0 };
+-    for (const r of allRecords) byStatus[r.status]++;
+-    const nowMs = now.getTime();
+-    const dueToday = allRecords.filter(r => r.dueDate <= nowMs).length;
+-    const sessions = await hifzDb.sessions.toArray();
+-    const recent = sessions.filter(s => s.startedAt > nowMs - 7 * DAY_MS);
+-    // Dritare 24-orëshe (jo ditë kalendarike): përputhet saktë me filtrin
+-    // startedAt > tani-7d dhe nuk thyhet nga ndryshimi i orës (DST).
+-    const week = Array.from({ length: 7 }, (_, i) => {
+-      const end = nowMs - (6 - i) * DAY_MS;
+-      const start = end - DAY_MS;
+-      const count = recent.filter(s => s.startedAt > start && s.startedAt <= end).length;
+-      const label = i === 6 ? 'Sot' : DITET_SHKURTIM[new Date(end).getDay()];
+-      return { label, count };
+-    });
+-    const weekTotal = week.reduce((a, d) => a + d.count, 0);
+-    setStats({ total, byStatus, dueToday, week, weekTotal, weekMax: Math.max(1, ...week.map(d => d.count)) });
+-    } catch {
+-      setStats(null);
+-    }
+-    setLoading(false);
+-    didInitialLoad.current = true;
+-  };
+-
+-  useEffect(() => { loadData(); }, [learningAyah, isReviewing]);
+-
+-  const chooseMethod = async (m: HifzMethod) => {
+-    if (m === 'C') return; // së shpejti
+-    setMethod(m);
+-    const s = await hifzDb.settings.get(1);
+-    if (s) {
+-      s.preferredMethod = m;
+-      s.showWordByWord = (m === 'B');
+-      await hifzDb.settings.put(s);
+-      setSettings(s);
+-    }
+-  };
+-
+-  const changeReciter = async (id: string) => {
+-    const s = await hifzDb.settings.get(1);
+-    if (s) { s.reciterId = id; await hifzDb.settings.put(s); setSettings(s); }
+-  };
+-
+-  // H1: rezultati i mësimit RUHET — SM-2 + regjistri + sesioni.
+-  const startLearning = (surah: number, ayah: number) => {
+-    learnStartedAt.current = Date.now();
+-    setLearningAyah({ surah, ayah });
+-  };
+-
+-  const handleLearnComplete = async (
+-    result: 'KNEW' | 'STRUGGLED' | 'FORGOT',
+-    stumblePoints: number[],
+-  ) => {
+-    if (!learningAyah) {
+-      setLearningAyah(null);
+-      return;
+-    }
+-    const ayahKey = `${learningAyah.surah}:${learningAyah.ayah}`;
+-    // 1) Motori SM-2 (thirret, nuk ndryshohet).
+-    await processReviewResult(ayahKey, result, stumblePoints);
+-    // 2) Regjistri "Hifzi Im" rritet bashkë me mësimin (porta e unifikuar H2).
+-    await setMemorizedUnified(learningAyah.surah, learningAyah.ayah, true);
+-    // 3) Sesioni LEARN ruhet për statistika.
+-    const endedAt = Date.now();
+-    await hifzDb.sessions.add({
+-      id: newSessionId(),
+-      startedAt: learnStartedAt.current,
+-      endedAt,
+-      type: 'LEARN',
+-      ayahsCovered: [ayahKey],
+-      results: [{ ayahKey, result }],
+-      durationSeconds: Math.max(0, Math.round((endedAt - learnStartedAt.current) / 1000)),
+-    });
+-    setLearningAyah(null);
+-  };
+-
+-  if (learningAyah) {
+-    return <HifzLearnView surahNumber={learningAyah.surah} ayahNumber={learningAyah.ayah}
+-      method={method}
+-      onComplete={handleLearnComplete}
+-      onClose={() => setLearningAyah(null)} />;
+-  }
+-  if (isReviewing && reviewQueue.length > 0) {
+-    return <HifzReviewSession queue={reviewQueue} onClose={() => setIsReviewing(false)}
+-      onComplete={() => { setIsReviewing(false); loadData(); }} />;
+-  }
+-  if (showMutashabihat) {
+-    return <div className="space-y-4 max-w-2xl mx-auto pb-24">
+-      <button onClick={() => setShowMutashabihat(false)} className="inline-flex items-center space-x-2 text-sm text-slate-400 hover:text-slate-200">
+-        <ChevronLeft className="w-4 h-4" /><span>Kthehu te Hifz</span>
+-      </button>
+-      <MutashabihatView onClose={() => setShowMutashabihat(false)} />
+-    </div>;
+-  }
+-  if (showMyHifz) {
+-    return <MyHifzView onClose={() => setShowMyHifz(false)} />;
+-  }
+-
+-  return (
+-    <div className="space-y-6 max-w-lg mx-auto pb-24">
+-      <div className="flex items-center justify-between">
+-        <div className="flex items-center space-x-2">
+-          <BookOpen className="w-5 h-5 text-emerald-400" />
+-          <h2 className="text-xl font-serif text-slate-100">Hifz</h2>
+-        </div>
+-        <select value={settings.reciterId}
+-          onChange={e => changeReciter(e.target.value)}
+-          className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 max-w-[150px]">
+-          {QURAN_RECITERS.map(r => <option key={r.key} value={r.key}>{r.name}</option>)}
+-        </select>
+-      </div>
+-
+-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+-        {METHODS.map(m => (
+-          <button key={m.id} onClick={() => chooseMethod(m.id)}
+-            disabled={m.soon}
+-            className={`p-3 rounded-xl border text-left transition-all ${m.soon ? 'opacity-50 cursor-not-allowed border-slate-800 bg-slate-900/50' : method === m.id ? 'border-emerald-500 bg-emerald-950/40' : 'border-slate-800 bg-slate-900 hover:border-emerald-700/50'}`}>
+-            <div className="text-sm font-medium text-slate-100">{m.title}{m.soon && <span className="text-[10px] text-slate-500 ml-1">së shpejti</span>}</div>
+-            <div className="text-[11px] text-slate-400 mt-0.5">{m.desc}</div>
+-          </button>
+-        ))}
+-      </div>
+-
+-      {/* S6: Statistikat e Hifzit — numra realë nga tabelat, ton neutral. */}
+-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+-        <h3 className="text-sm font-medium text-slate-200">Statistikat e Hifzit</h3>
+-        {loading || !stats ? (
+-          <p className="text-xs text-slate-500">Duke ngarkuar statistikat…</p>
+-        ) : (
+-          <>
+-            <div className="grid grid-cols-2 gap-2">
+-              <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-center">
+-                <div data-testid="hifzstat-total" className="text-2xl font-mono font-bold text-slate-100">{stats.total}</div>
+-                <div className="text-[11px] text-slate-400 mt-1">Të memorizuara</div>
+-              </div>
+-              <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-center">
+-                <div data-testid="hifzstat-due" className="text-2xl font-mono font-bold text-amber-300">{stats.dueToday}</div>
+-                <div className="text-[11px] text-slate-400 mt-1">Për rishikim sot</div>
+-              </div>
+-            </div>
+-            <div className="grid grid-cols-4 gap-1.5">
+-              {(Object.keys(STATUS_ETIKETAT) as AyahStatus[]).map(st => (
+-                <div key={st} className="bg-slate-950/60 border border-slate-800 rounded-xl p-2 text-center">
+-                  <div data-testid={`hifzstat-status-${st}`} className="text-lg font-mono font-bold text-slate-200">{stats.byStatus[st]}</div>
+-                  <div className="text-[10px] text-slate-500 mt-0.5">{STATUS_ETIKETAT[st]}</div>
+-                </div>
+-              ))}
+-            </div>
+-            <div className="space-y-2">
+-              <div className="flex items-baseline justify-between">
+-                <p className="text-xs text-slate-400">Sesione këtë javë</p>
+-                <span data-testid="hifzstat-week" className="text-sm font-mono font-bold text-emerald-300">{stats.weekTotal}</span>
+-              </div>
+-              {stats.weekTotal === 0 ? (
+-                <p className="text-xs text-slate-500">Nuk ka sesione ende — mëso ajetin e parë.</p>
+-              ) : (
+-                <div className="flex items-end justify-between gap-1.5 h-20 pt-1">
+-                  {stats.week.map((d, i) => (
+-                    <div key={i} className="flex flex-col items-center justify-end flex-1 space-y-1">
+-                      <div data-testid="hifzstat-bar" data-count={d.count}
+-                        className={`w-full rounded-t ${d.count > 0 ? 'bg-emerald-600/70' : 'bg-slate-800'}`}
+-                        style={{ height: `${d.count === 0 ? 4 : Math.max(10, (d.count / stats.weekMax) * 56)}px` }} />
+-                      <span className="text-[10px] text-slate-500">{d.label}</span>
+-                    </div>
+-                  ))}
+-                </div>
+-              )}
+-            </div>
+-          </>
+-        )}
+-      </div>
+-
+-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+-        <h3 className="text-sm font-medium text-slate-200">Mëso ajet të ri</h3>
+-        <div className="flex space-x-3">
+-          <div className="flex-1">
+-            <label className="text-[11px] text-slate-400 mb-1 block">Sureja (1-114)</label>
+-            <input type="number" min={1} max={114} value={tempSurah}
+-              onChange={e => setTempSurah(Number(e.target.value))}
+-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500" />
+-          </div>
+-          <div className="flex-1">
+-            <label className="text-[11px] text-slate-400 mb-1 block">Ajeti (1-286)</label>
+-            <input type="number" min={1} max={286} value={tempAyah}
+-              onChange={e => setTempAyah(Number(e.target.value))}
+-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500" />
+-          </div>
+-        </div>
+-        <button onClick={() => startLearning(tempSurah, tempAyah)}
+-          className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium transition-colors">
+-          Filloj Mësimin
+-        </button>
+-      </div>
+-
+-      {overdueCount > 0 && (
+-        <button onClick={() => setIsReviewing(true)}
+-          className="w-full py-3 bg-amber-600/20 text-amber-300 border border-amber-500/30 rounded-xl font-medium hover:bg-amber-600/30 transition-colors flex items-center justify-center space-x-2">
+-          <Play className="w-4 h-4 fill-current" />
+-          <span>Rishiko ({overdueCount})</span>
+-        </button>
+-      )}
+-
+-      <div className="grid grid-cols-2 gap-2">
+-        <button onClick={() => setShowMyHifz(true)}
+-          className="py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm text-slate-200 hover:border-emerald-700/50 transition-colors">
+-          Hifzi Im
+-        </button>
+-        <button onClick={() => setShowMutashabihat(true)}
+-          className="py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm text-slate-200 hover:border-emerald-700/50 transition-colors flex items-center justify-center space-x-1.5">
+-          <Sparkles className="w-4 h-4 text-amber-400" />
+-          <span>Ajete të Ngjashme</span>
+-        </button>
+-      </div>
+-    </div>
+-  );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/HifzReviewSession.tsx /home/user/h1-next/src/components/HifzReviewSession.tsx
+--- a/src/components/HifzReviewSession.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/HifzReviewSession.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,172 +0,0 @@
+-import React, { useState, useEffect, useRef } from 'react';
+-import { AyahMemorizationRecord } from '../services/hifzDb';
+-import { getSurahData } from '../services/quranApi';
+-import { processReviewResult } from '../services/hifzScheduler';
+-import { ALL_SURAHS_META } from '../data/quranData';
+-import { Check, Eye, EyeOff, RotateCcw, ChevronRight } from 'lucide-react';
+-import { HifzSelfRecorder } from './HifzSelfRecorder';
+-import { MutashabihatBanner } from './MutashabihatBanner';
+-import { QURAN_RECITERS } from './KuraniView';
+-import { hifzDb, HifzSettings, DEFAULT_HIFZ_SETTINGS, newSessionId } from '../services/hifzDb';
+-import type { ReviewResult } from '../services/hifzDb';
+-
+-interface Props {
+- queue: AyahMemorizationRecord[];
+- onClose: () => void;
+- onComplete: () => void;
+-}
+-
+-export const HifzReviewSession: React.FC<Props> = ({ queue, onClose, onComplete }) => {
+- const [currentIndex, setCurrentIndex] = useState(0);
+- const [ayahTextAr, setAyahTextAr] = useState<string>('');
+- const [ayahTextSq, setAyahTextSq] = useState<string>('');
+- const [isRevealed, setIsRevealed] = useState(false);
+- const [loading, setLoading] = useState(true);
+- const [settings, setSettings] = useState<HifzSettings>(DEFAULT_HIFZ_SETTINGS);
+- // H1: rezultatet e sesionit mblidhen në ref për SessionRecord-in REVIEW.
+- const reviewStartedAt = useRef<number>(Date.now());
+- const sessionResults = useRef<{ ayahKey: string; result: ReviewResult }[]>([]);
+-
+- const currentRecord = queue[currentIndex];
+-
+- useEffect(() => {
+- hifzDb.settings.get(1).then(s => {
+- if (s) setSettings(s);
+- });
+- }, []);
+-
+- useEffect(() => {
+- if (!currentRecord) return;
+- setLoading(true);
+- setIsRevealed(false);
+- const [surah, ayah] = currentRecord.ayahKey.split(':').map(Number);
+- 
+- getSurahData(surah).then(data => {
+- const a = data.ayahs.find(x => x.numberInSurah === ayah);
+- if (a) {
+- setAyahTextAr(a.textAr);
+- setAyahTextSq(a.textSq);
+- }
+- setLoading(false);
+- });
+- }, [currentRecord]);
+-
+- if (!currentRecord) {
+- return null;
+- }
+-
+- const [surahNum, ayahNum] = currentRecord.ayahKey.split(':').map(Number);
+- const surahMeta = ALL_SURAHS_META.find(s => s.number === surahNum);
+-
+- const handleResult = async (result: 'KNEW' | 'STRUGGLED' | 'FORGOT') => {
+- await processReviewResult(currentRecord.ayahKey, result, []);
+- sessionResults.current.push({ ayahKey: currentRecord.ayahKey, result });
+- 
+- if (currentIndex < queue.length - 1) {
+- setCurrentIndex(prev => prev + 1);
+- } else {
+- // Në përfundim shkruhet NJË SessionRecord REVIEW me gjithë rezultatet.
+- const endedAt = Date.now();
+- await hifzDb.sessions.add({
+- id: newSessionId(),
+- startedAt: reviewStartedAt.current,
+- endedAt,
+- type: 'REVIEW',
+- ayahsCovered: sessionResults.current.map(r => r.ayahKey),
+- results: [...sessionResults.current],
+- durationSeconds: Math.max(0, Math.round((endedAt - reviewStartedAt.current) / 1000)),
+- });
+- onComplete();
+- }
+- };
+-
+- return (
+- <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col h-[85vh]">
+- {/* Header */}
+- <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950/50">
+- <div className="flex flex-col">
+- <span className="text-xs font-medium text-emerald-500 font-mono tracking-wider uppercase">Sesion Rishikimi</span>
+- <h2 className="text-lg font-semibold text-slate-100">
+- {surahMeta?.transliteration} • Ajeti {ayahNum}
+- </h2>
+- </div>
+- <div className="flex items-center space-x-4">
+- <span className="text-sm font-mono text-slate-400">
+- {currentIndex + 1} / {queue.length}
+- </span>
+- <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-200 bg-slate-800/50 rounded-full transition-colors">
+- <ChevronRight className="w-5 h-5" />
+- </button>
+- </div>
+- </div>
+-
+- {/* Content Area */}
+- <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col items-center justify-center relative">
+- {loading ? (
+- <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+- ) : (
+- <div className="w-full max-w-2xl text-center space-y-8">
+- <h3 className="text-xl font-medium text-slate-300">Recito nga memorja</h3>
+- 
+- {!isRevealed ? (
+- <button 
+- onClick={() => setIsRevealed(true)}
+- className="w-full py-16 bg-slate-800/50 hover:bg-slate-800 border border-slate-700 border-dashed rounded-2xl transition-colors flex flex-col items-center justify-center space-y-4"
+- >
+- <Eye className="w-10 h-10 text-slate-500" />
+- <span className="text-slate-400 font-medium">Preke për ta zbuluar ajetin</span>
+- </button>
+- ) : (
+- <div className="space-y-6 animate-in fade-in zoom-in duration-300">
+- <p className="text-[32px] sm:text-[42px] leading-[1.8] text-slate-100 font-arabic text-right dir-rtl px-4" dir="rtl">
+- {ayahTextAr}
+- </p>
+- <p className="text-slate-400">{ayahTextSq}</p>
+- </div>
+- )}
+- 
+- <div className="mt-8 pt-8 border-t border-slate-800/50 w-full space-y-4">
+- <MutashabihatBanner surahNumber={surahNum} ayahNumber={ayahNum} />
+- <HifzSelfRecorder 
+- ayahKey={currentRecord.ayahKey}
+- referenceAudioUrl={(QURAN_RECITERS.find(r => r.key === settings.reciterId) || QURAN_RECITERS[0]).getAyahAudioUrl(surahNum, ayahNum)}
+- />
+- </div>
+-
+- {isRevealed && (
+- <div className="pt-8 border-t border-slate-800/50 animate-in slide-in-from-bottom-4 duration-500">
+- <h4 className="text-lg font-semibold text-slate-200 mb-6">Si të shkoi?</h4>
+- <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+- <button 
+- onClick={() => handleResult('FORGOT')}
+- className="p-4 bg-red-950/30 text-red-400 hover:bg-red-900/40 border border-red-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
+- >
+- <EyeOff className="w-6 h-6" />
+- <span className="font-medium">E harrova</span>
+- <span className="text-xs opacity-70">&lt; 1 ditë</span>
+- </button>
+- <button 
+- onClick={() => handleResult('STRUGGLED')}
+- className="p-4 bg-amber-950/30 text-amber-400 hover:bg-amber-900/40 border border-amber-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
+- >
+- <RotateCcw className="w-6 h-6" />
+- <span className="font-medium">Kam pasur vështirësi</span>
+- <span className="text-xs opacity-70">Vështirë</span>
+- </button>
+- <button 
+- onClick={() => handleResult('KNEW')}
+- className="p-4 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/40 border border-emerald-900/50 rounded-xl transition-colors flex flex-col items-center space-y-2"
+- >
+- <Check className="w-6 h-6" />
+- <span className="font-medium">E dija</span>
+- <span className="text-xs opacity-70">Mirë</span>
+- </button>
+- </div>
+- </div>
+- )}
+- </div>
+- )}
+- </div>
+- </div>
+- );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/HifzSelfRecorder.tsx /home/user/h1-next/src/components/HifzSelfRecorder.tsx
+--- a/src/components/HifzSelfRecorder.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/HifzSelfRecorder.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,266 +0,0 @@
+-import React, { useState, useRef, useEffect } from 'react';
+-import { Mic, Square, Play, Pause, Trash2, Info, Headphones } from 'lucide-react';
+-import { AyahRecording, saveRecording, getRecordings, deleteRecording } from '../services/hifzRecordingsDb';
+-
+-interface Props {
+- ayahKey: string;
+- referenceAudioUrl: string;
+-}
+-
+-export const HifzSelfRecorder: React.FC<Props> = ({ ayahKey, referenceAudioUrl }) => {
+- const [isRecording, setIsRecording] = useState(false);
+- const [recordings, setRecordings] = useState<AyahRecording[]>([]);
+- const [playingId, setPlayingId] = useState<string | null>(null);
+- const [referencePlaying, setReferencePlaying] = useState(false);
+- const [micError, setMicError] = useState<string | null>(null);
+- 
+- const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+- const audioChunksRef = useRef<Blob[]>([]);
+- const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+- const referenceAudioRef = useRef<HTMLAudioElement | null>(null);
+-
+- useEffect(() => {
+- loadRecordings();
+- 
+- referenceAudioRef.current = new Audio(referenceAudioUrl);
+- referenceAudioRef.current.onended = () => setReferencePlaying(false);
+- 
+- return () => {
+- if (currentAudioRef.current) {
+- currentAudioRef.current.pause();
+- }
+- if (referenceAudioRef.current) {
+- referenceAudioRef.current.pause();
+- }
+- if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+- mediaRecorderRef.current.stop();
+- }
+- };
+- }, [ayahKey, referenceAudioUrl]);
+- 
+- // Reload reference audio if it changes
+- useEffect(() => {
+- if (referenceAudioRef.current) {
+- referenceAudioRef.current.pause();
+- referenceAudioRef.current.src = referenceAudioUrl;
+- referenceAudioRef.current.load();
+- setReferencePlaying(false);
+- }
+- }, [referenceAudioUrl]);
+-
+- const loadRecordings = async () => {
+- const recs = await getRecordings(ayahKey);
+- setRecordings(recs);
+- };
+-
+- const startRecording = async () => {
+- setMicError(null);
+- try {
+- const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+- const mediaRecorder = new MediaRecorder(stream);
+- mediaRecorderRef.current = mediaRecorder;
+- audioChunksRef.current = [];
+-
+- mediaRecorder.ondataavailable = (event) => {
+- if (event.data.size > 0) {
+- audioChunksRef.current.push(event.data);
+- }
+- };
+-
+- mediaRecorder.onstop = async () => {
+- const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+- await saveRecording(ayahKey, audioBlob);
+- await loadRecordings();
+- 
+- // Stop all tracks to release microphone
+- stream.getTracks().forEach(track => track.stop());
+- };
+-
+- mediaRecorder.start();
+- setIsRecording(true);
+- 
+- // Ensure any playing audio is stopped
+- if (currentAudioRef.current) {
+- currentAudioRef.current.pause();
+- setPlayingId(null);
+- }
+- if (referenceAudioRef.current) {
+- referenceAudioRef.current.pause();
+- setReferencePlaying(false);
+- }
+- 
+- } catch (err: any) {
+- console.error("Error accessing microphone:", err);
+- if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || err.message?.includes('Permission denied')) {
+- setMicError('Qasja në mikrofon u refuzua. Ju lutem lejoni përdorimin e mikrofonit në cilësimet e shfletuesit tuaj.');
+- } else {
+- setMicError('Qasja në mikrofon nevojitet për ta regjistruar recitimin tënd.');
+- }
+- }
+- };
+-
+- const stopRecording = () => {
+- if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+- mediaRecorderRef.current.stop();
+- setIsRecording(false);
+- }
+- };
+-
+- const playRecording = (recording: AyahRecording) => {
+- if (currentAudioRef.current) {
+- currentAudioRef.current.pause();
+- }
+- if (referenceAudioRef.current) {
+- referenceAudioRef.current.pause();
+- setReferencePlaying(false);
+- }
+- 
+- if (playingId === recording.id) {
+- setPlayingId(null);
+- return;
+- }
+-
+- const audioUrl = URL.createObjectURL(recording.blob);
+- const audio = new Audio(audioUrl);
+- currentAudioRef.current = audio;
+- 
+- audio.onended = () => {
+- setPlayingId(null);
+- URL.revokeObjectURL(audioUrl);
+- };
+- 
+- audio.onerror = () => {
+- setPlayingId(null);
+- };
+-
+- audio.play().then(() => setPlayingId(recording.id || null)).catch(err => {
+- console.warn('Recorder play error:', err);
+- setPlayingId(null);
+- });
+- };
+- 
+- const toggleReference = () => {
+- if (currentAudioRef.current) {
+- currentAudioRef.current.pause();
+- setPlayingId(null);
+- }
+- 
+- if (referenceAudioRef.current) {
+- if (referencePlaying) {
+- referenceAudioRef.current.pause();
+- setReferencePlaying(false);
+- } else {
+- referenceAudioRef.current.currentTime = 0;
+- referenceAudioRef.current.play().then(() => setReferencePlaying(true)).catch(err => {
+- console.warn('Reference play error:', err);
+- setReferencePlaying(false);
+- });
+- }
+- }
+- };
+-
+- const handleDelete = async (id: string) => {
+- if (playingId === id && currentAudioRef.current) {
+- currentAudioRef.current.pause();
+- setPlayingId(null);
+- }
+- await deleteRecording(id);
+- await loadRecordings();
+- };
+-
+- return (
+- <div className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl p-4 space-y-4">
+- <div className="flex items-center justify-between">
+- <h4 className="text-sm font-medium text-slate-300 flex items-center space-x-2">
+- <Mic className="w-4 h-4 text-emerald-500" />
+- <span>Vetë-regjistrim (vetëm lokal)</span>
+- </h4>
+- <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+- Private
+- </span>
+- </div>
+-
+- {micError && (
+- <div className="bg-red-950/60 border border-red-800 text-red-200 p-2.5 rounded-xl text-xs flex items-center justify-between">
+- <span>{micError}</span>
+- <button
+- onClick={() => setMicError(null)}
+- className="ml-2 text-slate-400 hover:text-white font-bold"
+- >
+- ✕
+- </button>
+- </div>
+- )}
+- 
+- <div className="flex flex-col sm:flex-row gap-3">
+- {isRecording ? (
+- <button 
+- onClick={stopRecording}
+- className="flex-1 py-3 bg-red-500/20 text-red-500 border border-red-500/50 rounded-xl flex items-center justify-center space-x-2 animate-pulse"
+- >
+- <Square className="w-5 h-5 fill-current" />
+- <span className="font-medium">Ndale regjistrimin</span>
+- </button>
+- ) : (
+- <button 
+- onClick={startRecording}
+- className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl flex items-center justify-center space-x-2 transition-colors"
+- >
+- <Mic className="w-5 h-5" />
+- <span className="font-medium">Regjistro recitimin</span>
+- </button>
+- )}
+- 
+- <button 
+- onClick={toggleReference}
+- className={`px-4 py-3 border rounded-xl flex items-center justify-center space-x-2 transition-colors ${
+- referencePlaying 
+- ? 'bg-emerald-900/40 text-emerald-400 border-emerald-500/50' 
+- : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-slate-300'
+- }`}
+- >
+- {referencePlaying ? <Square className="w-5 h-5 fill-current" /> : <Headphones className="w-5 h-5" />}
+- <span className="font-medium text-sm whitespace-nowrap">Recituesi</span>
+- </button>
+- </div>
+-
+- {recordings.length > 0 && (
+- <div className="space-y-2 mt-4">
+- <p className="text-xs text-slate-500 mb-2">Regjistrimet e fundit (maks. 3)</p>
+- {recordings.map((rec, i) => {
+- const isPlaying = playingId === rec.id;
+- return (
+- <div key={rec.id} className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-lg p-2">
+- <div className="flex items-center space-x-3">
+- <button
+- onClick={() => playRecording(rec)}
+- className={`p-2 rounded-full transition-colors ${isPlaying ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400 hover:text-slate-200'}`}
+- >
+- {isPlaying ? <Square className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+- </button>
+- <span className="text-sm font-mono text-slate-300">
+- Recording {i + 1}
+- </span>
+- </div>
+- <button
+- onClick={() => rec.id && handleDelete(rec.id)}
+- className="p-2 text-slate-500 hover:text-red-400 transition-colors"
+- >
+- <Trash2 className="w-4 h-4" />
+- </button>
+- </div>
+- );
+- })}
+- </div>
+- )}
+- 
+- <div className="bg-blue-950/20 border border-blue-900/30 p-3 rounded-xl flex items-start space-x-3 text-left mt-2">
+- <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+- <p className="text-xs text-blue-300/80 leading-relaxed">
+- Reciting to another person is part of the traditional method, because the brain auto-fills gaps when reciting alone. 
+- Use this recording feature to listen to your own recitation and compare it with the reciter.
+- </p>
+- </div>
+- </div>
+- );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/KuraniView.tsx /home/user/h1-next/src/components/KuraniView.tsx
+--- a/src/components/KuraniView.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/KuraniView.tsx	2026-10-02 08:16:25.498287241 +0000
+@@ -123,11 +123,9 @@
+  VolumeX,
+  BarChart3,
+  Repeat,
+- Brain,
+  Award
+ } from 'lucide-react';
+ import { QuranStatsChart } from './QuranStatsChart';
+-import { HifzModule } from './HifzModule';
+ import { KhatamTrackerView } from './KhatamTrackerView';
+ import { QcfMushafReader } from './QcfMushafReader';
+ import { MushafReader } from './quran/mushaf/MushafReader';
+@@ -207,7 +205,7 @@
+ interface KuraniViewProps {
+  initialSurahNumber?: number;
+  initialAyahNumber?: number;
+- initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam';
++ initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'khatam';
+  initialPageNumber?: number;
+  readingState: QuranReadingState;
+  bookmarks: QuranBookmark[];
+@@ -239,7 +237,7 @@
+  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+- const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
++ const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'khatam'>(initialSubTab || 'surahs');
+  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(initialAyahNumber || null);
+ 
+  // Reading Settings state (Canonical unified settings)
+@@ -1496,23 +1494,6 @@
+           </div>
+         </div>
+ 
+-        {/* Moduli i Hifzit */}
+-        <div
+-          onClick={() => setActiveTab('hifz')}
+-          className="bg-slate-900/90 hover:bg-slate-850 border border-teal-500/30 hover:border-teal-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
+-        >
+-          <div className="flex items-center justify-between">
+-            <div className="w-8 h-8 rounded-lg bg-teal-950/60 border border-teal-700/50 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
+-              <Brain className="w-4 h-4" />
+-            </div>
+-            <span className="text-[10px] font-mono text-teal-400/80 bg-teal-950/40 px-1.5 py-0.5 rounded border border-teal-800/40">Memorizim</span>
+-          </div>
+-          <div>
+-            <h4 className="text-xs font-bold text-slate-100 group-hover:text-teal-300 transition-colors">Moduli Hifz</h4>
+-            <p className="text-[10px] text-slate-400 truncate">Flashcards & Përsëritja</p>
+-          </div>
+-        </div>
+-
+         {/* Statistikat */}
+         <div
+           onClick={() => setActiveTab('stats')}
+@@ -1753,9 +1734,7 @@
+  }}
+  />
+  )
+- ) : activeTab === 'hifz' ? (
+- <HifzModule />
+-  ) : activeTab === 'khatam' ? (
++ ) : activeTab === 'khatam' ? (
+     <KhatamTrackerView
+       onSelectSurah={(surahNum) => {
+         setSelectedSurahNum(surahNum);
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/MutashabihatBanner.tsx /home/user/h1-next/src/components/MutashabihatBanner.tsx
+--- a/src/components/MutashabihatBanner.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/MutashabihatBanner.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,86 +0,0 @@
+-import React, { useState } from 'react';
+-import { getMutashabihatForAyah } from '../data/mutashabihatData';
+-import { Sparkles, ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+-
+-interface Props {
+- surahNumber: number;
+- ayahNumber: number;
+-}
+-
+-export const MutashabihatBanner: React.FC<Props> = ({ surahNumber, ayahNumber }) => {
+- const groups = getMutashabihatForAyah(surahNumber, ayahNumber);
+- const [isOpen, setIsOpen] = useState(false);
+-
+- if (groups.length === 0) {
+- return null;
+- }
+-
+- const group = groups[0];
+-
+- return (
+- <div className="w-full my-4 bg-amber-950/30 border border-amber-900/50 rounded-xl overflow-hidden transition-all text-left">
+- <button
+- onClick={() => setIsOpen(!isOpen)}
+- className="w-full p-3.5 flex items-center justify-between bg-amber-950/40 hover:bg-amber-900/40 transition-colors"
+- >
+- <div className="flex items-center space-x-2.5">
+- <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+- <div>
+- <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider block">
+- Ajet i ngjashëm (Mutashabihat)
+- </span>
+- <span className="text-xs text-slate-300 font-medium">
+- {group.title}
+- </span>
+- </div>
+- </div>
+- <div className="flex items-center space-x-1 text-slate-400 hover:text-slate-200">
+- <span className="text-[11px] font-mono">{isOpen ? 'Mbyll' : 'Krahaso'}</span>
+- {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+- </div>
+- </button>
+-
+- {isOpen && (
+- <div className="p-4 bg-slate-950/80 border-t border-amber-900/30 space-y-4 animate-in fade-in duration-200">
+- <p className="text-xs text-slate-300 leading-relaxed">
+- {group.descriptionSq}
+- </p>
+-
+- <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+- {group.verses.map(v => (
+- <div
+- key={v.ayahKey}
+- className={`p-3 rounded-lg border text-xs space-y-2 ${
+- v.surahNumber === surahNumber && v.ayahNumber === ayahNumber
+- ? 'bg-amber-950/40 border-amber-500/50 text-amber-200'
+- : 'bg-slate-900 border-slate-800 text-slate-300'
+- }`}
+- >
+- <div className="flex items-center justify-between font-mono text-[11px] border-b border-slate-800/80 pb-1.5">
+- <span className="font-semibold">{v.surahNameSq} ({v.ayahKey})</span>
+- {v.surahNumber === surahNumber && v.ayahNumber === ayahNumber && (
+- <span className="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[10px]">Ajeti Aktual</span>
+- )}
+- </div>
+- <p className="text-lg leading-[1.8] font-arabic dir-rtl text-right py-1" dir="rtl">
+- {v.textAr}
+- </p>
+- <p className="text-[11px] text-slate-400 italic">
+- "{v.textSq}"
+- </p>
+- </div>
+- ))}
+- </div>
+-
+- <div className="bg-amber-900/20 border border-amber-800/30 p-3 rounded-lg flex items-start space-x-2.5 text-xs text-amber-300/90">
+- <BookOpen className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+- <div>
+- <strong className="block text-amber-400 text-[11px] uppercase tracking-wider mb-0.5">Dallimi Kryesor</strong>
+- {group.keyDifferenceSq}
+- </div>
+- </div>
+- </div>
+- )}
+- </div>
+- );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/MutashabihatView.tsx /home/user/h1-next/src/components/MutashabihatView.tsx
+--- a/src/components/MutashabihatView.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/MutashabihatView.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,322 +0,0 @@
+-import React, { useState } from 'react';
+-import { MUTASHABIHAT_DATASET, MutashabiGroup, MutashabiVerse } from '../data/mutashabihatData';
+-import { Sparkles, HelpCircle, CheckCircle2, XCircle, ArrowRight, Layers, BookOpen, RefreshCw } from 'lucide-react';
+-
+-interface Props {
+- onClose?: () => void;
+-}
+-
+-export const MutashabihatView: React.FC<Props> = ({ onClose }) => {
+- const [activeTab, setActiveTab] = useState<'EXPLORER' | 'DRILL'>('EXPLORER');
+- const [selectedGroup, setSelectedGroup] = useState<MutashabiGroup>(MUTASHABIHAT_DATASET[0]);
+-
+- // Drill state
+- const [drillIndex, setDrillIndex] = useState(0);
+- const [selectedOption, setSelectedOption] = useState<string | null>(null);
+- const [isAnswered, setIsAnswered] = useState(false);
+- const [score, setScore] = useState(0);
+- const [drillCompleted, setDrillCompleted] = useState(false);
+-
+- // Generate drill questions list
+- const drillQuestions = React.useMemo(() => {
+- const list: {
+- verse: MutashabiVerse;
+- group: MutashabiGroup;
+- options: { ayahKey: string; label: string; isCorrect: boolean }[];
+- }[] = [];
+-
+- MUTASHABIHAT_DATASET.forEach(group => {
+- group.verses.forEach(verse => {
+- // Correct choice
+- const correct = {
+- ayahKey: verse.ayahKey,
+- label: `${verse.surahNameSq} (${verse.surahNumber}:${verse.ayahNumber})`,
+- isCorrect: true
+- };
+-
+- // Distractors from other verses in dataset or other group verses
+- const otherVerses = group.verses.filter(v => v.ayahKey !== verse.ayahKey);
+- const distractors = otherVerses.map(v => ({
+- ayahKey: v.ayahKey,
+- label: `${v.surahNameSq} (${v.surahNumber}:${v.ayahNumber})`,
+- isCorrect: false
+- }));
+-
+- // Fill remaining options up to 4 if needed
+- const extraDistractors: { ayahKey: string; label: string; isCorrect: boolean }[] = [
+- { ayahKey: '87:16', label: 'Al-A\'la (87:16)', isCorrect: false },
+- { ayahKey: '88:2', label: 'Al-Ghashiyah (88:2)', isCorrect: false },
+- { ayahKey: '89:1', label: 'Al-Fajr (89:1)', isCorrect: false }
+- ].filter(d => d.ayahKey !== verse.ayahKey && !distractors.some(x => x.ayahKey === d.ayahKey));
+-
+- const allOptions = [correct, ...distractors, ...extraDistractors].slice(0, 4);
+- // Shuffle options deterministically based on surahNumber
+- const shuffled = [...allOptions].sort((a, b) => a.label.localeCompare(b.label));
+-
+- list.push({
+- verse,
+- group,
+- options: shuffled
+- });
+- });
+- });
+-
+- return list;
+- }, []);
+-
+- const currentDrill = drillQuestions[drillIndex];
+-
+- const handleOptionSelect = (optionKey: string) => {
+- if (isAnswered) return;
+- setSelectedOption(optionKey);
+- setIsAnswered(true);
+-
+- const isCorrect = optionKey === currentDrill.verse.ayahKey;
+- if (isCorrect) {
+- setScore(prev => prev + 1);
+- }
+- };
+-
+- const handleNextDrill = () => {
+- if (drillIndex < drillQuestions.length - 1) {
+- setDrillIndex(prev => prev + 1);
+- setSelectedOption(null);
+- setIsAnswered(false);
+- } else {
+- setDrillCompleted(true);
+- }
+- };
+-
+- const restartDrill = () => {
+- setDrillIndex(0);
+- setSelectedOption(null);
+- setIsAnswered(false);
+- setScore(0);
+- setDrillCompleted(false);
+- };
+-
+- return (
+- <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden max-w-2xl mx-auto my-4 text-slate-100">
+- {/* Header */}
+- <div className="p-4 sm:p-6 bg-slate-950/60 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+- <div>
+- <div className="flex items-center space-x-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-1">
+- <Sparkles className="w-4 h-4" />
+- <span>Moduli Mutashabihat</span>
+- </div>
+- <h2 className="text-xl font-semibold text-slate-100">Ajete të ngjashme</h2>
+- <p className="text-xs text-slate-400">Përvetëso ajetet që i ngjajnë njëri-tjetrit, për të shmangur gabimet në recitim</p>
+- </div>
+-
+- {/* Navigation Tabs */}
+- <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 self-start sm:self-auto">
+- <button
+- onClick={() => setActiveTab('EXPLORER')}
+- className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center space-x-1.5 ${
+- activeTab === 'EXPLORER' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+- }`}
+- >
+- <Layers className="w-3.5 h-3.5" />
+- <span>Krahasimi</span>
+- </button>
+- <button
+- onClick={() => setActiveTab('DRILL')}
+- className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center space-x-1.5 ${
+- activeTab === 'DRILL' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+- }`}
+- >
+- <HelpCircle className="w-3.5 h-3.5" />
+- <span>Kuizi stërvitor</span>
+- </button>
+- </div>
+- </div>
+-
+- {/* Main Content */}
+- <div className="p-4 sm:p-6">
+- {activeTab === 'EXPLORER' ? (
+- <div className="space-y-6">
+- {/* Group Selector */}
+- <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin">
+- {MUTASHABIHAT_DATASET.map(group => (
+- <button
+- key={group.id}
+- onClick={() => setSelectedGroup(group)}
+- className={`px-3.5 py-2 text-xs font-medium rounded-xl whitespace-nowrap transition-colors border ${
+- selectedGroup.id === group.id
+- ? 'bg-amber-950/40 border-amber-500/50 text-amber-300'
+- : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+- }`}
+- >
+- {group.title}
+- </button>
+- ))}
+- </div>
+-
+- {/* Selected Group Card */}
+- <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 sm:p-6 space-y-6">
+- <div>
+- <h3 className="text-lg font-medium text-amber-400 mb-1">{selectedGroup.title}</h3>
+- <p className="text-xs text-slate-400 leading-relaxed">{selectedGroup.descriptionSq}</p>
+- </div>
+-
+- {/* Side-by-Side Verses Grid */}
+- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+- {selectedGroup.verses.map((verse, idx) => (
+- <div
+- key={verse.ayahKey}
+- className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between space-y-4"
+- >
+- <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+- <span className="text-xs font-semibold text-emerald-400 font-mono">
+- {verse.surahNameSq} ({verse.surahNumber}:{verse.ayahNumber})
+- </span>
+- <span className="text-[10px] text-slate-500 uppercase tracking-wider font-mono">
+- Ayah {verse.ayahNumber}
+- </span>
+- </div>
+-
+- <p className="text-2xl leading-[1.8] text-slate-100 font-arabic text-right dir-rtl py-2" dir="rtl">
+- {verse.textAr}
+- </p>
+-
+- <p className="text-xs text-slate-300 italic border-t border-slate-800/50 pt-2">
+- "{verse.textSq}"
+- </p>
+- </div>
+- ))}
+- </div>
+-
+- {/* Distinction Key Note */}
+- <div className="bg-amber-950/20 border border-amber-900/40 rounded-xl p-4 flex items-start space-x-3">
+- <BookOpen className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+- <div className="space-y-1">
+- <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
+- Dallimi Kryesor (Key Distinction)
+- </h4>
+- <p className="text-xs text-slate-300 leading-relaxed">
+- {selectedGroup.keyDifferenceSq}
+- </p>
+- </div>
+- </div>
+- </div>
+- </div>
+- ) : (
+- /* Drill Quiz Tab */
+- <div className="space-y-6">
+- {!drillCompleted ? (
+- <div className="space-y-6">
+- {/* Progress bar */}
+- <div className="flex items-center justify-between text-xs text-slate-400">
+- <span>
+- Pyetja <strong className="text-slate-200">{drillIndex + 1}</strong> nga {drillQuestions.length}
+- </span>
+- <span>
+- Saktësia: <strong className="text-emerald-400">{score}</strong> / {drillQuestions.length}
+- </span>
+- </div>
+-
+- <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden border border-slate-800">
+- <div
+- className="bg-amber-500 h-1.5 transition-all duration-300"
+- style={{ width: `${((drillIndex + 1) / drillQuestions.length) * 100}%` }}
+- ></div>
+- </div>
+-
+- {/* Drill Card */}
+- <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center space-y-6 shadow-inner">
+- <span className="text-xs font-mono text-amber-400 uppercase tracking-widest bg-amber-950/40 px-3 py-1 rounded-full border border-amber-800/40">
+- Cilës Sure/Ajet i përket ky ajet?
+- </span>
+-
+- <div className="space-y-3 py-4">
+- <p className="text-3xl sm:text-4xl leading-[1.8] text-slate-100 font-arabic dir-rtl" dir="rtl">
+- {currentDrill.verse.textAr}
+- </p>
+- <p className="text-sm text-slate-400 italic font-serif">
+- "{currentDrill.verse.textSq}"
+- </p>
+- </div>
+-
+- {/* Multiple Choice Options */}
+- <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+- {currentDrill.options.map(opt => {
+- const isChosen = selectedOption === opt.ayahKey;
+- let btnStyle = 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800';
+-
+- if (isAnswered) {
+- if (opt.isCorrect) {
+- btnStyle = 'bg-emerald-950/50 border-emerald-500 text-emerald-300 font-semibold';
+- } else if (isChosen) {
+- btnStyle = 'bg-red-950/50 border-red-500 text-red-300';
+- } else {
+- btnStyle = 'bg-slate-900 border-slate-800/50 text-slate-500 opacity-60';
+- }
+- }
+-
+- return (
+- <button
+- key={opt.ayahKey}
+- onClick={() => handleOptionSelect(opt.ayahKey)}
+- disabled={isAnswered}
+- className={`p-3.5 border rounded-xl text-xs sm:text-sm transition-all flex items-center justify-between text-left ${btnStyle}`}
+- >
+- <span>{opt.label}</span>
+- {isAnswered && (
+- opt.isCorrect ? (
+- <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 ml-2" />
+- ) : isChosen ? (
+- <XCircle className="w-4 h-4 text-red-400 shrink-0 ml-2" />
+- ) : null
+- )}
+- </button>
+- );
+- })}
+- </div>
+-
+- {/* Explanation after answering */}
+- {isAnswered && (
+- <div className="bg-amber-950/20 border border-amber-900/40 rounded-xl p-4 text-left space-y-2 animate-in fade-in duration-300">
+- <p className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
+- Këshillë Kujtese (Memory Tip)
+- </p>
+- <p className="text-xs text-slate-300">
+- {currentDrill.group.keyDifferenceSq}
+- </p>
+- <button
+- onClick={handleNextDrill}
+- className="w-full mt-3 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-medium transition-colors flex items-center justify-center space-x-2"
+- >
+- <span>Përpara</span>
+- <ArrowRight className="w-4 h-4" />
+- </button>
+- </div>
+- )}
+- </div>
+- </div>
+- ) : (
+- /* Drill Completed Screen */
+- <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
+- <div className="w-16 h-16 bg-amber-950/50 border border-amber-800 rounded-full flex items-center justify-center mx-auto text-amber-400">
+- <Sparkles className="w-8 h-8" />
+- </div>
+- <div className="space-y-2">
+- <h3 className="text-2xl font-serif text-slate-100">Drill i Përfunduar!</h3>
+- <p className="text-slate-400 text-sm">
+- Keni qëlluar saktë <strong className="text-amber-400">{score}</strong> nga {drillQuestions.length} ajete të ngjashme.
+- </p>
+- </div>
+- <button
+- onClick={restartDrill}
+- className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-sm font-medium transition-colors flex items-center justify-center space-x-2 mx-auto"
+- >
+- <RefreshCw className="w-4 h-4" />
+- <span>Rifillo Drillin</span>
+- </button>
+- </div>
+- )}
+- </div>
+- )}
+- </div>
+- </div>
+- );
+-};
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/MyHifzView.tsx /home/user/h1-next/src/components/MyHifzView.tsx
+--- a/src/components/MyHifzView.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/MyHifzView.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,85 +0,0 @@
+-import React, { useState, useEffect } from 'react';
+-import { ALL_SURAHS_META } from '../data/quranData';
+-import { ChevronLeft, ChevronDown, BookOpen } from 'lucide-react';
+-import { getAllMemorized, setMemorizedUnified } from '../services/hifzDb';
+-
+-export const MyHifzView: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+-  const [memSet, setMemSet] = useState<Set<string>>(new Set());
+-  const [count, setCount] = useState(0);
+-  const [expanded, setExpanded] = useState<number | null>(null);
+-
+-  const load = async () => {
+-    const all = await getAllMemorized();
+-    setMemSet(new Set(all.map(a => a.ayahKey)));
+-    setCount(all.length);
+-  };
+-  useEffect(() => { load(); }, []);
+-
+-  const toggle = async (surah: number, ayah: number) => {
+-    const key = `${surah}:${ayah}`;
+-    const val = !memSet.has(key);
+-    await setMemorizedUnified(surah, ayah, val);
+-    const next = new Set(memSet);
+-    if (val) next.add(key); else next.delete(key);
+-    setMemSet(next);
+-    setCount(next.size);
+-  };
+-
+-  const surahMemCount = (surah: number) => {
+-    let c = 0;
+-    memSet.forEach(k => { if (k.startsWith(`${surah}:`)) c++; });
+-    return c;
+-  };
+-
+-  return (
+-    <div className="space-y-4 max-w-2xl mx-auto pb-24">
+-      <div className="flex items-center justify-between">
+-        <button onClick={onClose} className="inline-flex items-center space-x-2 text-sm text-slate-400 hover:text-slate-200 transition-colors">
+-          <ChevronLeft className="w-4 h-4" />
+-          <span>Kthehu te Hifz</span>
+-        </button>
+-        <span className="text-xs text-slate-400 font-mono">{count} / 6236 ajete të mësuar</span>
+-      </div>
+-
+-      <div className="flex items-center space-x-2">
+-        <BookOpen className="w-5 h-5 text-emerald-400" />
+-        <h2 className="text-xl font-serif text-slate-100">Hifzi Im</h2>
+-      </div>
+-      <p className="text-xs text-slate-400">Shëno surjet dhe ajetet që ke mësuar. Regjistër personal (pa AI-dëgjues).</p>
+-
+-      <div className="space-y-2">
+-        {ALL_SURAHS_META.map(s => {
+-          const total = s.numberOfAyahs;
+-          const mem = surahMemCount(s.number);
+-          const isOpen = expanded === s.number;
+-          return (
+-            <div key={s.number} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+-              <div className="flex items-center justify-between p-3">
+-                <button onClick={() => setExpanded(isOpen ? null : s.number)} className="flex items-center space-x-2 flex-1 text-left">
+-                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+-                  <span className="w-7 h-7 rounded-lg bg-slate-950 border border-slate-800 text-emerald-400 font-mono text-xs flex items-center justify-center">{s.number}</span>
+-                  <span className="text-sm text-slate-200">{s.transliteration} <span className="text-xs text-slate-400">({s.albanianName})</span></span>
+-                </button>
+-                <span className="text-[11px] text-slate-400 font-mono mr-2">{mem}/{total}</span>
+-              </div>
+-              {isOpen && (
+-                <div className="px-3 pb-3 pt-1 grid grid-cols-6 gap-1.5">
+-                  {Array.from({ length: total }, (_, i) => i + 1).map(a => {
+-                    const key = `${s.number}:${a}`;
+-                    const on = memSet.has(key);
+-                    return (
+-                      <button key={a} onClick={() => toggle(s.number, a)}
+-                        className={`aspect-square rounded-md border text-xs font-mono flex items-center justify-center transition-colors ${on ? 'bg-emerald-600 border-emerald-500 text-slate-950' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-emerald-700'}`}>
+-                        {a}
+-                      </button>
+-                    );
+-                  })}
+-                </div>
+-              )}
+-            </div>
+-          );
+-        })}
+-      </div>
+-    </div>
+-  );
+-};
+\ No newline at end of file
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/components/Navbar.tsx /home/user/h1-next/src/components/Navbar.tsx
+--- a/src/components/Navbar.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/components/Navbar.tsx	2026-10-02 08:16:16.698287241 +0000
+@@ -6,7 +6,7 @@
+ import React from 'react';
+ import { Home, Clock, BookOpen, Shield, Calendar, Settings } from 'lucide-react';
+ 
+-export type ActiveTab = 'home' | 'namazi' | 'kurani' | 'mburoja' | 'ditaIme' | 'settings' | 'hifz';
++export type ActiveTab = 'home' | 'namazi' | 'kurani' | 'mburoja' | 'ditaIme' | 'settings';
+ 
+ interface NavbarProps {
+  activeTab: ActiveTab;
+@@ -46,7 +46,7 @@
+  {/* Desktop / Tablet Nav Links (Hidden on Mobile) */}
+  <div className="hidden md:flex items-center space-x-1 bg-slate-950/60 p-1 rounded-xl border border-slate-800">
+  {navItems.map((item) => {
+- const isActive = activeTab === item.id || (item.id === 'kurani' && activeTab === 'hifz');
++ const isActive = activeTab === item.id;
+  return (
+  <button
+  key={item.id}
+@@ -100,7 +100,7 @@
+         <nav className="safe-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/98 border-t border-slate-800 backdrop-blur-md px-1 py-1 text-slate-400 shadow-2xl">
+  <div className="flex justify-around items-center max-w-md mx-auto">
+  {navItems.map((item) => {
+- const isActive = activeTab === item.id || (item.id === 'kurani' && activeTab === 'hifz');
++ const isActive = activeTab === item.id;
+  return (
+  <button
+  key={item.id}
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/data/mutashabihatData.ts /home/user/h1-next/src/data/mutashabihatData.ts
+--- a/src/data/mutashabihatData.ts	2026-10-02 07:40:59.000000000 +0000
++++ b/src/data/mutashabihatData.ts	1970-01-01 00:00:00.000000000 +0000
+@@ -1,249 +0,0 @@
+-export interface MutashabiVerse {
+- ayahKey: string; // "109:3"
+- surahNumber: number;
+- ayahNumber: number;
+- surahNameAr: string;
+- surahNameEn: string;
+- surahNameSq: string;
+- textAr: string;
+- textSq: string;
+- textEn: string;
+- highlightedPhraseAr?: string;
+- highlightedPhraseSq?: string;
+-}
+-
+-export interface MutashabiGroup {
+- id: string;
+- title: string;
+- descriptionSq: string;
+- descriptionEn: string;
+- verses: MutashabiVerse[];
+- keyDifferenceSq: string;
+- keyDifferenceEn: string;
+-}
+-
+-export const MUTASHABIHAT_DATASET: MutashabiGroup[] = [
+- {
+- id: 'kafirun-3-5',
+- title: 'Surah Al-Kafirun (109:3 & 109:5)',
+- descriptionSq: 'Përsëritja e fjalëve "Wa laa antum \'aabidoona maa \'aabud" në ajetet 3 dhe 5 të Surës Al-Kafirun.',
+- descriptionEn: 'Repetition of "Nor will you be worshippers of what I worship" in Surah Al-Kafirun verses 3 and 5.',
+- verses: [
+- {
+- ayahKey: '109:3',
+- surahNumber: 109,
+- ayahNumber: 3,
+- surahNameAr: 'الكافرون',
+- surahNameEn: 'Al-Kafirun',
+- surahNameSq: 'Al-Kafirun',
+- textAr: 'وَلَا أَنْتُم عَابِدُون مَا أَعْبُدُ',
+- textSq: 'E as ju nuk jeni adhurues të Atij që unë adhuroj.',
+- textEn: 'Nor are you worshippers of what I worship.',
+- highlightedPhraseAr: 'وَلَا أَنْتُم عَابِدُونَ',
+- highlightedPhraseSq: 'E as ju nuk jeni adhurues'
+- },
+- {
+- ayahKey: '109:5',
+- surahNumber: 109,
+- ayahNumber: 5,
+- surahNameAr: 'الكافرون',
+- surahNameEn: 'Al-Kafirun',
+- surahNameSq: 'Al-Kafirun',
+- textAr: 'وَلَا أَنْتُم عَابِدُون مَا أَعْبُدُ',
+- textSq: 'E as ju nuk do të jeni adhurues të Atij që unë adhuroj.',
+- textEn: 'Nor will you be worshippers of what I worship.',
+- highlightedPhraseAr: 'وَلَا أَنْتُم عَابِدُونَ',
+- highlightedPhraseSq: 'E as ju nuk do të jeni'
+- }
+- ],
+- keyDifferenceSq: 'Ajeti 3 i drejtohet të tashmes (ju nuk adhuroni tani), ndërsa ajeti 5 i drejtohet të ardhmes pas ajetit 4 (dhe as në të ardhmen nuk do të adhuroni).',
+- keyDifferenceEn: 'Verse 3 addresses present state, whereas verse 5 addresses future consistency following verse 4.'
+- },
+- {
+- id: 'abraar-infitar-mutaffifin',
+- title: 'Innal-Abraara Lafi Na\'im (82:13 vs 83:22)',
+- descriptionSq: 'Përshkrimi i shpërblimit të bamirësve (Al-Abrar) në Surën Al-Infitar dhe Surën Al-Mutaffifin.',
+- descriptionEn: 'Description of the reward of the righteous (Al-Abrar) in Al-Infitar and Al-Mutaffifin.',
+- verses: [
+- {
+- ayahKey: '82:13',
+- surahNumber: 82,
+- ayahNumber: 13,
+- surahNameAr: 'الإنفطار',
+- surahNameEn: 'Al-Infitar',
+- surahNameSq: 'Al-Infitar',
+- textAr: 'إِن الْأَبْرَار لَفِي نَعِيمٍ',
+- textSq: 'Me të vërtetë, bamirësit do të jenë në mirëqenie (Xhenet).',
+- textEn: 'Indeed, the righteous will be in pleasure.',
+- highlightedPhraseAr: 'إِن الْأَبْرَار لَفِي نَعِيمٍ',
+- highlightedPhraseSq: 'bamirësit do të jenë në mirëqenie'
+- },
+- {
+- ayahKey: '83:22',
+- surahNumber: 83,
+- ayahNumber: 22,
+- surahNameAr: 'المطففين',
+- surahNameEn: 'Al-Mutaffifin',
+- surahNameSq: 'Al-Mutaffifin',
+- textAr: 'إِن الْأَبْرَار لَفِي نَعِيمٍ',
+- textSq: 'Me të vërtetë, punëmirët do të jenë në mirëqenie e kënaqësi.',
+- textEn: 'Indeed, the righteous will be in pleasure.',
+- highlightedPhraseAr: 'إِن الْأَبْرَار لَفِي نَعِيمٍ',
+- highlightedPhraseSq: 'punëmirët do të jenë në mirëqenie'
+- }
+- ],
+- keyDifferenceSq: 'Në Al-Infitar (82:13) pasrohet menjëherë me ajetin e kundërt "Wa innal fujjaara lafi xhahim" (82:14). Në Al-Mutaffifin (83:22) pason përshkrimi i kolltuqeve "Alal araa\'iki yandhurun" (83:23).',
+- keyDifferenceEn: 'In Al-Infitar (82:13) it is immediately followed by the wicked in Hellfire (82:14). In Al-Mutaffifin (83:22) it is followed by reclining on couches (83:23).'
+- },
+- {
+- id: 'fujjaar-infitar-mutaffifin',
+- title: 'Fujjaar & Sijjeen vs Jahim (82:14 vs 83:7)',
+- descriptionSq: 'Përshkrimi i të këqijve (Al-Fujjar) në Surën Al-Infitar dhe Surën Al-Mutaffifin.',
+- descriptionEn: 'Description of the wicked in Al-Infitar vs Al-Mutaffifin.',
+- verses: [
+- {
+- ayahKey: '82:14',
+- surahNumber: 82,
+- ayahNumber: 14,
+- surahNameAr: 'الإنفطار',
+- surahNameEn: 'Al-Infitar',
+- surahNameSq: 'Al-Infitar',
+- textAr: 'وَإِن الْفُجَّار لَفِي جَحِيمٍ',
+- textSq: 'Dhe me të vërtetë, mëkatarët (fujjar) do të jenë në Xhehenem (Jahim).',
+- textEn: 'And indeed, the wicked will be in Hellfire.',
+- highlightedPhraseAr: 'لَفِي جَحِيمٍ',
+- highlightedPhraseSq: 'do të jenë në Xhehenem (Jahim)'
+- },
+- {
+- ayahKey: '83:7',
+- surahNumber: 83,
+- ayahNumber: 7,
+- surahNameAr: 'المطففين',
+- surahNameEn: 'Al-Mutaffifin',
+- surahNameSq: 'Al-Mutaffifin',
+- textAr: 'كَلَّا إِن كِتَاب الْفُجَّار لَفِي سِجِّينٍ',
+- textSq: 'Rregullisht, libri i mëkatarëve është në Sijjin.',
+- textEn: 'No! Indeed, the record of the wicked is in Sijjeen.',
+- highlightedPhraseAr: 'كِتَاب الْفُجَّار لَفِي سِجِّينٍ',
+- highlightedPhraseSq: 'libri i mëkatarëve është në Sijjin'
+- }
+- ],
+- keyDifferenceSq: 'Al-Infitar thotë "Wa innal fujjaara lafii XHAHIM". Al-Mutaffifin përmend "Kalla inna KITAABAL fujjaari lafii SIJJEEN".',
+- keyDifferenceEn: 'Al-Infitar directly mentions place "Jahim", while Al-Mutaffifin mentions "Kitaab" (record) in "Sijjeen".'
+- },
+- {
+- id: 'wujoohun-ghashiyah',
+- title: 'Wujoohun Yawma\'idhin (88:2 vs 88:8)',
+- descriptionSq: 'Fytyrat atë ditë në Surën Al-Ghashiyah (Khashi\'ah vs Na\'imah).',
+- descriptionEn: 'Faces on that Day in Surah Al-Ghashiyah (Humiliated vs Joyful).',
+- verses: [
+- {
+- ayahKey: '88:2',
+- surahNumber: 88,
+- ayahNumber: 2,
+- surahNameAr: 'الغاشية',
+- surahNameEn: 'Al-Ghashiyah',
+- surahNameSq: 'Al-Ghashiyah',
+- textAr: 'وُجُوه يَوْمَئِذ خَاشِعَةٌ',
+- textSq: 'Fytyrat atë ditë do të jenë të përulura (dhe të turpëruara).',
+- textEn: 'Some faces, that Day, will be humbled,',
+- highlightedPhraseAr: 'خَاشِعَةٌ',
+- highlightedPhraseSq: 'të përulura (khashi\'ah)'
+- },
+- {
+- ayahKey: '88:8',
+- surahNumber: 88,
+- ayahNumber: 8,
+- surahNameAr: 'الغاشية',
+- surahNameEn: 'Al-Ghashiyah',
+- surahNameSq: 'Al-Ghashiyah',
+- textAr: 'وُجُوه يَوْمَئِذ نَاعِمَةٌ',
+- textSq: 'Fytyra të tjera atë ditë do të jenë të gëzuara e të ndritshme.',
+- textEn: 'Other faces, that Day, will show pleasure,',
+- highlightedPhraseAr: 'نَاعِمَةٌ',
+- highlightedPhraseSq: 'të gëzuara (na\'imah)'
+- }
+- ],
+- keyDifferenceSq: 'Ajeti 2 hap përshkrimin e banorëve të Zjarrit (Khashi\'ah - të përulura). Ajeti 8 kalon te përshkrimi i banorëve të Xhenetit (Na\'imah - të gëzuara).',
+- keyDifferenceEn: 'Verse 2 starts description of Hell dwellers (Khashi\'ah). Verse 8 shifts to Paradise dwellers (Na\'imah).'
+- },
+- {
+- id: 'takathur-sawfa-ta\'lamun',
+- title: 'Kalla Sawfa Ta\'lamun (102:3 vs 102:4)',
+- descriptionSq: 'Përsëritja me "Thumma" në Surën At-Takathur.',
+- descriptionEn: 'Repetition with "Thumma" in Surah At-Takathur.',
+- verses: [
+- {
+- ayahKey: '102:3',
+- surahNumber: 102,
+- ayahNumber: 3,
+- surahNameAr: 'التكاثر',
+- surahNameEn: 'At-Takathur',
+- surahNameSq: 'At-Takathur',
+- textAr: 'كَلَّا سَوْف تَعْلَمُونَ',
+- textSq: 'Përseri jo! Më vonë do ta merrni vesh!',
+- textEn: 'No! You are going to know.',
+- highlightedPhraseAr: 'كَلَّا سَوْفَ',
+- highlightedPhraseSq: 'Përseri jo!'
+- },
+- {
+- ayahKey: '102:4',
+- surahNumber: 102,
+- ayahNumber: 4,
+- surahNameAr: 'التكاثر',
+- surahNameEn: 'At-Takathur',
+- surahNameSq: 'At-Takathur',
+- textAr: 'ثُم كَلَّا سَوْف تَعْلَمُونَ',
+- textSq: 'Aty për aty, jo! Më vonë përsëri do ta merrni vesh!',
+- textEn: 'Then no! You are going to know.',
+- highlightedPhraseAr: 'ثُم كَلَّا',
+- highlightedPhraseSq: 'Aty për aty, jo! (Thumma kalla)'
+- }
+- ],
+- keyDifferenceSq: 'Ajeti 4 shton fjalën "Thumma" (ثُم) në fillim për theksim edhe më të fortë paralajmërues.',
+- keyDifferenceEn: 'Verse 4 adds the word "Thumma" (Then) at the beginning for stronger emphasis.'
+- },
+- {
+- id: 'mawaazinuh-qariah',
+- title: 'Mawazinuh: Thaqulat vs Khaffat (101:6 vs 101:8)',
+- descriptionSq: 'Pesha e veprave në Surën Al-Qari\'ah.',
+- descriptionEn: 'The weight of deeds in Surah Al-Qari\'ah.',
+- verses: [
+- {
+- ayahKey: '101:6',
+- surahNumber: 101,
+- ayahNumber: 6,
+- surahNameAr: 'القارعة',
+- surahNameEn: 'Al-Qari\'ah',
+- surahNameSq: 'Al-Qari\'ah',
+- textAr: 'فَأَمَّا مَن ثَقُلَت مَوَازِينُهُ',
+- textSq: 'E sa i përket atij që i rëndohet peshoja e veprave të mira,',
+- textEn: 'Then as for one whose scales are heavy [with good deeds],',
+- highlightedPhraseAr: 'ثَقُلَتْ',
+- highlightedPhraseSq: 'i rëndohet (Thaqulat)'
+- },
+- {
+- ayahKey: '101:8',
+- surahNumber: 101,
+- ayahNumber: 8,
+- surahNameAr: 'القارعة',
+- surahNameEn: 'Al-Qari\'ah',
+- surahNameSq: 'Al-Qari\'ah',
+- textAr: 'وَأَمَّا مَن خَفَّت مَوَازِينُهُ',
+- textSq: 'Kurse ai që i lehtësohet peshoja e veprave të mira,',
+- textEn: 'But as for one whose scales are light,',
+- highlightedPhraseAr: 'خَفَّتْ',
+- highlightedPhraseSq: 'i lehtësohet (Khaffat)'
+- }
+- ],
+- keyDifferenceSq: 'Në ajetin 6 përdoret "Fa-ammaa" me "Thaqulat" (e rëndë -> "ishatin radiyah"). Në ajetin 8 përdoret "Wa-ammaa" me "Khaffat" (e lehtë -> "Fa-ummuhu hawiyah").',
+- keyDifferenceEn: 'Verse 6 uses "Fa-ammaa" + "Thaqulat" (heavy). Verse 8 uses "Wa-ammaa" + "Khaffat" (light).'
+- }
+-];
+-
+-export function getMutashabihatForAyah(surahNumber: number, ayahNumber: number): MutashabiGroup[] {
+- const key = `${surahNumber}:${ayahNumber}`;
+- return MUTASHABIHAT_DATASET.filter(group => 
+- group.verses.some(v => v.ayahKey === key)
+- );
+-}
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/services/hifzDb.ts /home/user/h1-next/src/services/hifzDb.ts
+--- a/src/services/hifzDb.ts	2026-10-02 07:40:59.000000000 +0000
++++ b/src/services/hifzDb.ts	1970-01-01 00:00:00.000000000 +0000
+@@ -1,175 +0,0 @@
+-import Dexie, { Table } from 'dexie';
+-
+-export type AyahStatus = 'NEW' | 'LEARNING' | 'REVIEWING' | 'CONSOLIDATED';
+-export type ReviewResult = 'KNEW' | 'STRUGGLED' | 'FORGOT';
+-export type SessionType = 'LEARN' | 'REVIEW' | 'TEST';
+-export type MemorizationOrder = 'MUSHAF' | 'REVERSE' | 'CUSTOM';
+-export type HifzMethod = 'A' | 'B' | 'C';
+-
+-export interface AyahMemorizationRecord {
+-  ayahKey: string;
+-  status: AyahStatus;
+-  strength: number;
+-  easeFactor: number;
+-  intervalDays: number;
+-  dueDate: number;
+-  repetitions: number;
+-  lapses: number;
+-  lastReviewedAt ? : number;
+-  lastResult ? : ReviewResult;
+-  totalListens: number;
+-  stumblePoints: number[];
+-  createdAt: number;
+-}
+-
+-export interface SessionRecord {
+-  id ? : string;
+-  startedAt: number;
+-  endedAt: number;
+-  type: SessionType;
+-  ayahsCovered: string[];
+-  results: { ayahKey: string;result: ReviewResult } [];
+-  durationSeconds: number;
+-}
+-
+-/**
+- * ID unike për SessionRecord, e gjeneruar në klient.
+- * Tabela sessions nuk ka PK auto-inkrementale (schema v1/v2), prandaj ID-ja
+- * jepet eksplicite — pa ndryshuar skemën, pa migrim.
+- */
+-export function newSessionId(): string {
+-  const c = globalThis.crypto as { randomUUID?: () => string } | undefined;
+-  if (c && typeof c.randomUUID === 'function') return c.randomUUID();
+-  return `${Date.now()}-${Math.floor(Math.random() * 1e9)}`;
+-}
+-
+-// Regjistri i ajeve te mesuara manualisht ("Hifzi Im").
+-// Izoluar nga scheduler-i (ayahRecords) qe te mos bien ne rrezik logjika e SM-2.
+-export interface MemorizedAyah {
+-  ayahKey: string;
+-  surah: number;
+-  ayah: number;
+-  memorizedAt: number;
+-}
+-
+-export interface HifzSettings {
+-  id ? : number;
+-  uiLanguage: string;
+-  translationId: string;
+-  reciterId: string;
+-  listenRepeats: number;
+-  readAlongRepeats: number;
+-  reciteVisibleRepeats: number;
+-  reciteHiddenRepeats: number;
+-  dailyNewAyahLimit: number;
+-  reviewDebtThreshold: number;
+-  showWordByWord: boolean;
+-  showTransliteration: boolean;
+-  memorizationOrder: MemorizationOrder;
+-  preferredMethod: HifzMethod;
+-}
+-
+-export const DEFAULT_HIFZ_SETTINGS: HifzSettings = {
+-  id: 1,
+-  uiLanguage: 'sq',
+-  translationId: 'sq.nahi',
+-  reciterId: 'ar.alafasy',
+-  listenRepeats: 10,
+-  readAlongRepeats: 5,
+-  reciteVisibleRepeats: 5,
+-  reciteHiddenRepeats: 5,
+-  dailyNewAyahLimit: 3,
+-  reviewDebtThreshold: 15,
+-  showWordByWord: true,
+-  showTransliteration: false,
+-  memorizationOrder: 'REVERSE',
+-  preferredMethod: 'B'
+-};
+-
+-export class HifzDatabase extends Dexie {
+-  ayahRecords!: Table < AyahMemorizationRecord, string > ;
+-  sessions!: Table < SessionRecord, string > ;
+-  settings!: Table < HifzSettings, number > ;
+-  memorized!: Table < MemorizedAyah, string > ;
+-  
+-  constructor() {
+-    super('HayatHifzDatabase');
+-    this.version(1).stores({
+-      ayahRecords: 'ayahKey, status, dueDate, createdAt',
+-      sessions: 'id, startedAt, type',
+-      settings: 'id'
+-    });
+-    this.version(2).stores({
+-      ayahRecords: 'ayahKey, status, dueDate, createdAt',
+-      sessions: 'id, startedAt, type',
+-      settings: 'id',
+-      memorized: 'ayahKey, surah, ayah'
+-    });
+-  }
+-}
+-
+-export const hifzDb = new HifzDatabase();
+-
+-hifzDb.on('populate', () => {
+-  hifzDb.settings.add(DEFAULT_HIFZ_SETTINGS);
+-});
+-
+-// --- Hifzi Im: regjistri i ajeve te mesuara (manual, pa AI) ---
+-export async function getAllMemorized(): Promise < MemorizedAyah[] > {
+-  return hifzDb.memorized.toArray();
+-}
+-
+-export async function setMemorized(surah: number, ayah: number, value: boolean): Promise < void > {
+-  const key = `${surah}:${ayah}`;
+-  if (value) {
+-    await hifzDb.memorized.put({ ayahKey: key, surah, ayah, memorizedAt: Date.now() });
+-  } else {
+-    await hifzDb.memorized.delete(key);
+-  }
+-}
+-
+-/**
+- * H2 — NJË regjistër, dy porta hyrjeje.
+- * Bashkon shënimin manual ("Hifzi Im") me motorin SM-2 (ayahRecords):
+- * - value=true: shënon te memorized + krijon rekord rishikimi NEW (due që
+- *   tani) VETËM nëse nuk ekziston. Progresi ekzistues nuk resetohet kurrë.
+- * - value=false: heq shënimin manual + fshin rekordin SM-2 VETËM nëse është
+- *   pa progres (repetitions===0 && lapses===0). Progresi i fituar ruhet.
+- */
+-export async function setMemorizedUnified(surah: number, ayah: number, value: boolean): Promise < void > {
+-  const key = `${surah}:${ayah}`;
+-  if (value) {
+-    await hifzDb.memorized.put({ ayahKey: key, surah, ayah, memorizedAt: Date.now() });
+-    const existing = await hifzDb.ayahRecords.get(key);
+-    if (!existing) {
+-      const now = Date.now();
+-      await hifzDb.ayahRecords.put({
+-        ayahKey: key,
+-        status: 'NEW',
+-        strength: 0,
+-        easeFactor: 2.5,
+-        intervalDays: 1,
+-        dueDate: now,
+-        repetitions: 0,
+-        lapses: 0,
+-        totalListens: 0,
+-        stumblePoints: [],
+-        createdAt: now,
+-      });
+-    }
+-  } else {
+-    await hifzDb.memorized.delete(key);
+-    const rec = await hifzDb.ayahRecords.get(key);
+-    if (rec && rec.repetitions === 0 && rec.lapses === 0) {
+-      await hifzDb.ayahRecords.delete(key);
+-    }
+-  }
+-}
+-
+-export async function isMemorized(surah: number, ayah: number): Promise < boolean > {
+-  return !!(await hifzDb.memorized.get(`${surah}:${ayah}`));
+-}
+-
+-export async function getMemorizedCount(): Promise < number > {
+-  return hifzDb.memorized.count();
+-}
+\ No newline at end of file
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/services/hifzRecordingsDb.ts /home/user/h1-next/src/services/hifzRecordingsDb.ts
+--- a/src/services/hifzRecordingsDb.ts	2026-10-02 07:40:59.000000000 +0000
++++ b/src/services/hifzRecordingsDb.ts	1970-01-01 00:00:00.000000000 +0000
+@@ -1,55 +0,0 @@
+-import Dexie, { Table } from 'dexie';
+-
+-export interface AyahRecording {
+- id?: string;
+- ayahKey: string; // "114:1"
+- timestamp: number;
+- blob: Blob;
+-}
+-
+-export class HifzRecordingsDatabase extends Dexie {
+- recordings!: Table<AyahRecording, string>;
+-
+- constructor() {
+- super('HayatHifzRecordingsDb');
+- this.version(1).stores({
+- recordings: '++id, ayahKey, timestamp' // Note: ++id doesn't work well with strings, let's use string id but no auto-increment, or just use string id
+- });
+- }
+-}
+-
+-export const hifzRecordingsDb = new HifzRecordingsDatabase();
+-
+-export async function saveRecording(ayahKey: string, blob: Blob) {
+- const id = `rec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+- const timestamp = Date.now();
+- 
+- await hifzRecordingsDb.recordings.add({
+- id,
+- ayahKey,
+- timestamp,
+- blob
+- });
+-
+- // keep only the last 3 recordings per ayah
+- const allForAyah = await hifzRecordingsDb.recordings
+- .where('ayahKey').equals(ayahKey)
+- .sortBy('timestamp');
+- 
+- if (allForAyah.length > 3) {
+- const toDelete = allForAyah.slice(0, allForAyah.length - 3);
+- for (const rec of toDelete) {
+- if (rec.id) await hifzRecordingsDb.recordings.delete(rec.id);
+- }
+- }
+-}
+-
+-export async function getRecordings(ayahKey: string): Promise<AyahRecording[]> {
+- return await hifzRecordingsDb.recordings
+- .where('ayahKey').equals(ayahKey)
+- .sortBy('timestamp');
+-}
+-
+-export async function deleteRecording(id: string) {
+- await hifzRecordingsDb.recordings.delete(id);
+-}
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/services/hifzScheduler.ts /home/user/h1-next/src/services/hifzScheduler.ts
+--- a/src/services/hifzScheduler.ts	2026-10-02 07:40:59.000000000 +0000
++++ b/src/services/hifzScheduler.ts	1970-01-01 00:00:00.000000000 +0000
+@@ -1,143 +0,0 @@
+-import { hifzDb, AyahMemorizationRecord, ReviewResult } from './hifzDb';
+-
+-const MIN_EASE = 1.3;
+-const MAX_EASE = 2.8;
+-const MAX_INTERVAL = 180;
+-
+-export async function processReviewResult(
+- ayahKey: string,
+- result: ReviewResult,
+- stumblePoints: number[],
+- listens: number = 0
+-): Promise<AyahMemorizationRecord> {
+- const record = await hifzDb.ayahRecords.get(ayahKey);
+- const now = Date.now();
+-
+- let nextRecord: AyahMemorizationRecord;
+-
+- if (!record) {
+- nextRecord = {
+- ayahKey,
+- status: 'LEARNING',
+- strength: 0,
+- easeFactor: 2.5,
+- intervalDays: 1,
+- dueDate: now + 24 * 60 * 60 * 1000,
+- repetitions: 0,
+- lapses: 0,
+- lastReviewedAt: now,
+- lastResult: result,
+- totalListens: listens,
+- stumblePoints,
+- createdAt: now,
+- };
+- } else {
+- nextRecord = { ...record };
+- nextRecord.totalListens += listens;
+- }
+-
+- nextRecord.lastReviewedAt = now;
+- nextRecord.lastResult = result;
+- nextRecord.stumblePoints = Array.from(new Set([...nextRecord.stumblePoints, ...stumblePoints]));
+-
+- // SM-2 logic
+- if (result === 'FORGOT') {
+- nextRecord.intervalDays = 1;
+- nextRecord.easeFactor = Math.max(MIN_EASE, nextRecord.easeFactor - 0.20);
+- nextRecord.lapses += 1;
+- nextRecord.repetitions = 0; // Reset consecutive KNEWs
+- } else if (result === 'STRUGGLED') {
+- nextRecord.intervalDays = Math.min(MAX_INTERVAL, Math.max(1, nextRecord.intervalDays * 1.2));
+- nextRecord.easeFactor = Math.max(MIN_EASE, nextRecord.easeFactor - 0.05);
+- nextRecord.repetitions = 0; // Reset consecutive KNEWs
+- } else if (result === 'KNEW') {
+- nextRecord.intervalDays = Math.min(MAX_INTERVAL, Math.max(1, nextRecord.intervalDays * nextRecord.easeFactor));
+- nextRecord.easeFactor = Math.min(MAX_EASE, nextRecord.easeFactor + 0.05);
+- nextRecord.repetitions += 1;
+- }
+-
+- // Status transitions
+- if (result === 'FORGOT') {
+- nextRecord.status = 'LEARNING';
+- } else {
+- if (nextRecord.status === 'LEARNING' && nextRecord.repetitions >= 3) {
+- nextRecord.status = 'REVIEWING';
+- }
+- 
+- if (nextRecord.status === 'REVIEWING' && nextRecord.intervalDays >= 21 && nextRecord.lapses <= 1) {
+- nextRecord.status = 'CONSOLIDATED';
+- }
+- }
+-
+- nextRecord.dueDate = now + nextRecord.intervalDays * 24 * 60 * 60 * 1000;
+- nextRecord.strength = Math.min(100, Math.floor((nextRecord.intervalDays / 21) * 100));
+-
+- await hifzDb.ayahRecords.put(nextRecord);
+- return nextRecord;
+-}
+-
+-export type ReviewMode = 'ADAPTIVE' | 'WEEKLY_MANZIL' | 'MONTHLY_JUZ';
+-
+-// The seven Manzils (approximate start surahs/ayahs)
+-// 1: 1-4, 2: 5-9, 3: 10-16, 4: 17-25, 5: 26-36, 6: 37-49, 7: 50-114
+-export const MANZIL_STARTS = [
+- { surah: 1, ayah: 1 },
+- { surah: 5, ayah: 1 },
+- { surah: 10, ayah: 1 },
+- { surah: 17, ayah: 1 },
+- { surah: 26, ayah: 1 },
+- { surah: 37, ayah: 1 },
+- { surah: 50, ayah: 1 },
+-];
+-
+-export async function getReviewQueue(mode: ReviewMode = 'ADAPTIVE'): Promise<AyahMemorizationRecord[]> {
+- const allRecords = await hifzDb.ayahRecords.toArray();
+- const now = Date.now();
+-
+- if (mode === 'ADAPTIVE') {
+- // Only return ayahs that are due
+- return allRecords.filter(r => r.dueDate <= now).sort((a, b) => a.dueDate - b.dueDate);
+- }
+-
+- if (mode === 'WEEKLY_MANZIL') {
+- const todayDayOfWeek = new Date().getDay(); // 0 = Sunday, 1 = Monday ...
+- // Manzil index (0-6). Let's map Friday (5) to Manzil 1 (0)? Or just use todayDayOfWeek % 7.
+- // Standard is usually starting on Friday.
+- const manzilIndex = (todayDayOfWeek + 2) % 7; // e.g. Friday -> 0
+- const startSurah = MANZIL_STARTS[manzilIndex].surah;
+- const endSurah = manzilIndex === 6 ? 114 : MANZIL_STARTS[manzilIndex + 1].surah - 1;
+-
+- return allRecords.filter(r => {
+- const [s] = r.ayahKey.split(':').map(Number);
+- return s >= startSurah && s <= endSurah;
+- }).sort((a, b) => {
+- const [sA, ayA] = a.ayahKey.split(':').map(Number);
+- const [sB, ayB] = b.ayahKey.split(':').map(Number);
+- return sA !== sB ? sA - sB : ayA - ayB;
+- });
+- }
+-
+- if (mode === 'MONTHLY_JUZ') {
+- const todayDayOfMonth = new Date().getDate(); 
+- const juzIndex = Math.min(30, todayDayOfMonth); // 1 to 30
+- // A mapping of Juz to Surah is complex without the full data.
+- // For now, we will sort all records and split them into 30 chunks evenly 
+- // or just rely on a juz mapper if available. Since juz limits aren't in this file,
+- // we'll filter by due date as fallback or need a Juz map.
+- // Since we don't have Juz data, let's just use the adaptive for now or dummy implementation.
+- 
+- // We can assume juz ends approximately every 114/30 surahs (very inaccurate).
+- // Let's just return a placeholder logic: sort all memorized ayahs, divide into 30 buckets.
+- const sorted = allRecords.sort((a, b) => {
+- const [sA, ayA] = a.ayahKey.split(':').map(Number);
+- const [sB, ayB] = b.ayahKey.split(':').map(Number);
+- return sA !== sB ? sA - sB : ayA - ayB;
+- });
+- 
+- const chunkSize = Math.ceil(sorted.length / 30);
+- const startIndex = (juzIndex - 1) * chunkSize;
+- return sorted.slice(startIndex, startIndex + chunkSize);
+- }
+-
+- return [];
+-}
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/tests/hifzAlbanian.test.tsx /home/user/h1-next/src/tests/hifzAlbanian.test.tsx
+--- a/src/tests/hifzAlbanian.test.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/tests/hifzAlbanian.test.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,171 +0,0 @@
+-// @vitest-environment jsdom
+-/**
+- * HIFZ — FAZA A, FA1.4 (H5): moduli Hifz tërësisht në shqip.
+- *
+- * Komponentët REALË HifzLearnView / HifzReviewSession renderohen dhe
+- * pohohet që stringjet e UI-së janë shqip (identifikuesit mbesin anglisht).
+- * - HifzSelfRecorder stub-ohet (Dexie + mikrofon, si te testet e tjera).
+- * - getSurahData + fetch (fjalë-pas-fjale) kthejnë të dhëna të konservuara.
+- * - Audioja e shfletuesit stub-ohet (jsdom nuk luan media).
+- */
+-import '@testing-library/jest-dom/vitest';
+-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+-import React from 'react';
+-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+-
+-vi.mock('../components/HifzSelfRecorder', () => ({
+-  HifzSelfRecorder: () =>
+-    React.createElement('div', { 'data-testid': 'hifz-recorder-stub' }),
+-}));
+-
+-vi.mock('../services/quranApi', async () => {
+-  const actual =
+-    await vi.importActual<typeof import('../services/quranApi')>('../services/quranApi');
+-  return {
+-    ...actual,
+-    getSurahData: async (surahNumber: number) => ({
+-      number: surahNumber,
+-      name: 'Test',
+-      transliteration: 'An-Nas',
+-      ayahs: [
+-        { numberInSurah: 1, textAr: 'آية ١', textSq: 'Ajeti 1 (test)' },
+-        { numberInSurah: 2, textAr: 'آية ٢', textSq: 'Ajeti 2 (test)' },
+-        { numberInSurah: 3, textAr: 'آية ٣', textSq: 'Ajeti 3 (test)' },
+-      ],
+-    }),
+-  };
+-});
+-
+-import { HifzLearnView } from '../components/HifzLearnView';
+-import { HifzReviewSession } from '../components/HifzReviewSession';
+-import { hifzDb, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+-
+-const origFetch = globalThis.fetch;
+-const origPlay = window.HTMLMediaElement.prototype.play;
+-const origPause = window.HTMLMediaElement.prototype.pause;
+-
+-beforeEach(() => {
+-  // Fjalori fjalë-pas-fjale (API e jashtme në prodhim) — i konservuar.
+-  vi.stubGlobal(
+-    'fetch',
+-    vi.fn().mockResolvedValue({
+-      json: async () => ({
+-        verse: {
+-          words: [
+-            {
+-              char_type_name: 'word',
+-              id: 1,
+-              position: 1,
+-              text_uthmani: 'قُلْ',
+-              translation: { text: 'Thuaj' },
+-              transliteration: { text: 'Qul' },
+-              audio_url: null,
+-            },
+-            {
+-              char_type_name: 'word',
+-              id: 2,
+-              position: 2,
+-              text_uthmani: 'أَعُوذُ',
+-              translation: { text: 'kërkoj mbrojtje' },
+-              transliteration: { text: "a'ūdhu" },
+-              audio_url: null,
+-            },
+-          ],
+-        },
+-      }),
+-    }),
+-  );
+-  // jsdom nuk luan audio — stub pa zhurmë.
+-  window.HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined) as any;
+-  window.HTMLMediaElement.prototype.pause = vi.fn() as any;
+-  // Cilësimet: pohim direkt (pa IndexedDB të vërtetë në jsdom).
+-  (hifzDb.settings as any).get = async (id: number) =>
+-    id === 1 ? { ...DEFAULT_HIFZ_SETTINGS } : undefined;
+-});
+-
+-afterEach(() => {
+-  cleanup();
+-  vi.unstubAllGlobals();
+-  globalThis.fetch = origFetch;
+-  window.HTMLMediaElement.prototype.play = origPlay;
+-  window.HTMLMediaElement.prototype.pause = origPause;
+-  delete (hifzDb.settings as any).get;
+-});
+-
+-// =====================================================================
+-describe('FA1.4 (H5): moduli Hifz në shqip', () => {
+-  it('faza ASSESS e HifzLearnView shfaq "E dija" (jo "I Knew It")', async () => {
+-    const onComplete = vi.fn();
+-    render(
+-      <HifzLearnView
+-        surahNumber={114}
+-        ayahNumber={1}
+-        method="A"
+-        onComplete={onComplete}
+-        onClose={() => {}}
+-      />,
+-    );
+-
+-    // Kreu + faza LISTEN në shqip.
+-    await screen.findByText('Moduli Hifz');
+-    await screen.findByText('Dëgjo me kujdes');
+-    expect(screen.queryByText('Listen Carefully')).toBeNull();
+-
+-    // Ecën nëpër faza (metoda A e kapërcen UNDERSTAND).
+-    fireEvent.click(screen.getByText('Faza tjetër')); // → READ_ALONG
+-    await screen.findByText('Lexo së bashku me audion');
+-    fireEvent.click(screen.getByText('Faza tjetër')); // → RECITE_VISIBLE
+-    await screen.findByText('Recito me zë (teksti i dukshëm)');
+-    fireEvent.click(screen.getByText('Faza tjetër')); // → RECITE_HIDDEN
+-    await screen.findByText('Recito nga memorja');
+-    fireEvent.click(screen.getByText('Faza tjetër')); // → CONNECT
+-    await screen.findByText('Lidhje me të mëparshmen');
+-    fireEvent.click(screen.getByText('Gati për vlerësim')); // → ASSESS
+-
+-    // Vlerësimi përfundimtar — tërësisht shqip.
+-    await screen.findByText('Sa e di mirë?');
+-    expect(screen.getByText('E dija')).toBeDefined();
+-    expect(screen.getByText('Kam pasur vështirësi')).toBeDefined();
+-    expect(screen.getByText('E harrova')).toBeDefined();
+-    expect(screen.queryByText('I Knew It')).toBeNull();
+-    expect(screen.queryByText('I Struggled')).toBeNull();
+-    expect(screen.queryByText('I Forgot')).toBeNull();
+-
+-    // Klikimi ruan kontratën (result, stumblePoints).
+-    fireEvent.click(screen.getByText('E dija'));
+-    expect(onComplete).toHaveBeenCalledWith('KNEW', expect.any(Array));
+-  });
+-
+-  it('HifzReviewSession është tërësisht shqip', async () => {
+-    const queue = [
+-      {
+-        ayahKey: '114:1',
+-        status: 'LEARNING',
+-        strength: 4,
+-        easeFactor: 2.3,
+-        intervalDays: 1,
+-        dueDate: Date.now() - 1000,
+-        repetitions: 0,
+-        lapses: 1,
+-        totalListens: 0,
+-        stumblePoints: [],
+-        createdAt: Date.now() - 1000,
+-      },
+-    ];
+-    render(<HifzReviewSession queue={queue as any} onClose={() => {}} onComplete={() => {}} />);
+-
+-    await screen.findByText('Sesion Rishikimi');
+-    expect(screen.queryByText('Review Session')).toBeNull();
+-    fireEvent.click(screen.getByText('Preke për ta zbuluar ajetin'));
+-
+-    await screen.findByText('Si të shkoi?');
+-    expect(screen.getByText('E dija')).toBeDefined();
+-    expect(screen.getByText('Kam pasur vështirësi')).toBeDefined();
+-    expect(screen.getByText('E harrova')).toBeDefined();
+-    expect(screen.getByText('< 1 ditë')).toBeDefined();
+-    expect(screen.getByText('Vështirë')).toBeDefined();
+-    expect(screen.getByText('Mirë')).toBeDefined();
+-    expect(screen.queryByText('Tap to reveal Ayah')).toBeNull();
+-    expect(screen.queryByText('How did you do?')).toBeNull();
+-  });
+-});
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/tests/hifzMethodHandoff.test.tsx /home/user/h1-next/src/tests/hifzMethodHandoff.test.tsx
+--- a/src/tests/hifzMethodHandoff.test.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/tests/hifzMethodHandoff.test.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,139 +0,0 @@
+-/**
+- * HIFZ — Kalimi i metodës së memorizimit: HifzModule → HifzLearnView
+- *
+- * Gjetja (e verifikuar me grep në baseline 38919e1):
+- *   - HifzModule.tsx:12-16 përcakton metodat A/B/C (C "së shpejti")
+- *   - HifzModule.tsx:27 default 'B'; zgjedhja ruhet te settings.preferredMethod
+- *   - HifzModule.tsx:63 <HifzLearnView> renderohet PA prop-in "method"
+- *   - HifzLearnView.tsx: 0 referenca për metodën (asnjë degëzim)
+- *   - Kanal i vetëm ekzistues: side-channel-i settings.showWordByWord
+- *     (HifzModule.tsx:51) — jo kontratë: nëse radha e settings mungon,
+- *     chooseMethod nuk persiston asgjë dhe HifzLearnView lexon default-in.
+- *
+- * Këto teste DËSHTOJNË kundrejt baseline-it dhe duhet të kalojnë pas
+- * rregullimit. Ata provojnë vetëm KALIMIN e eksplicitë të metodës —
+- * sjelljen e skedarëve brenda HifzLearnView e teston faza e rregullimit.
+- *
+- * HifzLearnView zëvendësohet me një stub që kap prop-et (ashtu si
+- * vi.mock i '../services/db' në khatmahFaza3.test.tsx).
+- */
+-// @vitest-environment jsdom
+-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+-import React from 'react';
+-import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
+-
+-const captured: Array<Record<string, any>> = vi.hoisted(() => []);
+-
+-vi.mock('../components/HifzLearnView', () => ({
+-  HifzLearnView: (props: Record<string, any>) => {
+-    captured.push(props);
+-    return React.createElement('div', { 'data-testid': 'hifz-learn-stub' });
+-  },
+-}));
+-
+-vi.mock('../services/hifzDb', async () => {
+-  const actual = await vi.importActual<typeof import('../services/hifzDb')>('../services/hifzDb');
+-  const freshSettings = () => ({ ...actual.DEFAULT_HIFZ_SETTINGS });
+-  let settings: any = freshSettings();
+-  const records: any[] = [];
+-  return {
+-    ...actual,
+-    __resetHifzMock: () => { settings = freshSettings(); records.length = 0; },
+-    hifzDb: {
+-      settings: {
+-        get: async (id: number) => (id === settings.id ? { ...settings } : undefined),
+-        put: async (s: any) => {
+-          Object.assign(settings, s);
+-          return s.id;
+-        },
+-        add: async (s: any) => {
+-          Object.assign(settings, s);
+-          return s.id;
+-        },
+-      },
+-      ayahRecords: {
+-        get: async (key: string) => records.find(r => r.ayahKey === key),
+-        put: async (r: any) => {
+-          const i = records.findIndex(x => x.ayahKey === r.ayahKey);
+-          if (i >= 0) records[i] = r;
+-          else records.push(r);
+-          return r.ayahKey;
+-        },
+-        toArray: async () => [...records],
+-      },
+-      memorized: {
+-        toArray: async () => [],
+-        count: async () => 0,
+-        get: async () => undefined,
+-        put: async () => undefined,
+-        delete: async () => undefined,
+-      },
+-    },
+-  };
+-});
+-
+-import { HifzModule } from '../components/HifzModule';
+-import * as hifzDbMock from '../services/hifzDb';
+-
+-describe('Kalimi i metodës HifzModule → HifzLearnView', () => {
+-  beforeEach(() => {
+-    captured.length = 0;
+-    (hifzDbMock as any).__resetHifzMock?.();
+-  });
+-
+-  afterEach(() => {
+-    cleanup();
+-  });
+-
+-  it('me metodën A të zgjedhur, HifzLearnView merr method="A"', async () => {
+-    render(<HifzModule />);
+-    const startBtn = await screen.findByText('Filloj Mësimin');
+-    fireEvent.click(screen.getByText('Dëgjo & Përsërit'));
+-    fireEvent.click(startBtn);
+-    await screen.findByTestId('hifz-learn-stub');
+-
+-    expect(captured.length).toBeGreaterThanOrEqual(1);
+-    const props = captured[captured.length - 1];
+-    expect(props.surahNumber).toBe(114);
+-    expect(props.ayahNumber).toBe(1);
+-    // KONTRATA: metoda e zgjedhur duhet të mbërrijë eksplicitë, jo përmes
+-    // side-channel-it showWordByWord (që humbet kur radha e settings mungon).
+-    expect(props.method).toBe('A');
+-  });
+-
+-  it('me default-in (pa zgjedhje), HifzLearnView merr method="B"', async () => {
+-    render(<HifzModule />);
+-    const startBtn = await screen.findByText('Filloj Mësimin');
+-    fireEvent.click(startBtn);
+-    await screen.findByTestId('hifz-learn-stub');
+-
+-    const props = captured[captured.length - 1];
+-    expect(props.method).toBe('B');
+-  });
+-
+-  it('metoda e ruajtur te settings prekon ekrani i mësimit edhe pas "rihapjes"', async () => {
+-    // Seanca 1: zgjidh metodën A (persistohet te settings.preferredMethod)
+-    render(<HifzModule />);
+-    const startBtn = await screen.findByText('Filloj Mësimin');
+-    fireEvent.click(screen.getByText('Dëgjo & Përsërit'));
+-    fireEvent.click(startBtn);
+-    await screen.findByTestId('hifz-learn-stub');
+-    const firstProps = captured[captured.length - 1];
+-    expect(firstProps.method).toBe('A');
+-    cleanup();
+-
+-    // Seanca 2: render i ri i HifzModule (si rihapja e app-it) —
+-    // loadData e kthen metodën nga settings.preferredMethod.
+-    // Prisim derisa karta A të shënohet si e zgjedhur (loadData përfundoi).
+-    render(<HifzModule />);
+-    const startBtn2 = await screen.findByText('Filloj Mësimin');
+-    await waitFor(() => {
+-      const aBtn = screen.getByText('Dëgjo & Përsërit').closest('button');
+-      expect(aBtn?.className).toContain('border-emerald-500');
+-    });
+-    fireEvent.click(startBtn2);
+-    await screen.findByTestId('hifz-learn-stub');
+-    const secondProps = captured[captured.length - 1];
+-    expect(secondProps.method).toBe('A');
+-  });
+-});
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/tests/hifzScheduler.test.ts /home/user/h1-next/src/tests/hifzScheduler.test.ts
+--- a/src/tests/hifzScheduler.test.ts	2026-10-02 07:40:59.000000000 +0000
++++ b/src/tests/hifzScheduler.test.ts	1970-01-01 00:00:00.000000000 +0000
+@@ -1,327 +0,0 @@
+-/**
+- * HIFZ — TESTE MBROJTËSE të motorit SM-2 (hifzScheduler.ts)
+- *
+- * Shkruhen PARA ÇDO NDRYSHIMI TJETËR te moduli Hifz (detyra: metoda e
+- * mësimit nuk arrin te HifzLearnView).
+- *
+- * Këto teste e pin-kojnë sjelljen AKTUALE të algoritmit SM-2, e cila është
+- * e verifikuar si e saktë:
+- *   - MIN_EASE = 1.3, MAX_EASE = 2.8, MAX_INTERVAL = 180
+- *   - FORGOT:    interval = 1, ease - 0.20, lapses + 1, rep = 0, status LEARNING
+- *   - STRUGGLED: interval × 1.2 (min 1), ease - 0.05, rep = 0 (status nuk bie)
+- *   - KNEW:      interval × ease (min 1, max 180), ease + 0.05, rep + 1
+- *   - status: LEARNING → REVIEWING te rep >= 3; → CONSOLIDATED te interval >= 21 && lapses <= 1
+- *   - strength = floor(intervalDays / 21 * 100) (cap 100)
+- *   - dueDate = now + intervalDays (ri-përditësohet gjithmonë)
+- *
+- * RREGULL: hifzScheduler.ts NUK ndryshohet në këtë fazë. Nëse ndonjëri nga
+- * këto teste dështon, motori ka regresuar — rregullohet kodi, JO testi.
+- *
+- * MOSHËSHTET: MONTHLY_JUZ (defekt i njohur nga auditimi, gjetja H3 —
+- * "placeholder" me slice pozicionale). Vendimi D5 për to është ende i hapur;
+- * ta përfshin këtu do ta ngjithej placeholder-i si kontratë.
+- */
+-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+-
+-const tables = vi.hoisted(() => {
+-  const ayahRecords = new Map<string, any>();
+-  return {
+-    ayahRecords,
+-    api: {
+-      get: async (key: string) => ayahRecords.get(key),
+-      put: async (rec: any) => {
+-        ayahRecords.set(rec.ayahKey, rec);
+-        return rec.ayahKey;
+-      },
+-      toArray: async () => Array.from(ayahRecords.values()),
+-    },
+-  };
+-});
+-
+-vi.mock('../services/hifzDb', () => ({
+-  hifzDb: { ayahRecords: tables.api },
+-}));
+-
+-import {
+-  processReviewResult,
+-  getReviewQueue,
+-  MANZIL_STARTS,
+-} from '../services/hifzScheduler';
+-
+-const DAY = 24 * 60 * 60 * 1000;
+-
+-function baseRecord(over: Record<string, any> = {}): any {
+-  return {
+-    ayahKey: '1:1',
+-    status: 'REVIEWING',
+-    strength: 50,
+-    easeFactor: 2.5,
+-    intervalDays: 10,
+-    dueDate: Date.now(),
+-    repetitions: 3,
+-    lapses: 0,
+-    lastReviewedAt: 0,
+-    lastResult: 'KNEW',
+-    totalListens: 0,
+-    stumblePoints: [] as number[],
+-    createdAt: 0,
+-    ...over,
+-  };
+-}
+-
+-function seed(rec: any) {
+-  tables.ayahRecords.set(rec.ayahKey, rec);
+-}
+-
+-beforeEach(() => {
+-  tables.ayahRecords.clear();
+-  vi.setSystemTime(new Date('2026-09-02T12:00:00'));
+-});
+-
+-afterEach(() => {
+-  vi.useRealTimers();
+-});
+-
+-describe('Konstantet e hapsirëzimit (të pin-kuara përmes sjelljes)', () => {
+-  it('MIN_EASE = 1.3: FORGOT nuk e zbrit easeFactor nën 1.3', async () => {
+-    seed(baseRecord({ easeFactor: 1.4 }));
+-    const r = await processReviewResult('1:1', 'FORGOT', []);
+-    // 1.4 - 0.20 = 1.2 → kufizohet te 1.3
+-    expect(r.easeFactor).toBe(1.3);
+-  });
+-
+-  it('MAX_EASE = 2.8: KNEW nuk e ngjit easeFactor mbi 2.8', async () => {
+-    seed(baseRecord({ easeFactor: 2.79 }));
+-    const r = await processReviewResult('1:1', 'KNEW', []);
+-    // 2.79 + 0.05 = 2.84 → kufizohet te 2.8
+-    expect(r.easeFactor).toBe(2.8);
+-  });
+-
+-  it('MAX_INTERVAL = 180: KNEW nuk e mban intervalin mbi 180 ditë', async () => {
+-    seed(baseRecord({ intervalDays: 170, easeFactor: 2.5 }));
+-    const r = await processReviewResult('1:1', 'KNEW', []);
+-    // 170 * 2.5 = 425 → kufizohet te 180
+-    expect(r.intervalDays).toBe(180);
+-  });
+-
+-  it('MAX_INTERVAL = 180: edhe STRUGGLED (×1.2) kufizohet te 180', async () => {
+-    seed(baseRecord({ intervalDays: 170 }));
+-    const r = await processReviewResult('1:1', 'STRUGGLED', []);
+-    // 170 * 1.2 = 204 → kufizohet te 180
+-    expect(r.intervalDays).toBe(180);
+-  });
+-
+-  it('Intervali minimal: STRUGGLED nuk e mban intervalin nën 1 ditë', async () => {
+-    seed(baseRecord({ intervalDays: 0.5 }));
+-    const r = await processReviewResult('1:1', 'STRUGGLED', []);
+-    // 0.5 * 1.2 = 0.6 → max(1, 0.6) = 1
+-    expect(r.intervalDays).toBe(1);
+-  });
+-});
+-
+-describe('Regjistri i ri (ajet që nuk ekziston ende)', () => {
+-  it('KNEW: krijohet LEARNING me interval 1*ease, ease +0.05, strength nga intervali', async () => {
+-    const before = Date.now();
+-    const r = await processReviewResult('2:255', 'KNEW', [3], 4);
+-    expect(r.ayahKey).toBe('2:255');
+-    expect(r.status).toBe('LEARNING');
+-    expect(r.easeFactor).toBe(2.55); // 2.5 + 0.05
+-    expect(r.intervalDays).toBe(2.5); // max(1, 1 * 2.5)
+-    expect(r.repetitions).toBe(1);
+-    expect(r.lapses).toBe(0);
+-    expect(r.strength).toBe(11); // floor(2.5 / 21 * 100)
+-    expect(r.totalListens).toBe(4);
+-    expect(r.stumblePoints).toEqual([3]);
+-    expect(r.dueDate).toBeGreaterThanOrEqual(before + 2.5 * DAY - 5000);
+-    expect(r.dueDate).toBeLessThan(before + 2.5 * DAY + DAY);
+-  });
+-
+-  it('FORGOT: krijohet LEARNING me interval 1, ease 2.3, lapses 1, strength 4', async () => {
+-    const r = await processReviewResult('114:6', 'FORGOT', []);
+-    expect(r.status).toBe('LEARNING');
+-    expect(r.intervalDays).toBe(1);
+-    expect(r.easeFactor).toBe(2.3); // 2.5 - 0.20
+-    expect(r.lapses).toBe(1);
+-    expect(r.repetitions).toBe(0);
+-    expect(r.strength).toBe(4); // floor(1 / 21 * 100)
+-  });
+-
+-  it('STRUGGLED: interval 1.2, ease 2.45, rep 0, status LEARNING, strength 5', async () => {
+-    const r = await processReviewResult('112:1', 'STRUGGLED', []);
+-    expect(r.intervalDays).toBe(1.2); // max(1, 1 * 1.2)
+-    expect(r.easeFactor).toBeCloseTo(2.45, 9);
+-    expect(r.repetitions).toBe(0);
+-    expect(r.lapses).toBe(0);
+-    expect(r.status).toBe('LEARNING');
+-    expect(r.strength).toBe(5); // floor(1.2 / 21 * 100)
+-  });
+-});
+-
+-describe('Gjurmëzgjatja e KNEW (shpina e algoritmit — e pin-kuar saktë)', () => {
+-  it('5 KNEW nga zero: intervali rritet me faktorin e lehtësisë, statusi kalon LEARNING→REVIEWING→CONSOLIDATED', async () => {
+-    const intervals: number[] = [];
+-    const eases: number[] = [];
+-    const reps: number[] = [];
+-    const statuses: string[] = [];
+-    for (let i = 0; i < 5; i++) {
+-      const r = await processReviewResult('53:23', 'KNEW', []);
+-      intervals.push(r.intervalDays);
+-      eases.push(r.easeFactor);
+-      reps.push(r.repetitions);
+-      statuses.push(r.status);
+-    }
+-    // intervali: 1 → 2.5 → 6.375 → 16.575 → 43.92375 → 118.594125
+-    expect(intervals[0]).toBe(2.5);
+-    expect(intervals[1]).toBeCloseTo(6.375, 6);
+-    expect(intervals[2]).toBeCloseTo(16.575, 6);
+-    expect(intervals[3]).toBeCloseTo(43.92375, 6);
+-    expect(intervals[4]).toBeCloseTo(118.594125, 6);
+-    // ease: 2.5 → 2.55 → 2.6 → 2.65 → 2.7 → 2.75
+-    expect(eases[0]).toBeCloseTo(2.55, 9);
+-    expect(eases[1]).toBeCloseTo(2.6, 9);
+-    expect(eases[2]).toBeCloseTo(2.65, 9);
+-    expect(eases[3]).toBeCloseTo(2.7, 9);
+-    expect(eases[4]).toBeCloseTo(2.75, 9);
+-    // rep: 1..5
+-    expect(reps).toEqual([1, 2, 3, 4, 5]);
+-    // status: te rep 3 → REVIEWING; te interval >= 21 (hapja 4) → CONSOLIDATED
+-    expect(statuses).toEqual(['LEARNING', 'LEARNING', 'REVIEWING', 'CONSOLIDATED', 'CONSOLIDATED']);
+-  });
+-
+-  it('KNEW e 6-ta dhe e 7-ta: intervali kufizohet te 180, ease te 2.8, statusi mbetet CONSOLIDATED', async () => {
+-    for (let i = 0; i < 6; i++) await processReviewResult('53:24', 'KNEW', []);
+-    const r = await processReviewResult('53:24', 'KNEW', []);
+-    expect(r.intervalDays).toBe(180);
+-    expect(r.easeFactor).toBe(2.8);
+-    expect(r.status).toBe('CONSOLIDATED');
+-    expect(r.strength).toBe(100);
+-  });
+-});
+-
+-describe('STRUGGLED: shtyhet intervali, nuk bie statusi', () => {
+-  it('nga REVIEWING (interval < 21): statusi MBETEJ REVIEWING, rep resetohet në 0', async () => {
+-    seed(baseRecord({ status: 'REVIEWING', intervalDays: 10, easeFactor: 2.5, repetitions: 3 }));
+-    const r = await processReviewResult('1:1', 'STRUGGLED', []);
+-    expect(r.intervalDays).toBe(12); // 10 * 1.2
+-    expect(r.easeFactor).toBeCloseTo(2.45, 9);
+-    expect(r.repetitions).toBe(0);
+-    expect(r.lapses).toBe(0);
+-    expect(r.status).toBe('REVIEWING'); // vetëm FORGOT e bie te LEARNING
+-    expect(r.strength).toBe(57); // floor(12 / 21 * 100)
+-  });
+-
+-  it('nga CONSOLIDATED: statusi MBETEJ CONSOLIDATED (demovimi vetëm me FORGOT)', async () => {
+-    seed(baseRecord({ status: 'CONSOLIDATED', intervalDays: 40, easeFactor: 2.5, repetitions: 10, lapses: 0 }));
+-    const r = await processReviewResult('1:1', 'STRUGGLED', []);
+-    expect(r.status).toBe('CONSOLIDATED');
+-    expect(r.repetitions).toBe(0);
+-    expect(r.intervalDays).toBe(48); // 40 * 1.2
+-  });
+-});
+-
+-describe('FORGOT: demovimi i fortë', () => {
+-  it('nga CONSOLIDATED: bie te LEARNING, interval 1, lapses +1, rep 0', async () => {
+-    seed(baseRecord({ status: 'CONSOLIDATED', intervalDays: 60, easeFactor: 2.5, repetitions: 10, lapses: 0 }));
+-    const r = await processReviewResult('1:1', 'FORGOT', []);
+-    expect(r.status).toBe('LEARNING');
+-    expect(r.intervalDays).toBe(1);
+-    expect(r.lapses).toBe(1);
+-    expect(r.repetitions).toBe(0);
+-    expect(r.easeFactor).toBe(2.3);
+-    expect(r.strength).toBe(4);
+-  });
+-
+-  it('lapses > 1 bllokon kalimin te CONSOLIDATED (edhe me interval >= 21)', async () => {
+-    seed(baseRecord({ status: 'LEARNING', intervalDays: 1, easeFactor: 2.5, repetitions: 0, lapses: 2, strength: 4 }));
+-    let r = await processReviewResult('1:1', 'KNEW', []);
+-    expect(r.status).toBe('LEARNING');
+-    r = await processReviewResult('1:1', 'KNEW', []);
+-    expect(r.status).toBe('LEARNING');
+-    r = await processReviewResult('1:1', 'KNEW', []);
+-    expect(r.status).toBe('REVIEWING'); // rep 3
+-    // intervali kalon 21, por lapses = 2 > 1 → SË PAKTEN CONSOLIDATED
+-    r = await processReviewResult('1:1', 'KNEW', []);
+-    expect(r.intervalDays).toBeCloseTo(43.92375, 6);
+-    expect(r.status).toBe('REVIEWING');
+-  });
+-});
+-
+-describe('Fushat e ndihmëse: dueDate, totalListens, stumblePoints', () => {
+-  it('dueDate = now + intervalDays (ri-llogaritet në çdo rishikim)', async () => {
+-    const before = Date.now();
+-    const r = await processReviewResult('1:1', 'KNEW', []);
+-    expect(r.dueDate).toBeGreaterThanOrEqual(before + 2.5 * DAY);
+-    expect(r.dueDate).toBeLessThan(before + 2.5 * DAY + DAY);
+-  });
+-
+-  it('STRUGGLED nga 10 ditë: dueDate = now + 12 ditë', async () => {
+-    seed(baseRecord({ intervalDays: 10 }));
+-    const before = Date.now();
+-    const r = await processReviewResult('1:1', 'STRUGGLED', []);
+-    expect(r.dueDate).toBeGreaterThanOrEqual(before + 12 * DAY);
+-    expect(r.dueDate).toBeLessThan(before + 12 * DAY + DAY);
+-  });
+-
+-  it('totalListens accumulon mbi ekzistuesin; stumblePoints = bashkimi pa dublikime', async () => {
+-    seed(baseRecord({ totalListens: 7, stumblePoints: [1, 2] }));
+-    const r = await processReviewResult('1:1', 'KNEW', [2, 3], 5);
+-    expect(r.totalListens).toBe(12);
+-    expect(r.stumblePoints).toEqual([1, 2, 3]);
+-  });
+-});
+-
+-describe('getReviewQueue — ADAPTIVE (burimi i butonit "Rishiko")', () => {
+-  it('kthen vetëm ajetet due (dueDate <= now), renditur nga më e vjetra', async () => {
+-    const now = Date.now();
+-    seed(baseRecord({ ayahKey: '2:1', dueDate: now + DAY })); // NUK eshte due
+-    seed(baseRecord({ ayahKey: '1:2', dueDate: now - 2 * DAY })); // më e vjetra
+-    seed(baseRecord({ ayahKey: '1:1', dueDate: now - DAY })); // e mesme
+-    seed(baseRecord({ ayahKey: '3:1', dueDate: now })); // kufi: due saktësisht tani
+-    const q = await getReviewQueue('ADAPTIVE');
+-    expect(q.map(r => r.ayahKey)).toEqual(['1:2', '1:1', '3:1']);
+-  });
+-});
+-
+-describe('getReviewQueue — WEEKLY_MANZIL (rruga e vërtetë e rishikimit javor)', () => {
+-  it('MANZIL_STARTS: 7 manzilët me sure e fillimit të sakta', () => {
+-    expect(MANZIL_STARTS.map(m => m.surah)).toEqual([1, 5, 10, 17, 26, 37, 50]);
+-  });
+-
+-  it('dita e javës → manzili (e premte→1-4, e shtunë→5-9, ..., e enjte→50-114), pa filtrim dueDate', async () => {
+-    const farFuture = Date.now() + 100 * DAY;
+-    seed(baseRecord({ ayahKey: '2:1', dueDate: farFuture })); // manzil 1, due e vonuar
+-    seed(baseRecord({ ayahKey: '7:1', dueDate: farFuture })); // manzil 2, due e vonuar
+-    seed(baseRecord({ ayahKey: '114:6', dueDate: farFuture })); // manzil 7, due e vonuar
+-
+-    const cases: Array<[string, string[]]> = [
+-      ['2026-09-04', ['2:1']], // e premte → manzil 1 (1-4)
+-      ['2026-09-05', ['7:1']], // e shtunë → manzil 2 (5-9)
+-      ['2026-09-06', []], // e diel → manzil 3 (10-16)
+-      ['2026-09-07', []], // e hënë → manzil 4 (17-25)
+-      ['2026-09-08', []], // e martë → manzil 5 (26-36)
+-      ['2026-09-09', []], // e mërkurë → manzil 6 (37-49)
+-      ['2026-09-10', ['114:6']], // e enjte → manzil 7 (50-114)
+-    ];
+-    for (const [date, expected] of cases) {
+-      vi.setSystemTime(new Date(`${date}T12:00:00`));
+-      const q = await getReviewQueue('WEEKLY_MANZIL');
+-      expect(q.map(r => r.ayahKey)).toEqual(expected);
+-    }
+-
+-    // Rishikimi manzil është sipas dates së javës — ajetet me due të vonuar
+-    // i përfshihen qëllimisht (dizajn i konfirmuar, jo bug).
+-    vi.setSystemTime(new Date('2026-09-04T12:00:00'));
+-    const q = await getReviewQueue('WEEKLY_MANZIL');
+-    expect(q[0].dueDate).toBeGreaterThan(Date.now());
+-  });
+-
+-  it('renditja brenda manzilit: sipas sure, pastaj sipas ajetit', async () => {
+-    vi.setSystemTime(new Date('2026-09-04T12:00:00')); // e premte → sure 1-4
+-    seed(baseRecord({ ayahKey: '3:10' }));
+-    seed(baseRecord({ ayahKey: '2:5' }));
+-    seed(baseRecord({ ayahKey: '1:1' }));
+-    seed(baseRecord({ ayahKey: '3:2' }));
+-    const q = await getReviewQueue('WEEKLY_MANZIL');
+-    expect(q.map(r => r.ayahKey)).toEqual(['1:1', '2:5', '3:2', '3:10']);
+-  });
+-});
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/tests/hifzStats.test.tsx /home/user/h1-next/src/tests/hifzStats.test.tsx
+--- a/src/tests/hifzStats.test.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/tests/hifzStats.test.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,190 +0,0 @@
+-// @vitest-environment jsdom
+-/**
+- * HIFZ — FAZA A, FA1.3 (S6): statistikat e Hifzit.
+- *
+- * Karta "Statistikat e Hifzit" te HifzModule (nën zgjedhjen e metodës):
+- * - totali i memorizuar (memorized.count),
+- * - grupimi sipas statusit (NEW / LEARNING / REVIEWING / CONSOLIDATED),
+- * - "Për rishikim sot" (dueDate <= tani),
+- * - mini-grafik 7-ditor i sesioneve (bare Tailwind, pa recharts në teste),
+- * - gjendja e ngarkimit + gjendja bosh.
+- *
+- * Ton neutral, pa gamification agresive (pa flakë, pa "streak").
+- * Tabelat falsohen në memorie si te hifzWiring.test.tsx; logjika është reale.
+- */
+-import '@testing-library/jest-dom/vitest';
+-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+-import React from 'react';
+-import { render, screen, cleanup } from '@testing-library/react';
+-
+-import { HifzModule } from '../components/HifzModule';
+-import { hifzDb, DEFAULT_HIFZ_SETTINGS } from '../services/hifzDb';
+-
+-const DAY = 24 * 60 * 60 * 1000;
+-
+-// --- Prapavija në memorie (e pavarur nga skedarët e tjerë të testit) ------
+-const memStore = new Map<string, any>();
+-const recStore = new Map<string, any>();
+-let sessStore: any[] = [];
+-let settingsRow: any = { ...DEFAULT_HIFZ_SETTINGS };
+-
+-const origMetoda: Array<{ obj: any; emer: string }> = [];
+-function vendosStub(obj: any, emer: string, impl: (...args: any[]) => Promise<any>) {
+-  if (!origMetoda.some(m => m.obj === obj && m.emer === emer)) {
+-    origMetoda.push({ obj, emer });
+-  }
+-  obj[emer] = impl;
+-}
+-function hiqStubet() {
+-  for (const { obj, emer } of origMetoda) delete obj[emer];
+-  origMetoda.length = 0;
+-}
+-
+-function vendosStubetBaze() {
+-  vendosStub(hifzDb.memorized, 'put', async (v: any) => {
+-    memStore.set(v.ayahKey, v);
+-    return v.ayahKey;
+-  });
+-  vendosStub(hifzDb.memorized, 'get', async (k: any) => memStore.get(k));
+-  vendosStub(hifzDb.memorized, 'toArray', async () => Array.from(memStore.values()));
+-  vendosStub(hifzDb.memorized, 'count', async () => memStore.size);
+-  vendosStub(hifzDb.ayahRecords, 'toArray', async () => Array.from(recStore.values()));
+-  vendosStub(hifzDb.sessions, 'toArray', async () => [...sessStore]);
+-  vendosStub(hifzDb.settings, 'get', async (id: any) =>
+-    id === 1 ? { ...settingsRow } : undefined,
+-  );
+-  vendosStub(hifzDb.settings, 'put', async (s: any) => {
+-    settingsRow = { ...s };
+-    return s.id;
+-  });
+-}
+-
+-beforeEach(() => {
+-  memStore.clear();
+-  recStore.clear();
+-  sessStore = [];
+-  settingsRow = { ...DEFAULT_HIFZ_SETTINGS };
+-  vendosStubetBaze();
+-});
+-
+-afterEach(() => {
+-  cleanup();
+-  hiqStubet();
+-});
+-
+-// --- Ndihmëse ------------------------------------------------------------
+-
+-function mbjellMemorized(surah: number, ayah: number) {
+-  const key = `${surah}:${ayah}`;
+-  memStore.set(key, { ayahKey: key, surah, ayah, memorizedAt: Date.now() });
+-}
+-
+-function mbjellRekord(over: Record<string, any>) {
+-  const key = over.ayahKey as string;
+-  recStore.set(key, {
+-    status: 'LEARNING',
+-    strength: 0,
+-    easeFactor: 2.5,
+-    intervalDays: 1,
+-    dueDate: Date.now() + DAY,
+-    repetitions: 0,
+-    lapses: 0,
+-    totalListens: 0,
+-    stumblePoints: [],
+-    createdAt: Date.now(),
+-    ...over,
+-  });
+-}
+-
+-function mbjellSesion(filluarParaMs: number, type: 'LEARN' | 'REVIEW' = 'LEARN') {
+-  const startedAt = Date.now() - filluarParaMs;
+-  sessStore.push({
+-    id: `ses-${sessStore.length}`,
+-    startedAt,
+-    endedAt: startedAt + 60_000,
+-    type,
+-    ayahsCovered: ['114:1'],
+-    results: [{ ayahKey: '114:1', result: 'KNEW' }],
+-    durationSeconds: 60,
+-  });
+-}
+-
+-// =====================================================================
+-describe('FA1.3 (S6): karta "Statistikat e Hifzit"', () => {
+-  it('gjendja bosh: zero kudo dhe teksti i gjendjes bosh', async () => {
+-    render(<HifzModule />);
+-
+-    await screen.findByText('Statistikat e Hifzit');
+-    expect(screen.getByTestId('hifzstat-total')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-due')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-status-NEW')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-status-LEARNING')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-status-REVIEWING')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-status-CONSOLIDATED')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-week')).toHaveTextContent('0');
+-    // Gjendja bosh (Definition of Done).
+-    await screen.findByText('Nuk ka sesione ende — mëso ajetin e parë.');
+-  });
+-
+-  it('2 rekord memorized (njëri due): numrat në ekran përputhen me tabelat', async () => {
+-    mbjellMemorized(114, 1);
+-    mbjellMemorized(114, 2);
+-    mbjellRekord({ ayahKey: '114:1', status: 'NEW', dueDate: Date.now() - 1000 });
+-    mbjellRekord({ ayahKey: '114:2', status: 'LEARNING', dueDate: Date.now() + DAY });
+-
+-    render(<HifzModule />);
+-
+-    await screen.findByText('Statistikat e Hifzit');
+-    expect(screen.getByTestId('hifzstat-total')).toHaveTextContent('2');
+-    expect(screen.getByText('Për rishikim sot')).toBeDefined();
+-    expect(screen.getByTestId('hifzstat-due')).toHaveTextContent('1');
+-    expect(screen.getByTestId('hifzstat-status-NEW')).toHaveTextContent('1');
+-    expect(screen.getByTestId('hifzstat-status-LEARNING')).toHaveTextContent('1');
+-    expect(screen.getByTestId('hifzstat-status-REVIEWING')).toHaveTextContent('0');
+-    expect(screen.getByTestId('hifzstat-status-CONSOLIDATED')).toHaveTextContent('0');
+-  });
+-
+-  it('5 ajete me statuse të përzier + sesione: statistika dhe mini-grafik javor', async () => {
+-    for (const a of [1, 2, 3, 4, 5]) mbjellMemorized(114, a);
+-    mbjellRekord({ ayahKey: '114:1', status: 'NEW', dueDate: Date.now() - 1000 });
+-    mbjellRekord({ ayahKey: '114:2', status: 'LEARNING', dueDate: Date.now() - 1000 });
+-    mbjellRekord({ ayahKey: '114:3', status: 'REVIEWING', dueDate: Date.now() + DAY });
+-    mbjellRekord({ ayahKey: '114:4', status: 'REVIEWING', dueDate: Date.now() + 2 * DAY });
+-    mbjellRekord({ ayahKey: '114:5', status: 'CONSOLIDATED', dueDate: Date.now() + 30 * DAY });
+-
+-    mbjellSesion(60_000); // sot
+-    mbjellSesion(120_000, 'REVIEW'); // sot
+-    mbjellSesion(3 * DAY); // para 3 ditësh
+-    mbjellSesion(8 * DAY); // jashtë dritares 7-ditore — nuk numërohet
+-
+-    render(<HifzModule />);
+-
+-    await screen.findByText('Statistikat e Hifzit');
+-    expect(screen.getByTestId('hifzstat-total')).toHaveTextContent('5');
+-    expect(screen.getByTestId('hifzstat-due')).toHaveTextContent('2');
+-    expect(screen.getByTestId('hifzstat-status-NEW')).toHaveTextContent('1');
+-    expect(screen.getByTestId('hifzstat-status-LEARNING')).toHaveTextContent('1');
+-    expect(screen.getByTestId('hifzstat-status-REVIEWING')).toHaveTextContent('2');
+-    expect(screen.getByTestId('hifzstat-status-CONSOLIDATED')).toHaveTextContent('1');
+-
+-    // Mini-grafiku javor: 7 shtylla, gjithsej 3 sesione (sesioni i ditës 8 përjashtohet).
+-    expect(screen.getByText('Sesione këtë javë')).toBeDefined();
+-    expect(screen.getByTestId('hifzstat-week')).toHaveTextContent('3');
+-    const bars = screen.getAllByTestId('hifzstat-bar');
+-    expect(bars).toHaveLength(7);
+-    const counts = bars.map(b => Number(b.getAttribute('data-count')));
+-    expect(counts[6]).toBe(2); // sot (shtylla e fundit)
+-    expect(counts[3]).toBe(1); // para 3 ditësh
+-    expect(counts.reduce((a, b) => a + b, 0)).toBe(3);
+-  });
+-
+-  it('ngarkimi: shfaqet teksti i ngarkimit derisa të vijnë të dhënat', async () => {
+-    // Premtim që nuk zgjidhet kurrë — loadData mbetet pezull.
+-    vendosStub(hifzDb.settings, 'get', () => new Promise<any>(() => {}));
+-
+-    render(<HifzModule />);
+-
+-    await screen.findByText('Statistikat e Hifzit');
+-    await screen.findByText('Duke ngarkuar statistikat…');
+-  });
+-});
+diff -ruN '--exclude=node_modules' '--exclude=dist' /home/user/h1-base/src/tests/hifzWiring.test.tsx /home/user/h1-next/src/tests/hifzWiring.test.tsx
+--- a/src/tests/hifzWiring.test.tsx	2026-10-02 07:40:59.000000000 +0000
++++ b/src/tests/hifzWiring.test.tsx	1970-01-01 00:00:00.000000000 +0000
+@@ -1,395 +0,0 @@
+-// @vitest-environment jsdom
+-/**
+- * HIFZ — FAZA A: Lidhja e Hifzit (H1, H2)
+- *
+- * H1: rezultati i mësimit RUHET. Para rregullimit, HifzModule e thërriste
+- * HifzLearnView me onComplete={async () => setLearningAyah(null)} — argumentet
+- * (result, stumblePoints) injoroheshin, processReviewResult() nuk thirrej kurrë
+- * nga rrjedha e mësimit, tabela ayahRecords mbetej bosh dhe SM-2 ishte kod
+- * i vdekur.
+- *
+- * H2: NJË regjistër, dy porta hyrjeje ("Hifzi Im" ↔ motori SM-2).
+- *
+- * QASJA E TESTIMIT (pa dependenci të reja, konventa e repos):
+- * - Komponentët e rëndë (HifzLearnView) zëvendësohen me stub që kap prop-et,
+- *   si te hifzMethodHandoff.test.tsx. onComplete thirret dorazi — njësoj si
+- *   ta thërriste faza ASSESS e komponentit real.
+- * - HifzSelfRecorder stub-ohet (prek Dexie-n e regjistrimeve + mikrofonin).
+- * - getSurahData kthen të dhëna të konservuara (pa rrjet, pa IndexedDB).
+- * - Tabelat Dexie (hifzDb) MBETEN ato reale si objekte, por metodat e I/O-së
+- *   (get/put/delete/toArray/count/add) mbivendosen me prapavijë në memorie.
+- *   Kështu kodi REAL (processReviewResult, setMemorized*, handler-at e
+- *   komponentëve) ekzekutohet plotësisht — falsohet vetëm disku.
+- */
+-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+-import React from 'react';
+-import { render, screen, fireEvent, cleanup, waitFor, act } from '@testing-library/react';
+-
+-// --- Stub-e (module mocks) ----------------------------------------------
+-
+-// Kap prop-et e HifzLearnView; onComplete thirret manualisht në teste.
+-const capturedLearn: Array<Record<string, any>> = vi.hoisted(() => []);
+-
+-vi.mock('../components/HifzLearnView', () => ({
+-  HifzLearnView: (props: Record<string, any>) => {
+-    capturedLearn.push(props);
+-    return React.createElement('div', { 'data-testid': 'hifz-learn-stub' });
+-  },
+-}));
+-
+-// Shmang hifzRecordingsDb (Dexie) + navigator.mediaDevices në jsdom.
+-vi.mock('../components/HifzSelfRecorder', () => ({
+-  HifzSelfRecorder: () =>
+-    React.createElement('div', { 'data-testid': 'hifz-recorder-stub' }),
+-}));
+-
+-// Të dhëna të konservuara të Kuranit — deterministe, pa rrjet.
+-vi.mock('../services/quranApi', async () => {
+-  const actual =
+-    await vi.importActual<typeof import('../services/quranApi')>('../services/quranApi');
+-  return {
+-    ...actual,
+-    getSurahData: async (surahNumber: number) => ({
+-      number: surahNumber,
+-      name: 'Test',
+-      transliteration: 'Test',
+-      ayahs: [
+-        { numberInSurah: 1, textAr: 'آية ١', textSq: 'Ajeti 1 (test)' },
+-        { numberInSurah: 2, textAr: 'آية ٢', textSq: 'Ajeti 2 (test)' },
+-      ],
+-    }),
+-  };
+-});
+-
+-import { HifzModule } from '../components/HifzModule';
+-import { HifzReviewSession } from '../components/HifzReviewSession';
+-import { MyHifzView } from '../components/MyHifzView';
+-import {
+-  hifzDb,
+-  DEFAULT_HIFZ_SETTINGS,
+-  getAllMemorized,
+-  setMemorizedUnified,
+-} from '../services/hifzDb';
+-import { getReviewQueue } from '../services/hifzScheduler';
+-
+-// --- Prapavija në memorie për tabelat Dexie -------------------------------
+-
+-const memStore = new Map<string, any>();
+-const recStore = new Map<string, any>();
+-let sessStore: any[] = [];
+-let settingsRow: any = { ...DEFAULT_HIFZ_SETTINGS };
+-
+-// Dexie kthen PromiseExtended, ndaj shmangim vi.spyOn().mockImplementation()
+-// (do të thyente tsc-në) — mbivendosim direkt metodën në instancë.
+-const origMetoda: Array<{ obj: any; emer: string }> = [];
+-function vendosStub(obj: any, emer: string, impl: (...args: any[]) => Promise<any>) {
+-  if (!origMetoda.some(m => m.obj === obj && m.emer === emer)) {
+-    origMetoda.push({ obj, emer });
+-  }
+-  obj[emer] = impl;
+-}
+-function hiqStubet() {
+-  // Fshin pronësinë vetjake → zbulohet prap metoda e prototipit.
+-  for (const { obj, emer } of origMetoda) delete obj[emer];
+-  origMetoda.length = 0;
+-}
+-
+-beforeEach(() => {
+-  memStore.clear();
+-  recStore.clear();
+-  sessStore = [];
+-  settingsRow = { ...DEFAULT_HIFZ_SETTINGS };
+-  capturedLearn.length = 0;
+-
+-  // Vetëm I/O-ja falsohet; gjithë logjika (scheduler, helpers, handler-a) është reale.
+-  vendosStub(hifzDb.memorized, 'put', async (v: any) => {
+-    memStore.set(v.ayahKey, v);
+-    return v.ayahKey;
+-  });
+-  vendosStub(hifzDb.memorized, 'get', async (k: any) => memStore.get(k));
+-  vendosStub(hifzDb.memorized, 'delete', async (k: any) => {
+-    memStore.delete(k);
+-  });
+-  vendosStub(hifzDb.memorized, 'toArray', async () => Array.from(memStore.values()));
+-  vendosStub(hifzDb.memorized, 'count', async () => memStore.size);
+-
+-  vendosStub(hifzDb.ayahRecords, 'put', async (v: any) => {
+-    recStore.set(v.ayahKey, v);
+-    return v.ayahKey;
+-  });
+-  vendosStub(hifzDb.ayahRecords, 'get', async (k: any) => recStore.get(k));
+-  vendosStub(hifzDb.ayahRecords, 'delete', async (k: any) => {
+-    recStore.delete(k);
+-  });
+-  vendosStub(hifzDb.ayahRecords, 'toArray', async () => Array.from(recStore.values()));
+-
+-  vendosStub(hifzDb.sessions, 'add', async (v: any) => {
+-    const id = v.id ?? `ses-${sessStore.length}`;
+-    sessStore.push({ ...v, id });
+-    return id;
+-  });
+-  vendosStub(hifzDb.sessions, 'toArray', async () => [...sessStore]);
+-
+-  vendosStub(hifzDb.settings, 'get', async (id: any) =>
+-    id === 1 ? { ...settingsRow } : undefined,
+-  );
+-  vendosStub(hifzDb.settings, 'put', async (s: any) => {
+-    settingsRow = { ...s };
+-    return s.id;
+-  });
+-});
+-
+-afterEach(() => {
+-  cleanup();
+-  hiqStubet();
+-});
+-
+-// --- Ndihmëse ------------------------------------------------------------
+-
+-/** Hap rrjedhën e mësimit te HifzModule dhe kthen prop-et e kapura të LearnView. */
+-async function hapMesimin() {
+-  render(<HifzModule />);
+-  const startBtn = await screen.findByText('Filloj Mësimin');
+-  fireEvent.click(startBtn);
+-  await screen.findByTestId('hifz-learn-stub');
+-  return capturedLearn[capturedLearn.length - 1];
+-}
+-
+-const DAY = 24 * 60 * 60 * 1000;
+-
+-// =====================================================================
+-// FA1.1 — H1: rezultati i mësimit RUHET
+-// =====================================================================
+-describe('FA1.1 (H1): përfundimi i mësimit ruan progresin', () => {
+-  it('mësimi me result KNEW shkruan ayahRecords, memorized dhe sessions', async () => {
+-    expect(await getAllMemorized()).toHaveLength(0);
+-
+-    const props = await hapMesimin();
+-    await act(async () => {
+-      await props.onComplete('KNEW', [2]);
+-    });
+-
+-    // 1) Motori SM-2 u thirr: rekordi ekziston me status LEARNING.
+-    const rec = recStore.get('114:1');
+-    expect(rec).toBeDefined();
+-    expect(rec.status).toBe('LEARNING');
+-    expect(rec.stumblePoints).toEqual([2]);
+-
+-    // 2) Regjistri "Hifzi Im" u rrit 0 → 1.
+-    expect(memStore.get('114:1')).toBeDefined();
+-    expect(await getAllMemorized()).toHaveLength(1);
+-
+-    // 3) Sesioni LEARN u shkrua me formën e plotë.
+-    expect(sessStore).toHaveLength(1);
+-    const ses = sessStore[0];
+-    expect(ses.type).toBe('LEARN');
+-    expect(ses.ayahsCovered).toEqual(['114:1']);
+-    expect(ses.results).toEqual([{ ayahKey: '114:1', result: 'KNEW' }]);
+-    expect(ses.endedAt).toBeGreaterThanOrEqual(ses.startedAt);
+-    expect(ses.durationSeconds).toBeGreaterThanOrEqual(0);
+-
+-    // 4) Pamja kthehet te lista (mësimi u mbyll).
+-    await screen.findByText('Filloj Mësimin');
+-  });
+-
+-  it('FORGOT e kthen ajetin te LEARNING me dueDate brenda 24h', async () => {
+-    const props = await hapMesimin();
+-    const before = Date.now();
+-    await act(async () => {
+-      await props.onComplete('FORGOT', []);
+-    });
+-
+-    // Verifikon SM-2 PËRMES thirrjes reale (pa e riprodhuar algoritmin):
+-    // FORGOT i ri → LEARNING, interval 1 ditë, lapses 1.
+-    const rec = recStore.get('114:1');
+-    expect(rec.status).toBe('LEARNING');
+-    expect(rec.intervalDays).toBe(1);
+-    expect(rec.lapses).toBe(1);
+-    expect(rec.dueDate).toBeGreaterThanOrEqual(before);
+-    expect(rec.dueDate).toBeLessThanOrEqual(before + DAY + 5000);
+-  });
+-
+-  it('butoni "Rishiko (N)" shfaqet kur rekordi kalon dueDate', async () => {
+-    // Rekord i maturuar (due dje) — radha e rishikimit nuk është më bosh.
+-    recStore.set('114:1', {
+-      ayahKey: '114:1',
+-      status: 'LEARNING',
+-      strength: 4,
+-      easeFactor: 2.3,
+-      intervalDays: 1,
+-      dueDate: Date.now() - DAY,
+-      repetitions: 0,
+-      lapses: 1,
+-      totalListens: 0,
+-      stumblePoints: [],
+-      createdAt: Date.now() - 2 * DAY,
+-    });
+-
+-    render(<HifzModule />);
+-    await screen.findByText('Rishiko (1)');
+-  });
+-
+-  it('përfundimi i sesionit të rishikimit shkruan NJË SessionRecord REVIEW', async () => {
+-    const queue = [
+-      {
+-        ayahKey: '114:1',
+-        status: 'LEARNING',
+-        strength: 4,
+-        easeFactor: 2.3,
+-        intervalDays: 1,
+-        dueDate: Date.now() - DAY,
+-        repetitions: 0,
+-        lapses: 1,
+-        totalListens: 0,
+-        stumblePoints: [],
+-        createdAt: Date.now() - 2 * DAY,
+-      },
+-      {
+-        ayahKey: '114:2',
+-        status: 'LEARNING',
+-        strength: 4,
+-        easeFactor: 2.3,
+-        intervalDays: 1,
+-        dueDate: Date.now() - DAY,
+-        repetitions: 0,
+-        lapses: 1,
+-        totalListens: 0,
+-        stumblePoints: [],
+-        createdAt: Date.now() - 2 * DAY,
+-      },
+-    ];
+-    const onComplete = vi.fn();
+-    render(<HifzReviewSession queue={queue as any} onClose={() => {}} onComplete={onComplete} />);
+-
+-    // Ajeti 1: zbulo → "I Knew It".
+-    fireEvent.click(await screen.findByText('Preke për ta zbuluar ajetin'));
+-    fireEvent.click(await screen.findByText('E dija'));
+-
+-    // Ajeti 2: zbulo → "I Struggled".
+-    fireEvent.click(await screen.findByText('Preke për ta zbuluar ajetin'));
+-    fireEvent.click(await screen.findByText('Kam pasur vështirësi'));
+-
+-    // Sesioni u mbyll dhe u shkrua NJË shënim i vetëm REVIEW me të dy rezultatet.
+-    await waitFor(() => expect(onComplete).toHaveBeenCalledTimes(1));
+-    expect(sessStore).toHaveLength(1);
+-    const ses = sessStore[0];
+-    expect(ses.type).toBe('REVIEW');
+-    expect(ses.ayahsCovered).toEqual(['114:1', '114:2']);
+-    expect(ses.results).toEqual([
+-      { ayahKey: '114:1', result: 'KNEW' },
+-      { ayahKey: '114:2', result: 'STRUGGLED' },
+-    ]);
+-    expect(ses.endedAt).toBeGreaterThanOrEqual(ses.startedAt);
+-
+-    // Çdo ajet u përpunua edhe nga SM-2 (sjellja ekzistuese u ruajt).
+-    expect(recStore.get('114:1').repetitions).toBe(1);
+-    expect(recStore.get('114:2').repetitions).toBe(0);
+-  });
+-});
+-
+-// =====================================================================
+-// FA1.2 — H2: NJË regjistër, dy porta hyrjeje
+-// =====================================================================
+-describe('FA1.2 (H2): regjistri i unifikuar "Hifzi Im" <-> SM-2', () => {
+-  it('shënimi manual krijon rekord rishikimi që hyn në radhë menjëherë', async () => {
+-    await setMemorizedUnified(2, 255, true);
+-
+-    // Regjistri manual u shënua…
+-    expect(memStore.get('2:255')).toBeDefined();
+-    // …dhe motori SM-2 mori rekord NEW, due që tani.
+-    const rec = recStore.get('2:255');
+-    expect(rec).toBeDefined();
+-    expect(rec.status).toBe('NEW');
+-    expect(rec.dueDate).toBeLessThanOrEqual(Date.now());
+-    expect(rec.repetitions).toBe(0);
+-    expect(rec.lapses).toBe(0);
+-
+-    // Radha adaptive e përfshin menjëherë (burimi i "Rishiko (1)").
+-    const q = await getReviewQueue('ADAPTIVE');
+-    expect(q.map(r => r.ayahKey)).toContain('2:255');
+-  });
+-
+-  it('shënimi manual i dytë nuk e reseton progresin SM-2', async () => {
+-    recStore.set('2:255', {
+-      ayahKey: '2:255',
+-      status: 'REVIEWING',
+-      strength: 50,
+-      easeFactor: 2.5,
+-      intervalDays: 10,
+-      dueDate: Date.now() + DAY,
+-      repetitions: 3,
+-      lapses: 0,
+-      totalListens: 0,
+-      stumblePoints: [],
+-      createdAt: Date.now() - 10 * DAY,
+-    });
+-
+-    await setMemorizedUnified(2, 255, true);
+-
+-    // Vetëm regjistri manual u shënua; progresi SM-2 nuk u prek.
+-    expect(memStore.get('2:255')).toBeDefined();
+-    const rec = recStore.get('2:255');
+-    expect(rec.repetitions).toBe(3);
+-    expect(rec.status).toBe('REVIEWING');
+-    expect(rec.intervalDays).toBe(10);
+-  });
+-
+-  it('heqja manuale e një ajeti PA progres e fshin plotësisht', async () => {
+-    await setMemorizedUnified(2, 255, true);
+-    expect(memStore.get('2:255')).toBeDefined();
+-    expect(recStore.get('2:255')).toBeDefined();
+-
+-    await setMemorizedUnified(2, 255, false);
+-
+-    expect(memStore.get('2:255')).toBeUndefined();
+-    expect(recStore.get('2:255')).toBeUndefined();
+-    expect(await getAllMemorized()).toHaveLength(0);
+-  });
+-
+-  it('heqja manuale e një ajeti ME progres (repetitions>0) e ruan rekordin SM-2', async () => {
+-    memStore.set('2:255', { ayahKey: '2:255', surah: 2, ayah: 255, memorizedAt: Date.now() - DAY });
+-    recStore.set('2:255', {
+-      ayahKey: '2:255',
+-      status: 'REVIEWING',
+-      strength: 50,
+-      easeFactor: 2.5,
+-      intervalDays: 10,
+-      dueDate: Date.now() + DAY,
+-      repetitions: 4,
+-      lapses: 0,
+-      totalListens: 0,
+-      stumblePoints: [],
+-      createdAt: Date.now() - 10 * DAY,
+-    });
+-
+-    await setMemorizedUnified(2, 255, false);
+-
+-    // Vetëm shënimi manual u hoq — progresi i fituar nuk shkatërrohet.
+-    expect(memStore.get('2:255')).toBeUndefined();
+-    const rec = recStore.get('2:255');
+-    expect(rec).toBeDefined();
+-    expect(rec.repetitions).toBe(4);
+-  });
+-
+-  it('MyHifzView: shënimi nga UI krijon rekord rishikimi (porta e dytë)', async () => {
+-    const { container } = render(<MyHifzView onClose={() => {}} />);
+-    await screen.findByText('Hifzi Im');
+-
+-    // Zgjero suren 2 (Al-Baqarah) dhe shëno ajetin 255.
+-    const surah2Btn = screen.getByText('Al-Baqarah').closest('button');
+-    expect(surah2Btn).not.toBeNull();
+-    fireEvent.click(surah2Btn!);
+-    const grid = container.querySelector('div.grid.grid-cols-6');
+-    expect(grid).not.toBeNull();
+-    const ayahBtns = grid!.querySelectorAll('button');
+-    expect(ayahBtns.length).toBe(286);
+-    fireEvent.click(ayahBtns[254]); // ajeti 255
+-
+-    // Numëruesi u rrit dhe rekordi SM-2 u krijua (jo vetëm shënimi manual).
+-    await screen.findByText('1 / 6236 ajete të mësuar');
+-    expect(memStore.get('2:255')).toBeDefined();
+-    const rec = recStore.get('2:255');
+-    expect(rec).toBeDefined();
+-    expect(rec.status).toBe('NEW');
+-  });
+-});

@@ -123,11 +123,9 @@ import {
  VolumeX,
  BarChart3,
  Repeat,
- Brain,
  Award
 } from 'lucide-react';
 import { QuranStatsChart } from './QuranStatsChart';
-import { HifzModule } from './HifzModule';
 import { KhatamTrackerView } from './KhatamTrackerView';
 import { QcfMushafReader } from './QcfMushafReader';
 import { MushafReader } from './quran/mushaf/MushafReader';
@@ -207,7 +205,7 @@ export const ExpandableNoteText: React.FC<ExpandableNoteTextProps> = ({
 interface KuraniViewProps {
  initialSurahNumber?: number;
  initialAyahNumber?: number;
- initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam';
+ initialSubTab?: 'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'khatam';
  initialPageNumber?: number;
  readingState: QuranReadingState;
  bookmarks: QuranBookmark[];
@@ -239,7 +237,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  const [surahData, setSurahData] = useState<QuranSurahData | null>(null);
  const [loading, setLoading] = useState<boolean>(false);
  const [searchQuery, setSearchQuery] = useState<string>('');
- const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'hifz' | 'khatam'>(initialSubTab || 'surahs');
+ const [activeTab, setActiveTab] = useState<'surahs' | 'mushaf_qcf' | 'cards_backup' | 'search' | 'bookmarks' | 'notes' | 'stats' | 'khatam'>(initialSubTab || 'surahs');
  const [targetAyahToScroll, setTargetAyahToScroll] = useState<number | null>(initialAyahNumber || null);
 
  // Reading Settings state (Canonical unified settings)
@@ -1496,23 +1494,6 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
           </div>
         </div>
 
-        {/* Moduli i Hifzit */}
-        <div
-          onClick={() => setActiveTab('hifz')}
-          className="bg-slate-900/90 hover:bg-slate-850 border border-teal-500/30 hover:border-teal-400 p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 group shadow-sm"
-        >
-          <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-teal-950/60 border border-teal-700/50 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
-              <Brain className="w-4 h-4" />
-            </div>
-            <span className="text-[10px] font-mono text-teal-400/80 bg-teal-950/40 px-1.5 py-0.5 rounded border border-teal-800/40">Memorizim</span>
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-slate-100 group-hover:text-teal-300 transition-colors">Moduli Hifz</h4>
-            <p className="text-[10px] text-slate-400 truncate">Flashcards & Përsëritja</p>
-          </div>
-        </div>
-
         {/* Statistikat */}
         <div
           onClick={() => setActiveTab('stats')}
@@ -1753,9 +1734,7 @@ export const KuraniView: React.FC<KuraniViewProps> = ({
  }}
  />
  )
- ) : activeTab === 'hifz' ? (
- <HifzModule />
-  ) : activeTab === 'khatam' ? (
+ ) : activeTab === 'khatam' ? (
     <KhatamTrackerView
       onSelectSurah={(surahNum) => {
         setSelectedSurahNum(surahNum);

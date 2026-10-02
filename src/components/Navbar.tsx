@@ -6,7 +6,7 @@
 import React from 'react';
 import { Home, Clock, BookOpen, Shield, Calendar, Settings } from 'lucide-react';
 
-export type ActiveTab = 'home' | 'namazi' | 'kurani' | 'mburoja' | 'ditaIme' | 'settings' | 'hifz';
+export type ActiveTab = 'home' | 'namazi' | 'kurani' | 'mburoja' | 'ditaIme' | 'settings';
 
 interface NavbarProps {
  activeTab: ActiveTab;
@@ -46,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, isOffli
  {/* Desktop / Tablet Nav Links (Hidden on Mobile) */}
  <div className="hidden md:flex items-center space-x-1 bg-slate-950/60 p-1 rounded-xl border border-slate-800">
  {navItems.map((item) => {
- const isActive = activeTab === item.id || (item.id === 'kurani' && activeTab === 'hifz');
+ const isActive = activeTab === item.id;
  return (
  <button
  key={item.id}
@@ -100,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, isOffli
         <nav className="safe-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/98 border-t border-slate-800 backdrop-blur-md px-1 py-1 text-slate-400 shadow-2xl">
  <div className="flex justify-around items-center max-w-md mx-auto">
  {navItems.map((item) => {
- const isActive = activeTab === item.id || (item.id === 'kurani' && activeTab === 'hifz');
+ const isActive = activeTab === item.id;
  return (
  <button
  key={item.id}
