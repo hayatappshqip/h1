@@ -115,7 +115,7 @@ Nuk fal namaz rregullisht. Nuk do të ndihet i turpëruar nga një "streak" i th
 
 | ID | Kërkesa | Prioritet | Gjendja |
 |---|---|---|---|
-| FR-4.1 | 11 kategori / 133 kapituj / 294 dua | P0 | ✅ ekziston |
+| FR-4.1 | 11 kategori / 132 kapituj / 269 hyrje (ch27: dy pamje — mëngjes/mbrëmje) | P0 | ✅ ekziston |
 | FR-4.2 | Çdo dua ka: arabisht, shqip, transliterim, numër përsëritjeje, referencë | P0 | ⚠️ **63 boshllëqe** |
 | FR-4.3 | Numërues për dhikër me dridhje/zë | P0 | ✅ ekziston |
 | FR-4.4 | Kapituj të preferuar + dua të ruajtura | P1 | ✅ ekziston |

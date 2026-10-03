@@ -206,25 +206,35 @@ export interface DuaItem {
   reference?: string;
 }
 
+/** Rutinat ditore: "mëngjes"/"mbrëmje" janë dy pamjet e kapitullit 27 të librit. */
+export type MburojaRoutine = 'mëngjes' | 'mbrëmje' | 'gjumi';
+
 export interface MburojaChapter {
- id: number;
- categoryId: string;
- title: string;
- page: number;
- duas: DuaItem[];
- isRoutine?: 'mengjesi-mbremja' | 'gjumi';
+  id: number;
+  categoryId: string;
+  title: string;
+  page: number;
+  duas: DuaItem[];
+  isRoutine?: MburojaRoutine;
+  /**
+   * Kapitulli i paketës që ushqen këtë pamje (ch27 për të dyja rutinat).
+   * Çelësat e ruajtjes ndërtohen gjithmonë mbi këtë ID, që kujtimet e përdoruesit
+   * të mbeten të lidhura me përmbajtjen e librit edhe pas ndarjes në pamje.
+   */
+  packageChapterId?: number;
 }
 
 export interface MburojaState {
- schemaVersion: 2;
- favChapters: number[];
- savedDuas: MburojaItemKey[];
- completedByDate: Record<string, number[]>;
- dailyCountsByDate: Record<string, Record<MburojaItemKey, number>>;
- situationalCounts: Record<MburojaItemKey, number>;
- duaGoals?: Record<MburojaItemKey, number>;
- /** Numeric v1 IDs retained safely because they cannot be mapped without guessing. */
- unresolvedLegacyDuaIds?: number[];
+  /** 2 = para ndarjes mëngjes/mbrëmje (v2.1.0), 3 = pas saj (v2.2.0). */
+  schemaVersion: 3;
+  favChapters: number[];
+  savedDuas: MburojaItemKey[];
+  completedByDate: Record<string, number[]>;
+  dailyCountsByDate: Record<string, Record<MburojaItemKey, number>>;
+  situationalCounts: Record<MburojaItemKey, number>;
+  duaGoals?: Record<MburojaItemKey, number>;
+  /** Numeric v1 IDs retained safely because they cannot be mapped without guessing. */
+  unresolvedLegacyDuaIds?: number[];
 }
 
 // Dita Ime (My Day Task & Agenda Manager) Types

@@ -1,12 +1,13 @@
 /**
  * MburojaView Component - Mburoja e Muslimanit (Hisnul Muslim)
  * Data Source: Seid el-Kahtani, Azem Bardhoshi, Ismail Bardhoshi
- * Verified Integrity: 11 Categories, 133 Chapters, 291 Duas
+ * Verified Integrity: 11 kategori, 132 kapituj, 269 hyrje (paketa 2.2.0)
+ * Ch27 i librit shfaqet si dy pamje: "Dhikri i Mëngjesit" dhe "Dhikri i Mbrëmjes".
  */
 import React, { useState } from 'react';
-import { MBUROJA_CATEGORIES, MBUROJA_CHAPTERS } from '../data/mburojaData';
+import { AUDIO_ROUTINE_CHAPTER_IDS, MBUROJA_CATEGORIES, MBUROJA_CHAPTERS, duaHasAudio } from '../data/mburojaData';
 import { MburojaChapter, MburojaState, DuaItem, MburojaItemKey } from '../types';
-import { Search, Star, Bookmark, Copy, Check, ChevronLeft, ShieldCheck, CheckCircle2, RotateCcw, Volume2, Play, Pause, SkipForward, SkipBack } from 'lucide-react';
+import { Search, Star, Bookmark, Copy, Check, ChevronLeft, ShieldCheck, CheckCircle2, RotateCcw, Volume2, Play, Pause, SkipForward, SkipBack, Sunrise, Sunset } from 'lucide-react';
 import { triggerDhikrFeedback } from '../services/feedbackEngine';
 import { getLocalDateString } from '../utils/dateUtils';
 import { sanitizeArabicText } from '../utils/arabicUtils';
@@ -324,7 +325,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  {renderFormattedAlbanian(dua.sq, fontScale)}
 
  {/* Audio Playback for Daily Routine Duas */}
- {(activeChapter.isRoutine || [27, 28, 29].includes(activeChapter.id)) && (
+ {(duaHasAudio(dua) || activeChapter.isRoutine || AUDIO_ROUTINE_CHAPTER_IDS.includes(activeChapter.id)) && (
  <div className="pt-1">
  <DuaAudioPlayer dua={dua} chapterId={activeChapter.id} />
  </div>
@@ -539,7 +540,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  return (
  <div className="space-y-3">
  {/* Audio Playback Summary Banner for Saved Duas */}
- {savedList.some(item => [27, 28, 29].includes(item.chapterId)) && (
+ {savedList.some(item => AUDIO_ROUTINE_CHAPTER_IDS.includes(item.chapterId)) && (
  <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-amber-950/40 border border-emerald-800/60 rounded-xl p-3 flex items-center justify-between shadow-sm">
  <div className="flex items-center space-x-2.5">
  <div className="w-8 h-8 rounded-lg bg-emerald-900/60 border border-emerald-700/50 flex items-center justify-center text-emerald-400">
@@ -582,7 +583,7 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  {renderFormattedAlbanian(dua.sq, fontScale)}
 
  {/* Audio Player for Saved Routine Duas */}
- {[27, 28, 29].includes(chapterId) && (
+ {(duaHasAudio(dua) || AUDIO_ROUTINE_CHAPTER_IDS.includes(chapterId)) && (
  <div className="pt-1">
  <DuaAudioPlayer dua={dua} chapterId={chapterId} />
  </div>
@@ -642,7 +643,9 @@ export const MburojaView: React.FC<MburojaViewProps> = ({
  >
  <div className="flex items-center space-x-3 pr-2">
  <span className="w-8 h-8 rounded-lg bg-slate-950 border border-slate-800 text-emerald-400 font-mono text-xs flex items-center justify-center font-bold">
- #{ch.id}
+ {ch.isRoutine === 'mëngjes' ? <Sunrise className="w-4 h-4" />
+ : ch.isRoutine === 'mbrëmje' ? <Sunset className="w-4 h-4" />
+ : `#${ch.id}`}
  </span>
  <div>
  <div className="flex items-center space-x-2">

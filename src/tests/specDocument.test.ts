@@ -19,15 +19,18 @@ const ROOT = path.resolve(__dirname, '../..');
 const read = (p: string) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const exists = (p: string) => fs.existsSync(path.join(ROOT, p));
 
-/** Vlerat bazë të verifikuara më 2026-08-30 në degën arena/01a053d0-h1. */
+/** Vlerat bazë të verifikuara më 2026-10-04 në degën arena/01a1039a-h1
+ *  (paketa v2.2.0: ch27 i ndarë në mëngjes/mbrëmje, dy hyrjet e mbrëmjes u bashkuan,
+ *  variantet e mbrëmjes të plota — 269 hyrje; 13 zëra të rikthyer në 2.1.0). */
 const BASELINE = {
   quranSurahs: 114,
   quranVerses: 6236,
   mburojaCategories: 11,
-  mburojaChapters: 132,
-  mburojaDuas: 278,
+  // 132 kapituj të librit; ch27 shfaqet si dy pamje (mëngjes/mbrëmje) → 133 hyrje në UI.
+  mburojaChapterViews: 133,
+  mburojaDuas: 269,
   // Pragjet e sipërme: boshllëqet mund të pakësohen, jo të rriten.
-  mburojaDuaItems: 261,
+  mburojaDuaItems: 252,
   mburojaRrefimItems: 17,
 };
 
@@ -119,16 +122,21 @@ describe('Dokumenti i specifikave — pohimet përmbajtjesore', () => {
     expect(actual).toBe(declared);
   });
 
-  it('Mburoja e certifikuar ka 11 kategori, 132 kapituj dhe 278 hyrje', async () => {
+  it('Mburoja e certifikuar ka 11 kategori, 132 kapituj dhe 269 hyrje (ch27 në dy pamje)', async () => {
     const { MBUROJA_CHAPTERS, MBUROJA_CATEGORIES } = await import('../data/mburojaData');
     expect(MBUROJA_CATEGORIES).toHaveLength(BASELINE.mburojaCategories);
-    expect(MBUROJA_CHAPTERS).toHaveLength(BASELINE.mburojaChapters);
-    expect(MBUROJA_CHAPTERS.flatMap((c) => c.duas)).toHaveLength(BASELINE.mburojaDuas);
+    expect(MBUROJA_CHAPTERS).toHaveLength(BASELINE.mburojaChapterViews);
+    // Duatë e përbashkëta të ch27 shfaqen në të dyja pamjet me të njëjtin çelës.
+    const items = MBUROJA_CHAPTERS.flatMap((c) => c.duas);
+    expect(new Set(items.map((item) => item.key)).size).toBe(BASELINE.mburojaDuas);
   });
 
   it('fushat e paketës Mburoja respektojnë tipin dua/rrefim', async () => {
     const { MBUROJA_CHAPTERS } = await import('../data/mburojaData');
-    const items = MBUROJA_CHAPTERS.flatMap((chapter) => chapter.duas);
+    // ch27 jep të njëjtat hyrje të përbashkëta në dy pamje — numërohen një herë.
+    const items = [...new Map(
+      MBUROJA_CHAPTERS.flatMap((chapter) => chapter.duas).map((item) => [item.key, item])
+    ).values()];
     const duas = items.filter((item) => item.type === 'dua');
     const rrefime = items.filter((item) => item.type === 'rrefim');
 
@@ -136,8 +144,9 @@ describe('Dokumenti i specifikave — pohimet përmbajtjesore', () => {
     expect(rrefime).toHaveLength(BASELINE.mburojaRrefimItems);
     const duaWithArabic = duas.filter((item) => item.ar.trim());
     const duaWithAlbanian = duas.filter((item) => item.sq.trim());
-    expect(duaWithArabic).toHaveLength(261);
-    expect(duaWithAlbanian.length).toBeGreaterThanOrEqual(257);
+    expect(duaWithArabic).toHaveLength(252);
+    // Dyshemeja: 248 dua kanë përkthim shqip në paketën v2.2.0 (269 hyrje, 252 dua).
+    expect(duaWithAlbanian.length).toBeGreaterThanOrEqual(248);
     expect(rrefime.every((item) => item.lead?.trim() || item.sq.trim())).toBe(true);
     expect(new Set(items.map((item) => item.key)).size).toBe(items.length);
   });

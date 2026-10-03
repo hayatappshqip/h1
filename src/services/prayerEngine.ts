@@ -227,10 +227,10 @@ export function getActiveSuggestions(
  if (currentMins >= mbremjaStart || currentMins < imsakMins) {
  suggestions.push({
  id: 'mbremjes',
- title: 'Dhikri i Mbrëmjes',
- subtitle: 'Koha e rekomanduar: Pas ikindisë / akshamit deri në mesnatë',
- chapterId: 27,
- isRoutine: true
+    title: 'Dhikri i Mbrëmjes',
+    subtitle: 'Koha e rekomanduar: Pas ikindisë / akshamit deri në mesnatë',
+    chapterId: 271,         // pamja "mbrëmje" e kapitullit 27 (mbrëmje + të dyja)
+    isRoutine: true
  });
  }
 
