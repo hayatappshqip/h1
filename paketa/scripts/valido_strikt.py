@@ -92,7 +92,7 @@ def main():
              'albanian_alt', 'count', 'notes', 'audio', 'audio_parts', 'has_audio', 'time'}
     ops = {'pjesa', 'sure', 'mbyllje', 'varianti', 'burimi', 'i_cunguar_ne_liber',
            'koha_shenim', 'count_burimi', 'albanian_mungon_arsye', 'page_ref',
-           'count_mungon_arsye', 'audio_mungon_arsye'}
+           'count_mungon_arsye', 'audio_mungon_arsye', 'bashkuar_nga'}
     n_items = 0
     for c in d['chapters']:
         if not isinstance(c.get('id'), int) or not c.get('title'):

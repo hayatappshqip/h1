@@ -1,6 +1,6 @@
 # Referenca e skemës — `data/mburoja.json`
 
-Versioni 2.0.0 · gjeneruar 2026-10-01
+Versioni 2.1.0 · gjeneruar 2026-10-03
 
 ## Struktura e përgjithshme
 
@@ -85,9 +85,9 @@ Këto kontrollohen automatikisht nga `scripts/valido.py`:
 - nëse `arabic` është null, `transliteration` ose është null ose përmban diakritikë
 - `audio` fillon me `audios/<id i kapitullit me 3 shifra>_` — pra një skedar
   nuk mund t'i lidhet një kapitulli tjetër
-- **çdo rrugë `audio` ekziston vërtet në disk** — repo-ja burimore referon 12
-  skedarë që nuk ekzistojnë; ata nuk lejohet të dalin në dataset (shih
-  `audio_mungon_arsye`)
+- **çdo rrugë `audio` ekziston vërtet në disk** — në 2.0.0 kjo kishte hequr 13
+  rrugë; në 2.1.0 skedarët u rikthyen në `audios/` dhe tani asnjë rrugë nuk
+  mungon. Fusha `audio_mungon_arsye` nuk emetohet më.
 - asnjë skedar audio nuk ndahet mes dy lutjesh
 - `has_audio === (audio !== null)`
 - `count` është numër i plotë 1–1000, **ose** `null` me `count_mungon_arsye` të plotësuar
@@ -108,7 +108,7 @@ Këto kontrollohen automatikisht nga `scripts/valido.py`:
   "count": 100,
   "notes": ["Buhariu dhe Muslimi. Pejgamberi ﷺ ka thënë: “Kush thotë këtë njëqind herë në ditë…"],
   "audio": "audios/027_18.mp3",
-  "audio_parts": [],
+  "audio_parts": null,
   "has_audio": true
 }
 ```
@@ -117,37 +117,40 @@ Këto kontrollohen automatikisht nga `scripts/valido.py`:
 
 ```json
 {
-  "n": 20,
-  "id": 29,
+  "n": 6,
+  "id": 5,
   "type": "dua",
-  "arabic": "لَا إِلَهَ إِلَّا اللَّهُ، وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.",
-  "transliteration": "Lã ilãhe il-lall-llãhu waḥdehu lã sherĩke leh, lehul mulku we lehul ḥamdu we huwe ‘alã kul-li shej’in ḳadĩr.",
-  "count": 10,
-  "audio": "audios/027_19.mp3",
-  "audio_parts": ["audios/027_19.mp3", "audios/027_20.mp3"],
+  "count": 3,
+  "audio": "audios/025_05.mp3",
+  "audio_parts": ["audios/025_05.mp3", "audios/025_06.mp3", "audios/025_07.mp3"],
   "has_audio": true
 }
 ```
 
-Repo-ja e kishte ndarë këtë lutje në dy incizime; libri e trajton si një.
-`audio` është i pari, `audio_parts` janë të gjithë — luaji njëri pas tjetrit.
+(Fushat tekstuale janë hequr për shkurtësi; vlerat e tjera janë marrë
+fjalë-për-fjalë nga `data/mburoja.json`.)
 
-### Shembull — blloku i tri sureve, i ndarë
+Kur libri e jep një bllok si një lutje të vetme, ndërsa repo-ja ka incizime të
+ndara, `audio_parts` i mban të gjithë: `audio` është i pari, pjesët luhen me
+radhë — njëri pas tjetrit.
 
-Libri i jep tri suret (Iḫlãs, Feleḳ, Nãs) si **një** lutje që lexohet pas çdo
-namazi farz. Për një aplikacion kjo është e papërdorshme si një bllok i vetëm,
-ndaj është ndarë në tri hyrje që mbajnë `n` të njëjtë dhe dallohen me `sure` dhe
-`pjesa`:
+### Shembull — blloku i tri sureve (Iḫlãs + Feleḳ + Nãs)
 
-```json
-{ "n": 6, "id": 6, "sure": "Suretu El-Iḫlãs", "pjesa": 1, "audio": "audios/025_05.mp3" }
-{ "n": 6, "id": 7, "sure": "Suretu El-Feleḳ", "pjesa": 2, "audio": "audios/025_06.mp3" }
-{ "n": 6, "id": 8, "sure": "Suretu En-Nãs",  "pjesa": 3, "audio": null,
-  "audio_mungon_arsye": "repo-ja burimore e referon “audios/025_07.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje" }
+Libri i jep tri suret si **një** lutje që lexohet tri herë — pas namazit (ch25),
+në mëngjes/mbrëmje (ch27) dhe para gjumit (ch28) — dhe paketa e mban po ashtu:
+**një hyrje e vetme për kapitull**, me të gjithë tekstin arabik, transkriptimin
+dhe përkthimin, plus `count: 3`.
+
+```js
+// ch25 #6 → një hyrje e vetme me tri pjesë audio
+const surat = doc.chapters.find(c => c.id === 25).items.find(i => i.n === 6);
+// audio: "audios/025_05.mp3"   audio_parts: [025_05, 025_06, 025_07]
 ```
 
-Ky është rasti i vetëm ku `n` përsëritet brenda një kapitulli. Filtra me
-`items.filter(i => i.n === 6)` për t'i marrë të tria së bashku.
+Në ch27 zëri është një skedar i vetëm (`027_03.mp3`, incizimi i bllokut të
+plotë); në ch28 po ashtu (`028_01.mp3`). Fushat `sure`, `pjesa` dhe `mbyllje`
+u përdorën vetëm në 2.0.0, kur blloku ishte ndarë në tri hyrje; 2.1.0 nuk i
+emeton më.
 
 ### Shembull — rrëfim pa tekst arabik
 
@@ -162,7 +165,7 @@ Ky është rasti i vetëm ku `n` përsëritet brenda një kapitulli. Filtra me
   "count": 1,
   "notes": ["Tirmidhiu, Ebu Davudi."],
   "audio": null,
-  "audio_parts": [],
+  "audio_parts": null,
   "has_audio": false
 }
 ```
@@ -235,11 +238,11 @@ pa përzierje.
 | Fusha | Tipi | Kuptimi |
 |---|---|---|
 | `id` | int | **Çelësi unik brenda kapitullit**, i njëpasnjëshëm nga 1. Përdor këtë për `key` në React/lista, jo `n`. |
-| `n` | int | Numri i hyrjes **në libër**. Mund të përsëritet kur një hyrje e librit ndahet në disa pjesë (p.sh. tri suret). |
+| `n` | int | Numri i hyrjes **në libër**. Mund të përsëritet për hyrjet e lidhura (p.sh. varianti i mbrëmjes i të njëjtit dhikër). |
 | `time` | str \| null | `mëngjes` · `mbrëmje` · `të dyja` · `natë` · `null` (= çdo kohë). Nxjerrë nga `أَصْبَحْنَا` / `أَمْسَيْنَا` dhe nga shënimet e librit. |
-| `sure` | str | Emri i sures, kur hyrja është njëra nga tri suret e ndara (`Suretu El-Iḫlãs`, `Suretu El-Feleḳ`, `Suretu En-Nãs`). |
-| `pjesa` | int | Pjesa e bllokut të ndarë (1–3 për suret). |
-| `mbyllje` | str | Udhëzimi që libri e jep pas të tri sureve (vetëm te pjesa e fundit). |
+| `sure` | str | **Vetëm 2.0.0** — emri i sures kur blloku i tri sureve ishte i ndarë; 2.1.0 e bashkoi në një hyrje dhe nuk e emeton më. |
+| `pjesa` | int | **Vetëm 2.0.0** — pjesa e bllokut të ndarë (1–3 për suret). |
+| `mbyllje` | str | **Vetëm 2.0.0** — udhëzimi pas të tri sureve (te pjesa e fundit). |
 | `varianti` | str | `"mbrëmje"` — tregon që kjo është varianti i mbrëmjes i një lutjeje mëngjesi. |
 | `burimi` | str | Për variantet: nga cili poshtëshënim i librit është nxjerrë. |
 | `i_cunguar_ne_liber` | bool | `true` kur **vetë botimi** e jep shqipen të shkurtuar me `…`. Nuk është gabim i nxjerrjes — shih më poshtë. |
@@ -314,3 +317,19 @@ janë në libër. Në vend të kësaj ruhet ashtu siç është dhe shënohet me
 (p.sh. ta zbehë, ose ta plotësojë vetë me një zëvendësim të shënuar si i tillë).
 
 Vetëm varianti 2 dhe varianti 7 e kanë shqipen të plotë, sepse libri i jep të plota.
+
+---
+
+# Shtesat e versionit 2.1.0
+
+- **Tri suret janë një hyrje e vetme** në ch25, ch27 e ch28 (jo më tri hyrje me
+  `sure`/`pjesa`); zëri jepet me `audio_parts` kur incizimi i burimit është i
+  ndarë, ose me `audio` kur është një skedar i vetëm.
+- **Blloqet e tjera të bashkuara:** ch25 #1 (istigfar + selam) dhe ch27 #2
+  (isti'adha + Ajetul Kursi). Të dyja hyrjet kanë një incizim të vetëm që i
+  mbulon të plota.
+- **Hyrjet e bashkuara** mbajnë `bashkuar_nga: [n1, n2]` — numrat e hyrjeve të
+  librit që u bashkuan në një kartë të vetme.
+- **13 incizime u rikthyen** në `audios/`; `audio_mungon_arsye` dhe
+  `meta.counts.audio_rrefim_i_hoqur` tani janë 0.
+- **Numri i hyrjeve: 278 → 270.** Asnjë tekst nuk u hoq — vetëm bashkime.

@@ -59,22 +59,21 @@ për një produkt publik, veçanërisht nëse ka të ardhura, duhet leje e shpre
 
 ## 2. Incizimet MP3 — statusi: **i pasigurt** ⚠️
 
-> **Përditësim për versionin 2.0.0:** çdo rrugë e referuar në `mburoja.json`
+> **Përditësim për versionin 2.1.0:** çdo rrugë e referuar në `mburoja.json`
 > zgjidhet tani në një skedar real (`valido_strikt.py` kontrolli [4], kodi i
 > daljes 0). Versioni 1.0.0 referonte 82 rrugë ndërsa në disk ishin 69 — 13 ishin
 > të thyera. Ato u trajtuan kështu:
 >
-> - **13 u bënë `audio: null`** — `invocations.json` i repo-s i referon, por
->   skedarët nuk ekzistojnë në paketën publike. Secila hyrje është shënuar me
->   `audio_mungon_arsye`, që aplikacioni të mos kërkojë një URL të vdekur.
->
-> Numri real është pra **69 MP3 / 68 hyrje me audio**, jo 82. Hapi `siguro_audio()`
-> në `rregullo.py` e verifikon këtë në disk në çdo ndërtim.
+> Në 2.0.0 të 13 skedarët që mungonin ishin hequr (`audio: null` +
+> `audio_mungon_arsye`). Në 2.1.0 ata u rikthyen nga repo-ja burimore dhe tani
+> `mburoja.json` referon **82 MP3 që ekzistojnë të gjithë në disk** —
+> `audio_mungon_arsye` nuk përdoret më. Hapi `siguro_audio()` në `rregullo.py`
+> i verifikon të 82 në disk në çdo ndërtim.
 >
 > **Problemi i mbetur nuk është teknik por ligjor:** origjina e vetë incizimeve
 > mbetet e pavërtetuar. Gjithçka më poshtë vazhdon të jetë në fuqi.
 
-Përdorur për: `audio`, `audio_parts`, dosja `audios/` (69 skedarë).
+Përdorur për: `audio`, `audio_parts`, dosja `audios/` (82 skedarë).
 
 Këto vijnë nga repo-ja `github.com/BetimShala/mburoja-api`, direktorja `audios/`.
 
@@ -177,7 +176,7 @@ lexuesve është e pavërtetuar; disa skedarë mbajnë tag-un Kalamullah.com.
 | Komponenti | Burimi | Statusi | Përdorim publik? |
 |---|---|---|---|
 | Titujt, arabikja, transkriptimi, përkthimi, poshtëshënimet | DOCX zyrtare, islamhouse.com | i mbrojtur, shpërndarje falas e zakonshme | ⚠️ me atributim; kërko leje për produkt komercial |
-| MP3-të (69 skedarë) | repo pa licencë, origjinë e tretë | **i pasigurt** | ⚠️ kërko leje ose zëvendësoje |
+| MP3-të (82 skedarë) | repo pa licencë, origjinë e tretë | **i pasigurt** | ⚠️ kërko leje ose zëvendësoje |
 | `albanian_alt` | repo pa licencë, përkthim i tretë | **i pasigurt** | ❌ hiqe, ose kërko leje |
 | Skriptet, shembulli, dokumentacioni | kjo paketë | e lirë | ✅ po |
 

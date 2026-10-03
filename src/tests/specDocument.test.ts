@@ -19,15 +19,16 @@ const ROOT = path.resolve(__dirname, '../..');
 const read = (p: string) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const exists = (p: string) => fs.existsSync(path.join(ROOT, p));
 
-/** Vlerat bazë të verifikuara më 2026-08-30 në degën arena/01a053d0-h1. */
+/** Vlerat bazë të verifikuara më 2026-10-03 në degën arena/01a1039a-h1
+ *  (paketa v2.1.0: tri suret dhe isti'adha + Ajetul Kursi si nga një hyrje, 13 zëra të rikthyer). */
 const BASELINE = {
   quranSurahs: 114,
   quranVerses: 6236,
   mburojaCategories: 11,
   mburojaChapters: 132,
-  mburojaDuas: 278,
+  mburojaDuas: 270,
   // Pragjet e sipërme: boshllëqet mund të pakësohen, jo të rriten.
-  mburojaDuaItems: 261,
+  mburojaDuaItems: 253,
   mburojaRrefimItems: 17,
 };
 
@@ -119,7 +120,7 @@ describe('Dokumenti i specifikave — pohimet përmbajtjesore', () => {
     expect(actual).toBe(declared);
   });
 
-  it('Mburoja e certifikuar ka 11 kategori, 132 kapituj dhe 278 hyrje', async () => {
+  it('Mburoja e certifikuar ka 11 kategori, 132 kapituj dhe 270 hyrje', async () => {
     const { MBUROJA_CHAPTERS, MBUROJA_CATEGORIES } = await import('../data/mburojaData');
     expect(MBUROJA_CATEGORIES).toHaveLength(BASELINE.mburojaCategories);
     expect(MBUROJA_CHAPTERS).toHaveLength(BASELINE.mburojaChapters);
@@ -136,8 +137,8 @@ describe('Dokumenti i specifikave — pohimet përmbajtjesore', () => {
     expect(rrefime).toHaveLength(BASELINE.mburojaRrefimItems);
     const duaWithArabic = duas.filter((item) => item.ar.trim());
     const duaWithAlbanian = duas.filter((item) => item.sq.trim());
-    expect(duaWithArabic).toHaveLength(261);
-    expect(duaWithAlbanian.length).toBeGreaterThanOrEqual(257);
+    expect(duaWithArabic).toHaveLength(253);
+    expect(duaWithAlbanian.length).toBeGreaterThanOrEqual(249);
     expect(rrefime.every((item) => item.lead?.trim() || item.sq.trim())).toBe(true);
     expect(new Set(items.map((item) => item.key)).size).toBe(items.length);
   });

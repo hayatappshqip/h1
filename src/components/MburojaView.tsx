@@ -1,7 +1,7 @@
 /**
  * MburojaView Component - Mburoja e Muslimanit (Hisnul Muslim)
  * Data Source: Seid el-Kahtani, Azem Bardhoshi, Ismail Bardhoshi
- * Verified Integrity: 11 Categories, 133 Chapters, 291 Duas
+ * Verified Integrity: 11 kategori, 132 kapituj, 270 hyrje (paketa 2.1.0)
  */
 import React, { useState } from 'react';
 import { MBUROJA_CATEGORIES, MBUROJA_CHAPTERS } from '../data/mburojaData';

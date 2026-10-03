@@ -41,7 +41,8 @@ ch25
    normalizim karakteresh
    normalizim karakteresh
    normalizim karakteresh
-   #6 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+   #6 fushat u rindanë (shqip↔transkriptim)
+   #1: u bashkuan hyrjet [1, 2] në një dua të vetme (audio: audios/025_01.mp3)
 ch26
    normalizim karakteresh
    normalizim karakteresh
@@ -51,7 +52,7 @@ ch26
 ch27
    normalizim karakteresh
    normalizim karakteresh
-   #4 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+   #4 fushat u rindanë (shqip↔transkriptim)
    #8 shënim i nxjerrë: count=4 koha=None
    #10 shënim i nxjerrë: count=3 koha=None
    #11 shënim i nxjerrë: count=7 koha=None
@@ -74,10 +75,11 @@ ch27
    + variant mbrëmjeje pas #9 (shqipja e cunguar në libër)
    + variant mbrëmjeje pas #17 (shqipja e cunguar në libër)
    + variant mbrëmjeje pas #18
+   #2: u bashkuan hyrjet [2, 3] në një dua të vetme (audio: audios/027_02.mp3)
 ch28
    normalizim karakteresh
    normalizim karakteresh
-   #1 blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)
+   #1 fushat u rindanë (shqip↔transkriptim)
    normalizim karakteresh
    normalizim karakteresh
    normalizim karakteresh
@@ -240,16 +242,18 @@ ch131
    normalizim karakteresh
 ch132
    #1 fushat u rindanë (shqip↔transkriptim)
-ch15#3 audio u hoq (nuk ekziston as në repo): audios/015_03.mp3
-ch23#1 audio u hoq (nuk ekziston as në repo): audios/023_01.mp3
-ch25#5 audio u hoq (nuk ekziston as në repo): audios/025_04.mp3
-ch25#6 audio u hoq (nuk ekziston as në repo): audios/025_07.mp3
-ch25#7 audio u hoq (nuk ekziston as në repo): audios/025_08.mp3
-ch26#1 audio u hoq (nuk ekziston as në repo): audios/026_01.mp3
-ch27#3 audio u hoq (nuk ekziston as në repo): audios/027_02.mp3
-ch27#4 audio u hoq (nuk ekziston as në repo): audios/027_03.mp3
-ch27#5 audio u hoq (nuk ekziston as në repo): audios/027_04.mp3
-ch28#1 audio u hoq (nuk ekziston as në repo): audios/028_01.mp3
-ch28#2 audio u hoq (nuk ekziston as në repo): audios/028_02.mp3
-ch28#3 audio u hoq (nuk ekziston as në repo): audios/028_03.mp3
-ch28#8 audio u hoq (nuk ekziston as në repo): audios/028_09.mp3
+ch27#20 zëri u rishpërnda: audios/027_19.mp3
+ch27#21 zëri u rishpërnda: audios/027_20.mp3 + 1 pjesë
+ch15#3 audio u kopjua nga repo-ja: audios/015_03.mp3
+ch23#1 audio u kopjua nga repo-ja: audios/023_01.mp3
+ch25#5 audio u kopjua nga repo-ja: audios/025_04.mp3
+ch25#6 audio u kopjua nga repo-ja: audios/025_07.mp3
+ch25#7 audio u kopjua nga repo-ja: audios/025_08.mp3
+ch26#1 audio u kopjua nga repo-ja: audios/026_01.mp3
+ch27#2 audio u kopjua nga repo-ja: audios/027_02.mp3
+ch27#4 audio u kopjua nga repo-ja: audios/027_03.mp3
+ch27#5 audio u kopjua nga repo-ja: audios/027_04.mp3
+ch28#1 audio u kopjua nga repo-ja: audios/028_01.mp3
+ch28#2 audio u kopjua nga repo-ja: audios/028_02.mp3
+ch28#3 audio u kopjua nga repo-ja: audios/028_03.mp3
+ch28#8 audio u kopjua nga repo-ja: audios/028_09.mp3

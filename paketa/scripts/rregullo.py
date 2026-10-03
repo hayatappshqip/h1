@@ -368,26 +368,31 @@ NDARJE = {
     ],
 }
 
-# Kapitujt 25/6, 27/4, 28/1 — blloku i tri sureve, i ndarë në 3 hyrje
-SURET = {
-    'arabic': [
-        'بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾',
-        'بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾',
-        'بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾',
-    ],
-    'transliteration': [
-        'Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.',
-        'Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.',
-        'Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.',
-    ],
-    'albanian': [
-        'Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!”',
-        'Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë.”',
-        'Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”',
-    ],
-    'emri': ['Suretu El-Iḫlãs', 'Suretu El-Feleḳ', 'Suretu En-Nãs'],
+# ───────────  BASHKIMI I HYRJEVE QË INCIZOHEN SË BASHKU  ───────────
+# Libri i jep disa hyrje të njëpasnjëshme që në incizim janë NJË skedar i vetëm.
+# Nëse ndahen në karta të veçanta, zëri nuk përputhet me tekstin e kartës
+# (dëgjuesi merr fjalë që kartela nuk i shfaq). Prandaj ato bashkohen në një
+# hyrje të vetme dhe zëri i përbashkët ruhet në `audio`/`audio_parts`.
+#
+#   ch25 #1 + #2 = istigfari (3×) + selami pas namazit   → audios/025_01.mp3
+#   ch27 #2 + #3 = isti'adha + Ajeti i Kursisë           → audios/027_02.mp3
+#
+# Blloku i tri sureve (Iḫlãs, Feleḳ, Nãs) NUK ndahet: libri e jep si një hyrje
+# të vetme, dhe kështu e jep edhe incizimi (ch25 #6 → tri pjesë audio, ch27 #4
+# → 027_03.mp3, ch28 #1 → 028_01.mp3).
+BASHKO = {
+    25: [(1, 2)],
+    27: [(2, 3)],
 }
-SURE_VARG = {(25, 6), (27, 4), (28, 1)}
+
+# Rishpërndarje e dy incizimeve IDENTIKE të ch27 (#20 dhe #21 kanë të njëjtin
+# tekst: 10× dhe 100×). v1 i kishte vënë të dyja te #20 dhe asnjërën te #21,
+# ndaj kartela #21 luante vetëm pjesën e dytë të tekstit. Tani: një incizim
+# për secilën hyrje, në rendin e librit.
+AUDIO_OVERRIDE = {
+    (27, 20): ('audios/027_19.mp3', None),
+    (27, 21): ('audios/027_20.mp3', ['audios/027_20.mp3', 'audios/027_21.mp3']),
+}
 
 # ───────────────  VARIANTET E MBRËMJES (nga poshtëshënimet e ch27)  ───────────────
 # Ndërtuar DORËSHTAS nga teksti i librit. Libri i jep të plota arabishten dhe
@@ -478,6 +483,58 @@ def lidh_numrat(d):
 
 
 # ─────────────────────────────  RRJEDHA  ─────────────────────────────
+
+def bashko_hyrmet(re_items, cid):
+    """Bashkon hyrjet e BASHKO[cid] në një hyrje të vetme.
+
+    Të gjitha fushat tekstuale bashkohen me rresht të ri (ruajtur siç janë në
+    libër), poshtëshënimet vijnë sipas rendit, `count` merret nga hyrja e
+    fundit e grupit (numërimi i vetë dhikrit), dhe zërat mblidhen në rend:
+    `audio` = i pari, `audio_parts` = të gjithë kur janë më shumë se një.
+    """
+    grupet = BASHKO.get(cid) or []
+    if not grupet:
+        return re_items
+    out, i = [], 0
+    while i < len(re_items):
+        it = re_items[i]
+        grp = next((g for g in grupet if g[0] == it['n']), None)
+        if not grp:
+            out.append(it)
+            i += 1
+            continue
+        anetaret, pritet, j = [it], list(grp[1:]), i + 1
+        while j < len(re_items) and pritet and re_items[j]['n'] == pritet[0]:
+            anetaret.append(re_items[j])
+            pritet.pop(0)
+            j += 1
+        if pritet:
+            rap(f'   (PARALAJMËRIM) bashkimi {grp} nuk u plotësua — mungojnë n={pritet}')
+            out.append(it)
+            i += 1
+            continue
+        e = dict(anetaret[0])
+        for f in ('lead', 'arabic', 'transliteration', 'albanian', 'albanian_alt'):
+            vlerat = [a[f] for a in anetaret if a.get(f)]
+            e[f] = '\n'.join(vlerat) if vlerat else None
+        e['notes'] = [x for a in anetaret for x in (a.get('notes') or [])]
+        e['count'] = anetaret[-1].get('count', 1)
+        zerat = []
+        for a in anetaret:
+            for r in ([a['audio']] if a.get('audio') else []) + list(a.get('audio_parts') or []):
+                if r and r not in zerat:
+                    zerat.append(r)
+        e['audio'] = zerat[0] if zerat else None
+        e['audio_parts'] = zerat if len(zerat) > 1 else None
+        e['has_audio'] = bool(zerat)
+        e['bashkuar_nga'] = list(grp)
+        e['type'] = 'dua' if e.get('arabic') else 'rrefim'
+        rap(f'   #{grp[0]}: u bashkuan hyrjet {list(grp)} në një dua të vetme'
+            f' (audio: {" + ".join(zerat) if zerat else "asnjë"})')
+        out.append(e)
+        i = j
+    return out
+
 
 def siguro_audio(d):
     """Çdo rrugë audio duhet të ekzistojë VËRTET në disk.
@@ -617,40 +674,6 @@ def main():
                 ndarje += 1
                 continue
 
-            # 4b. ndarja e bllokut të tri sureve në 3 hyrje
-            elif (cid, n) in SURE_VARG:
-                lead0 = it.get('lead')
-                mbyllja = None
-                alb_lin = [x for x in (it.get('albanian') or '').split('\n') if x.strip()]
-                if alb_lin and re.search(r'këto tri sure|pas leximit', alb_lin[-1], re.I):
-                    mbyllja = alb_lin[-1].strip()
-                audio_parts = it.get('audio_parts') or ([it['audio']] if it.get('audio') else [])
-                cnt = it.get('count', 1)
-                for k in range(3):
-                    e = {
-                        'n': n, 'pjesa': k + 1, 'type': 'dua',
-                        'sure': SURET['emri'][k],
-                        'lead': lead0 if k == 0 else None,
-                        'arabic': SURET['arabic'][k],
-                        'transliteration': SURET['transliteration'][k],
-                        'albanian': SURET['albanian'][k],
-                        'albanian_alt': None,
-                        'count': cnt,
-                        'notes': it.get('notes', []) if k == 0 else [],
-                        'audio': audio_parts[k] if k < len(audio_parts) else None,
-                        'audio_parts': None,
-                        'has_audio': bool(audio_parts[k] if k < len(audio_parts) else None),
-                        'mbyllje': mbyllja if k == 2 else None,
-                    }
-                    re_items.append(e)
-                for _e in re_items[-3:]:
-                    for _f in ('lead','arabic','transliteration','albanian','albanian_alt'):
-                        _e[_f] = bosh(_e.get(_f))
-                    _e['type'] = 'dua' if _e.get('arabic') else 'rrefim'
-                    _e['time'] = koha_e(_e, cid)
-                rap(f'   #{n} blloku i tri sureve → 3 hyrje (Iḫlãs, Feleḳ, Nãs)')
-                ndarje += 1
-                continue
 
             else:
                 # 5. shënimet e numërimit/kohës jashtë tekstit — BËHET SË PARI,
@@ -732,6 +755,9 @@ def main():
                 merged.extend(buf[k])
             re_items = merged
 
+        # 11b. bashkimi i hyrjeve që incizohen së bashku (shih BASHKO)
+        re_items = bashko_hyrmet(re_items, cid)
+
         # rinumërim
         for idx, it in enumerate(re_items, 1):
             it['id'] = idx
@@ -740,6 +766,15 @@ def main():
         c['audio_count'] = sum(1 for i in re_items if i.get('has_audio'))
 
     # ── audio: asnjë rrugë e vdekur nuk lejohet të dalë në dataset ──
+    #    (para kësaj, rishpërndahen incizimet e dyfishta — shih AUDIO_OVERRIDE)
+    for c in d['chapters']:
+        for it in c['items']:
+            ov = AUDIO_OVERRIDE.get((c['id'], it['n']))
+            if ov:
+                it['audio'], it['audio_parts'] = ov[0], ov[1]
+                it['has_audio'] = bool(ov[0])
+                rap(f'ch{c["id"]}#{it["n"]} zëri u rishpërnda: {ov[0]}'
+                    + (f' + {len(ov[1]) - 1} pjesë' if ov[1] else ''))
     kopjuar, audio_hequr = siguro_audio(d)
 
     # ── metadata ──
@@ -756,8 +791,8 @@ def main():
     }
     d['meta']['schema']['type'] = ("'dua' = ka tekst arabik për t'u lexuar · "
                                    "'rrefim' = hadith/udhëzim, shfaq fushën lead")
-    d['meta']['version'] = '2.0.0'
-    d['meta']['generated'] = '2026-10-01'
+    d['meta']['version'] = '2.1.0'
+    d['meta']['generated'] = '2026-10-03'
     d['meta']['counts'] = {
         'chapters': len(d['chapters']),
         'items': sum(len(c['items']) for c in d['chapters']),
@@ -799,7 +834,7 @@ def main():
     json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
     print(f'─' * 66)
-    print(f'RREGULLIM I PËRFUNDUAR — version 2.0.0')
+    print(f'RREGULLIM I PËRFUNDUAR — version 2.1.0')
     print(f'─' * 66)
     print(f'  faqe të korrigjuara            : {faqe}')
     print(f'  fusha të rindara               : {rindertim}')

@@ -1,9 +1,9 @@
 {
  "meta": {
   "name": "Mburoja e Muslimanit (Hisnul Muslim) — të dhëna për webaplikacion",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "language": "sq",
-  "generated": "2026-10-01",
+  "generated": "2026-10-03",
   "source": {
    "title": "Mburoja e Muslimanit (Dhikri i Kuranit dhe Sunetit)",
    "title_original": "حصن المسلم من أذكار الكتاب والسنة",
@@ -47,18 +47,18 @@
   },
   "counts": {
    "chapters": 132,
-   "items": 278,
-   "items_with_audio": 68,
-   "audio_files": 69,
-   "audio_rrefim_i_hoqur": 13,
-   "audio_rifreskuar": 0,
+   "items": 270,
+   "items_with_audio": 79,
+   "audio_files": 82,
+   "audio_rrefim_i_hoqur": 0,
+   "audio_rifreskuar": 13,
    "footnotes": 311,
    "poshteshenime_ne_liber": 330,
    "poshteshenime_me_numer": 309,
    "poshteshenime_pa_numer": 2,
    "poshteshenime_te_lidhura_qarte": 177,
    "poshteshenime_te_zgjidhura_me_renditje": 132,
-   "duke_perdorur_audio": 68
+   "duke_perdorur_audio": 79
   },
   "schema": {
    "type": "'dua' = ka tekst arabik për t'u lexuar · 'rrefim' = hadith/udhëzim, shfaq fushën lead",
@@ -725,7 +725,7 @@
    "title": "KUR THIRRET EZANI",
    "page": 22,
    "item_count": 3,
-   "audio_count": 2,
+   "audio_count": 3,
    "items": [
     {
      "n": 1,
@@ -788,12 +788,11 @@
        "tekst": "Ebu Davudi, Tirmidhiu dhe Ahmedi (Irvaul Galil)."
       }
      ],
-     "audio": null,
+     "audio": "audios/015_03.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 3,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/015_03.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 3
     }
    ]
   },
@@ -1425,7 +1424,7 @@
    "title": "SALAVATET PËR PROFETIN ﷺ PAS TEHIJATIT",
    "page": 38,
    "item_count": 2,
-   "audio_count": 1,
+   "audio_count": 2,
    "items": [
     {
      "n": 1,
@@ -1446,12 +1445,11 @@
        "tekst": "80Buhariu."
       }
      ],
-     "audio": null,
+     "audio": "audios/023_01.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 1,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/023_01.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 1
     },
     {
      "n": 2,
@@ -1724,33 +1722,16 @@
    "id": 25,
    "title": "DHIKRI PAS SELAMIT",
    "page": 45,
-   "item_count": 11,
-   "audio_count": 7,
+   "item_count": 8,
+   "audio_count": 8,
    "items": [
     {
      "n": 1,
      "type": "dua",
      "lead": null,
-     "arabic": "أَسْتَغْفِرُ اللَّهَ.",
-     "transliteration": "Estaġfirull-llãh.",
-     "albanian": "I kërkoj falje Allahut).",
-     "albanian_alt": null,
-     "count": 3,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "count_burimi": "libri (shënim në kllapa)",
-     "time": null,
-     "id": 1
-    },
-    {
-     "n": 2,
-     "type": "dua",
-     "lead": null,
-     "arabic": "اللَّهُمَّ أَنْتَ السَّلَامُ، وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ.",
-     "transliteration": "All-llãhumme Entes-Selãm, we minkes-selãm, tebãrakte jã dhel xhelãli wel ikrãm.",
-     "albanian": "O Allah! Ti je Paqedhënësi dhe vetëm prej Teje pres paqen! Ti je përgjithmonë i Begatshëm, o Zotëruesi i madhështisë dhe nderimit!).",
+     "arabic": "أَسْتَغْفِرُ اللَّهَ.\nاللَّهُمَّ أَنْتَ السَّلَامُ، وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ.",
+     "transliteration": "Estaġfirull-llãh.\nAll-llãhumme Entes-Selãm, we minkes-selãm, tebãrakte jã dhel xhelãli wel ikrãm.",
+     "albanian": "I kërkoj falje Allahut).\nO Allah! Ti je Paqedhënësi dhe vetëm prej Teje pres paqen! Ti je përgjithmonë i Begatshëm, o Zotëruesi i madhështisë dhe nderimit!).",
      "albanian_alt": "Kërkoj falje nga Allahu. O Allahu im, Ti je shpëtimi dhe nga Ti vjen shpëtimi, i Lartësuar qofsh o zotërues i Madhërisë dhe i Nderit.",
      "count": 1,
      "notes": [
@@ -1762,8 +1743,13 @@
      "audio": "audios/025_01.mp3",
      "audio_parts": null,
      "has_audio": true,
+     "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 2
+     "bashkuar_nga": [
+      1,
+      2
+     ],
+     "id": 1
     },
     {
      "n": 3,
@@ -1788,7 +1774,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 3
+     "id": 2
     },
     {
      "n": 4,
@@ -1809,7 +1795,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 4
+     "id": 3
     },
     {
      "n": 5,
@@ -1826,23 +1812,20 @@
        "tekst": "Muslimi. Në këtë hadith Pejgamberi ﷺ thotë: “Kush e thotë këtë dhikër pas çdo namazi, i falen gjynahet qofshin edhe sa shkuma e detit”. (Muslimi)."
       }
      ],
-     "audio": null,
+     "audio": "audios/025_04.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 5,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/025_04.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 4
     },
     {
      "n": 6,
-     "pjesa": 1,
      "type": "dua",
-     "sure": "Suretu El-Iḫlãs",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!”",
-     "albanian_alt": null,
+     "lead": "Thuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!).”",
+     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
+     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
+     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë).\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve ose njerëzve!”).\n(Këto tri sure i themi pas çdo namazi farz).",
+     "albanian_alt": "Pas çdo namazi nga një herë, kurse pas namazit të sabahut dhe akshamit nga tri herë. \nThuaj: “Ai është Allahu, Një dhe i Vetëm! Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim. Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë (a i krahasueshëm) me Atë!”",
      "count": 1,
      "notes": [
       {
@@ -1851,50 +1834,14 @@
       }
      ],
      "audio": "audios/025_05.mp3",
-     "audio_parts": null,
+     "audio_parts": [
+      "audios/025_05.mp3",
+      "audios/025_06.mp3",
+      "audios/025_07.mp3"
+     ],
      "has_audio": true,
-     "mbyllje": null,
      "time": null,
-     "id": 6
-    },
-    {
-     "n": 6,
-     "pjesa": 2,
-     "type": "dua",
-     "sure": "Suretu El-Feleḳ",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë.”",
-     "albanian_alt": null,
-     "count": 1,
-     "notes": [],
-     "audio": "audios/025_06.mp3",
-     "audio_parts": null,
-     "has_audio": true,
-     "mbyllje": null,
-     "time": null,
-     "id": 7
-    },
-    {
-     "n": 6,
-     "pjesa": 3,
-     "type": "dua",
-     "sure": "Suretu En-Nãs",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”",
-     "albanian_alt": null,
-     "count": 1,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": "(Këto tri sure i themi pas çdo namazi farz).",
-     "time": null,
-     "id": 8,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/025_07.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 5
     },
     {
      "n": 7,
@@ -1915,12 +1862,11 @@
        "tekst": "Pejgamberi ﷺ thotë: “Kush lexon ajetin Kursij pas çdo namazi farz, nuk e ndan nga hyrja në Xhenet asgjë, vetëm se vdekja!” Nesaiu në “Amelul jeumi vel lejleti” (Sahih Xhami)."
       }
      ],
-     "audio": null,
+     "audio": "audios/025_08.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 9,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/025_08.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 6
     },
     {
      "n": 8,
@@ -1941,7 +1887,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 10
+     "id": 7
     },
     {
      "n": 9,
@@ -1962,7 +1908,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 11
+     "id": 8
     }
    ]
   },
@@ -1971,7 +1917,7 @@
    "title": "LUTJA E NAMAZIT TË ISTIHARES",
    "page": 51,
    "item_count": 1,
-   "audio_count": 0,
+   "audio_count": 1,
    "items": [
     {
      "n": 1,
@@ -1992,12 +1938,11 @@
        "tekst": "Ali Imran 159."
       }
      ],
-     "audio": null,
+     "audio": "audios/026_01.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 1,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/026_01.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 1
     }
    ]
   },
@@ -2005,8 +1950,8 @@
    "id": 27,
    "title": "DHIKRI I MËNGJESIT DHE I MBRËMJES",
    "page": 53,
-   "item_count": 34,
-   "audio_count": 21,
+   "item_count": 31,
+   "audio_count": 24,
    "items": [
     {
      "n": 1,
@@ -2033,25 +1978,9 @@
      "n": 2,
      "type": "dua",
      "lead": null,
-     "arabic": "أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ.",
-     "transliteration": "E’ũdhu bil-lãhi minesh-shejṭãnirr-rraxhĩm.",
-     "albanian": "I mbështetem Allahut të më mbrojë nga shejtani i mallkuar).",
-     "albanian_alt": null,
-     "count": 1,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "time": null,
-     "id": 2
-    },
-    {
-     "n": 3,
-     "type": "dua",
-     "lead": null,
-     "arabic": "﴿اللَّهُ لَا إِلَهَ إِلَّا هُوَ الـْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾",
-     "transliteration": "All-llãhu lã ilãhe il-lã huwel Ḥajjul Ḳajjũm. Lã te’ḣudhuhu sinetun we lã newm. Lehu mã fis-semãwãti we mã fil erḍ. Men dhel-ledhĩ jeshfe’u ‘indehu il-lã bi idhnihi. Ja’ëlemu mã bejne ejdĩhim we mã ḣalfehum, we lã juḥĩṭũne bi shej’in min ‘ilmihi il-lã bimã shãe. Wesi’a kursijjuhus-semãwãti wel erḍa, we lã je’ũduhu ḥifḍhuhumã we huwel ‘Alijjul ‘Aḍhĩm.",
-     "albanian": "Allahu është Ai, përveç të Cilit nuk ka të adhuruar tjetër me të drejtë, i Gjalli, i Përjetshmi, Mbajtësi i gjithçkaje! Atë nuk e kap as dremitja, as gjumi! Atij i përket gjithçka që gjendet në qiej dhe gjithçka që gjendet në Tokë. Kush mund të ndërhyjë tek Ai për ndokënd pa lejen e Tij? Ai di çdo gjë që u ka ndodhur krijesave në të shkuarën dhe çdo gjë që u ndodh në të ardhmen, kurse ata nuk mund të përvetësojnë asgjë nga Dituria e Tij, përveçse aq sa Ai dëshiron. Kursi-u i Tij përfshin qiejt dhe Tokën dhe Ai nuk e ka të rëndë t’i ruajë ato. Ai është i Larti, Madhështori!).",
+     "arabic": "أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ.\n﴿اللَّهُ لَا إِلَهَ إِلَّا هُوَ الـْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾",
+     "transliteration": "E’ũdhu bil-lãhi minesh-shejṭãnirr-rraxhĩm.\nAll-llãhu lã ilãhe il-lã huwel Ḥajjul Ḳajjũm. Lã te’ḣudhuhu sinetun we lã newm. Lehu mã fis-semãwãti we mã fil erḍ. Men dhel-ledhĩ jeshfe’u ‘indehu il-lã bi idhnihi. Ja’ëlemu mã bejne ejdĩhim we mã ḣalfehum, we lã juḥĩṭũne bi shej’in min ‘ilmihi il-lã bimã shãe. Wesi’a kursijjuhus-semãwãti wel erḍa, we lã je’ũduhu ḥifḍhuhumã we huwel ‘Alijjul ‘Aḍhĩm.",
+     "albanian": "I mbështetem Allahut të më mbrojë nga shejtani i mallkuar).\nAllahu është Ai, përveç të Cilit nuk ka të adhuruar tjetër me të drejtë, i Gjalli, i Përjetshmi, Mbajtësi i gjithçkaje! Atë nuk e kap as dremitja, as gjumi! Atij i përket gjithçka që gjendet në qiej dhe gjithçka që gjendet në Tokë. Kush mund të ndërhyjë tek Ai për ndokënd pa lejen e Tij? Ai di çdo gjë që u ka ndodhur krijesave në të shkuarën dhe çdo gjë që u ndodh në të ardhmen, kurse ata nuk mund të përvetësojnë asgjë nga Dituria e Tij, përveçse aq sa Ai dëshiron. Kursi-u i Tij përfshin qiejt dhe Tokën dhe Ai nuk e ka të rëndë t’i ruajë ato. Ai është i Larti, Madhështori!).",
      "albanian_alt": "Allahu është Një, nuk ka Zot tjetër përveç Atij, Ai është Mbikëqyrës i përhershëm dhe i përjetshëm. Atë nuk e zë as kotja as gjumi, gjithçka ka në qiej dhe në tokë, është vetëm e Tij. Askush nuk mund të ndërmjetësojë tek Ai, përveç se me lejen e Tij? Ai di të tashmen që është pranë tyre dhe të ardhmen. Nga ajo që Ai di, të tjerët dinë vetëm aq sa Ai ka dëshiruar. Kursija e Tij përfshin qiejt dhe tokën, kurse kujdesi i Tij ndaj të dyjave nuk i vjen rëndë, Ai është më i Larti, më i Madhi.",
      "count": 1,
      "notes": [
@@ -2060,70 +1989,31 @@
        "tekst": "El Bekare. 255. Pejgamberi ﷺ ka thënë: “Kush e thotë këtë ajet kur gdhihet, Allahu i Lartësuar do ta mbrojë prej xhindëve derisa të ngryset. Dhe kush e thotë kur ngryset, Allahu do ta mbrojë prej tyre derisa të gdhihet”. Hakimi. Albani thotë se hadithi është i saktë."
       }
      ],
-     "audio": null,
+     "audio": "audios/027_02.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": null,
-     "id": 3,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/027_02.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "bashkuar_nga": [
+      2,
+      3
+     ],
+     "id": 2
     },
     {
      "n": 4,
-     "pjesa": 1,
      "type": "dua",
-     "sure": "Suretu El-Iḫlãs",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!”",
-     "albanian_alt": null,
+     "lead": "Thuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!).”",
+     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
+     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
+     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë).\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”).\n(Këto tri sure i themi nga tri herë).",
+     "albanian_alt": "Thuaj: “Ai është Allahu, Një dhe i Vetëm! Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim. Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë (a i krahasueshëm) me Atë!”\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar dhe nga sherri i natës, kur kaplon terri dhe nga sherri i falltarëve, që fryjnë në nyje (duke bërë magji) dhe nga sherri i smirëziut, kur vepron me smirë.”\nThuaj: “Kërkoj mbështetje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i djallit cytës që fshihet (pasi cyt) e që hedh dyshime në gjokset e njerëzve, (qoftë ai djall) prej xhindeve apo njerëzve!”",
      "count": 3,
      "notes": [],
-     "audio": null,
+     "audio": "audios/027_03.mp3",
      "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": null,
+     "has_audio": true,
      "time": null,
-     "id": 4,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/027_03.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
-    },
-    {
-     "n": 4,
-     "pjesa": 2,
-     "type": "dua",
-     "sure": "Suretu El-Feleḳ",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë.”",
-     "albanian_alt": null,
-     "count": 3,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": null,
-     "time": null,
-     "id": 5
-    },
-    {
-     "n": 4,
-     "pjesa": 3,
-     "type": "dua",
-     "sure": "Suretu En-Nãs",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”",
-     "albanian_alt": null,
-     "count": 3,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": "(Këto tri sure i themi nga tri herë).",
-     "time": null,
-     "id": 6
+     "id": 3
     },
     {
      "n": 5,
@@ -2148,12 +2038,11 @@
        "tekst": "Buhariu."
       }
      ],
-     "audio": null,
+     "audio": "audios/027_04.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": "mëngjes",
-     "id": 7,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/027_04.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 4
     },
     {
      "n": 5,
@@ -2172,7 +2061,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #5 të këtij kapitulli",
      "i_cunguar_ne_liber": true,
-     "id": 8
+     "id": 5
     },
     {
      "n": 5,
@@ -2191,7 +2080,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #5 të këtij kapitulli",
      "i_cunguar_ne_liber": false,
-     "id": 9
+     "id": 6
     },
     {
      "n": 6,
@@ -2220,7 +2109,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "të dyja",
-     "id": 10
+     "id": 7
     },
     {
      "n": 6,
@@ -2239,7 +2128,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #6 të këtij kapitulli",
      "i_cunguar_ne_liber": true,
-     "id": 11
+     "id": 8
     },
     {
      "n": 7,
@@ -2260,7 +2149,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 12
+     "id": 9
     },
     {
      "n": 8,
@@ -2286,7 +2175,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": "mëngjes",
-     "id": 13
+     "id": 10
     },
     {
      "n": 8,
@@ -2305,7 +2194,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #8 të këtij kapitulli",
      "i_cunguar_ne_liber": true,
-     "id": 14
+     "id": 11
     },
     {
      "n": 9,
@@ -2330,7 +2219,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "mëngjes",
-     "id": 15
+     "id": 12
     },
     {
      "n": 9,
@@ -2349,7 +2238,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #9 të këtij kapitulli",
      "i_cunguar_ne_liber": true,
-     "id": 16
+     "id": 13
     },
     {
      "n": 10,
@@ -2371,7 +2260,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 17
+     "id": 14
     },
     {
      "n": 11,
@@ -2393,7 +2282,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 18
+     "id": 15
     },
     {
      "n": 12,
@@ -2414,7 +2303,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 19
+     "id": 16
     },
     {
      "n": 13,
@@ -2435,7 +2324,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 20
+     "id": 17
     },
     {
      "n": 14,
@@ -2457,7 +2346,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 21
+     "id": 18
     },
     {
      "n": 15,
@@ -2479,7 +2368,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 22
+     "id": 19
     },
     {
      "n": 16,
@@ -2500,7 +2389,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 23
+     "id": 20
     },
     {
      "n": 17,
@@ -2525,7 +2414,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "mëngjes",
-     "id": 24
+     "id": 21
     },
     {
      "n": 17,
@@ -2544,7 +2433,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #17 të këtij kapitulli",
      "i_cunguar_ne_liber": true,
-     "id": 25
+     "id": 22
     },
     {
      "n": 18,
@@ -2569,7 +2458,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "mëngjes",
-     "id": 26
+     "id": 23
     },
     {
      "n": 18,
@@ -2588,7 +2477,7 @@
      "time": "mbrëmje",
      "burimi": "poshtëshënimi i lutjes #18 të këtij kapitulli",
      "i_cunguar_ne_liber": false,
-     "id": 27
+     "id": 24
     },
     {
      "n": 19,
@@ -2610,7 +2499,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 28
+     "id": 25
     },
     {
      "n": 20,
@@ -2632,13 +2521,10 @@
       }
      ],
      "audio": "audios/027_19.mp3",
-     "audio_parts": [
-      "audios/027_19.mp3",
-      "audios/027_20.mp3"
-     ],
+     "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 29
+     "id": 26
     },
     {
      "n": 21,
@@ -2659,11 +2545,14 @@
        "tekst": "Muslim."
       }
      ],
-     "audio": "audios/027_21.mp3",
-     "audio_parts": null,
+     "audio": "audios/027_20.mp3",
+     "audio_parts": [
+      "audios/027_20.mp3",
+      "audios/027_21.mp3"
+     ],
      "has_audio": true,
      "time": "mëngjes",
-     "id": 30
+     "id": 27
     },
     {
      "n": 22,
@@ -2685,7 +2574,7 @@
      "has_audio": true,
      "koha_shenim": "gdhihemi",
      "time": null,
-     "id": 31
+     "id": 28
     },
     {
      "n": 23,
@@ -2706,7 +2595,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": null,
-     "id": 32
+     "id": 29
     },
     {
      "n": 24,
@@ -2727,7 +2616,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "mbrëmje",
-     "id": 33
+     "id": 30
     },
     {
      "n": 25,
@@ -2749,7 +2638,7 @@
      "has_audio": true,
      "count_burimi": "libri (shënim në kllapa)",
      "time": null,
-     "id": 34
+     "id": 31
     }
    ]
   },
@@ -2757,19 +2646,17 @@
    "id": 28,
    "title": "DHIKRI KUR BIEM NË GJUMË",
    "page": 67,
-   "item_count": 14,
-   "audio_count": 7,
+   "item_count": 12,
+   "audio_count": 11,
    "items": [
     {
      "n": 1,
-     "pjesa": 1,
      "type": "dua",
-     "sure": "Suretu El-Iḫlãs",
-     "lead": "(I mbledhim duart grusht, pastaj fryjmë në to (duke e shoqëruar frymën me fare pak pështymë) dhe lexojmë):",
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!”",
-     "albanian_alt": null,
+     "lead": "(I mbledhim duart grusht, pastaj fryjmë në to (duke e shoqëruar frymën me fare pak pështymë) dhe lexojmë):\nThuaj: “Ai, Allahu është Një! Allahu është Eṣ Ṣamedu (Ai, të Cilit i drejtohen krijesat për nevojat e tyre). Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë me Atë!).”",
+     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾\nبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
+     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul huwall-llãhu eḥad, All-llãhuṣ-Ṣamed, lem jelid we lem jũled, we lem jekun lehũ kufuwen eḥad.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.\nBismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
+     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë).\n(Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”).\nPas leximit të këtyre tri sureve, fshin trupin me duar, aq sa të mundesh, duke filluar me kokën, fytyrën dhe pjesën e përparme të trupit. (Ky veprim bëhet tri herë).",
+     "albanian_alt": "Thuaj: “Ai është Allahu, Një dhe i Vetëm! Allahu është Absoluti, të Cilit i përgjërohet gjithçka në amshim. Ai as nuk lind, as nuk është i lindur. Dhe askush nuk është i barabartë (a i krahasueshëm) me Atë!”\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar dhe nga sherri i natës, kur kaplon terri dhe nga sherri i falltarëve, që fryjnë në nyje (duke bërë magji) dhe nga sherri i smirëziut, kur vepron me smirë.”\nThuaj: “Kërkoj mbështetje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i djallit cytës që fshihet (pasi cyt) e që hedh dyshime në gjokset e njerëzve, (qoftë ai djall) prej xhindeve apo njerëzve!”\n\nPastaj e fërkon me të dy duart trupin, aq sa të mundesh, duke filluar nga koka, fytyra dhe aq sa mund të arrish nga trupi. (kështu vepron tri herë)",
      "count": 3,
      "notes": [
       {
@@ -2781,51 +2668,11 @@
        "tekst": "Buhariu dhe Muslimi."
       }
      ],
-     "audio": null,
+     "audio": "audios/028_01.mp3",
      "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": null,
+     "has_audio": true,
      "time": "natë",
-     "id": 1,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/028_01.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
-    },
-    {
-     "n": 1,
-     "pjesa": 2,
-     "type": "dua",
-     "sure": "Suretu El-Feleḳ",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbil feleḳ, min sherri mã ḣaleḳ, we min sherri ġãsiḳin idhã weḳab, we min sherrin-neffãthãti fil ‘uḳad, we min sherri ḥãsidin idha ḥased.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbështetje te Zoti i agimit, që të më mbrojë nga sherri i gjithçkaje që Ai ka krijuar, dhe nga sherri i natës, kur bie terri, dhe nga sherri i magjistarëve, që fryjnë në nyje magjie, dhe nga sherri i smirëziut, kur vepron me smirë.”",
-     "albanian_alt": null,
-     "count": 3,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": null,
-     "time": "natë",
-     "id": 2
-    },
-    {
-     "n": 1,
-     "pjesa": 3,
-     "type": "dua",
-     "sure": "Suretu En-Nãs",
-     "lead": null,
-     "arabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\n﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ﴾",
-     "transliteration": "Bismil-lãhirr-rraḥmãnirr-rraḥĩm.\nḲul e’ũdhu bi rabbin-nãs, Melikin-nãs, Ilãhin-nãs, min sherril weswãsil ḣan-nãs, el-ledhĩ juweswisu fĩ ṣudũrin-nãs, minel xhinneti wen-nãs.",
-     "albanian": "Me emrin e Allahut, Mëshiruesit, Mëshirëbërësit!\nThuaj: “Kërkoj mbrojtje te Zoti i njerëzve, Sundimtari i njerëzve, i Adhuruari (i vetëm me të drejtë) i njerëzve, nga sherri i shejtanit ngacmues që fshihet (kur përmendet Allahu), e që hedh të liga e dyshime në gjoksin e njerëzve, (qoftë ai shejtan) prej xhindëve apo njerëzve!”",
-     "albanian_alt": null,
-     "count": 3,
-     "notes": [],
-     "audio": null,
-     "audio_parts": null,
-     "has_audio": false,
-     "mbyllje": "Pas leximit të këtyre tri sureve, fshin trupin me duar, aq sa të mundesh, duke filluar me kokën, fytyrën dhe pjesën e përparme të trupit. (Ky veprim bëhet tri herë).",
-     "time": "natë",
-     "id": 3
+     "id": 1
     },
     {
      "n": 2,
@@ -2842,12 +2689,11 @@
        "tekst": "Sureja Bekare, 255. Pejgamberi ﷺ thotë: “Kush e lexon këtë ajet kur të shtrihet në shtrat për të fjetur, Allahu do t’i dërgojë një mbrojtës që nuk i ndahet dhe nuk do t’i afrohet shejtani derisa të gdhijë.” Buhariu."
       }
      ],
-     "audio": null,
+     "audio": "audios/028_02.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": "natë",
-     "id": 4,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/028_02.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 2
     },
     {
      "n": 3,
@@ -2864,12 +2710,11 @@
        "tekst": "Pejgamberi ﷺ thotë: “Këto dy ajete, do të jenë të mjaftueshme për këdo që i lexon gjatë natës”. Buhariu dhe Muslimi."
       }
      ],
-     "audio": null,
+     "audio": "audios/028_03.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": "natë",
-     "id": 5,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/028_03.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 3
     },
     {
      "n": 4,
@@ -2890,7 +2735,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 6
+     "id": 4
     },
     {
      "n": 5,
@@ -2915,7 +2760,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 7
+     "id": 5
     },
     {
      "n": 6,
@@ -2936,7 +2781,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 8
+     "id": 6
     },
     {
      "n": 7,
@@ -2957,7 +2802,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 9
+     "id": 7
     },
     {
      "n": 8,
@@ -2978,12 +2823,11 @@
        "tekst": "Muslimi."
       }
      ],
-     "audio": null,
+     "audio": "audios/028_09.mp3",
      "audio_parts": null,
-     "has_audio": false,
+     "has_audio": true,
      "time": "natë",
-     "id": 10,
-     "audio_mungon_arsye": "repo-ja burimore e referon “audios/028_09.mp3”, por skedari nuk ekziston atje — burimi nuk ka audio për këtë hyrje"
+     "id": 8
     },
     {
      "n": 9,
@@ -3004,7 +2848,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 11
+     "id": 9
     },
     {
      "n": 10,
@@ -3025,7 +2869,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 12
+     "id": 10
     },
     {
      "n": 11,
@@ -3041,7 +2885,7 @@
      "audio_parts": null,
      "has_audio": false,
      "time": "natë",
-     "id": 13
+     "id": 11
     },
     {
      "n": 12,
@@ -3070,7 +2914,7 @@
      "audio_parts": null,
      "has_audio": true,
      "time": "natë",
-     "id": 14
+     "id": 12
     }
    ]
   },
