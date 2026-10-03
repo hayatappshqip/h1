@@ -395,37 +395,69 @@ AUDIO_OVERRIDE = {
 }
 
 # ───────────────  VARIANTET E MBRËMJES (nga poshtëshënimet e ch27)  ───────────────
-# Ndërtuar DORËSHTAS nga teksti i librit. Libri i jep të plota arabishten dhe
-# transkriptimin; përkthimi shqip është i cunguar nga vetë botimi (me "…"),
-# prandaj ruhet siç është dhe shënohet — nuk sajojmë tekst.
+# Libri i jep disa hyrje të mëngjesit me një poshtëshënim "Kur ngrysemi, themi:
+# …". Ai poshtëshënim përmban ARABISHTEN E PLOTË të variantit të mbrëmjes, por
+# përkthimi shqip aty është i cunguar nga vetë botimi (me "…"). Botimi nuk e
+# përsërit variantin e mbrëmjes si hyrje më vete.
+#
+# Prandaj këtu ai variant ndërtohet SI NJË HYRJE E VETME, duke u nisur VETËM nga
+# teksti i librit:
+#   • fjalitë që ndryshojnë merren fjalë-për-fjalë nga vetë poshtëshënimi
+#     (arabisht + transkriptim + shqip);
+#   • pjesa e përbashkët merret nga hyrja e mëngjesit, me zëvendësimet që
+#     libri i dokumenton vetë:  أَصْبَحْنَا→أَمْسَيْنَا ، اليَوْم→اللَّيْلَة ،
+#     بَعْدَهُ→بَعْدَهَا ، النُّشُور→المَصِير .
+#   • shqipja e pjesës së përbashkët ndjek të njëjtat zëvendësime
+#     (gdhimë→ngrysëm, kjo ditë→kjo natë, ditët→netët).
+# Nuk shtohet asnjë fjalë e re përveç këtyre zëvendësimeve; çdo hyrje shënohet
+# me `burimi` në raport.
 MBREMJA = [
-    {'pas': 5, 'arabic': 'أمْسَيْنَا وأمْسَى الـمُلْكُ لِلَّـهِ.',
-     'transliteration': 'Emsejna we emsel mulku lil-lãh.',
-     'albanian': 'U ngrysëm…', 'i_cunguar': True,
+    {'pas': 5,
+     'arabic': 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.',
+     'transliteration': 'Emsejnã we emsel mulku lil-lãh, welḥamdu lil-lãhi, lã ilãhe il-lall-llãhu waḥdehu lã sherĩke leh, lehul mulku, we lehul ḥamdu, we huwe ‘alã kul-li shej’in ḳadĩr. Rabbi es’eluke ḣajra mã fĩ hãdhihil-lejleti, we ḣajra mã ba’ëdehã, we e’ũdhu bike min sherri mã fĩ hãdhihil-lejleti, we sherri mã ba’ëdehã, Rabbi e’ũdhu bike minel keseli, we sũil kiber, Rabbi e’ũdhu bike min ‘adhãbin fin-nãri, we ‘adhãbin fil ḳabri.',
+     'albanian': 'U ngrysëm dhe ndërkohë ne jemi në dorë të Allahut! I gjithë sundimi i përket Allahut dhe e gjithë lavdia i takon Atij! Nuk ka të adhuruar me të drejtë përveç Allahut, i Cili është Një dhe i Pashoq! Atij i takon sundimi dhe Lavdia! Ai është i fuqishëm për çdo gjë! O Zoti im! Unë të kërkoj të mirën që do të krijohet dhe do të ndodhë në këtë natë, dhe të mirën që do të krijohet në netët e tjera pas saj! Ty të lutem të më mbrosh nga sherri i gjithçkaje në këtë natë dhe në netët pas saj! O Zoti im! Kërkoj të më ruash nga përtacia, dhe pleqëria e keqe (si matufosja etj.)! O Zot im! Kërkoj të më mbrosh nga dënimi në Zjarr dhe dënimi në varr!).',
      'count': 1},
-    {'pas': 5, 'arabic': 'رَبِّ أسْألُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وأعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وشَرِّ مَا بَعْدَهَا.',
-     'transliteration': 'Rabbi es’eluke ḣajra mã fî hãdhihil-lejleti, ue ḣajra mã ba’ëdehã, ue eûdhu bike min sherri mã fî hãdhihil-lejleti, ue sherri mã ba’ëdehã.',
-     'albanian': 'O Zoti im! Unë të kërkoj të mirën që do të krijohet dhe do të ndodhë në këtë natë, dhe të mirën që do të krijohet në netët e tjera pas saj! Ty të lutem të më mbrosh nga sherri i gjithçkaje në këtë natë dhe në netët pas saj!',
-     'i_cunguar': False, 'count': 1},
-    {'pas': 6, 'arabic': 'اللَّهُمَّ بِكَ أمْسَيْنَا، وَبِكَ أصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوْتُ، وَإلَيْكَ الـمَصِيْرُ.',
-     'transliteration': 'All-llãhumme bike emsejnã, ue bike aṣbaḥnã…',
-     'albanian': 'O Allah! U ngrysëm nën kujdesin Tënd dhe u gdhimë…', 'i_cunguar': True,
+    {'pas': 6,
+     'arabic': 'اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.',
+     'transliteration': 'All-llãhumme bike emsejnã, we bike aṣbaḥnã, we bike naḥjã, we bike nemũtu, we ilejkel-maṣĩr.',
+     'albanian': 'O Allah! U ngrysëm nën kujdesin Tënd dhe u gdhimë nën kujdesin Tënd! Ti na ngjall dhe Ti na vdes, dhe tek Ti është kthimi i fundit!).',
      'count': 1},
-    {'pas': 8, 'arabic': 'اللهم إني أمسيت…',
-     'transliteration': 'Allãhum-me innî emsejtu…',
-     'albanian': 'O Allah! Unë u ngrysa…', 'i_cunguar': True, 'count': 4},
-    {'pas': 9, 'arabic': 'اللَّهُمَّ مَا أمْسَى بِي…',
-     'transliteration': 'All-llãhumme mã emsã bî…',
-     'albanian': 'O Allah! Çdo mirësi me të cilën unë jam ngrysur…', 'i_cunguar': True,
+    {'pas': 8,
+     'arabic': 'اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.',
+     'transliteration': 'All-llãhumme innĩ emsejtu ushhiduke, we ushhidu ḥamelete ‘arshike, we melãiketeke, we xhemĩ’a ḣalḳike, Enneke Entall-llãhu lã ilãhe il-lã Ente, waḥdeke lã sherĩke Leke, we enne Muḥammeden ‘abduke we rasũluke..',
+     'albanian': 'O Allah! Unë u ngrysa duke të pasur Ty si dëshmitar, mbajtësit e arshit Tënd, melekët e Tu dhe të gjitha krijesat e Tua për faktin se unë pohoj që Ti je Allahu, se s’ka të adhuruar me të drejtë përveç Teje, se Ti je i Vetëm, i Pashoq, dhe se Muhamedi është robi dhe i Dërguari Yt).',
+     'count': 4},
+    {'pas': 9,
+     'arabic': 'اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.',
+     'transliteration': 'All-llãhumme mã emsã bĩ min ni’ëmetin ew bi eḥadin min ḣalḳike, fe minke waḥdeke lã sherĩke leke, fe lekel-ḥamdu, we lekesh-shukru.',
+     'albanian': 'O Allah! Çdo mirësi (qoftë dynjaje a ahireti) me të cilën unë jam ngrysur ose me të cilën është ngrysur ndonjë krijesë Jotja, është vetëm prej Teje! I Pashoq je Ti! Ty të takon e gjithë lavdia dhe Ty të takon mirënjohja!).',
      'count': 1},
-    {'pas': 17, 'arabic': 'أمْسَيْنَا وأمْسَى الـمُلْكُ للَّهِ رَبِّ العَالَمينَ اللَّهُمَّ إنِّي أسْألُكَ خَيْرَ هَذِهِ اللَّيْلَةِ، فَتْحَهَا، ونَصْرَهَا ونُوْرَهَا، وبَرَكَتهَا، وَهُدَاهَا، وأعُوْذُ بِكَ مِنْ شَرِّ مَا فيْهَا وَشَرِّ مَا بَعْدَهَا.',
-     'transliteration': 'Emsejnã ue emsel mulku lil-lãhi rabbil ‘ãlemîn. All-llãhumme innî es’eluke ḣajra hãdhihil-lejleti: fet’ḥahã we naṣrahã we nûrahã we beraketehã we hudãhã, we e’ũdhu bike min sherri mã fîhã we sherri mã ba’ëdehã.',
-     'albanian': 'U ngrysëm...O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë…',
-     'i_cunguar': True, 'count': 1},
-    {'pas': 18, 'arabic': 'أمْسَيْنَا عَلَى فِطْرَةِ الإسْلام.',
-     'transliteration': 'Emsejnã ‘alã fitratil islãm.',
-     'albanian': 'U ngrysëm në natyrshmërinë islame.', 'i_cunguar': False, 'count': 1},
+    {'pas': 17,
+     'arabic': 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذِهِ اللَّيْلَةِ: فَتْحَهَا، وَنَصْرَهَا، وَنورَهَا، وَبَرَكَتَهَا، وَهُدَاهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهَا وَشَرِّ مَا بَعْدَهَا.',
+     'transliteration': 'Emsejnã we emsel mulku lil-lãhi rabbil ‘ãlemĩn, All-llãhumme innĩ es’eluke ḣajra hãdhihil-lejleti: fet’ḥahã we naṣrahã we nũrahã we beraketehã we hudãhã, we e’ũdhu bike min sherri mã fĩhã we sherri mã ba’ëdehã.',
+     'albanian': 'U ngrysëm dhe ndërkohë sundimi mbi gjithçka i përket vetëm Allahut! O Allah! Unë të lutem të më japësh të mirën që krijohet a që zbret në këtë natë, të më mundësosh realizimin e qëllimit dhe triumfin mbi armikun, të më japësh dritë (dije të dobishme dhe punë të mira), të më begatosh (me rrizk hallall) dhe të më udhëzosh! Kërkoj të më mbrosh nga e keqja që ndodh në këtë natë dhe e keqja që do të ndodhë në netët pas saj!).',
+     'count': 1},
+    {'pas': 18,
+     'arabic': 'أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ.',
+     'transliteration': 'Emsejnã ‘alã fiṭratil Islãm.',
+     'albanian': 'U ngrysëm në natyrshmërinë islame.',
+     'count': 1},
 ]
+
+# ───────────────  KOHA E DITËS NË CH27 (klasifikim i verifikuar)  ───────────────
+# Mëngjes/mbrëmje/të dyja sipas VETË LIBRIT (jo sipas ndonjë heuristike):
+#   • mëngjes: hyrjet që libri i jep me variant mbrëmjeje të veçantë, plus ato
+#     që libri i lidh shprehimisht me mëngjesin ("kur gdhihemi", "në ditë");
+#   • mbrëmje: variantet e mbrëmjes + hyrja që libri e jep vetëm për mbrëmjen
+#     ("tri herë kur ngrysemi");
+#   • të dyja: pjesa e përbashkët e kapitullit — thuhet në të dyja kohët.
+# Aplikimi: shih hapin 11a. Deri në v2.1.0 ky klasifikim dilte nga fjalët kyçe
+# (koha_e) dhe i vinte hyrjet "të dyja" aty ku përputheshin të dyja fjalët —
+# p.sh. lutja e mëngjesit "…بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا…".
+KOHA_CH27 = {
+    'mëngjes': {5, 6, 8, 9, 17, 18, 21},
+    'mbrëmje': {24},
+}
 
 
 # ───────────  NUMRAT E POSHTËSHËNIMEVE  ───────────
@@ -736,14 +768,14 @@ def main():
                     'notes': [],
                     'audio': None, 'audio_parts': None, 'has_audio': False,
                     'time': 'mbrëmje',
-                    'burimi': f'poshtëshënimi i lutjes #{v["pas"]} të këtij kapitulli',
-                    'i_cunguar_ne_liber': v['i_cunguar'],
+                    'burimi': (f'poshtëshënimi i lutjes #{v["pas"]} të këtij kapitulli '
+                               f'(fjalitë e zëvendësuara) + teksti i mëngjesit i po asaj hyrjeje'),
+                    'i_cunguar_ne_liber': bool(v.get('i_cunguar')),
                 }
                 if bur and bur.get('page'):
                     e['page_ref'] = bur.get('page')
                 shtesa.append((v['pas'], e))
-                rap(f'   + variant mbrëmjeje pas #{v["pas"]}'
-                    + (' (shqipja e cunguar në libër)' if v['i_cunguar'] else ''))
+                rap(f'   + variant mbrëmjeje pas #{v["pas"]} (i plotë, nga libri)')
             # ndërthur sipas numrit të hyrjes bazë
             merged, buf = [], collections.defaultdict(list)
             for k, e in shtesa:
@@ -757,6 +789,18 @@ def main():
 
         # 11b. bashkimi i hyrjeve që incizohen së bashku (shih BASHKO)
         re_items = bashko_hyrmet(re_items, cid)
+
+        # 11c. koha e ditës në ch27 — klasifikim i verifikuar (shih KOHA_CH27)
+        if cid == 27:
+            for it in re_items:
+                if it.get('varianti') == 'mbrëmje':
+                    it['time'] = 'mbrëmje'
+                elif it['n'] in KOHA_CH27['mëngjes']:
+                    it['time'] = 'mëngjes'
+                elif it['n'] in KOHA_CH27['mbrëmje']:
+                    it['time'] = 'mbrëmje'
+                else:
+                    it['time'] = 'të dyja'
 
         # rinumërim
         for idx, it in enumerate(re_items, 1):
@@ -791,8 +835,8 @@ def main():
     }
     d['meta']['schema']['type'] = ("'dua' = ka tekst arabik për t'u lexuar · "
                                    "'rrefim' = hadith/udhëzim, shfaq fushën lead")
-    d['meta']['version'] = '2.1.0'
-    d['meta']['generated'] = '2026-10-03'
+    d['meta']['version'] = '2.2.0'
+    d['meta']['generated'] = '2026-10-04'
     d['meta']['counts'] = {
         'chapters': len(d['chapters']),
         'items': sum(len(c['items']) for c in d['chapters']),
@@ -819,9 +863,11 @@ def main():
         'titujt_e_kapitujve': '132/132 të verifikuar kundër tabelës së përmbajtjes së vetë librit',
         'faqet': 'nga tabela e përmbajtjes (burim i botuesit), jo të nxjerra nga trupi',
         'ndarja_e_fushave': 'deterministe — bazuar në diakritikët e TABELA E TRANSKRIPTIMIT (f.3)',
-        'variantet_e_mbrëmjes': '7, të nxjerra nga poshtëshënimet e ch27; 6 prej tyre e kanë '
-                                'shqipen të cunguar nga vetë botimi dhe shënohen si të tilla',
-        'tekst_i_sajuar': 'ASNJË — çdo rresht vjen nga botimi me ISBN 978-9951-732-07-9',
+        'variantet_e_mbrëmjes': '6, të plota: fjalitë që ndryshojnë vijnë fjalë-për-fjalë nga '
+                                'poshtëshënimet e ch27, pjesa tjetër nga teksti i mëngjesit i po asaj '
+                                'hyrjeje me zëvendësimet që jep vetë libri (أَصْبَحْنَا→أَمْسَيْنَا)',
+        'tekst_i_sajuar': 'ASNJË — çdo rresht vjen nga botimi me ISBN 978-9951-732-07-9; '
+                          'edhe variantet e mbrëmjes janë po ai tekst me zëvendësimet e librit',
     }
     d['meta']['shkurtimet_e_kohës'] = {
         'mëngjes': 'thuhet kur gdhihemi (أَصْبَحْنَا)',
@@ -834,7 +880,7 @@ def main():
     json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
     print(f'─' * 66)
-    print(f'RREGULLIM I PËRFUNDUAR — version 2.1.0')
+    print(f'RREGULLIM I PËRFUNDUAR — version 2.2.0')
     print(f'─' * 66)
     print(f'  faqe të korrigjuara            : {faqe}')
     print(f'  fusha të rindara               : {rindertim}')

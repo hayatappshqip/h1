@@ -1,6 +1,6 @@
 # Referenca e skemës — `data/mburoja.json`
 
-Versioni 2.1.0 · gjeneruar 2026-10-03
+Versioni 2.2.0 · gjeneruar 2026-10-04
 
 ## Struktura e përgjithshme
 
@@ -239,7 +239,7 @@ pa përzierje.
 |---|---|---|
 | `id` | int | **Çelësi unik brenda kapitullit**, i njëpasnjëshëm nga 1. Përdor këtë për `key` në React/lista, jo `n`. |
 | `n` | int | Numri i hyrjes **në libër**. Mund të përsëritet për hyrjet e lidhura (p.sh. varianti i mbrëmjes i të njëjtit dhikër). |
-| `time` | str \| null | `mëngjes` · `mbrëmje` · `të dyja` · `natë` · `null` (= çdo kohë). Nxjerrë nga `أَصْبَحْنَا` / `أَمْسَيْنَا` dhe nga shënimet e librit. |
+| `time` | str \| null | `mëngjes` · `mbrëmje` · `të dyja` · `natë` · `null` (= çdo kohë). Nxjerrë nga `أَصْبَحْنَا` / `أَمْسَيْنَا` dhe nga shënimet e librit; për ch27 është klasifikim i verifikuar dorësisht (shih «Ndarja mëngjes / mbrëmje»). |
 | `sure` | str | **Vetëm 2.0.0** — emri i sures kur blloku i tri sureve ishte i ndarë; 2.1.0 e bashkoi në një hyrje dhe nuk e emeton më. |
 | `pjesa` | int | **Vetëm 2.0.0** — pjesa e bllokut të ndarë (1–3 për suret). |
 | `mbyllje` | str | **Vetëm 2.0.0** — udhëzimi pas të tri sureve (te pjesa e fundit). |
@@ -285,38 +285,59 @@ i koduar brenda lutjeve:
 * libri jep në tekstin kryesor variantin e **mëngjesit** (`أَصْبَحْنَا`);
 * variantet e **mbrëmjes** (`أَمْسَيْنَا`) jepen në **poshtëshënime**.
 
-Këto 7 variante janë nxjerrë dhe janë bërë hyrje të plota, të vendosura menjëherë
+Këto 6 variante janë nxjerrë dhe janë bërë hyrje të plota, të vendosura menjëherë
 pas lutjes përkatëse të mëngjesit, me `varianti: "mbrëmje"` dhe `time: "mbrëmje"`.
 
 ```
-ch27 #5  mëngjes  →  U gdhimë dhe ndërkohë ne jemi në dorë të Allahut…
-ch27 #5  mbrëmje  →  U ngrysëm…                       (variant, 2 hyrje)
-ch27 #6  të dyja  →  O Allah! U gdhimë duke qenë nën kujdesin Tënd…
-ch27 #6  mbrëmje  →  O Allah! U ngrysëm nën kujdesin Tënd…
-ch27 #8  mëngjes  →  O Allah! Unë u gdhiva…
-ch27 #8  mbrëmje  →  O Allah! Unë u ngrysa…
+ch27 #4  mëngjes  →  U gdhimë dhe ndërkohë ne jemi në dorë të Allahut…
+ch27 #5  mbrëmje  →  U ngrysëm dhe ndërkohë ne jemi në dorë të Allahut…   (2.2.0)
+ch27 #6  mëngjes  →  O Allah! U gdhimë duke qenë nën kujdesin Tënd…
+ch27 #7  mbrëmje  →  O Allah! U ngrysëm nën kujdesin Tënd…              (2.2.0)
+ch27 #9  mëngjes  →  O Allah! Unë u gdhiva duke të pasur Ty si dëshmitar…
+ch27 #10 mbrëmje  →  O Allah! Unë u ngrysa duke të pasur Ty si dëshmitar… (2.2.0)
 …
 ```
 
-Për një aplikacion me dy ekrane të veçanta filtro sipas `time`:
+Duatë e përbashkëta (Ajetul-Kursi, tri suret, sayyidul istigfar, …) nuk dyfishohen
+dhe nuk kanë `varianti`: ato kanë `time: "të dyja"` dhe lexohen në të dyja kohët
+(16 nga 30 hyrjet e ch27). Një hyrje e vetme është vetëm e mbrëmjes: a'udhu bi
+kelimatil-lahit-tammat (×3), si në libër.
+
+Për një aplikacion me dy ekrane të veçanta filtro sipas `time` (kështu bën
+`src/data/mburojaAdapter.ts`, që i shfaq si "Dhikri i Mëngjesit" dhe
+"Dhikri i Mbrëmjes"):
 
 ```js
-const mëngjesi = ch.items.filter(i => i.time === 'mëngjes' || i.time === 'të dyja' || !i.time);
-const mbrëmja  = ch.items.filter(i => i.time === 'mbrëmje'  || i.time === 'të dyja' || !i.time);
+const mëngjesi = ch.items.filter(i => i.time !== 'mbrëmje');
+const mbrëmja  = ch.items.filter(i => i.time !== 'mëngjes');
 ```
 
-### Pse disa variante kanë shqipen të cunguar
+### Si janë ndërtuar variantet e plota të mbrëmjes
 
-Gjashtë nga shtatë variantet e mbrëmjes e kanë përkthimin shqip të shkurtuar me `…`
-**në vetë botimin** — p.sh. “U ngrysëm…”. Botuesi e bën këtë sepse ndryshimi është
-mekanik (“u gdhimë” → “u ngrysëm”) dhe kuptohet nga konteksti.
+Libri i jep fjalitë që ndryshojnë (arabisht + transkriptim + shqip) në
+poshtëshënimin "Kur ngrysemi, themi: …", por përkthimi shqip aty është i shkurtuar
+me `…`. Në versionin 2.2.0 ato hyrje u plotësuan **vetëm me tekstin e librit**:
 
-Kjo paketë **nuk e plotëson** atë tekst, sepse do të thoshte të shtonte fjalë që nuk
-janë në libër. Në vend të kësaj ruhet ashtu siç është dhe shënohet me
-`i_cunguar_ne_liber: true`, që aplikacioni të mund ta trajtojë siç dëshiron
-(p.sh. ta zbehë, ose ta plotësojë vetë me një zëvendësim të shënuar si i tillë).
+* fjalitë që ndryshojnë vijnë fjalë-për-fjalë nga poshtëshënimi;
+* pjesa e përbashkët merret nga hyrja e mëngjesit, me zëvendësimet që libri vetë i
+  dokumenton (`أَصْبَحْنَا→أَمْسَيْنَا`, `اليَوْم→اللَّيْلَة`, `بَعْدَهُ→بَعْدَهَا`,
+  `النُّشُور→المَصِير`), përfshirë shqipen (`gdhimë→ngrysëm`, `ditë→natë`).
 
-Vetëm varianti 2 dhe varianti 7 e kanë shqipen të plotë, sepse libri i jep të plota.
+Për këtë arsye `valido_strikt.py` nxjerr **14 paralajmërime** për ch27: rreshtat e
+ndërtuar nuk gjenden si rresht i vetëm në dump-in e librit — por çdo pjesë e tyre
+vjen prej tij dhe plotësia ([7]) mbetet 0 humbje. Fusha `i_cunguar_ne_liber` nuk
+emetohet më për këto hyrje.
+
+---
+
+# Shtesat e versionit 2.2.0
+
+- **Ch27 ndahet në dy pamje në aplikacion:** `DHIKRI I MËNGJESIT` (23 dua) dhe
+  `DHIKRI I MBRËMJES` (23 dua). Paketa mbetet NJË kapitull (si libri); ndarja
+  bëhet sipas `time` (`mëngjes`+`të dyja` / `mbrëmje`+`të dyja`).
+- **Variantet e mbrëmjes u plotësuan** (shih më lart) dhe u bashkuan në një hyrje
+  të vetme për lutjen #5: 31 → 30 hyrje në ch27.
+- **Numri i hyrjeve: 270 → 269, duatë: 253 → 252.** Asnjë tekst nuk u hoq.
 
 ---
 

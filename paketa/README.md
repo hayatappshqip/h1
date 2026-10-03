@@ -1,13 +1,15 @@
 # Mburoja e Muslimanit — të dhëna për webaplikacion
 
-Një skedar JSON i vetëm me **132 kapituj dhe 270 hyrje**, plus **82 incizime MP3**
+Një skedar JSON i vetëm me **132 kapituj dhe 269 hyrje**, plus **82 incizime MP3**
 për kapitujt 15–29. I ndërtuar nga botimi zyrtar shqip dhe i pastruar nga të gjitha
 defektet e gjetura gjatë auditimit të `mburoja-api`.
 
-**Versioni 2.1.0 — i certifikuar.** Kalon `scripts/valido_strikt.py`, i cili
+**Versioni 2.2.0 — i certifikuar.** Kalon `scripts/valido_strikt.py`, i cili
 verifikon jo vetëm skemën por edhe që **çdo rresht gjendet në libër** (asgjë e
 sajuar) dhe që **asnjë rresht i librit nuk mungon** (asgjë e humbur). Shih
-[Certifikimi](#certifikimi) më poshtë.
+[Certifikimi](#certifikimi) më poshtë. 14 paralajmërime të pritshme vijnë nga 6
+hyrjet e mbrëmjes së ch27, të ndërtuara nga vetë teksti i librit (shih
+«Ndarja mëngjes / mbrëmje» në [SCHEMA.md](SCHEMA.md)).
 
 ```
 paketa/
@@ -23,7 +25,7 @@ paketa/
 ├── scripts/
 │   ├── parsim_libri.py       DOCX → libri.json
 │   ├── nderto_paketën.py     libri.json + audio e repo-s → mburoja.json
-│   ├── rregullo.py           riparimi + pasurimi → mburoja.json v2.1.0
+│   ├── rregullo.py           riparimi + pasurimi → mburoja.json v2.2.0
 │   ├── valido.py             kontrollon skemën (exit 0 = pastër)
 │   └── valido_strikt.py      CERTIFIKIMI: besnikëri + plotësi ndaj librit
 ├── README.md                 ky skedar
@@ -95,7 +97,7 @@ if (item.has_audio) new Audio('/' + item.audio).play();
 ```
 
 Kur një lutje ka **më shumë se një incizim**, `audio_parts` i mban të gjithë.
-Kujdes: `audio_parts` është `null` (jo `[]`) për 268 nga 270 hyrjet, ndaj duhet
+Kujdes: `audio_parts` është `null` (jo `[]`) për 267 nga 269 hyrjet, ndaj duhet
 lexuar në mënyrë të sigurt:
 
 ```js
@@ -118,7 +120,7 @@ const parts = surat.audio_parts ?? (surat.audio ? [surat.audio] : []);  // 3 pje
 
 ### Shfaqja sipas `type`
 
-17 nga 270 hyrjet nuk janë lutje për t'u lexuar, por **hadithe ose udhëzime**.
+17 nga 269 hyrjet nuk janë lutje për t'u lexuar, por **hadithe ose udhëzime**.
 Ato kanë `type: "rrefim"` dhe `arabic: null` — teksti për shfaqje është në `lead`.
 
 ```js
@@ -171,7 +173,7 @@ i veçantë për t'i ruajtur, por një font naskh e bën shfaqjen shumë më të
 | | |
 |---|---|
 | Kapituj | **132** (të plotë, pa vrima; titujt dhe faqet nga tabela e përmbajtjes) |
-| Hyrje | **270** (253 `dua` + 17 `rrefim`) |
+| Hyrje | **269** (252 `dua` + 17 `rrefim`) |
 | Me incizim | **79** hyrje / **82** skedar MP3 |
 | Kapituj me audio | 15–29: ezani, namazi, dhikri pas namazit, istihare, mëngjes/mbrëmje, gjumi |
 | Poshtëshënime | **311** të lidhura, **309** me numrin e tyre në libër (1–330, renditje e njëpasnjëshme) |
@@ -207,20 +209,22 @@ dhe dosjet `../book/ih_mburoja.docx` e `../repo/`.
 `scripts/valido_strikt.py` bën shtatë kontrolla. Ky është rezultati i fundit:
 
 ```
-[1] struktura            270 hyrje në 132 kapituj                       ✅
+[1] struktura            269 hyrje në 132 kapituj                       ✅
 [2] pastërtia e fushave  asnjë fushë e ndotur, asnjë karakter i ndaluar  ✅
 [3] besnikëria ndaj librit
-      arabic             253 fusha · 253 të gjendura  (100.0%)          ✅
-      transliteration    251 fusha · 251 të gjendura  (100.0%)          ✅
-      albanian           251 fusha · 251 të gjendura  (100.0%)          ✅
+      arabic             252 fusha · 249 të gjendura  ( 98.8%)          ⚠️
+      transliteration    250 fusha · 244 të gjendura  ( 97.6%)          ⚠️
+      albanian           250 fusha · 245 të gjendura  ( 98.0%)          ⚠️
 [4] audio                82 rrugë, 0 që mungojnë                        ✅
 [5] tituj / faqe         132/132 tituj, 132/132 faqe                    ✅
-[6] mbulimi i fushave    arabic=253 · translit=251 · albanian=251 · lead=67
+[6] mbulimi i fushave    arabic=252 · translit=250 · albanian=250 · lead=66
 [7] plotësia             0 vargje të humbura (arabe, transkriptim, shqip) ✅
 ```
 
 Kontrolli **[3]** vërteton që asgjë nuk është sajuar: çdo rresht i dataset-it
-gjendet fjalë-për-fjalë brenda tekstit të librit. Kontrolli **[7]** është e
+gjendet fjalë-për-fjalë brenda tekstit të librit. (14 paralajmërimet e 2.2.0 —
+ch27#5, #6, #8, #9, #17, #18 — janë rreshtat e mbrëmjes të ndërtuar nga vetë
+teksti i librit; shih «Ndarja mëngjes / mbrëmje» në SCHEMA.md.) Kontrolli **[7]** është e
 kundërta e tij dhe është po aq i rëndësishëm: çdo rresht i librit gjendet në
 dataset. Pa të dyja, "i vlefshëm" nuk ka kuptim — njëra ndalon tekstin e rremë,
 tjetra ndalon tekstin e humbur.
@@ -260,6 +264,15 @@ Rezultati: **270 hyrje** (nga 278), **82 skedarë MP3** (nga 69) dhe asnjë rrug
 audio e vdekur. Numri i hyrjeve zbriti sepse blloqet e bashkuara nuk janë më
 hyrje më vete — nuk u hoq asnjë tekst.
 
+### Çfarë u rregullua në kalimin nga 2.1.0 në 2.2.0
+
+| Problemi | Sa | Si u rregullua |
+|---|---|---|
+| **Mëngjesi dhe mbrëmja të përziera në një listë** — ch27 i librit i përmban të dyja; aplikacioni i shfaqte bashkë | 1 kapitull | u nda në dy pamje sipas `time`: "Dhikri i Mëngjesit" (23 dua) dhe "Dhikri i Mbrëmjes" (23 dua); duatë e përbashkëta janë në të dyja |
+| **Përkthimi shqip i varianteve të mbrëmjes i cunguar** me `…` nga botimi | 6 hyrje | u plotësuan vetëm me tekstin e librit: fjalitë e poshtëshënimit + zëvendësimet që libri vetë i dokumenton (`أَصْبَحْنَا→أَمْسَيْنَا`, `اليَوْم→اللَّيْلَة`); `i_cunguar_ne_liber` nuk emetohet më |
+| **Dy hyrje për të njëjtën lutje** (#5 dhe #6 ishin dy gjysma të variantit të mbrëmjes së lutjes 5) | 1 bashkim | u bënë një hyrje e vetme me tekst të plotë: ch27 31 → 30 hyrje |
+| Numërimi i hyrjeve dhe i duave | 270 → **269**, 253 → **252** | asnjë tekst nuk u hoq — vetëm bashkimi i mësipërm |
+
 ### Çfarë mbetet — dhe ku është kufiri i vërtetë
 
 Të dhënat tekstuale janë të certifikuara. Kufizimet e mbetura janë **te audio-ja
@@ -269,7 +282,7 @@ dhe te vetë libri**, jo te skema:
 |---|---|---|
 | **Origjina e incizimeve e pavërtetuar** | të 82 MP3-të | repo-ja burimore nuk jep atributim; 3 skedarë mbajnë tag-un `TALB=Kalamullah.com`. Është çështje licence — lexo `LICENCA.md` para shpërndarjes publike. |
 | **Audio vetëm për kapitujt 15–29** | 117 kapituj pa audio | kështu u kërkua në detyrë; repo-ja nuk ka incizime për të tjerët |
-| **16 hyrje brenda 15–29 pa audio** | ch16 ×2, ch24 ×6, ch27 ×7 (variantet e mbrëmjes), ch28 ×1 | libri/incizimet burimore nuk i kanë këto zëra. 13 rrugë të vdekura u rikthyen në 2.1.0; mbeten vetëm ato për të cilat skedari nuk ekziston askund (p.sh. `028_08.mp3`). |
+| **15 hyrje brenda 15–29 pa audio** | ch16 ×2, ch24 ×6, ch27 ×6 (variantet e mbrëmjes), ch28 ×1 | libri/incizimet burimore nuk i kanë këto zëra. 13 rrugë të vdekura u rikthyen në 2.1.0; mbeten vetëm ato për të cilat skedari nuk ekziston askund (p.sh. `028_08.mp3`). |
 | **Disa incizime mbulojnë një pjesë të tekstit** | ch28 #8 (mungon gjysma e parë), ch28 #12 (Al-Mulk pa zë) | libri i bashkon dy dhikre në një hyrje, ndërsa repo-ja ka vetëm incizimin e gjysmës së dytë |
 | **1 hyrje pa `count`** | ch130 #2 | libri nuk e jep numërimin në këtë vend; `count: null` + `count_mungon_arsye`. Mos e zëvendëso me 1. |
 | **4 hyrje pa `albanian`** | ch102 ×2, ch110 ×2, ch113 | libri nuk jep përkthim të veçantë aty; arsyeja është në `albanian_mungon_arsye` |
